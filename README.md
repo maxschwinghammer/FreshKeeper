@@ -18,6 +18,12 @@ FreshKeeper is a mobile app that helps users track their food’s expiration dat
 - **Barcode Scanner Integration**: Quickly add items to your inventory by scanning barcodes
 - **Minimalist Design**: FreshKeeper is designed to be intuitive and user-friendly for quick access and updates
 
+## Technologies
+- Kotlin
+- Jetpack Compose for UI
+- ViewModel
+- LiveData
+
 ## Installation
 To install and run FreshKeeper locally, ensure you have [Android Studio](https://developer.android.com/studio) installed. 
 
