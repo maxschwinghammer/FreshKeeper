@@ -3,13 +3,15 @@ package com.freshkeeper.navigation
 sealed class Screen(
     val route: String,
 ) {
-    object Home : Screen("home")
+    data object SignUp : Screen("signUp")
 
-    object Group : Screen("group")
+    data object Home : Screen("home")
 
-    object Profile : Screen("profile")
+    data object Inventory : Screen("inventory")
 
-    object Settings : Screen("settings")
+    data object Household : Screen("household")
 
-    object Notifications : Screen("notifications")
+    data object Settings : Screen("settings")
+
+    data object Notifications : Screen("notifications")
 }
