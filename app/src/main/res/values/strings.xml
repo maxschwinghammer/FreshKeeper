@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FreshKeeper</string>
+    <string name="asset_statements" translatable="false">
+        [{
+          \"include\": \"https://signin.freshkeeper.de/.well-known/assetlinks.json\"
+        }]
+    </string>
 </resources>
