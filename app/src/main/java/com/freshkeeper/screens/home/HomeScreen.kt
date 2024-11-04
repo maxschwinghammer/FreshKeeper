@@ -64,7 +64,6 @@ fun HomeScreen(
     var expiryDate by remember { mutableStateOf("") }
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
-
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val barcodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val expiringSoonItems by viewModel.expiringSoonItems.observeAsState(emptyList())

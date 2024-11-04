@@ -60,7 +60,7 @@ fun FoodList(
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         items.forEach { (item, date) ->
             Row(
