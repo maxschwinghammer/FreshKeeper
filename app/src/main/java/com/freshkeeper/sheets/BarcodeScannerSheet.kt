@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.home.sheets
+package com.freshkeeper.sheets
 
 import androidx.annotation.OptIn
 import androidx.camera.core.CameraSelector
@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -71,11 +72,13 @@ fun BarcodeScannerSheet(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp),
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = if (isBarcodeScanned) "Scan expiry date" else "Scan Barcode",
+            fontSize = 18.sp,
+            color = TextColor,
             style = MaterialTheme.typography.titleMedium,
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -94,7 +97,11 @@ fun BarcodeScannerSheet(
                 },
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
             ) {
-                Text(text = "Skip scan", color = TextColor)
+                Text(
+                    text = "Skip scan",
+                    fontSize = 18.sp,
+                    color = TextColor,
+                )
             }
         }
 
@@ -103,9 +110,16 @@ fun BarcodeScannerSheet(
                 Modifier
                     .height(530.dp)
                     .fillMaxWidth()
-                    .padding(20.dp)
-                    .border(4.dp, if (isBarcodeScanned) AccentGreenColor else ComponentStrokeColor, RoundedCornerShape(15.dp))
-                    .clip(RoundedCornerShape(15.dp)),
+                    .padding(16.dp)
+                    .border(
+                        4.dp,
+                        if (isBarcodeScanned) {
+                            AccentGreenColor
+                        } else {
+                            ComponentStrokeColor
+                        },
+                        RoundedCornerShape(15.dp),
+                    ).clip(RoundedCornerShape(15.dp)),
             contentAlignment = Alignment.Center,
         ) {
             AndroidView(
@@ -118,7 +132,7 @@ fun BarcodeScannerSheet(
                         val cameraProvider = cameraProviderFuture.get()
                         val preview =
                             Preview.Builder().build().also {
-                                it.setSurfaceProvider(previewView.surfaceProvider)
+                                it.surfaceProvider = previewView.surfaceProvider
                             }
 
                         val barcodeScannerOptions =
@@ -139,8 +153,13 @@ fun BarcodeScannerSheet(
                                 it.setAnalyzer(ContextCompat.getMainExecutor(context)) { imageProxy ->
                                     val mediaImage = imageProxy.image
                                     if (mediaImage != null) {
-                                        val inputImage = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-                                        val scanner = BarcodeScanning.getClient(barcodeScannerOptions)
+                                        val inputImage =
+                                            InputImage.fromMediaImage(
+                                                mediaImage,
+                                                imageProxy.imageInfo.rotationDegrees,
+                                            )
+                                        val scanner =
+                                            BarcodeScanning.getClient(barcodeScannerOptions)
                                         scanner
                                             .process(inputImage)
                                             .addOnSuccessListener { barcodes ->
@@ -160,13 +179,19 @@ fun BarcodeScannerSheet(
                                 }
                             }
 
-                        val textRecognizer = TextRecognition.getClient(TextRecognizerOptions.Builder().build())
+                        val textRecognizer =
+                            TextRecognition.getClient(TextRecognizerOptions.Builder().build())
                         val textImageAnalysis =
                             ImageAnalysis.Builder().build().also {
                                 it.setAnalyzer(ContextCompat.getMainExecutor(context)) { imageProxy ->
                                     val mediaImage = imageProxy.image
                                     if (mediaImage != null && isBarcodeScanned) {
-                                        val inputImage = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+                                        val inputImage =
+                                            InputImage
+                                                .fromMediaImage(
+                                                    mediaImage,
+                                                    imageProxy.imageInfo.rotationDegrees,
+                                                )
                                         textRecognizer
                                             .process(inputImage)
                                             .addOnSuccessListener { visionText ->

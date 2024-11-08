@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
-import com.freshkeeper.ui.theme.Grey
+import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
 
 @Suppress("ktlint:standard:function-naming")
@@ -99,7 +99,7 @@ fun UnitSelector(unit: MutableState<String>) {
             modifier =
                 Modifier
                     .width(100.dp)
-                    .background(Grey)
+                    .background(GreyColor)
                     .clip(RoundedCornerShape(10.dp)),
         ) {
             units.forEach { label ->

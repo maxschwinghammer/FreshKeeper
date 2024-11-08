@@ -18,15 +18,16 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.freshkeeper.R
+import com.freshkeeper.screens.notifications.NotificationsViewModel
 import com.freshkeeper.ui.theme.ActiveIndicatorColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.BottomNavIconColor
@@ -37,11 +38,15 @@ import com.freshkeeper.ui.theme.TextColor
 fun BottomNavigationBar(
     selectedIndex: Int,
     navController: NavController,
+    notificationsViewModel: NotificationsViewModel,
 ) {
     val inventoryIconFilled = painterResource(id = R.drawable.inventory_filled_2)
     val inventoryIconOutlined = painterResource(id = R.drawable.inventory_outlined)
     val householdIconFilled = painterResource(id = R.drawable.people_filled)
     val householdIconOutlined = painterResource(id = R.drawable.people_outlined)
+
+    val badgeCount by notificationsViewModel.badgeCount.collectAsState()
+    val hasNotifications by notificationsViewModel.hasNews.collectAsState()
 
     val barItems =
         remember {
@@ -72,15 +77,15 @@ fun BottomNavigationBar(
                     selectedIcon = Icon.Vector(Icons.Filled.Settings),
                     unselectedIcon = Icon.Vector(Icons.Outlined.Settings),
                     route = "settings",
-                    hasNews = true,
+                    hasNews = false,
                 ),
                 BarItem(
                     title = "Updates",
                     selectedIcon = Icon.Vector(Icons.Filled.Notifications),
                     unselectedIcon = Icon.Vector(Icons.Outlined.Notifications),
                     route = "notifications",
-                    hasNews = false,
-                    badgeCount = 12,
+                    hasNews = hasNotifications,
+                    badgeCount = badgeCount,
                 ),
             )
         }
@@ -93,7 +98,7 @@ fun BottomNavigationBar(
             NavigationBarItem(
                 colors =
                     NavigationBarItemDefaults.colors(
-                        selectedIconColor = Color.White,
+                        selectedIconColor = TextColor,
                         unselectedIconColor = Color.Gray,
                         indicatorColor = ActiveIndicatorColor,
                     ),
@@ -104,13 +109,17 @@ fun BottomNavigationBar(
                         restoreState = true
                     }
                 },
-//                label = { Text(text = barItem.title, color = TextColor) },
                 icon = {
                     BadgedBox(badge = {
-                        if (barItem.badgeCount != null) {
+                        if (barItem.badgeCount != null && barItem.badgeCount > 0) {
                             Badge(containerColor = Color.Red) {
                                 Text(
-                                    text = if (barItem.badgeCount > 99) "99+" else barItem.badgeCount.toString(),
+                                    text =
+                                        if (barItem.badgeCount > 99) {
+                                            "99+"
+                                        } else {
+                                            barItem.badgeCount.toString()
+                                        },
                                     color = TextColor,
                                 )
                             }
@@ -118,7 +127,14 @@ fun BottomNavigationBar(
                             Badge(containerColor = Color.Red)
                         }
                     }) {
-                        when (val icon = if (selectedIndex == index) barItem.selectedIcon else barItem.unselectedIcon) {
+                        when (
+                            val icon =
+                                if (selectedIndex == index) {
+                                    barItem.selectedIcon
+                                } else {
+                                    barItem.unselectedIcon
+                                }
+                        ) {
                             is Icon.Vector -> {
                                 Icon(
                                     imageVector = icon.imageVector,
@@ -139,23 +155,4 @@ fun BottomNavigationBar(
             )
         }
     }
-}
-
-data class BarItem(
-    val title: String,
-    val selectedIcon: Icon,
-    val unselectedIcon: Icon,
-    val hasNews: Boolean,
-    val badgeCount: Int? = null,
-    val route: String,
-)
-
-sealed class Icon {
-    data class Vector(
-        val imageVector: ImageVector,
-    ) : Icon()
-
-    data class Resource(
-        val painter: Painter,
-    ) : Icon()
 }

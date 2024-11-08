@@ -1,4 +1,4 @@
-package com.freshkeeper.screens
+package com.freshkeeper.screens.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,18 +10,22 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.freshkeeper.navigation.BottomNavigationBar
+import com.freshkeeper.screens.notifications.NotificationsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
+import com.freshkeeper.ui.theme.TextColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun SettingsScreen(navController: NavHostController) {
+fun MemberProfileScreen(
+    navController: NavHostController,
+    notificationsViewModel: NotificationsViewModel,
+) {
     FreshKeeperTheme {
         Scaffold(
             bottomBar = {
@@ -31,7 +35,7 @@ fun SettingsScreen(navController: NavHostController) {
                             .background(BottomNavBackgroundColor)
                             .padding(horizontal = 10.dp),
                 ) {
-                    BottomNavigationBar(selectedIndex = 3, navController)
+                    BottomNavigationBar(selectedIndex = 2, navController, notificationsViewModel)
                 }
             },
         ) {
@@ -42,10 +46,10 @@ fun SettingsScreen(navController: NavHostController) {
                         .padding(it),
             ) {
                 Text(
-                    text = "Settings",
+                    text = "Profile",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
+                    color = TextColor,
                     modifier = Modifier.padding(16.dp),
                 )
                 LazyColumn(

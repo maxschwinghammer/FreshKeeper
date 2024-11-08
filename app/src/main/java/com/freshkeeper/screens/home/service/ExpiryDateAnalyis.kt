@@ -17,7 +17,10 @@ fun isValidDate(date: String): Boolean {
             val tenYearsLater = currentDate.plusYears(10)
 
             (parsedExpiryDate.isAfter(currentDate) || parsedExpiryDate.isEqual(currentDate)) &&
-                (parsedExpiryDate.isBefore(tenYearsLater) || parsedExpiryDate.isEqual(tenYearsLater))
+                (
+                    parsedExpiryDate.isBefore(tenYearsLater) ||
+                        parsedExpiryDate.isEqual(tenYearsLater)
+                )
         }
         2 -> {
             val month = parts[0].toInt()
@@ -29,7 +32,11 @@ fun isValidDate(date: String): Boolean {
             val tenYearsLater = currentDate.plusYears(10)
 
             (parsedExpiryDate.isAfter(currentDate) || parsedExpiryDate.isEqual(currentDate)) &&
-                (parsedExpiryDate.isBefore(tenYearsLater) || parsedExpiryDate.isEqual(tenYearsLater))
+                (
+                    parsedExpiryDate.isBefore(tenYearsLater) ||
+                        parsedExpiryDate
+                            .isEqual(tenYearsLater)
+                )
         }
         else -> false
     }
@@ -46,7 +53,13 @@ fun formatDate(date: String): String {
                 } else {
                     parts[2]
                 }
-            String.format(locale, "%02d.%02d.%04d", parts[0].toInt(), parts[1].toInt(), year.toInt())
+            String.format(
+                locale,
+                "%02d.%02d.%04d",
+                parts[0].toInt(),
+                parts[1].toInt(),
+                year.toInt(),
+            )
         }
         2 -> {
             val year =

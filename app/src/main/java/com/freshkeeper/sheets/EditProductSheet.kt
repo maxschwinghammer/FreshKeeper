@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.home.sheets
+package com.freshkeeper.sheets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -16,6 +16,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -23,7 +25,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,29 +35,29 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.screens.home.service.DropdownMenu
 import com.freshkeeper.screens.home.service.ExpiryDatePicker
 import com.freshkeeper.screens.home.service.UnitSelector
-import com.freshkeeper.screens.home.service.fetchProductDataFromBarcode
 import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
-import com.freshkeeper.ui.theme.Grey
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ManualInputSheet(
+fun EditProductSheet(
     sheetState: SheetState,
-    barcodeValue: String,
     expiryDateValue: String,
 ) {
     var productName by remember { mutableStateOf("") }
     val expiryDate by remember { mutableStateOf(expiryDateValue) }
     var quantity by remember { mutableStateOf("") }
     val unit = remember { mutableStateOf("") }
-    var imageUrl by remember { mutableStateOf("") }
+    val imageUrl by remember { mutableStateOf("") }
     val storageLocations =
         listOf(
             "Fridge",
@@ -87,25 +88,20 @@ fun ManualInputSheet(
             "Candy",
             "Other",
         )
-
-    LaunchedEffect(barcodeValue) {
-        val productData = fetchProductDataFromBarcode(barcodeValue)
-        productName = productData?.name ?: barcodeValue
-        quantity = productData?.quantity ?: ""
-        unit.value = productData?.unit ?: ""
-        imageUrl = productData?.imageUrl ?: ""
-    }
+    var isConsumedChecked by remember { mutableStateOf(false) }
+    var isThrownAwayChecked by remember { mutableStateOf(false) }
 
     Column(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp),
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "New entry",
+            text = "Edit product",
             color = TextColor,
+            fontSize = 18.sp,
             style = MaterialTheme.typography.titleMedium,
         )
 
@@ -188,7 +184,51 @@ fun ManualInputSheet(
 
         DropdownMenu(categories, "Category")
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = isConsumedChecked,
+                onCheckedChange = {
+                    isConsumedChecked = it
+                    if (it) isThrownAwayChecked = false
+                },
+                enabled = !isThrownAwayChecked,
+                colors =
+                    CheckboxDefaults.colors(
+                        checkmarkColor = ComponentBackgroundColor,
+                        checkedColor = AccentGreenColor,
+                    ),
+            )
+            Text(
+                "Mark as consumed",
+                color = TextColor,
+                modifier = Modifier.padding(start = 8.dp),
+            )
+        }
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Checkbox(
+                checked = isThrownAwayChecked,
+                onCheckedChange = {
+                    isThrownAwayChecked = it
+                    if (it) isConsumedChecked = false
+                },
+                enabled = !isConsumedChecked,
+                colors =
+                    CheckboxDefaults.colors(
+                        checkmarkColor = ComponentBackgroundColor,
+                        checkedColor = AccentGreenColor,
+                    ),
+            )
+            Text(
+                "Mark as thrown away",
+                color = TextColor,
+                modifier = Modifier.padding(start = 8.dp),
+            )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Button(
             onClick = {
@@ -197,9 +237,9 @@ fun ManualInputSheet(
             modifier =
                 Modifier
                     .fillMaxWidth(),
-            colors = ButtonDefaults.buttonColors(containerColor = Grey),
+            colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
         ) {
-            Text("Add product", color = TextColor)
+            Text("Save changes", color = ComponentBackgroundColor)
         }
     }
 }

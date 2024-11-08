@@ -28,7 +28,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
-import com.freshkeeper.ui.theme.Grey
+import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -110,22 +110,22 @@ fun DatePickerModal(
                 Text("Cancel", color = AccentGreenColor)
             }
         },
-        colors = DatePickerDefaults.colors(containerColor = Grey),
+        colors = DatePickerDefaults.colors(containerColor = GreyColor),
     ) {
         DatePicker(
             state = datePickerState,
             modifier = Modifier.size(400.dp, 500.dp),
             colors =
                 DatePickerDefaults.colors(
-                    containerColor = Grey,
+                    containerColor = GreyColor,
                     currentYearContentColor = AccentGreenColor,
                     dividerColor = ComponentStrokeColor,
                     headlineContentColor = TextColor,
                     navigationContentColor = TextColor,
                     selectedDayContainerColor = AccentGreenColor,
-                    selectedDayContentColor = Grey,
+                    selectedDayContentColor = GreyColor,
                     selectedYearContainerColor = AccentGreenColor,
-                    selectedYearContentColor = Grey,
+                    selectedYearContentColor = GreyColor,
                     subheadContentColor = TextColor,
                     titleContentColor = TextColor,
                     todayContentColor = AccentGreenColor,
