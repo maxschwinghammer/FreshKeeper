@@ -13,26 +13,18 @@ import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme =
     darkColorScheme(
-        primary = PrimaryColor,
-        secondary = SecondaryColor,
-        tertiary = TertiaryColor,
+        primary = WhiteColor,
+        secondary = WhiteColor,
+        tertiary = WhiteColor,
         background = Color(0xFF010101),
     )
 
 private val LightColorScheme =
     lightColorScheme(
-        primary = PrimaryColor,
-        secondary = SecondaryColor,
-        tertiary = TertiaryColor,
+        primary = WhiteColor,
+        secondary = WhiteColor,
+        tertiary = WhiteColor,
         background = Color(0xFF010101),
-    /* Other default colors to override
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-     */
     )
 
 @Suppress("ktlint:standard:function-naming")

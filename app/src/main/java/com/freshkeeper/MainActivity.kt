@@ -26,8 +26,16 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun requestCameraPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.CAMERA), cameraPermissionRequestCode)
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA,
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.CAMERA),
+                cameraPermissionRequestCode,
+            )
         }
     }
 }

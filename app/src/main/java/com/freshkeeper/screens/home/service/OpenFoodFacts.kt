@@ -6,13 +6,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
 
-data class ProductData(
-    val name: String?,
-    val quantity: String?,
-    val unit: String?,
-    val imageUrl: String?,
-)
-
 suspend fun fetchProductDataFromBarcode(barcode: String): ProductData? {
     return withContext(Dispatchers.IO) {
         val client = OkHttpClient()

@@ -32,7 +32,7 @@ import androidx.compose.ui.unit.toSize
 import com.freshkeeper.R
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
-import com.freshkeeper.ui.theme.Grey
+import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
 import java.util.Locale
 
@@ -98,7 +98,7 @@ fun DropdownMenu(
             modifier =
                 Modifier
                     .width(200.dp)
-                    .background(Grey)
+                    .background(GreyColor)
                     .clip(RoundedCornerShape(10.dp)),
         ) {
             options.forEach { label ->

@@ -3,6 +3,7 @@ package com.freshkeeper.screens.home.service
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,9 +15,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -24,19 +28,25 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
-import com.freshkeeper.ui.theme.Grey
+import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
-import com.freshkeeper.ui.theme.White
+import com.freshkeeper.ui.theme.WhiteColor
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun FoodList(
     title: String,
     image: Painter,
     items: List<Pair<String, String>>,
+    editProductSheetState: SheetState,
 ) {
+    val coroutineScope = rememberCoroutineScope()
+
     Column(
         modifier =
             Modifier
@@ -56,18 +66,21 @@ fun FoodList(
                 text = title,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = TextColor,
+                color = AccentGreenColor,
             )
         }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         items.forEach { (item, date) ->
             Row(
                 modifier =
                     Modifier
                         .padding(bottom = 8.dp)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                        .clickable {
+                            coroutineScope.launch { editProductSheetState.show() }
+                        },
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Box(
@@ -75,7 +88,7 @@ fun FoodList(
                         Modifier
                             .clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp))
                             .weight(1f)
-                            .background(White)
+                            .background(WhiteColor)
                             .padding(horizontal = 10.dp, vertical = 2.dp),
                 ) {
                     Text(
@@ -91,7 +104,7 @@ fun FoodList(
                         Modifier
                             .clip(RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp))
                             .weight(1f)
-                            .background(Grey)
+                            .background(GreyColor)
                             .padding(horizontal = 10.dp, vertical = 2.dp),
                     contentAlignment = Alignment.Center,
                 ) {

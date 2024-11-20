@@ -42,15 +42,18 @@ import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.home.service.FoodList
-import com.freshkeeper.screens.home.sheets.AddEntrySheet
-import com.freshkeeper.screens.home.sheets.BarcodeScannerSheet
-import com.freshkeeper.screens.home.sheets.ManualInputSheet
 import com.freshkeeper.screens.home.viewmodel.HomeViewModel
+import com.freshkeeper.screens.notifications.NotificationsViewModel
+import com.freshkeeper.sheets.AddEntrySheet
+import com.freshkeeper.sheets.BarcodeScannerSheet
+import com.freshkeeper.sheets.EditProductSheet
+import com.freshkeeper.sheets.ManualInputSheet
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
+import com.freshkeeper.ui.theme.TextColor
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,13 +62,15 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     navController: NavHostController,
     viewModel: HomeViewModel = viewModel(),
+    notificationsViewModel: NotificationsViewModel,
 ) {
     var scannedBarcode by remember { mutableStateOf("") }
     var expiryDate by remember { mutableStateOf("") }
-    val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val coroutineScope = rememberCoroutineScope()
 
+    val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val editProductSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val barcodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val expiringSoonItems by viewModel.expiringSoonItems.observeAsState(emptyList())
     val expiredItems by viewModel.expiredItems.observeAsState(emptyList())
@@ -79,7 +84,7 @@ fun HomeScreen(
                             .background(BottomNavBackgroundColor)
                             .padding(horizontal = 10.dp),
                 ) {
-                    BottomNavigationBar(selectedIndex = 0, navController)
+                    BottomNavigationBar(selectedIndex = 0, navController, notificationsViewModel)
                 }
             },
         ) {
@@ -93,7 +98,7 @@ fun HomeScreen(
                     text = "Overview",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White,
+                    color = TextColor,
                     modifier = Modifier.padding(16.dp),
                 )
                 LazyColumn(
@@ -108,6 +113,7 @@ fun HomeScreen(
                             title = "Expiring soon",
                             image = painterResource(id = R.drawable.expiring_soon),
                             items = expiringSoonItems,
+                            editProductSheetState = editProductSheetState,
                         )
                     }
                     item {
@@ -115,6 +121,7 @@ fun HomeScreen(
                             title = "Expired",
                             image = painterResource(id = R.drawable.warning),
                             items = expiredItems,
+                            editProductSheetState = editProductSheetState,
                         )
                     }
                 }
@@ -137,7 +144,11 @@ fun HomeScreen(
                             shape = RoundedCornerShape(25.dp),
                             containerColor = AccentGreenColor,
                         ) {
-                            Icon(Icons.Default.Add, tint = BottomNavBackgroundColor, contentDescription = "Add Food")
+                            Icon(
+                                Icons.Default.Add,
+                                tint = BottomNavBackgroundColor,
+                                contentDescription = "Add Food",
+                            )
                         }
                         Text(
                             text = "Add food",
@@ -179,6 +190,19 @@ fun HomeScreen(
                     ManualInputSheet(
                         sheetState = manualInputSheetState,
                         barcodeValue = scannedBarcode,
+                        expiryDateValue = expiryDate,
+                    )
+                }
+            }
+
+            if (editProductSheetState.isVisible) {
+                ModalBottomSheet(
+                    onDismissRequest = { coroutineScope.launch { editProductSheetState.hide() } },
+                    sheetState = editProductSheetState,
+                    containerColor = ComponentBackgroundColor,
+                ) {
+                    EditProductSheet(
+                        sheetState = editProductSheetState,
                         expiryDateValue = expiryDate,
                     )
                 }

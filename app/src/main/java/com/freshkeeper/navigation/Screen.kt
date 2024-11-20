@@ -14,4 +14,12 @@ sealed class Screen(
     data object Settings : Screen("settings")
 
     data object Notifications : Screen("notifications")
+
+    data object MemberProfile : Screen("member_profile")
+
+    data object Statistics : Screen("statistics")
+
+    data object LandingPage : Screen("landingPage")
+
+    data object Tips : Screen("tips")
 }

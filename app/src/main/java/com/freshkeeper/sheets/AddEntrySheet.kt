@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.home.sheets
+package com.freshkeeper.sheets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -26,6 +26,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -54,10 +55,17 @@ fun AddEntrySheet(
         containerColor = ComponentBackgroundColor,
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(text = "Add an entry", style = MaterialTheme.typography.titleMedium)
+            Text(
+                text = "Add an entry",
+                fontSize = 18.sp,
+                style = MaterialTheme.typography.titleMedium,
+            )
             Spacer(modifier = Modifier.height(16.dp))
 
             AddEntryButton(
@@ -101,7 +109,10 @@ fun AddEntryButton(
                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
     ) {
-        Column(modifier = Modifier.padding(10.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier.padding(10.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
             Text(text, color = TextColor)
             Spacer(modifier = Modifier.height(10.dp))
             Image(
