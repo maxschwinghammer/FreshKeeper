@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.home.service
+package com.freshkeeper.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -50,9 +50,9 @@ fun FoodList(
     Column(
         modifier =
             Modifier
-                .clip(RoundedCornerShape(20.dp))
+                .clip(RoundedCornerShape(15.dp))
                 .background(ComponentBackgroundColor)
-                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(20.dp))
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(15.dp))
                 .padding(16.dp),
     ) {
         Row {

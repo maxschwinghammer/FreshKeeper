@@ -15,6 +15,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
@@ -50,14 +51,14 @@ fun InviteSheet(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Invite a person to your household",
+                text = stringResource(R.string.invite_text),
                 fontSize = 18.sp,
                 style = MaterialTheme.typography.titleMedium,
             )
             Spacer(modifier = Modifier.height(16.dp))
 
             AddEntryButton(
-                text = "QR Code",
+                text = "QR-Code",
                 iconId = R.drawable.qr_code,
                 onClick = {
                     coroutineScope.launch {
@@ -68,7 +69,7 @@ fun InviteSheet(
             )
             Spacer(modifier = Modifier.height(8.dp))
             AddEntryButton(
-                text = "Share",
+                text = stringResource(R.string.share),
                 iconId = R.drawable.share,
                 onClick = {
                     coroutineScope.launch {

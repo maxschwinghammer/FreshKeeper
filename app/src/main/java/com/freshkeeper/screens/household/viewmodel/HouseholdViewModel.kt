@@ -7,10 +7,20 @@ import com.freshkeeper.screens.household.Activity
 import com.freshkeeper.screens.household.Member
 
 class HouseholdViewModel : ViewModel() {
+    private val _mostWastedItems = MutableLiveData<List<Pair<String, String>>>()
     private val _activities = MutableLiveData<List<Activity>?>()
     val activities: MutableLiveData<List<Activity>?> = _activities
+    val mostWastedItems: MutableLiveData<List<Pair<String, String>>> = _mostWastedItems
 
     init {
+        _mostWastedItems.value =
+            listOf(
+                "Milk" to "4 items",
+                "Bread" to "3 items",
+                "Apples" to "2 items",
+                "Yogurt" to "1 item",
+                "Lettuce" to "1 item",
+            )
         _activities.value =
             listOf(
                 Activity(

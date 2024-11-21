@@ -31,6 +31,7 @@ import com.freshkeeper.screens.notifications.NotificationsViewModel
 import com.freshkeeper.ui.theme.ActiveIndicatorColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.BottomNavIconColor
+import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 
 @Suppress("ktlint:standard:function-naming")
@@ -112,7 +113,7 @@ fun BottomNavigationBar(
                 icon = {
                     BadgedBox(badge = {
                         if (barItem.badgeCount != null && barItem.badgeCount > 0) {
-                            Badge(containerColor = Color.Red) {
+                            Badge(containerColor = RedColor) {
                                 Text(
                                     text =
                                         if (barItem.badgeCount > 99) {
@@ -124,7 +125,7 @@ fun BottomNavigationBar(
                                 )
                             }
                         } else if (barItem.hasNews) {
-                            Badge(containerColor = Color.Red)
+                            Badge(containerColor = RedColor)
                         }
                     }) {
                         when (

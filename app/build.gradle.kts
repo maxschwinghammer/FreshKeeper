@@ -3,6 +3,9 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.navigation.safeargs)
+    id("com.google.gms.google-services")
+    id("dagger.hilt.android.plugin")
+    id("kotlin-kapt")
 }
 
 android {
@@ -30,15 +33,18 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         buildConfig = true
         compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.4.5"
     }
 }
 
@@ -59,6 +65,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.ui.test.junit4)
     implementation(libs.androidx.ui.test.manifest)
+    implementation(libs.androidx.runner)
+    implementation(libs.androidx.espresso.core)
     implementation(libs.appauth)
     implementation(libs.barcode.scanning)
     implementation(libs.barcode.scanning.common)
@@ -66,21 +74,33 @@ dependencies {
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
     implementation(libs.coil.compose)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.ui.auth)
+    implementation(libs.firebase.analytics)
+    implementation(libs.hilt)
+    implementation(libs.hilt.navigation.compose)
     implementation(libs.json)
     implementation(libs.junit)
     implementation(libs.material)
     implementation(libs.okhttp)
+    implementation(libs.play.services.auth)
     implementation(libs.play.services.base)
     implementation(libs.play.services.mlkit.text.recognition)
     implementation(libs.play.services.mlkit.text.recognition.common)
     implementation(libs.text.recognition)
     implementation(platform(libs.androidx.compose.bom))
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.googleid)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.common.ktx)
+    implementation(libs.firebase.firestore.ktx)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.junit)
+    kapt(libs.hilt.compiler)
 }
 
 java {

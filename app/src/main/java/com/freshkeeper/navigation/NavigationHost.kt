@@ -6,7 +6,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.freshkeeper.screens.SignUpScreen
+import com.freshkeeper.model.service.AccountService
+import com.freshkeeper.screens.authentication.signIn.SignInScreen
+import com.freshkeeper.screens.authentication.signUp.SignUpScreen
 import com.freshkeeper.screens.home.HomeScreen
 import com.freshkeeper.screens.home.tips.TipsScreen
 import com.freshkeeper.screens.household.HouseholdScreen
@@ -14,7 +16,7 @@ import com.freshkeeper.screens.inventory.InventoryScreen
 import com.freshkeeper.screens.landingpage.LandingPageScreen
 import com.freshkeeper.screens.notifications.NotificationsScreen
 import com.freshkeeper.screens.notifications.NotificationsViewModel
-import com.freshkeeper.screens.profile.MemberProfileScreen
+import com.freshkeeper.screens.profile.ProfileSettingsScreen
 import com.freshkeeper.screens.settings.SettingsScreen
 import com.freshkeeper.screens.statistics.StatisticsScreen
 
@@ -23,15 +25,32 @@ import com.freshkeeper.screens.statistics.StatisticsScreen
 fun NavigationHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    accountService: AccountService,
 ) {
     val notificationsViewModel: NotificationsViewModel = viewModel()
+    val startDestination =
+        when {
+            !accountService.hasUser() -> Screen.SignIn.route
+            accountService.getUserProfile().isAnonymous -> Screen.SignUp.route
+            else -> Screen.Home.route
+        }
 
     NavHost(
         navController = navController,
-        startDestination = Screen.SignUp.route,
+        startDestination = startDestination,
         modifier = modifier,
     ) {
-        composable(Screen.SignUp.route) { SignUpScreen(navController = navController) }
+        composable(Screen.SignUp.route) {
+            SignUpScreen(
+                navController = navController,
+            )
+        }
+        composable(Screen.SignIn.route) {
+            SignInScreen(
+                navController = navController,
+            )
+        }
+
         composable(Screen.Home.route) {
             HomeScreen(
                 navController = navController,
@@ -63,7 +82,7 @@ fun NavigationHost(
             )
         }
         composable(Screen.MemberProfile.route) {
-            MemberProfileScreen(
+            ProfileSettingsScreen(
                 navController = navController,
                 notificationsViewModel = notificationsViewModel,
             )

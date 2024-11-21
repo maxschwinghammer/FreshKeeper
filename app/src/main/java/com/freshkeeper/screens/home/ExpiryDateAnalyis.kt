@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.home.service
+package com.freshkeeper.screens.home
 
 import java.time.LocalDate
 import java.util.Locale

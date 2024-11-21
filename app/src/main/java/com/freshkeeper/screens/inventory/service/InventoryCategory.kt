@@ -50,9 +50,9 @@ fun InventoryCategory(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .clip(RoundedCornerShape(20.dp))
+                .clip(RoundedCornerShape(15.dp))
                 .background(ComponentBackgroundColor)
-                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(20.dp))
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(15.dp))
                 .padding(10.dp),
     ) {
         Row {

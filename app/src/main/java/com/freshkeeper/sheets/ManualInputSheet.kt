@@ -32,14 +32,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.freshkeeper.screens.home.service.DropdownMenu
-import com.freshkeeper.screens.home.service.ExpiryDatePicker
-import com.freshkeeper.screens.home.service.UnitSelector
-import com.freshkeeper.screens.home.service.fetchProductDataFromBarcode
+import com.freshkeeper.R
+import com.freshkeeper.screens.home.DropdownMenu
+import com.freshkeeper.screens.home.ExpiryDatePicker
+import com.freshkeeper.screens.home.UnitSelector
+import com.freshkeeper.screens.home.fetchProductDataFromBarcode
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -102,11 +104,11 @@ fun ManualInputSheet(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .padding(start = 16.dp, end = 16.dp),
+                .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "New entry",
+            text = stringResource(R.string.new_entry),
             fontSize = 18.sp,
             color = TextColor,
             style = MaterialTheme.typography.titleMedium,
@@ -120,7 +122,7 @@ fun ManualInputSheet(
                     modifier = Modifier.fillMaxWidth(),
                     value = productName,
                     onValueChange = { productName = it },
-                    label = { Text("Product name") },
+                    label = { Text(stringResource(R.string.product_name)) },
                     colors =
                         OutlinedTextFieldDefaults.colors(
                             unfocusedBorderColor = ComponentStrokeColor,
@@ -165,7 +167,7 @@ fun ManualInputSheet(
             OutlinedTextField(
                 value = quantity,
                 onValueChange = { if (it.matches(Regex("\\d{0,4}"))) quantity = it },
-                label = { Text("Quantity") },
+                label = { Text(stringResource(R.string.quantity)) },
                 modifier = Modifier.weight(1f),
                 colors =
                     OutlinedTextFieldDefaults.colors(
@@ -185,11 +187,11 @@ fun ManualInputSheet(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        DropdownMenu(storageLocations, "Storage location")
+        DropdownMenu(storageLocations, stringResource(R.string.storage_location))
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        DropdownMenu(categories, "Category")
+        DropdownMenu(categories, stringResource(R.string.category))
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -202,7 +204,7 @@ fun ManualInputSheet(
                     .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
         ) {
-            Text("Add product", color = ComponentBackgroundColor)
+            Text(stringResource(R.string.add_product), color = ComponentBackgroundColor)
         }
     }
 }

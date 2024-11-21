@@ -32,10 +32,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.freshkeeper.R
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.inventory.service.CurrentInventoriesSection
 import com.freshkeeper.screens.notifications.NotificationsViewModel
@@ -87,7 +89,7 @@ fun InventoryScreen(
                         .padding(it),
             ) {
                 Text(
-                    text = "Current inventories",
+                    text = stringResource(R.string.current_inventories),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextColor,
@@ -97,7 +99,7 @@ fun InventoryScreen(
                     modifier =
                         Modifier
                             .fillMaxSize()
-                            .padding(top = 50.dp, start = 10.dp, end = 10.dp, bottom = 70.dp),
+                            .padding(top = 55.dp, start = 15.dp, end = 15.dp, bottom = 70.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     item {
@@ -130,7 +132,7 @@ fun InventoryScreen(
                             )
                         }
                         Text(
-                            text = "Add food",
+                            text = stringResource(id = R.string.add_food),
                             style = MaterialTheme.typography.titleMedium,
                             color = AccentGreenColor,
                             modifier = Modifier.padding(start = 10.dp),

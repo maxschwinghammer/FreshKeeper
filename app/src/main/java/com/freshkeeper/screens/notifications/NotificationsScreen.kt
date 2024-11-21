@@ -14,10 +14,12 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.freshkeeper.R
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
@@ -55,7 +57,7 @@ fun NotificationsScreen(
                         .padding(it),
             ) {
                 Text(
-                    text = "Notifications",
+                    text = stringResource(R.string.notifications),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextColor,
@@ -65,7 +67,7 @@ fun NotificationsScreen(
                     modifier =
                         Modifier
                             .fillMaxSize()
-                            .padding(top = 50.dp, start = 10.dp, end = 10.dp),
+                            .padding(top = 55.dp, start = 15.dp, end = 15.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     items(notifications) { notification ->

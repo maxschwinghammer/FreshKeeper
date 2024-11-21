@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -41,7 +42,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.navigation.BottomNavigationBar
-import com.freshkeeper.screens.home.service.FoodList
 import com.freshkeeper.screens.home.viewmodel.HomeViewModel
 import com.freshkeeper.screens.notifications.NotificationsViewModel
 import com.freshkeeper.sheets.AddEntrySheet
@@ -95,7 +95,7 @@ fun HomeScreen(
                         .padding(it),
             ) {
                 Text(
-                    text = "Overview",
+                    text = stringResource(R.string.overview),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextColor,
@@ -105,12 +105,12 @@ fun HomeScreen(
                     modifier =
                         Modifier
                             .fillMaxSize()
-                            .padding(top = 50.dp, start = 10.dp, end = 10.dp, bottom = 60.dp),
+                            .padding(top = 55.dp, start = 15.dp, end = 15.dp, bottom = 60.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     item {
                         FoodList(
-                            title = "Expiring soon",
+                            title = stringResource(id = R.string.expiring_soon),
                             image = painterResource(id = R.drawable.expiring_soon),
                             items = expiringSoonItems,
                             editProductSheetState = editProductSheetState,
@@ -118,7 +118,7 @@ fun HomeScreen(
                     }
                     item {
                         FoodList(
-                            title = "Expired",
+                            title = stringResource(R.string.expired),
                             image = painterResource(id = R.drawable.warning),
                             items = expiredItems,
                             editProductSheetState = editProductSheetState,
@@ -151,7 +151,7 @@ fun HomeScreen(
                             )
                         }
                         Text(
-                            text = "Add food",
+                            text = stringResource(id = R.string.add_food),
                             style = MaterialTheme.typography.titleMedium,
                             color = AccentGreenColor,
                             modifier = Modifier.padding(start = 10.dp),

@@ -1,8 +1,10 @@
 package com.freshkeeper.screens.household
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,11 +17,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -28,18 +33,23 @@ import com.freshkeeper.R
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
+import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.LightGreyColor
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun StatisticsSection(navController: NavController) {
+fun StatisticsSection(
+    navController: NavController,
+    mostWastedItems: List<Pair<String, String>>,
+) {
     Card(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
-        shape = RoundedCornerShape(10.dp),
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(15.dp)),
+        shape = RoundedCornerShape(15.dp),
         colors = CardDefaults.cardColors(containerColor = ComponentBackgroundColor),
     ) {
         Column(
@@ -51,7 +61,7 @@ fun StatisticsSection(navController: NavController) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = "Statistics",
+                    text = stringResource(R.string.statistics),
                     color = AccentGreenColor,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
@@ -61,7 +71,7 @@ fun StatisticsSection(navController: NavController) {
                     modifier = Modifier.clickable { navController.navigate("statistics") },
                 ) {
                     Text(
-                        text = "See more",
+                        text = stringResource(R.string.see_more),
                         color = LightGreyColor,
                         fontSize = 14.sp,
                     )
@@ -76,43 +86,79 @@ fun StatisticsSection(navController: NavController) {
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Total Amount of Food Waste: 15 items",
+                text =
+                    stringResource(R.string.total_food_waste) + ": 15 " +
+                        stringResource(R.string.items),
                 color = TextColor,
                 fontSize = 14.sp,
             )
             Text(
-                text = "Average Food Waste per Day: 0.5 items/day",
+                text =
+                    stringResource(R.string.average_food_waste) + ": 0.5 " +
+                        stringResource(R.string.items_per_day),
                 color = TextColor,
                 fontSize = 14.sp,
             )
             Text(
-                text = "Days with No Waste: 25 days",
+                text =
+                    stringResource(R.string.days_without_waste) + ": 25 " +
+                        stringResource(R.string.days),
                 color = TextColor,
                 fontSize = 14.sp,
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Most Wasted Food Items:",
+                text = stringResource(R.string.most_wasted_food_items) + ":",
                 color = TextColor,
-                fontWeight = FontWeight.Bold,
+                fontSize = 14.sp,
             )
             Spacer(modifier = Modifier.height(4.dp))
-            Row {
-                Column {
-                    Text(text = "Milk", color = TextColor)
-                    Text(text = "Apples", color = TextColor)
-                    Text(text = "Yogurt", color = TextColor)
-                }
-                Spacer(modifier = Modifier.width(8.dp))
-                Column {
-                    Text(text = "4 items", color = TextColor)
-                    Text(text = "2 items", color = TextColor)
-                    Text(text = "1 item", color = TextColor)
+
+            mostWastedItems.forEach { (item, count) ->
+                Row(
+                    modifier =
+                        Modifier
+                            .padding(bottom = 8.dp)
+                            .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Box(
+                        modifier =
+                            Modifier
+                                .clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp))
+                                .weight(1f)
+                                .background(WhiteColor)
+                                .padding(horizontal = 10.dp, vertical = 2.dp),
+                    ) {
+                        Text(
+                            text = item,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = ComponentBackgroundColor,
+                            maxLines = 1,
+                        )
+                    }
+
+                    Box(
+                        modifier =
+                            Modifier
+                                .clip(RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp))
+                                .weight(1f)
+                                .background(GreyColor)
+                                .padding(horizontal = 10.dp, vertical = 2.dp),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Text(
+                            text = count,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = TextColor,
+                            maxLines = 1,
+                        )
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = "Percentage Reduction in Waste: 20%",
+                text = stringResource(R.string.waste_reduction) + ": 20%",
                 color = TextColor,
                 fontSize = 14.sp,
             )

@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.home.service
+package com.freshkeeper.screens.home
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -33,13 +33,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.freshkeeper.screens.home.service.formatDate
-import com.freshkeeper.screens.home.service.isValidDate
+import com.freshkeeper.R
+import com.freshkeeper.screens.home.formatDate
+import com.freshkeeper.screens.home.isValidDate
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
@@ -76,7 +78,12 @@ fun BarcodeScannerSheet(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = if (isBarcodeScanned) "Scan expiry date" else "Scan Barcode",
+            text =
+                if (isBarcodeScanned) {
+                    stringResource(R.string.scan_expiry_date)
+                } else {
+                    stringResource(R.string.scan_barcode)
+                },
             fontSize = 18.sp,
             color = TextColor,
             style = MaterialTheme.typography.titleMedium,
@@ -98,7 +105,7 @@ fun BarcodeScannerSheet(
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
             ) {
                 Text(
-                    text = "Skip scan",
+                    text = stringResource(R.string.skip_scan),
                     fontSize = 18.sp,
                     color = TextColor,
                 )

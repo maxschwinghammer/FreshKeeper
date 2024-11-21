@@ -3,6 +3,8 @@ package com.freshkeeper.navigation
 sealed class Screen(
     val route: String,
 ) {
+    data object SignIn : Screen("signIn")
+
     data object SignUp : Screen("signUp")
 
     data object Home : Screen("home")
@@ -15,7 +17,7 @@ sealed class Screen(
 
     data object Notifications : Screen("notifications")
 
-    data object MemberProfile : Screen("member_profile")
+    data object MemberProfile : Screen("memberProfile")
 
     data object Statistics : Screen("statistics")
 
