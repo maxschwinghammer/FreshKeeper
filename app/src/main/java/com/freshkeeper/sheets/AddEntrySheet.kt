@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
@@ -62,7 +63,7 @@ fun AddEntrySheet(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Add an entry",
+                text = stringResource(R.string.add_an_entry),
                 fontSize = 18.sp,
                 style = MaterialTheme.typography.titleMedium,
             )
@@ -80,7 +81,7 @@ fun AddEntrySheet(
             )
             Spacer(modifier = Modifier.height(8.dp))
             AddEntryButton(
-                text = "Manual input",
+                text = stringResource(R.string.manual_input),
                 iconId = R.drawable.pencil,
                 onClick = {
                     coroutineScope.launch {

@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.home.service
+package com.freshkeeper.screens.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -26,8 +26,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
+import com.freshkeeper.R
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
@@ -38,21 +40,21 @@ import com.freshkeeper.ui.theme.TextColor
 fun UnitSelector(unit: MutableState<String>) {
     val units =
         listOf(
-            "kg",
-            "g",
-            "l",
-            "ml",
-            "pcs",
-            "pckg",
-            "can",
-            "box",
-            "tbsp",
-            "tsp",
-            "cup",
-            "sachet",
-            "bag",
+            stringResource(R.string.kg),
+            stringResource(R.string.g),
+            stringResource(R.string.l),
+            stringResource(R.string.ml),
+            stringResource(R.string.pcs),
+            stringResource(R.string.pckg),
+            stringResource(R.string.can),
+            stringResource(R.string.box),
+            stringResource(R.string.tbsp),
+            stringResource(R.string.tsp),
+            stringResource(R.string.cup),
+            stringResource(R.string.sachet),
+            stringResource(R.string.bag),
         )
-    val label = "Unit"
+    val label = stringResource(R.string.unit)
     var textFieldSize by remember { mutableStateOf(Size.Zero) }
     var expanded by remember { mutableStateOf(false) }
 

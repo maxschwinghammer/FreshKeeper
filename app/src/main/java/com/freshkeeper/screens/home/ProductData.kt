@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.home.service
+package com.freshkeeper.screens.home
 
 data class ProductData(
     val name: String?,

@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.home.service
+package com.freshkeeper.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -27,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.freshkeeper.R
@@ -44,7 +45,7 @@ fun DropdownMenu(
 ) {
     var selectedText by
         when (label) {
-            "Category" -> {
+            stringResource(R.string.category) -> {
                 remember { mutableStateOf("Dairy goods") }
             }
             else -> {
@@ -61,10 +62,12 @@ fun DropdownMenu(
             Icons.Filled.KeyboardArrowDown
         }
 
+    var translatedSelectedText = stringResource(id = getCategoryStringRes(selectedText))
+
     Column {
         OutlinedTextField(
-            value = selectedText,
-            onValueChange = { selectedText = it },
+            value = translatedSelectedText,
+            onValueChange = { translatedSelectedText = it },
             modifier =
                 Modifier
                     .fillMaxWidth()
@@ -101,8 +104,9 @@ fun DropdownMenu(
                     .background(GreyColor)
                     .clip(RoundedCornerShape(10.dp)),
         ) {
-            options.forEach { label ->
-                val iconName = label.lowercase(Locale.ROOT).replace(" ", "_")
+            options.forEach { option ->
+                val translatedLabel = stringResource(id = getCategoryStringRes(option))
+                val iconName = option.lowercase(Locale.ROOT).replace(" ", "_")
                 val iconResId =
                     try {
                         R.drawable::class.java.getDeclaredField(iconName).getInt(null)
@@ -111,18 +115,18 @@ fun DropdownMenu(
                     }
 
                 DropdownMenuItem(
-                    text = { Text(label, color = TextColor) },
+                    text = { Text(translatedLabel, color = TextColor) },
                     leadingIcon = {
                         iconResId?.let {
                             Image(
                                 painter = painterResource(id = it),
-                                contentDescription = label,
+                                contentDescription = option,
                                 modifier = Modifier.size(25.dp),
                             )
                         }
                     },
                     onClick = {
-                        selectedText = label
+                        selectedText = option
                         expanded = false
                     },
                 )
@@ -130,6 +134,34 @@ fun DropdownMenu(
         }
     }
 }
+
+fun getCategoryStringRes(category: String): Int =
+    when (category) {
+        "Dairy goods" -> R.string.dairy_goods
+        "Vegetables" -> R.string.vegetables
+        "Fruits" -> R.string.fruits
+        "Meat" -> R.string.meat
+        "Fish" -> R.string.fish
+        "Frozen Goods" -> R.string.frozen_goods
+        "Spices" -> R.string.spices
+        "Bread" -> R.string.bread
+        "Confectionery" -> R.string.confectionery
+        "Drinks" -> R.string.drinks
+        "Noodles" -> R.string.noodles
+        "Canned goods" -> R.string.canned_goods
+        "Candy" -> R.string.candy
+        "Fridge" -> R.string.fridge
+        "Cupboard" -> R.string.cupboard
+        "Freezer" -> R.string.freezer
+        "Counter top" -> R.string.counter_top
+        "Cellar" -> R.string.cellar
+        "Bread box" -> R.string.bread_box
+        "Spice rack" -> R.string.spice_rack
+        "Pantry" -> R.string.pantry
+        "Fruit basket" -> R.string.fruit_basket
+        "Other" -> R.string.other
+        else -> R.string.other
+    }
 
 @Suppress("ktlint:standard:function-naming")
 @Composable

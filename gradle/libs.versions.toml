@@ -1,8 +1,9 @@
 [versions]
 accompanistFlowlayout = "0.36.0"
 activityCompose = "1.9.3"
-agp = "8.7.1"
+agp = "8.7.2"
 androidxCredentials = "1.5.0-beta01"
+androidxJunit = "1.1.5"
 appauthVersion = "0.11.1"
 barcodeScanning = "17.3.0"
 barcodeScanningCommon = "17.0.0"
@@ -10,25 +11,37 @@ cameraCamera2 = "1.4.0"
 cameraLifecycle = "1.4.0"
 cameraView = "1.4.0"
 coilCompose = "2.7.0"
-composeBom = "2024.10.01"
+composeBom = "2024.11.00"
 coreKtx = "1.15.0"
-espressoCore = "3.5.0"
+espressoCore = "3.6.1"
 json = "20210307"
 junit = "4.13.2"
-junitVersion = "1.1.5"
 kotlin = "2.0.0"
 lifecycleRuntimeKtx = "2.8.7"
 material = "1.12.0"
-navigationCompose = "2.8.3"
-navigationRuntimeKtx = "2.8.3"
+navigationCompose = "2.8.4"
+navigationRuntimeKtx = "2.8.4"
 okhttp = "5.0.0-alpha.14"
 playServicesBase = "18.5.0"
 playServicesMlkitTextRecognition = "19.0.1"
 playServicesMlkitTextRecognitionCommon = "19.1.0"
 runtimeLivedata = "1.7.5"
 textRecognition = "16.0.1"
+googleid = "1.1.1"
+runner = "1.6.2"
+playServicesAuth = "21.2.0"
+firebaseCommonKtx = "21.0.0"
+firebaseAuthKtx = "23.1.0"
+firebaseBom = "33.6.0"
+firebaseAuth = "23.1.0"
+firebaseUiAuth = "8.0.0"
+firebaseAnalytics = "22.1.2"
+firebaseFirestoreKtx = "25.1.1"
+hilt = "2.52"
+hilt-navigation-compose = "1.2.0"
 
 [libraries]
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 json = { group = "org.json", name = "json", version.ref = "json" }
@@ -43,7 +56,6 @@ androidx-credentials-playServicesAuth = { module = "androidx.credentials:credent
 appauth = { module = "net.openid:appauth", version.ref = "appauthVersion" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
@@ -63,6 +75,19 @@ play-services-mlkit-text-recognition-common = { group = "com.google.android.gms"
 play-services-mlkit-text-recognition = { group = "com.google.android.gms", name = "play-services-mlkit-text-recognition", version.ref = "playServicesMlkitTextRecognition" }
 barcode-scanning-common = { group = "com.google.mlkit", name = "barcode-scanning-common", version.ref = "barcodeScanningCommon" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
+googleid = { group = "com.google.android.libraries.identity.googleid", name = "googleid", version.ref = "googleid" }
+androidx-runner = { group = "androidx.test", name = "runner", version.ref = "runner" }
+play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
+firebase-common-ktx = { group = "com.google.firebase", name = "firebase-common-ktx", version.ref = "firebaseCommonKtx" }
+firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+firebase-ui-auth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseUiAuth" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
+firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
+hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
+hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

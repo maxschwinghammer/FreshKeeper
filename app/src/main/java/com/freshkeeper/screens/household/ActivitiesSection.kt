@@ -33,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
@@ -42,6 +43,7 @@ import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
+import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
 
@@ -65,15 +67,15 @@ fun ActivitiesSection(viewModel: HouseholdViewModel) {
         modifier =
             Modifier
                 .fillMaxWidth()
-                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
-        shape = RoundedCornerShape(10.dp),
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(15.dp)),
+        shape = RoundedCornerShape(15.dp),
         colors = CardDefaults.cardColors(containerColor = ComponentBackgroundColor),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
         ) {
             Text(
-                text = "Activities",
+                text = stringResource(id = R.string.activities),
                 color = AccentGreenColor,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
@@ -96,7 +98,7 @@ fun ActivitiesSection(viewModel: HouseholdViewModel) {
                                 .fillMaxSize()
                                 .clip(RoundedCornerShape(10.dp))
                                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
-                                .background(Color.Red)
+                                .background(RedColor)
                                 .padding(end = 16.dp),
                         horizontalArrangement = Arrangement.End,
                         verticalAlignment = Alignment.CenterVertically,

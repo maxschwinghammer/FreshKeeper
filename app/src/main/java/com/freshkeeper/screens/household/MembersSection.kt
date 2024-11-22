@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -56,15 +57,15 @@ fun MembersSection(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
-        shape = RoundedCornerShape(10.dp),
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(15.dp)),
+        shape = RoundedCornerShape(15.dp),
         colors = CardDefaults.cardColors(containerColor = ComponentBackgroundColor),
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
         ) {
             Text(
-                text = "Members",
+                text = stringResource(id = R.string.members),
                 color = AccentGreenColor,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
@@ -129,7 +130,7 @@ fun MembersSection(
                             modifier = Modifier.size(35.dp),
                         )
                         Text(
-                            text = "Invite",
+                            text = stringResource(R.string.invite),
                             color = TextColor,
                             fontWeight = FontWeight.Bold,
                             fontSize = 12.sp,

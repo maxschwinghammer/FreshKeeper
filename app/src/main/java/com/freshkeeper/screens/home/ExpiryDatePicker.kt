@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.home.service
+package com.freshkeeper.screens.home
 
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -25,7 +25,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.freshkeeper.R
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
@@ -46,10 +48,10 @@ fun ExpiryDatePicker(
     OutlinedTextField(
         value = selectedDate?.let { convertMillisToDate(it) } ?: expiryDate,
         onValueChange = { },
-        label = { Text("Expiry date") },
+        label = { Text(stringResource(R.string.expiry_date)) },
         placeholder = { Text("DD.MM.YYYY") },
         trailingIcon = {
-            Icon(Icons.Default.DateRange, contentDescription = "Select date")
+            Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.select_date))
         },
         modifier =
             modifier
@@ -107,7 +109,7 @@ fun DatePickerModal(
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancel", color = AccentGreenColor)
+                Text(stringResource(R.string.cancel), color = AccentGreenColor)
             }
         },
         colors = DatePickerDefaults.colors(containerColor = GreyColor),

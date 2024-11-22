@@ -33,16 +33,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import com.freshkeeper.screens.home.service.DropdownMenu
-import com.freshkeeper.screens.home.service.ExpiryDatePicker
-import com.freshkeeper.screens.home.service.UnitSelector
+import com.freshkeeper.R
+import com.freshkeeper.screens.home.DropdownMenu
+import com.freshkeeper.screens.home.ExpiryDatePicker
+import com.freshkeeper.screens.home.UnitSelector
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
+import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
 
@@ -99,7 +102,7 @@ fun EditProductSheet(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = "Edit product",
+            text = stringResource(R.string.edit_product),
             color = TextColor,
             fontSize = 18.sp,
             style = MaterialTheme.typography.titleMedium,
@@ -113,7 +116,7 @@ fun EditProductSheet(
                     modifier = Modifier.fillMaxWidth(),
                     value = productName,
                     onValueChange = { productName = it },
-                    label = { Text("Product name") },
+                    label = { Text(stringResource(R.string.product_name)) },
                     colors =
                         OutlinedTextFieldDefaults.colors(
                             unfocusedBorderColor = ComponentStrokeColor,
@@ -158,7 +161,7 @@ fun EditProductSheet(
             OutlinedTextField(
                 value = quantity,
                 onValueChange = { if (it.matches(Regex("\\d{0,4}"))) quantity = it },
-                label = { Text("Quantity") },
+                label = { Text(stringResource(R.string.quantity)) },
                 modifier = Modifier.weight(1f),
                 colors =
                     OutlinedTextFieldDefaults.colors(
@@ -178,11 +181,11 @@ fun EditProductSheet(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        DropdownMenu(storageLocations, "Storage location")
+        DropdownMenu(storageLocations, stringResource(R.string.storage_location))
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        DropdownMenu(categories, "Category")
+        DropdownMenu(categories, stringResource(R.string.category))
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -201,7 +204,7 @@ fun EditProductSheet(
                     ),
             )
             Text(
-                "Mark as consumed",
+                stringResource(R.string.mark_as_consumed),
                 color = TextColor,
                 modifier = Modifier.padding(start = 8.dp),
             )
@@ -218,11 +221,11 @@ fun EditProductSheet(
                 colors =
                     CheckboxDefaults.colors(
                         checkmarkColor = ComponentBackgroundColor,
-                        checkedColor = AccentGreenColor,
+                        checkedColor = RedColor,
                     ),
             )
             Text(
-                "Mark as thrown away",
+                stringResource(R.string.mark_as_thrown_away),
                 color = TextColor,
                 modifier = Modifier.padding(start = 8.dp),
             )
@@ -239,7 +242,7 @@ fun EditProductSheet(
                     .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
         ) {
-            Text("Save changes", color = ComponentBackgroundColor)
+            Text(stringResource(R.string.save_changes), color = ComponentBackgroundColor)
         }
     }
 }

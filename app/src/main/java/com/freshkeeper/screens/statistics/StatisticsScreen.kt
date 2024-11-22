@@ -10,10 +10,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.freshkeeper.R
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.notifications.NotificationsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
@@ -46,7 +48,7 @@ fun StatisticsScreen(
                         .padding(it),
             ) {
                 Text(
-                    text = "Statistics",
+                    text = stringResource(R.string.statistics),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextColor,
@@ -56,7 +58,7 @@ fun StatisticsScreen(
                     modifier =
                         Modifier
                             .fillMaxSize()
-                            .padding(top = 50.dp, start = 10.dp, end = 10.dp),
+                            .padding(top = 55.dp, start = 10.dp, end = 10.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     item {

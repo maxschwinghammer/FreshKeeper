@@ -56,7 +56,7 @@ fun TipsScreen(
                     modifier =
                         Modifier
                             .fillMaxSize()
-                            .padding(top = 50.dp, start = 10.dp, end = 10.dp),
+                            .padding(top = 55.dp, start = 10.dp, end = 10.dp),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     item {
