@@ -101,7 +101,7 @@ dependencies {
     implementation(libs.firebase.common.ktx)
     implementation(libs.firebase.firestore.ktx)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.junit.v115)
+    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)

@@ -3,7 +3,7 @@ accompanistFlowlayout = "0.36.0"
 activityCompose = "1.9.3"
 agp = "8.7.2"
 androidxCredentials = "1.5.0-beta01"
-androidxJunit = "1.2.1"
+androidxJunit = "1.1.5"
 appauthVersion = "0.11.1"
 barcodeScanning = "17.3.0"
 barcodeScanningCommon = "17.0.0"
@@ -41,7 +41,7 @@ hilt = "2.52"
 hilt-navigation-compose = "1.2.0"
 
 [libraries]
-androidx-junit-v115 = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
+androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 json = { group = "org.json", name = "json", version.ref = "json" }
