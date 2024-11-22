@@ -1,0 +1,21 @@
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-type: "direct"
+    ignore:
+      - dependency-name: "org.jetbrains.kotlin.*"
+      - dependency-name: "com.android.tools.build:gradle"
+    labels:
+      - "dependencies"
+      - "gradle"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "security"
