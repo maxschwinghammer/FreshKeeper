@@ -8,6 +8,7 @@ plugins {
     id("kotlin-kapt")
 }
 
+@Suppress("UnstableApiUsage")
 android {
     namespace = "com.freshkeeper"
     compileSdk = 35
@@ -15,12 +16,17 @@ android {
     defaultConfig {
         applicationId = "com.freshkeeper"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.freshkeeper"
+        buildConfigField(
+            "String",
+            "GOOGLE_API_KEY",
+            "\"${project.properties["GOOGLE_API_KEY"]}\"",
+        )
     }
 
     buildTypes {
