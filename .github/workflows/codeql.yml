@@ -1,4 +1,4 @@
-name: "CodeQL Analysis for Kotlin"
+name: "CodeQL"
 
 on:
   push:
