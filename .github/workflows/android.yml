@@ -50,4 +50,6 @@ jobs:
       - name: Super-Linter
         uses: super-linter/super-linter@v7.2.0
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          RUN_LOCAL: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_STATUS_REPORTS: "false"
