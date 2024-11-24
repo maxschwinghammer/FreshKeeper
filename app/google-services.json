@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "716407741869",
+    "project_id": "freshkeeper-92285",
+    "storage_bucket": "freshkeeper-92285.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:716407741869:android:24bd9a1d87ce20afd9d524",
+        "android_client_info": {
+          "package_name": "com.freshkeeper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "716407741869-atkra2s8lbekemq04o0td3qc916t0adb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.freshkeeper",
+            "certificate_hash": "f79979eb5bfb74c15a242517290cfb21910632f2"
+          }
+        },
+        {
+          "client_id": "716407741869-pdhono14rvenjgsrv497tmbhf8upit51.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD71glPGqxdn2SNFXZ3JXd4YTPdVzUiF2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "716407741869-pdhono14rvenjgsrv497tmbhf8upit51.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
