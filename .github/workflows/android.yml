@@ -46,3 +46,7 @@ jobs:
 
       - name: Run lint checks
         run: ./gradlew lint
+        
+      - name: Super-Linter
+        uses: super-linter/super-linter@v7.2.0
+            
