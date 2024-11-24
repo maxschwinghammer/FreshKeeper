@@ -22,6 +22,11 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.freshkeeper"
+        buildConfigField(
+            "String",
+            "GOOGLE_API_KEY",
+            "\"${project.properties["GOOGLE_API_KEY"]}\"",
+        )
     }
 
     buildTypes {
