@@ -5,6 +5,8 @@
 ![GitHub Contributors](https://img.shields.io/github/contributors/maxschwinghammer/FreshKeeper)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/maxschwinghammer/FreshKeeper)
 ![GitHub Issues](https://img.shields.io/github/issues/maxschwinghammer/FreshKeeper)
+[![Android CI/CD](https://github.com/maxschwinghammer/FreshKeeper/actions/workflows/android.yml/badge.svg?branch=master)](https://github.com/maxschwinghammer/FreshKeeper/actions/workflows/android.yml)
+[![CodeQL](https://github.com/maxschwinghammer/FreshKeeper/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/maxschwinghammer/FreshKeeper/actions/workflows/codeql.yml)
 
 ---
 
