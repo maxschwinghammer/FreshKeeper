@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.authentication.signUp
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -45,6 +46,7 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.LightGreyColor
+import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
 
@@ -60,9 +62,11 @@ fun SignUpScreen(
     val email = viewModel.email.collectAsState()
     val password = viewModel.password.collectAsState()
     val confirmPassword = viewModel.confirmPassword.collectAsState()
+    val errorMessage = viewModel.errorMessage.collectAsState()
 
     LaunchedEffect(Unit) {
         launchCredManBottomSheet(context) { result ->
+            Log.d("CredentialManager", "Received credential: $result")
             viewModel.onSignUpWithGoogle(result, navController)
         }
     }
@@ -161,6 +165,16 @@ fun SignUpScreen(
                         },
                         visualTransformation = PasswordVisualTransformation(),
                     )
+
+                    errorMessage.value?.let { resId ->
+                        Text(
+                            text = stringResource(id = resId),
+                            color = RedColor,
+                            fontSize = 14.sp,
+                            modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 4.dp),
+                            textAlign = TextAlign.Center,
+                        )
+                    }
 
                     Spacer(modifier = Modifier.padding(4.dp))
 

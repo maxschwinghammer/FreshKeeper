@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.profile
+package com.freshkeeper.screens.profileSettings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -53,9 +53,10 @@ fun ProfileSettingsScreen(
                 Box(
                     modifier =
                         Modifier
-                            .background(BottomNavBackgroundColor),
+                            .background(BottomNavBackgroundColor)
+                            .padding(horizontal = 10.dp),
                 ) {
-                    BottomNavigationBar(selectedIndex = 2, navController, notificationsViewModel)
+                    BottomNavigationBar(selectedIndex = 3, navController, notificationsViewModel)
                 }
             },
         ) { it ->

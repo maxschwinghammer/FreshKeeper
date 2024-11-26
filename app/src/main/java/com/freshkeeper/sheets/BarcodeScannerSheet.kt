@@ -7,10 +7,10 @@ import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -32,7 +32,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,6 +42,7 @@ import com.freshkeeper.R
 import com.freshkeeper.screens.home.formatDate
 import com.freshkeeper.screens.home.isValidDate
 import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -88,29 +88,6 @@ fun BarcodeScannerSheet(
             color = TextColor,
             style = MaterialTheme.typography.titleMedium,
         )
-        Spacer(modifier = Modifier.height(16.dp))
-        if (isBarcodeScanned && !isExpiryDateScanned) {
-            Button(
-                modifier =
-                    Modifier
-                        .clip(RoundedCornerShape(10.dp))
-                        .border(1.dp, AccentGreenColor, RoundedCornerShape(10.dp)),
-                onClick = {
-                    onBarcodeScanned(scannedBarcode, "")
-                    coroutineScope.launch {
-                        manualInputSheetState.show()
-                        sheetState.hide()
-                    }
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-            ) {
-                Text(
-                    text = stringResource(R.string.skip_scan),
-                    fontSize = 18.sp,
-                    color = TextColor,
-                )
-            }
-        }
 
         Box(
             modifier =
@@ -157,7 +134,10 @@ fun BarcodeScannerSheet(
 
                         val barcodeImageAnalysis =
                             ImageAnalysis.Builder().build().also { it ->
-                                it.setAnalyzer(ContextCompat.getMainExecutor(context)) { imageProxy ->
+                                it.setAnalyzer(
+                                    ContextCompat
+                                        .getMainExecutor(context),
+                                ) { imageProxy ->
                                     val mediaImage = imageProxy.image
                                     if (mediaImage != null) {
                                         val inputImage =
@@ -190,7 +170,10 @@ fun BarcodeScannerSheet(
                             TextRecognition.getClient(TextRecognizerOptions.Builder().build())
                         val textImageAnalysis =
                             ImageAnalysis.Builder().build().also {
-                                it.setAnalyzer(ContextCompat.getMainExecutor(context)) { imageProxy ->
+                                it.setAnalyzer(
+                                    ContextCompat
+                                        .getMainExecutor(context),
+                                ) { imageProxy ->
                                     val mediaImage = imageProxy.image
                                     if (mediaImage != null && isBarcodeScanned) {
                                         val inputImage =
@@ -217,17 +200,30 @@ fun BarcodeScannerSheet(
                                                             """\b(0?[1-9]|1[0-2])[-/.](20\d{2}|[2-9]\d)\b""".toRegex()
 
                                                         while (!isFullDateFound &&
-                                                            (System.currentTimeMillis() - startTime < timeoutMillis)
+                                                            (
+                                                                System.currentTimeMillis() -
+                                                                    startTime < timeoutMillis
+                                                            )
                                                         ) {
-                                                            val matches = fullMhdRegex.findAll(visionText.text)
+                                                            val matches =
+                                                                fullMhdRegex.findAll(
+                                                                    visionText.text,
+                                                                )
                                                             if (matches.any()) {
                                                                 for (match in matches) {
                                                                     if (isValidDate(match.value)) {
                                                                         isFullDateFound = true
-                                                                        expiryDate = formatDate(match.value)
-                                                                        onBarcodeScanned(scannedBarcode, expiryDate)
+                                                                        expiryDate =
+                                                                            formatDate(
+                                                                                match.value,
+                                                                            )
+                                                                        onBarcodeScanned(
+                                                                            scannedBarcode,
+                                                                            expiryDate,
+                                                                        )
                                                                         coroutineScope.launch {
-                                                                            manualInputSheetState.show()
+                                                                            manualInputSheetState
+                                                                                .show()
                                                                             sheetState.hide()
                                                                         }
                                                                         break
@@ -239,11 +235,19 @@ fun BarcodeScannerSheet(
                                                         }
 
                                                         if (!isFullDateFound) {
-                                                            val monthYearMatches = monthYearRegex.findAll(visionText.text)
+                                                            val monthYearMatches =
+                                                                monthYearRegex
+                                                                    .findAll(visionText.text)
                                                             for (match in monthYearMatches) {
                                                                 if (isValidDate(match.value)) {
-                                                                    expiryDate = formatDate(match.value)
-                                                                    onBarcodeScanned(scannedBarcode, expiryDate)
+                                                                    expiryDate =
+                                                                        formatDate(
+                                                                            match.value,
+                                                                        )
+                                                                    onBarcodeScanned(
+                                                                        scannedBarcode,
+                                                                        expiryDate,
+                                                                    )
                                                                     coroutineScope.launch {
                                                                         manualInputSheetState.show()
                                                                         sheetState.hide()
@@ -282,6 +286,29 @@ fun BarcodeScannerSheet(
                     previewView
                 },
             )
+            if (isBarcodeScanned && !isExpiryDateScanned) {
+                Button(
+                    modifier =
+                        Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(bottom = 20.dp),
+                    onClick = {
+                        onBarcodeScanned(scannedBarcode, "")
+                        coroutineScope.launch {
+                            manualInputSheetState.show()
+                            sheetState.hide()
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = ComponentBackgroundColor),
+                    border = BorderStroke(1.dp, ComponentStrokeColor),
+                ) {
+                    Text(
+                        text = stringResource(R.string.skip_scan),
+                        fontSize = 16.sp,
+                        color = TextColor,
+                    )
+                }
+            }
         }
     }
 }

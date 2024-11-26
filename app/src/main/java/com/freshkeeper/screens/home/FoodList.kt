@@ -24,11 +24,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.R
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
@@ -66,7 +69,12 @@ fun FoodList(
                 text = title,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = AccentGreenColor,
+                color =
+                    if (title == stringResource(id = R.string.expired)) {
+                        Color(0xFFEE3E4B)
+                    } else {
+                        AccentTurquoiseColor
+                    },
             )
         }
 
@@ -78,6 +86,8 @@ fun FoodList(
                     Modifier
                         .padding(bottom = 8.dp)
                         .fillMaxWidth()
+                        .clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp))
+                        .clip(RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp))
                         .clickable {
                             coroutineScope.launch { editProductSheetState.show() }
                         },
@@ -86,7 +96,6 @@ fun FoodList(
                 Box(
                     modifier =
                         Modifier
-                            .clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp))
                             .weight(1f)
                             .background(WhiteColor)
                             .padding(horizontal = 10.dp, vertical = 2.dp),
@@ -102,7 +111,6 @@ fun FoodList(
                 Box(
                     modifier =
                         Modifier
-                            .clip(RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp))
                             .weight(1f)
                             .background(GreyColor)
                             .padding(horizontal = 10.dp, vertical = 2.dp),

@@ -14,6 +14,7 @@ coilCompose = "2.7.0"
 composeBom = "2024.11.00"
 coreKtx = "1.15.0"
 espressoCore = "3.6.1"
+imageLabelingVersion = "17.0.9"
 json = "20210307"
 junit = "4.13.2"
 kotlin = "2.0.0"
@@ -23,6 +24,7 @@ navigationCompose = "2.8.4"
 navigationRuntimeKtx = "2.8.4"
 okhttp = "5.0.0-alpha.14"
 playServicesBase = "18.5.0"
+playServicesMlkitImageLabelingVersion = "16.0.8"
 playServicesMlkitTextRecognition = "19.0.1"
 playServicesMlkitTextRecognitionCommon = "19.1.0"
 runtimeLivedata = "1.7.5"
@@ -39,10 +41,13 @@ firebaseAnalytics = "22.1.2"
 firebaseFirestoreKtx = "25.1.1"
 hilt = "2.52"
 hilt-navigation-compose = "1.2.0"
+imageLabelingCommon = "18.1.0"
 
 [libraries]
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
+gms-play-services-mlkit-image-labeling = { module = "com.google.android.gms:play-services-mlkit-image-labeling", version.ref = "playServicesMlkitImageLabelingVersion" }
+mlkit-image-labeling = { module = "com.google.mlkit:image-labeling", version.ref = "imageLabelingVersion" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 json = { group = "org.json", name = "json", version.ref = "json" }
 accompanist-flowlayout = { group = "com.google.accompanist", name = "accompanist-flowlayout", version.ref = "accompanistFlowlayout" }
@@ -88,6 +93,7 @@ firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-fires
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+image-labeling-common = { group = "com.google.mlkit", name = "image-labeling-common", version.ref = "imageLabelingCommon" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

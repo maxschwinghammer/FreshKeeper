@@ -22,7 +22,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -52,10 +51,7 @@ import com.freshkeeper.ui.theme.WhiteColor
 @Suppress("ktlint:standard:function-naming")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditProductSheet(
-    sheetState: SheetState,
-    expiryDateValue: String,
-) {
+fun EditProductSheet(expiryDateValue: String) {
     var productName by remember { mutableStateOf("") }
     val expiryDate by remember { mutableStateOf(expiryDateValue) }
     var quantity by remember { mutableStateOf("") }
@@ -237,9 +233,7 @@ fun EditProductSheet(
             onClick = {
                 // Handle submit action here
             },
-            modifier =
-                Modifier
-                    .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
         ) {
             Text(stringResource(R.string.save_changes), color = ComponentBackgroundColor)

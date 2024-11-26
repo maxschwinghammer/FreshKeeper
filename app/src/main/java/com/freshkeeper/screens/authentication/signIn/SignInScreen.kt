@@ -43,6 +43,7 @@ import com.freshkeeper.screens.authentication.launchCredManBottomSheet
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
+import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
 
@@ -57,6 +58,7 @@ fun SignInScreen(
 
     val email = viewModel.email.collectAsState()
     val password = viewModel.password.collectAsState()
+    val errorMessage = viewModel.errorMessage.collectAsState()
 
     LaunchedEffect(Unit) {
         launchCredManBottomSheet(context) { result ->
@@ -137,6 +139,16 @@ fun SignInScreen(
                         },
                         visualTransformation = PasswordVisualTransformation(),
                     )
+
+                    errorMessage.value?.let { resId ->
+                        Text(
+                            text = stringResource(id = resId),
+                            color = RedColor,
+                            fontSize = 14.sp,
+                            modifier = Modifier.padding(start = 12.dp, end = 12.dp, top = 12.dp),
+                            textAlign = TextAlign.Center,
+                        )
+                    }
 
                     Spacer(Modifier.padding(12.dp))
 

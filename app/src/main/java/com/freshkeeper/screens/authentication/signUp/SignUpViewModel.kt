@@ -5,13 +5,14 @@ import androidx.credentials.Credential
 import androidx.credentials.CustomCredential
 import androidx.navigation.NavController
 import com.freshkeeper.ERROR_TAG
-import com.freshkeeper.UNEXPECTED_CREDENTIAL
+import com.freshkeeper.R
 import com.freshkeeper.model.service.AccountService
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.screens.authentication.isValidEmail
 import com.freshkeeper.screens.authentication.isValidPassword
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,6 +34,9 @@ class SignUpViewModel
         private val _confirmPassword = MutableStateFlow("")
         val confirmPassword: StateFlow<String> = _confirmPassword.asStateFlow()
 
+        private val _errorMessage = MutableStateFlow<Int?>(null)
+        val errorMessage: StateFlow<Int?> = _errorMessage.asStateFlow()
+
         fun updateEmail(newEmail: String) {
             _email.value = newEmail
         }
@@ -47,21 +51,38 @@ class SignUpViewModel
 
         fun onSignUpClick(navController: NavController) {
             launchCatching {
-                if (!_email.value.isValidEmail()) {
-                    throw IllegalArgumentException("Invalid email format")
-                }
+                try {
+                    if (!_email.value.isValidEmail()) {
+                        _errorMessage.value = R.string.email_invalid
+                        return@launchCatching
+                    }
 
-                if (!_password.value.isValidPassword()) {
-                    throw IllegalArgumentException("Invalid password format")
-                }
+                    if (!_password.value.isValidPassword()) {
+                        _errorMessage.value = R.string.password_invalid
+                        return@launchCatching
+                    }
 
-                if (_password.value != _confirmPassword.value) {
-                    throw IllegalArgumentException("Passwords do not match")
-                }
+                    if (_password.value != _confirmPassword.value) {
+                        _errorMessage.value = R.string.password_mismatch
+                        return@launchCatching
+                    }
 
-                accountService.linkAccountWithEmail(_email.value, _password.value)
-                accountService.sendEmailVerification()
-                navController.navigate("home") { launchSingleTop = true }
+                    try {
+                        accountService.linkAccountWithEmail(_email.value, _password.value)
+                        accountService.sendEmailVerification()
+                        _errorMessage.value = null
+                        navController.navigate("home") { launchSingleTop = true }
+                    } catch (e: Exception) {
+                        if (e is FirebaseAuthUserCollisionException) {
+                            _errorMessage.value = R.string.email_already_exists
+                        } else {
+                            _errorMessage.value = R.string.sign_up_error
+                        }
+                    }
+                } catch (e: Exception) {
+                    Log.e("SignUp", "Error during sign-up: ${e.message}", e)
+                    _errorMessage.value = R.string.sign_up_error
+                }
             }
         }
 
@@ -73,11 +94,14 @@ class SignUpViewModel
                 if (credential is CustomCredential &&
                     credential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
                 ) {
-                    val googleIdTokenCredential = GoogleIdTokenCredential.createFrom(credential.data)
+                    val googleIdTokenCredential =
+                        GoogleIdTokenCredential
+                            .createFrom(credential.data)
+                    Log.d("GoogleCredential", "ID Token: ${googleIdTokenCredential.idToken}")
                     accountService.linkAccountWithGoogle(googleIdTokenCredential.idToken)
                     navController.navigate("home") { launchSingleTop = true }
                 } else {
-                    Log.e(ERROR_TAG, UNEXPECTED_CREDENTIAL)
+                    Log.e(ERROR_TAG, "Unexpected credential type: ${credential.type}")
                 }
             }
         }

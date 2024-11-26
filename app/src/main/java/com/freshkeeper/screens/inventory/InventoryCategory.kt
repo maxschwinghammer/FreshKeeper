@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.inventory.service
+package com.freshkeeper.screens.inventory
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
@@ -66,7 +66,7 @@ fun InventoryCategory(
                 text = title,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
-                color = AccentGreenColor,
+                color = AccentTurquoiseColor,
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -84,11 +84,10 @@ fun InventoryCategory(
                     modifier =
                         Modifier
                             .clip(RoundedCornerShape(10.dp))
-                            .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
                             .clickable {
                                 coroutineScope.launch { editProductSheetState.show() }
-                            },
+                            }.border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
                 ) {
                     Text(
                         text = item,

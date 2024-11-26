@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.profile
+package com.freshkeeper.screens.profileSettings
 
 import com.freshkeeper.model.User
 import com.freshkeeper.model.service.AccountService
@@ -29,10 +29,6 @@ class ProfileSettingsScreenViewModel
                 accountService.updateDisplayName(newDisplayName)
                 _user.value = accountService.getUserProfile()
             }
-        }
-
-        fun onSignInClick() {
-            // TODO: Add sign in logic
         }
 
         fun onSignOutClick(navigateToSplash: () -> Unit) {

@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.freshkeeper.model.service.AccountServiceImpl
 import com.freshkeeper.navigation.NavigationHost
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -27,8 +28,19 @@ class MainActivity : ComponentActivity() {
         requestPermissions()
 
         setContent {
-            FreshKeeperApp()
+            FreshKeeperApp { languageCode ->
+                updateLocale(languageCode)
+            }
         }
+    }
+
+    fun updateLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val config = resources.configuration
+        config.setLocale(locale)
+        resources.updateConfiguration(config, resources.displayMetrics)
+        recreate()
     }
 
     private fun requestPermissions() {
@@ -61,11 +73,12 @@ class MainActivity : ComponentActivity() {
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun FreshKeeperApp() {
+fun FreshKeeperApp(onLocaleChange: (String) -> Unit) {
     val navController = rememberNavController()
     val accountService = remember { AccountServiceImpl() }
     NavigationHost(
         navController,
         accountService = accountService,
+        onLocaleChange = onLocaleChange,
     )
 }

@@ -22,8 +22,8 @@
     <string name="sign_up_header">Konto erstellen</string>
     <string name="sign_up">Registrieren</string>
     <string name="delete_account_title">Konto löschen?</string>
-    <string name="delete_account_description">Ihr Konto wird gelöscht. Diese Maßnahme ist
-        unumkehrbar.</string>
+    <string name="delete_account_description">Ihr Konto wird endgültig gelöscht und kann nicht
+        wiederhergestellt werden.</string>
     <string name="sign_out_title">Ausloggen?</string>
     <string name="sign_out_description">Sie müssen sich dann erneut anmelden.</string>
     <string name="update">Aktualisieren</string>
@@ -118,4 +118,44 @@
     <string name="cup">Tasse</string>
     <string name="sachet">Tütchen</string>
     <string name="bag">Tasche</string>
+    <string name="food_recognition">Erkennen von Lebensmitteln</string>
+    <string name="scan_food_item">Scannen Sie ein Produkt</string>
+    <string name="password_invalid">Das Passwort muss mindestens 12 Zeichen, einen Groß- und
+        Kleinbuchstaben sowie eine Zahl enthalten.</string>
+    <string name="email_invalid">Ungültiges E-Mail-Format.</string>
+    <string name="password_mismatch">Die Passwörter stimmen nicht überein.</string>
+    <string name="email_already_exists">Ein Konto mit dieser E-Mail-Adresse existiert
+        bereits.</string>
+    <string name="sign_up_error">Registrierung fehlgeschlagen. Bitte versuchen Sie es
+        erneut.</string>
+    <string name="no_email">Keine E-Mail-Adresse angegeben.</string>
+    <string name="no_password">Kein Passwort angegeben.</string>
+    <string name="profile">Profil</string>
+    <string name="notification_group_creation">Ihr könnt eure Lebensmittel jetzt gemeinsam
+        verwalten</string>
+    <string name="notification_product_expires_tomorrow">Verbraucht es schnell, um Abfall zu
+        vermeiden</string>
+    <string name="notification_created_household_group">%1$s hat eine Haushaltsgruppe erstellt
+    </string>
+    <string name="notification_your_progress_this_week">Du hast diese Woche %1$d Lebensmittel
+        rechtzeitig verbraucht</string>
+    <string name="notification_tip_of_the_day">Lagere Obst und Gemüse separat, um sie länger
+        frisch zu halten</string>
+    <string name="notification_inventory_check">Es sind %1$d Tage vergangen, seitdem du dein
+        Inventar überprüft hast</string>
+    <string name="notification_product_expires">Milch läuft in %1$d Tagen ab</string>
+    <string name="notification_joined_household_group">%1$s ist deiner Haushaltsgruppe
+        beigetreten</string>
+    <string name="notification_weekly_tip_organize_fridge">Platzieren Sie Lebensmittel, die bald
+        ablaufen, vorne, um sie zuerst zu verbrauchen</string>
+    <string name="notification_inventory_attention_needed">Dein Inventar benötigt Aufmerksamkeit
+    </string>
+    <string name="notification_added_items_to_inventory">%1$s hat neue Artikel zum Inventar
+        hinzugefügt</string>
+    <string name="notification_savings_this_month">Du hast diesen Monat %1$d%% weniger
+        Lebensmittelabfall</string>
+    <string name="language">Sprache</string>
+    <string name="change_language">Sprache ändern</string>
+    <string name="german">Deutsch</string>
+    <string name="english">Englisch</string>
 </resources>

@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.RedColor
@@ -76,7 +76,7 @@ fun ActivitiesSection(viewModel: HouseholdViewModel) {
         ) {
             Text(
                 text = stringResource(id = R.string.activities),
-                color = AccentGreenColor,
+                color = AccentTurquoiseColor,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
             )

@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.profile
+package com.freshkeeper.screens.profileSettings
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

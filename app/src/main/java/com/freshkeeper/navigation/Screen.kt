@@ -17,7 +17,9 @@ sealed class Screen(
 
     data object Notifications : Screen("notifications")
 
-    data object MemberProfile : Screen("memberProfile")
+    data object Profile : Screen("profile")
+
+    data object ProfileSettings : Screen("profileSettings")
 
     data object Statistics : Screen("statistics")
 

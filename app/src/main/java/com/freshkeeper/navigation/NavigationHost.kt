@@ -16,7 +16,8 @@ import com.freshkeeper.screens.inventory.InventoryScreen
 import com.freshkeeper.screens.landingpage.LandingPageScreen
 import com.freshkeeper.screens.notifications.NotificationsScreen
 import com.freshkeeper.screens.notifications.NotificationsViewModel
-import com.freshkeeper.screens.profile.ProfileSettingsScreen
+import com.freshkeeper.screens.profile.ProfileScreen
+import com.freshkeeper.screens.profileSettings.ProfileSettingsScreen
 import com.freshkeeper.screens.settings.SettingsScreen
 import com.freshkeeper.screens.statistics.StatisticsScreen
 
@@ -26,6 +27,7 @@ fun NavigationHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     accountService: AccountService,
+    onLocaleChange: (String) -> Unit,
 ) {
     val notificationsViewModel: NotificationsViewModel = viewModel()
     val startDestination =
@@ -73,6 +75,7 @@ fun NavigationHost(
             SettingsScreen(
                 navController = navController,
                 notificationsViewModel = notificationsViewModel,
+                onLocaleChange = onLocaleChange,
             )
         }
         composable(Screen.Notifications.route) {
@@ -81,8 +84,14 @@ fun NavigationHost(
                 notificationsViewModel = notificationsViewModel,
             )
         }
-        composable(Screen.MemberProfile.route) {
+        composable(Screen.ProfileSettings.route) {
             ProfileSettingsScreen(
+                navController = navController,
+                notificationsViewModel = notificationsViewModel,
+            )
+        }
+        composable(Screen.Profile.route) {
+            ProfileScreen(
                 navController = navController,
                 notificationsViewModel = notificationsViewModel,
             )

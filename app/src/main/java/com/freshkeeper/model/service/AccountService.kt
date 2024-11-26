@@ -22,6 +22,11 @@ interface AccountService {
         password: String,
     )
 
+    suspend fun linkPasswordToGoogleAccount(
+        email: String,
+        password: String,
+    )
+
     suspend fun signInWithGoogle(idToken: String)
 
     suspend fun signInWithEmail(

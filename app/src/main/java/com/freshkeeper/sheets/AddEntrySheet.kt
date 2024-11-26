@@ -1,7 +1,7 @@
 package com.freshkeeper.sheets
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +22,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -40,6 +39,7 @@ import kotlinx.coroutines.launch
 fun AddEntrySheet(
     sheetState: SheetState,
     barcodeSheetState: SheetState,
+    foodRecognitionSheetState: SheetState,
     manualInputSheetState: SheetState,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -79,7 +79,18 @@ fun AddEntrySheet(
                     }
                 },
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(10.dp))
+            AddEntryButton(
+                text = stringResource(R.string.food_recognition),
+                iconId = R.drawable.recognition,
+                onClick = {
+                    coroutineScope.launch {
+                        foodRecognitionSheetState.show()
+                        sheetState.hide()
+                    }
+                },
+            )
+            Spacer(modifier = Modifier.height(10.dp))
             AddEntryButton(
                 text = stringResource(R.string.manual_input),
                 iconId = R.drawable.pencil,
@@ -103,12 +114,10 @@ fun AddEntryButton(
 ) {
     Button(
         onClick = onClick,
-        modifier =
-            Modifier
-                .clip(RoundedCornerShape(10.dp))
-                .width(250.dp)
-                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+        modifier = Modifier.width(250.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+        border = BorderStroke(1.dp, ComponentStrokeColor),
+        shape = RoundedCornerShape(10.dp),
     ) {
         Column(
             modifier = Modifier.padding(10.dp),

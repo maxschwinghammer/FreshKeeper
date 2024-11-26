@@ -1,7 +1,7 @@
 package com.freshkeeper.screens.settings
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -15,7 +15,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -25,17 +30,25 @@ import com.freshkeeper.R
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.notifications.NotificationsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
-import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
+import java.util.Locale
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
     notificationsViewModel: NotificationsViewModel,
+    onLocaleChange: (String) -> Unit,
 ) {
+    var selectedLanguage by remember { mutableStateOf(Locale.getDefault().language) }
+
+    listOf(
+        "German",
+        "English",
+    )
+
     FreshKeeperTheme {
         Scaffold(
             bottomBar = {
@@ -67,21 +80,19 @@ fun SettingsScreen(
                         Modifier
                             .fillMaxSize()
                             .padding(top = 55.dp, start = 15.dp, end = 15.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalArrangement = Arrangement.spacedBy(20.dp),
                 ) {
                     item {
                         Button(
-                            onClick = { navController.navigate("memberProfile") },
+                            onClick = { navController.navigate("profileSettings") },
                             colors =
                                 ButtonDefaults.buttonColors(
-                                    containerColor = ComponentBackgroundColor,
+                                    containerColor = Color.Transparent,
                                     contentColor = TextColor,
                                 ),
                             shape = RoundedCornerShape(10.dp),
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+                            border = BorderStroke(1.dp, ComponentStrokeColor),
+                            modifier = Modifier.fillMaxWidth(),
                         ) {
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
@@ -101,6 +112,19 @@ fun SettingsScreen(
                                 )
                             }
                         }
+                    }
+                    item {
+                        LanguageDropdownMenu(
+                            currentLanguage = selectedLanguage,
+                            onLanguageSelected = { languageCode ->
+                                selectedLanguage = languageCode
+                                onLocaleChange(languageCode)
+                            },
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 16.dp),
+                        )
                     }
                 }
             }

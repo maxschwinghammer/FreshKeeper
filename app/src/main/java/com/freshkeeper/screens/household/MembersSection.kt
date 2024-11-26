@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.freshkeeper.R
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
@@ -66,7 +66,7 @@ fun MembersSection(
         ) {
             Text(
                 text = stringResource(id = R.string.members),
-                color = AccentGreenColor,
+                color = AccentTurquoiseColor,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
             )
@@ -79,15 +79,14 @@ fun MembersSection(
                     Box(
                         modifier =
                             Modifier
-                                .width(75.dp)
-                                .height(75.dp)
                                 .clip(RoundedCornerShape(10.dp))
+                                .clickable {
+                                    navController.navigate("profile")
+                                }.width(75.dp)
+                                .height(75.dp)
                                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                                 .background(ComponentBackgroundColor)
-                                .padding(10.dp)
-                                .clickable {
-                                    navController.navigate("member_profile")
-                                },
+                                .padding(10.dp),
                         contentAlignment = Alignment.Center,
                     ) {
                         Column(

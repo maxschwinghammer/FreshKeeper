@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.freshkeeper.R
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
@@ -62,7 +62,7 @@ fun StatisticsSection(
             ) {
                 Text(
                     text = stringResource(R.string.statistics),
-                    color = AccentGreenColor,
+                    color = AccentTurquoiseColor,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -92,6 +92,7 @@ fun StatisticsSection(
                 color = TextColor,
                 fontSize = 14.sp,
             )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text =
                     stringResource(R.string.average_food_waste) + ": 0.5 " +
@@ -99,6 +100,7 @@ fun StatisticsSection(
                 color = TextColor,
                 fontSize = 14.sp,
             )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text =
                     stringResource(R.string.days_without_waste) + ": 25 " +
@@ -106,7 +108,7 @@ fun StatisticsSection(
                 color = TextColor,
                 fontSize = 14.sp,
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(R.string.most_wasted_food_items) + ":",
                 color = TextColor,
@@ -156,7 +158,7 @@ fun StatisticsSection(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(R.string.waste_reduction) + ": 20%",
                 color = TextColor,
@@ -164,4 +166,5 @@ fun StatisticsSection(
             )
         }
     }
+    Spacer(modifier = Modifier.height(20.dp))
 }
