@@ -37,7 +37,7 @@ firebaseAuth = "23.1.0"
 firebaseUiAuth = "8.0.0"
 firebaseAnalytics = "22.1.2"
 firebaseFirestoreKtx = "25.1.1"
-hilt = "2.52"
+hilt = "2.53"
 hilt-navigation-compose = "1.2.0"
 
 [libraries]
