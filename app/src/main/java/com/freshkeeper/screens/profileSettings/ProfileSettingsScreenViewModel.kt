@@ -38,6 +38,19 @@ class ProfileSettingsScreenViewModel
             }
         }
 
+        fun onResetPasswordClick(navigateToSplash: () -> Unit) {
+            launchCatching {
+                accountService.resetPassword()
+                navigateToSplash()
+            }
+        }
+
+        fun onChangeEmailClick(newEmail: String) {
+            launchCatching {
+                accountService.changeEmail(newEmail)
+            }
+        }
+
         fun onDeleteAccountClick() {
             launchCatching {
                 accountService.deleteAccount()

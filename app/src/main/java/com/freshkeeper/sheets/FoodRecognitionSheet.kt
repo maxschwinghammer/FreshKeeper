@@ -2,7 +2,6 @@ package com.freshkeeper.sheets
 
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
-import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -40,10 +39,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.freshkeeper.R
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
-import com.google.mlkit.vision.common.InputImage
-import com.google.mlkit.vision.label.ImageLabeling
-import com.google.mlkit.vision.label.defaults.ImageLabelerOptions
-import kotlinx.coroutines.launch
 
 @Suppress("ktlint:standard:function-naming")
 @androidx.annotation.OptIn(ExperimentalGetImage::class)
@@ -97,57 +92,12 @@ fun FoodRecognitionSheet(
                                 it.surfaceProvider = previewView.surfaceProvider
                             }
 
-                        val imageAnalysis =
-                            ImageAnalysis.Builder().build().also { analysis ->
-                                analysis.setAnalyzer(
-                                    ContextCompat.getMainExecutor(context),
-                                ) { imageProxy ->
-                                    val mediaImage = imageProxy.image
-                                    if (mediaImage != null) {
-                                        val inputImage =
-                                            InputImage.fromMediaImage(
-                                                mediaImage,
-                                                imageProxy.imageInfo.rotationDegrees,
-                                            )
-                                        val labeler =
-                                            ImageLabeling.getClient(
-                                                ImageLabelerOptions.DEFAULT_OPTIONS,
-                                            )
-                                        labeler
-                                            .process(inputImage)
-                                            .addOnSuccessListener { labels ->
-                                                if (labels.isNotEmpty()) {
-                                                    val bestLabel =
-                                                        labels.maxByOrNull {
-                                                            it.confidence
-                                                        }
-                                                    bestLabel?.text?.let {
-                                                        recognizedFood = it
-                                                        onFoodRecognized(it)
-                                                        coroutineScope.launch {
-                                                            manualInputSheetState.show()
-                                                            sheetState.hide()
-                                                        }
-                                                    }
-                                                }
-                                            }.addOnFailureListener { e ->
-                                                e.printStackTrace()
-                                            }.addOnCompleteListener {
-                                                imageProxy.close()
-                                            }
-                                    } else {
-                                        imageProxy.close()
-                                    }
-                                }
-                            }
-
                         try {
                             cameraProvider.unbindAll()
                             cameraProvider.bindToLifecycle(
                                 lifecycleOwner,
                                 CameraSelector.DEFAULT_BACK_CAMERA,
                                 preview,
-                                imageAnalysis,
                             )
                         } catch (e: Exception) {
                             e.printStackTrace()

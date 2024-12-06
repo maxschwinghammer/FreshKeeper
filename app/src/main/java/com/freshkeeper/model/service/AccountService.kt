@@ -15,19 +15,17 @@ interface AccountService {
 
     suspend fun updateDisplayName(newDisplayName: String)
 
-    suspend fun linkAccountWithGoogle(idToken: String)
-
     suspend fun linkAccountWithEmail(
         email: String,
         password: String,
     )
 
-    suspend fun linkPasswordToGoogleAccount(
+    suspend fun signInWithGoogle(idToken: String)
+
+    suspend fun signUpWithEmail(
         email: String,
         password: String,
     )
-
-    suspend fun signInWithGoogle(idToken: String)
 
     suspend fun signInWithEmail(
         email: String,
@@ -35,6 +33,12 @@ interface AccountService {
     )
 
     suspend fun signOut()
+
+    suspend fun changeEmail(newEmail: String)
+
+    suspend fun resetPassword()
+
+    suspend fun forgotPassword(email: String)
 
     suspend fun deleteAccount()
 

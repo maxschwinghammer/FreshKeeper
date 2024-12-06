@@ -7,6 +7,10 @@ sealed class Screen(
 
     data object SignUp : Screen("signUp")
 
+    data object EmailSignUp : Screen("emailSignUp")
+
+    data object EmailSignIn : Screen("emailSignIn")
+
     data object Home : Screen("home")
 
     data object Inventory : Screen("inventory")

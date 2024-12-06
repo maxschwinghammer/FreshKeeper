@@ -45,6 +45,7 @@ import com.freshkeeper.R
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
+import com.freshkeeper.screens.home.viewmodel.FoodItem
 import com.freshkeeper.screens.notifications.NotificationsViewModel
 import com.freshkeeper.sheets.AddEntrySheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
@@ -74,6 +75,7 @@ fun InventoryScreen(
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val editProductSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val barcodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val foodItem by remember { mutableStateOf<FoodItem?>(null) }
 
     val listState = rememberLazyListState()
     val showTransition by remember {
@@ -195,11 +197,13 @@ fun InventoryScreen(
                     sheetState = manualInputSheetState,
                     containerColor = ComponentBackgroundColor,
                 ) {
-                    ManualInputSheet(
-                        sheetState = manualInputSheetState,
-                        barcodeValue = scannedBarcode,
-                        expiryDateValue = expiryDate,
-                    )
+                    foodItem?.let { item ->
+                        ManualInputSheet(
+                            sheetState = manualInputSheetState,
+                            barcode = scannedBarcode,
+                            expiryTimestamp = item.expiryTimestamp,
+                        )
+                    }
                 }
             }
 
@@ -209,9 +213,11 @@ fun InventoryScreen(
                     sheetState = editProductSheetState,
                     containerColor = ComponentBackgroundColor,
                 ) {
-                    EditProductSheet(
-                        expiryDateValue = expiryDate,
-                    )
+                    foodItem?.let { it1 ->
+                        EditProductSheet(
+                            foodItem = it1,
+                        )
+                    }
                 }
             }
         }

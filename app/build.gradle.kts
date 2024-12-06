@@ -55,6 +55,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.com.journeyapps.zxing.android.embedded)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.credentials)
@@ -84,6 +85,9 @@ dependencies {
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.analytics)
     implementation(libs.gms.play.services.mlkit.image.labeling)
+    implementation(libs.google.accompanist.pager)
+    implementation(libs.google.accompanist.pager.indicators)
+    implementation(libs.google.core)
     implementation(libs.hilt)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.json)

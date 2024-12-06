@@ -6,20 +6,26 @@
     <string name="add_food">Produkt hinzufügen</string>
     <string name="app_name">FreshKeeper</string>
     <string name="authenticate">Authentifizieren</string>
-    <string name="email">Email</string>
+    <string name="email">E-Mail</string>
     <string name="password">Passwort</string>
     <string name="confirm_password">Passwort bestätigen</string>
     <string name="sign_in">Einloggen</string>
     <string name="sign_in_description">Sie haben bereits ein Konto? Klicken Sie hier, um sich
         anzumelden!</string>
     <string name="sign_out">Ausloggen</string>
-    <string name="sign_up_info">Wenn Sie fortfahren, akzeptieren Sie die Nutzungsbedingungen und
-        die Datenschutzrichtlinie.</string>
     <string name="sign_up_with_google">Mit Google registrieren</string>
+    <string name="sign_up_with_email">Mit E-Mail registrieren</string>
+    <string name="verify_email">E-Mail verifizieren</string>
+    <string name="email_verification_failed">E-Mail-Verifizierung fehlgeschlagen</string>
+    <string name="verify_email_prompt">Verifizieren Sie Ihre E-Mail, um fortzufahren</string>
     <string name="sign_in_with_google">Mit Google einloggen</string>
+    <string name="sign_in_with_email">Mit E-Mail einloggen</string>
+    <string name="forgot_password">Passwort vergessen?</string>
     <string name="no_accounts_error">Keine Google-Konten auf diesem Gerät gefunden</string>
     <string name="login_header">Bei Ihrem Konto anmelden</string>
     <string name="sign_up_header">Konto erstellen</string>
+    <string name="reset_password_email_sent">Wir haben Ihnen einen Link zum Zurücksetzen Ihres
+        Passworts geschickt. Aus Sicherheitsgründen müssen Sie sich erneut anmelden.</string>
     <string name="sign_up">Registrieren</string>
     <string name="delete_account_title">Konto löschen?</string>
     <string name="delete_account_description">Ihr Konto wird endgültig gelöscht und kann nicht
@@ -31,8 +37,8 @@
     <string name="profile_name">Anzeigename</string>
     <string name="delete_account">Konto löschen</string>
     <string name="sign_up_description">Sie haben noch kein Konto? Klicken Sie hier, um sich
-        anzumelden!</string>
-    <string name="profile_email">Email: %1$s</string>
+        zu registrieren!</string>
+    <string name="profile_email">E-Mail: %1$s</string>
     <string name="or">oder</string>
     <string name="overview">Überblick</string>
     <string name="current_inventories">Aktuelle Vorräte</string>
@@ -97,6 +103,12 @@
     <string name="invite">Einladen</string>
     <string name="invite_text">Eine Person in Ihren Haushalt einladen</string>
     <string name="share">Teilen</string>
+    <string name="invite_message">
+        Hallo! Mit der App FreshKeeper behalte ich den Überblick über meine Lebensmittel und
+        minimiere Verschwendung 🥬🍎\n\nDie App erinnert mich rechtzeitig an ablaufende Produkte
+        und hilft mir, klüger zu konsumieren 📅\n\nProbier es aus und werde Teil unseres
+        Haushalts! Hier ist der Link:\nhttps://example.com/invite
+    </string>
     <string name="see_expiring_food">Abgelaufene Lebensmittel anzeigen</string>
     <string name="view_household">Haushalt anzeigen</string>
     <string name="see_statistics">Statistiken anzeigen</string>
@@ -124,8 +136,6 @@
         Kleinbuchstaben sowie eine Zahl enthalten.</string>
     <string name="email_invalid">Ungültiges E-Mail-Format.</string>
     <string name="password_mismatch">Die Passwörter stimmen nicht überein.</string>
-    <string name="email_already_exists">Ein Konto mit dieser E-Mail-Adresse existiert
-        bereits.</string>
     <string name="sign_up_error">Registrierung fehlgeschlagen. Bitte versuchen Sie es
         erneut.</string>
     <string name="no_email">Keine E-Mail-Adresse angegeben.</string>
@@ -158,4 +168,27 @@
     <string name="change_language">Sprache ändern</string>
     <string name="german">Deutsch</string>
     <string name="english">Englisch</string>
+    <string name="in_days">In %1$d Tagen</string>
+    <string name="today">Heute</string>
+    <string name="tomorrow">Morgen</string>
+    <string name="yesterday">Gestern</string>
+    <string name="days_ago">Vor %1$d Tagen</string>
+    <string name="reset">Zurücksetzen</string>
+    <string name="reset_password">Passwort zurücksetzen</string>
+    <string name="reset_password_title">Passwort zurücksetzen?</string>
+    <string name="reset_password_description">Wir senden Ihnen einen Link zum Zurücksetzen Ihres
+        Passworts. Aus Sicherheitsgründen werden Sie dann ausgeloggt und müssen sich erneut
+        anmelden.</string>
+    <string name="change_email">E-Mail ändern</string>
+    <string name="change_email_title">E-Mail ändern?</string>
+    <string name="change_email_description">Geben Sie Ihre neue E-Mail-Adresse ein. Aus
+        Sicherheitsgründen werden Sie dann abgemeldet und müssen sich erneut anmelden.</string>
+    <string name="enter_new_email">Neue E-Mail eingeben</string>
+    <string name="forgot_password_description">Wir senden Ihnen einen Link, über den Sie Ihr
+        Passwort zurücksetzen können. Sie  können sich dann mit dem neuen Passwort anmelden.
+    </string>
+    <string name="sign_up_info_1">Wenn Sie fortfahren, akzeptieren Sie die</string>
+    <string name="terms_of_service">Nutzungsbedingungen</string>
+    <string name="sign_up_info_2">und die</string>
+    <string name="privacy_policy">Datenschutzerklärung</string>
 </resources>

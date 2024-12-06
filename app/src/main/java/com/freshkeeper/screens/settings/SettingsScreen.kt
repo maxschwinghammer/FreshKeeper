@@ -80,7 +80,7 @@ fun SettingsScreen(
                         Modifier
                             .fillMaxSize()
                             .padding(top = 55.dp, start = 15.dp, end = 15.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp),
+                    verticalArrangement = Arrangement.spacedBy(15.dp),
                 ) {
                     item {
                         Button(

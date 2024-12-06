@@ -5,7 +5,6 @@ import com.freshkeeper.model.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
@@ -14,11 +13,17 @@ import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import java.util.Locale
 import javax.inject.Inject
 
 class AccountServiceImpl
     @Inject
     constructor() : AccountService {
+        init {
+            val languageCode = Locale.getDefault().language
+            FirebaseAuth.getInstance().setLanguageCode(languageCode)
+        }
+
         override val currentUser: Flow<User?>
             get() =
                 callbackFlow {
@@ -60,43 +65,6 @@ class AccountServiceImpl
                 .await()
         }
 
-        override suspend fun linkAccountWithGoogle(idToken: String) {
-            try {
-                val credential = GoogleAuthProvider.getCredential(idToken, null)
-                FirebaseAuth.getInstance().signInWithCredential(credential).await()
-                Log.d("FirebaseAuth", "Google account successfully linked.")
-            } catch (e: Exception) {
-                Log.e("FirebaseAuth", "Error linking Google account: ${e.message}", e)
-                throw e
-            }
-        }
-
-        override suspend fun linkPasswordToGoogleAccount(
-            email: String,
-            password: String,
-        ) {
-            val currentUser = FirebaseAuth.getInstance().currentUser
-            if (currentUser != null) {
-                val credential = EmailAuthProvider.getCredential(email, password)
-                currentUser
-                    .linkWithCredential(credential)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            println("Password successfully linked to Google account.")
-                        } else {
-                            val exception = task.exception
-                            if (exception is FirebaseAuthUserCollisionException) {
-                                println("Account with this email address already exists.")
-                            } else {
-                                println("Error: ${exception?.localizedMessage}")
-                            }
-                        }
-                    }
-            } else {
-                println("Error: No user is logged in.")
-            }
-        }
-
         override suspend fun linkAccountWithEmail(
             email: String,
             password: String,
@@ -112,16 +80,56 @@ class AccountServiceImpl
             Firebase.auth.signInWithCredential(firebaseCredential).await()
         }
 
+        override suspend fun signUpWithEmail(
+            email: String,
+            password: String,
+        ) {
+            linkAccountWithEmail(email, password)
+            Firebase.auth.createUserWithEmailAndPassword(email, password).await()
+        }
+
         override suspend fun signInWithEmail(
             email: String,
             password: String,
         ) {
-            Firebase.auth.signInWithEmailAndPassword(email, password).await()
+            try {
+                val authResult = Firebase.auth.signInWithEmailAndPassword(email, password).await()
+                val firebaseUser = authResult.user
+
+                if (firebaseUser != null && !firebaseUser.isEmailVerified) {
+                    throw Exception("Email address not verified. Please verify your email before signing in.")
+                }
+
+                Log.d("AccountServiceImpl", "Sign-in successful for user: ${firebaseUser?.email}")
+            } catch (e: Exception) {
+                Log.e("AccountServiceImpl", "Sign-in failed", e)
+                throw e
+            }
         }
 
         override suspend fun signOut() {
             Firebase.auth.signOut()
             Log.d("AccountServiceImpl", "User signed out")
+        }
+
+        override suspend fun changeEmail(newEmail: String) {
+            try {
+                Firebase.auth.currentUser
+                    ?.verifyBeforeUpdateEmail(newEmail)
+                    ?.await()
+                Log.d("AccountServiceImpl", "Email address updated to $newEmail")
+            } catch (e: Exception) {
+                Log.e("AccountServiceImpl", "Failed to update email address", e)
+                throw e
+            }
+        }
+
+        override suspend fun resetPassword() {
+            Firebase.auth.sendPasswordResetEmail(Firebase.auth.currentUser!!.email!!).await()
+        }
+
+        override suspend fun forgotPassword(email: String) {
+            Firebase.auth.sendPasswordResetEmail(email).await()
         }
 
         override suspend fun deleteAccount() {
@@ -147,11 +155,26 @@ class AccountServiceImpl
                     provider = this.providerId,
                     displayName = this.displayName ?: "",
                     isAnonymous = this.isAnonymous,
+                    isEmailVerified = this.isEmailVerified,
                 )
             }
 
         override suspend fun sendEmailVerification() {
-            val user = Firebase.auth.currentUser
-            user?.sendEmailVerification()?.await()
+            try {
+                val user = Firebase.auth.currentUser
+                user?.reload()?.await()
+
+                if (user != null && user.isEmailVerified) {
+                    Log.d("AccountServiceImpl", "Email is already verified")
+                }
+
+                if (user != null && !user.isEmailVerified) {
+                    user.sendEmailVerification().await()
+                    Log.d("AccountServiceImpl", "Email verification sent")
+                }
+            } catch (e: Exception) {
+                Log.e("AccountServiceImpl", "Failed to send email verification", e)
+                throw e
+            }
         }
     }

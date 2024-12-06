@@ -10,10 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +31,6 @@ import com.freshkeeper.model.User
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.notifications.NotificationsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
-import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
@@ -78,7 +76,6 @@ fun ProfileSettingsScreen(
                         Modifier
                             .fillMaxSize()
                             .padding(top = 55.dp),
-                    verticalArrangement = Arrangement.spacedBy(20.dp),
                 ) {
                     item {
                         Column(
@@ -87,62 +84,36 @@ fun ProfileSettingsScreen(
                                     .fillMaxWidth()
                                     .fillMaxHeight(),
                             horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.spacedBy(15.dp),
                         ) {
                             DisplayNameCard(user.displayName) {
                                 viewModel.onUpdateDisplayNameClick(it)
-                            }
-
-                            Card(
-                                modifier =
-                                    Modifier
-                                        .card()
-                                        .border(
-                                            1.dp,
-                                            ComponentStrokeColor,
-                                            shape = CardDefaults.shape,
-                                        ),
-                            ) {
-                                Column(
-                                    modifier =
-                                        Modifier
-                                            .fillMaxWidth()
-                                            .background(ComponentBackgroundColor)
-                                            .padding(top = 20.dp, start = 20.dp, end = 20.dp),
-                                ) {
-                                    if (!user.isAnonymous) {
-                                        Text(
-                                            text =
-                                                String.format(
-                                                    stringResource(R.string.profile_email),
-                                                    user.email,
-                                                ),
-                                            color = TextColor,
-                                            modifier =
-                                                Modifier
-                                                    .fillMaxWidth()
-                                                    .padding(bottom = 16.dp),
-                                        )
-                                    }
-                                }
                             }
 
                             if (user.isAnonymous) {
                                 AccountCenterCard(
                                     stringResource(R.string.authenticate),
                                     Icons.Filled.AccountCircle,
-                                    Modifier.card(),
+                                    Modifier
+                                        .card()
+                                        .border(
+                                            1.dp,
+                                            ComponentStrokeColor,
+                                            RoundedCornerShape(10.dp),
+                                        ),
                                 ) {
                                     navController.navigate("signIn")
                                 }
                             } else {
-                                ExitAppCard {
+                                EmailCard(viewModel = viewModel, navController = navController, user = user)
+                                ResetPasswordCard(viewModel = viewModel, navController = navController)
+                                SignOutCard {
                                     viewModel.onSignOutClick {
                                         navController.navigate("signIn") {
                                             popUpTo(0)
                                         }
                                     }
                                 }
-
                                 RemoveAccountCard {
                                     viewModel.onDeleteAccountClick()
                                     navController.navigate("signUp")

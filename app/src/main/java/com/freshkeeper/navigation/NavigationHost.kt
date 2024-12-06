@@ -4,10 +4,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.freshkeeper.model.service.AccountService
+import com.freshkeeper.screens.authentication.signIn.EmailSignInScreen
+import com.freshkeeper.screens.authentication.signIn.ForgotPasswordScreen
 import com.freshkeeper.screens.authentication.signIn.SignInScreen
+import com.freshkeeper.screens.authentication.signUp.EmailSignUpScreen
 import com.freshkeeper.screens.authentication.signUp.SignUpScreen
 import com.freshkeeper.screens.home.HomeScreen
 import com.freshkeeper.screens.home.tips.TipsScreen
@@ -32,7 +37,7 @@ fun NavigationHost(
     val notificationsViewModel: NotificationsViewModel = viewModel()
     val startDestination =
         when {
-            !accountService.hasUser() -> Screen.SignIn.route
+            !accountService.hasUser() -> Screen.SignUp.route
             accountService.getUserProfile().isAnonymous -> Screen.SignUp.route
             else -> Screen.Home.route
         }
@@ -52,7 +57,23 @@ fun NavigationHost(
                 navController = navController,
             )
         }
-
+        composable(Screen.EmailSignUp.route) {
+            EmailSignUpScreen(
+                navController = navController,
+            )
+        }
+        composable(Screen.EmailSignIn.route) {
+            EmailSignInScreen(
+                navController = navController,
+            )
+        }
+        composable(
+            route = "forgotPassword/{email}",
+            arguments = listOf(navArgument("email") { type = NavType.StringType }),
+        ) { backStackEntry ->
+            val email = backStackEntry.arguments?.getString("email") ?: ""
+            ForgotPasswordScreen(navController = navController, email = email)
+        }
         composable(Screen.Home.route) {
             HomeScreen(
                 navController = navController,

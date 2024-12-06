@@ -18,13 +18,13 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -41,7 +41,9 @@ import com.freshkeeper.R
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
+import com.freshkeeper.screens.home.viewmodel.FoodItem
 import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.RedColor
@@ -49,46 +51,19 @@ import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditProductSheet(expiryDateValue: String) {
-    var productName by remember { mutableStateOf("") }
-    val expiryDate by remember { mutableStateOf(expiryDateValue) }
-    var quantity by remember { mutableStateOf("") }
-    val unit = remember { mutableStateOf("") }
-    val imageUrl by remember { mutableStateOf("") }
-    val storageLocations =
-        listOf(
-            "Fridge",
-            "Cupboard",
-            "Freezer",
-            "Counter top",
-            "Cellar",
-            "Bread box",
-            "Spice rack",
-            "Pantry",
-            "Fruit basket",
-            "Other",
-        )
-    val categories =
-        listOf(
-            "Dairy goods",
-            "Vegetables",
-            "Fruits",
-            "Meat",
-            "Fish",
-            "Frozen Goods",
-            "Spices",
-            "Bread",
-            "Confectionery",
-            "Drinks",
-            "Noodles",
-            "Canned goods",
-            "Candy",
-            "Other",
-        )
-    var isConsumedChecked by remember { mutableStateOf(false) }
-    var isThrownAwayChecked by remember { mutableStateOf(false) }
+fun EditProductSheet(foodItem: FoodItem) {
+    var productName by remember { mutableStateOf(foodItem.name) }
+    var quantity by remember { mutableStateOf(foodItem.quantity.toString()) }
+    val unit = remember { mutableStateOf(foodItem.unit) }
+    val storageLocation = remember { mutableIntStateOf(foodItem.storageLocation) }
+    val category = remember { mutableIntStateOf(foodItem.category) }
+    var isConsumedChecked by remember { mutableStateOf(foodItem.isConsumed) }
+    var isThrownAwayChecked by remember { mutableStateOf(foodItem.isThrownAway) }
+    val imageUrl by remember { mutableStateOf(foodItem.imageUrl) }
+
+    var selectedCategory by remember { mutableStateOf("Meat") }
+    var selectedStorageLocation by remember { mutableStateOf("Fridge") }
 
     Column(
         modifier =
@@ -116,16 +91,16 @@ fun EditProductSheet(expiryDateValue: String) {
                     colors =
                         OutlinedTextFieldDefaults.colors(
                             unfocusedBorderColor = ComponentStrokeColor,
-                            focusedBorderColor = AccentGreenColor,
+                            focusedBorderColor = AccentTurquoiseColor,
                             unfocusedLabelColor = TextColor,
-                            focusedLabelColor = AccentGreenColor,
+                            focusedLabelColor = AccentTurquoiseColor,
                         ),
                     maxLines = 1,
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                ExpiryDatePicker(expiryDate)
+                ExpiryDatePicker(foodItem.expiryTimestamp)
             }
 
             if (imageUrl.isNotEmpty()) {
@@ -162,9 +137,9 @@ fun EditProductSheet(expiryDateValue: String) {
                 colors =
                     OutlinedTextFieldDefaults.colors(
                         unfocusedBorderColor = ComponentStrokeColor,
-                        focusedBorderColor = AccentGreenColor,
+                        focusedBorderColor = AccentTurquoiseColor,
                         unfocusedLabelColor = TextColor,
-                        focusedLabelColor = AccentGreenColor,
+                        focusedLabelColor = AccentTurquoiseColor,
                     ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 maxLines = 1,
@@ -177,11 +152,21 @@ fun EditProductSheet(expiryDateValue: String) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        DropdownMenu(storageLocations, stringResource(R.string.storage_location))
+        DropdownMenu(
+            storageLocation.intValue,
+            onSelect = { selectedStorageLocation = it },
+            "storageLocations",
+            stringResource(R.string.storage_location),
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        DropdownMenu(categories, stringResource(R.string.category))
+        DropdownMenu(
+            category.intValue,
+            onSelect = { selectedCategory = it },
+            "categories",
+            stringResource(R.string.category),
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 

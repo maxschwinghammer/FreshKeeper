@@ -28,7 +28,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
@@ -39,14 +39,14 @@ import java.util.Locale
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun ExpiryDatePicker(
-    expiryDate: String,
+    expiryDate: Long?,
     modifier: Modifier = Modifier,
 ) {
-    var selectedDate by remember { mutableStateOf<Long?>(null) }
+    var selectedDate by remember { mutableStateOf(expiryDate) }
     var showModal by remember { mutableStateOf(false) }
 
     OutlinedTextField(
-        value = selectedDate?.let { convertMillisToDate(it) } ?: expiryDate,
+        value = selectedDate?.let { convertMillisToDate(it) } ?: "DD.MM.YYYY",
         onValueChange = { },
         label = { Text(stringResource(R.string.expiry_date)) },
         placeholder = { Text("DD.MM.YYYY") },
@@ -68,9 +68,9 @@ fun ExpiryDatePicker(
         colors =
             OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = ComponentStrokeColor,
-                focusedBorderColor = AccentGreenColor,
+                focusedBorderColor = AccentTurquoiseColor,
                 unfocusedLabelColor = TextColor,
-                focusedLabelColor = AccentGreenColor,
+                focusedLabelColor = AccentTurquoiseColor,
             ),
     )
 
@@ -104,12 +104,12 @@ fun DatePickerModal(
                 onDateSelected(datePickerState.selectedDateMillis)
                 onDismiss()
             }) {
-                Text("OK", color = AccentGreenColor)
+                Text("OK", color = AccentTurquoiseColor)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.cancel), color = AccentGreenColor)
+                Text(stringResource(R.string.cancel), color = AccentTurquoiseColor)
             }
         },
         colors = DatePickerDefaults.colors(containerColor = GreyColor),
@@ -120,18 +120,18 @@ fun DatePickerModal(
             colors =
                 DatePickerDefaults.colors(
                     containerColor = GreyColor,
-                    currentYearContentColor = AccentGreenColor,
+                    currentYearContentColor = AccentTurquoiseColor,
                     dividerColor = ComponentStrokeColor,
                     headlineContentColor = TextColor,
                     navigationContentColor = TextColor,
-                    selectedDayContainerColor = AccentGreenColor,
+                    selectedDayContainerColor = AccentTurquoiseColor,
                     selectedDayContentColor = GreyColor,
-                    selectedYearContainerColor = AccentGreenColor,
+                    selectedYearContainerColor = AccentTurquoiseColor,
                     selectedYearContentColor = GreyColor,
                     subheadContentColor = TextColor,
                     titleContentColor = TextColor,
-                    todayContentColor = AccentGreenColor,
-                    todayDateBorderColor = AccentGreenColor,
+                    todayContentColor = AccentTurquoiseColor,
+                    todayDateBorderColor = AccentTurquoiseColor,
                     weekdayContentColor = TextColor,
                     yearContentColor = TextColor,
                 ),

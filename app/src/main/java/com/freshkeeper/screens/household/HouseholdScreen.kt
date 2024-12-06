@@ -33,6 +33,7 @@ import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.screens.notifications.NotificationsViewModel
 import com.freshkeeper.sheets.InviteSheet
+import com.freshkeeper.sheets.QRCodeSheet
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
@@ -48,7 +49,6 @@ fun HouseholdScreen(
     val coroutineScope = rememberCoroutineScope()
     val inviteSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val qrCodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val shareSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val mostWastedItems by viewModel.mostWastedItems.observeAsState(emptyList())
 
     val listState = rememberLazyListState()
@@ -114,7 +114,10 @@ fun HouseholdScreen(
                 }
             }
             if (inviteSheetState.isVisible) {
-                InviteSheet(inviteSheetState, qrCodeSheetState, shareSheetState)
+                InviteSheet(qrCodeSheetState, inviteSheetState)
+            }
+            if (qrCodeSheetState.isVisible) {
+                QRCodeSheet(qrCodeSheetState)
             }
         }
     }

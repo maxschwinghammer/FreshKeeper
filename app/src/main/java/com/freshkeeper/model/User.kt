@@ -6,4 +6,5 @@ data class User(
     val provider: String = "",
     val displayName: String = "",
     val isAnonymous: Boolean = true,
+    val isEmailVerified: Boolean = false,
 )

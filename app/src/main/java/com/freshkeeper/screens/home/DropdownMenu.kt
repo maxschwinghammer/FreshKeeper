@@ -24,14 +24,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
 import com.freshkeeper.R
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
@@ -40,20 +37,51 @@ import java.util.Locale
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun DropdownMenu(
-    options: List<String>,
+    selectedId: Int,
+    onSelect: (String) -> Unit,
+    type: String,
     label: String,
 ) {
-    var selectedText by
-        when (label) {
-            stringResource(R.string.category) -> {
-                remember { mutableStateOf("Dairy goods") }
-            }
-            else -> {
-                remember { mutableStateOf("Fridge") }
-            }
-        }
-    var textFieldSize by remember { mutableStateOf(Size.Zero) }
     var expanded by remember { mutableStateOf(false) }
+    val selected = stringResource(id = selectedId)
+
+    val storageLocations =
+        listOf(
+            "Fridge",
+            "Cupboard",
+            "Freezer",
+            "Counter top",
+            "Cellar",
+            "Bread box",
+            "Spice rack",
+            "Pantry",
+            "Fruit basket",
+            "Other",
+        )
+    val categories =
+        listOf(
+            "Dairy goods",
+            "Vegetables",
+            "Fruits",
+            "Meat",
+            "Fish",
+            "Frozen Goods",
+            "Spices",
+            "Bread",
+            "Confectionery",
+            "Drinks",
+            "Noodles",
+            "Canned goods",
+            "Candy",
+            "Other",
+        )
+
+    val options =
+        when (type) {
+            "storageLocations" -> storageLocations
+            "categories" -> categories
+            else -> emptyList()
+        }
 
     val icon =
         if (expanded) {
@@ -62,20 +90,15 @@ fun DropdownMenu(
             Icons.Filled.KeyboardArrowDown
         }
 
-    var translatedSelectedText = stringResource(id = getCategoryStringRes(selectedText))
-
     Column {
         OutlinedTextField(
-            value = translatedSelectedText,
-            onValueChange = { translatedSelectedText = it },
+            value = selected,
+            onValueChange = {},
             modifier =
                 Modifier
-                    .fillMaxWidth()
-                    .onGloballyPositioned { coordinates ->
-                        textFieldSize = coordinates.size.toSize()
-                    },
+                    .fillMaxWidth(),
             label = { Text(label, color = TextColor) },
-            leadingIcon = { LeadingIcon(selectedText) },
+            leadingIcon = { LeadingIcon(selected) },
             trailingIcon = {
                 Icon(
                     icon,
@@ -87,9 +110,9 @@ fun DropdownMenu(
             colors =
                 OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = ComponentStrokeColor,
-                    focusedBorderColor = AccentGreenColor,
+                    focusedBorderColor = AccentTurquoiseColor,
                     unfocusedLabelColor = TextColor,
-                    focusedLabelColor = AccentGreenColor,
+                    focusedLabelColor = AccentTurquoiseColor,
                     focusedTextColor = TextColor,
                     unfocusedTextColor = TextColor,
                 ),
@@ -126,7 +149,7 @@ fun DropdownMenu(
                         }
                     },
                     onClick = {
-                        selectedText = option
+                        onSelect(option)
                         expanded = false
                     },
                 )

@@ -25,6 +25,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -42,7 +45,7 @@ import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
 import com.freshkeeper.screens.home.fetchProductDataFromBarcode
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
@@ -53,48 +56,25 @@ import com.freshkeeper.ui.theme.WhiteColor
 @Composable
 fun ManualInputSheet(
     sheetState: SheetState,
-    barcodeValue: String,
-    expiryDateValue: String,
+    barcode: String,
+    expiryTimestamp: Long,
 ) {
     var productName by remember { mutableStateOf("") }
-    val expiryDate by remember { mutableStateOf(expiryDateValue) }
+    val expiryDate by remember { mutableLongStateOf(expiryTimestamp) }
     var quantity by remember { mutableStateOf("") }
     val unit = remember { mutableStateOf("") }
+    val storageLocation = remember { mutableIntStateOf(R.string.fridge) }
+    val category = remember { mutableIntStateOf(R.string.dairy_goods) }
     var imageUrl by remember { mutableStateOf("") }
-    val storageLocations =
-        listOf(
-            "Fridge",
-            "Cupboard",
-            "Freezer",
-            "Counter top",
-            "Cellar",
-            "Bread box",
-            "Spice rack",
-            "Pantry",
-            "Fruit basket",
-            "Other",
-        )
-    val categories =
-        listOf(
-            "Dairy goods",
-            "Vegetables",
-            "Fruits",
-            "Meat",
-            "Fish",
-            "Frozen Goods",
-            "Spices",
-            "Bread",
-            "Confectionery",
-            "Drinks",
-            "Noodles",
-            "Canned goods",
-            "Candy",
-            "Other",
-        )
 
-    LaunchedEffect(barcodeValue) {
-        val productData = fetchProductDataFromBarcode(barcodeValue)
-        productName = productData?.name ?: barcodeValue
+    var selectedCategory by remember { mutableStateOf("Meat") }
+    var selectedStorageLocation by remember { mutableStateOf("Fridge") }
+
+    val context = LocalContext.current
+
+    LaunchedEffect(barcode) {
+        val productData = fetchProductDataFromBarcode(context, barcode)
+        productName = productData?.name ?: barcode
         quantity = productData?.quantity ?: ""
         unit.value = productData?.unit ?: ""
         imageUrl = productData?.imageUrl ?: ""
@@ -126,9 +106,9 @@ fun ManualInputSheet(
                     colors =
                         OutlinedTextFieldDefaults.colors(
                             unfocusedBorderColor = ComponentStrokeColor,
-                            focusedBorderColor = AccentGreenColor,
+                            focusedBorderColor = AccentTurquoiseColor,
                             unfocusedLabelColor = TextColor,
-                            focusedLabelColor = AccentGreenColor,
+                            focusedLabelColor = AccentTurquoiseColor,
                         ),
                     maxLines = 1,
                 )
@@ -172,9 +152,9 @@ fun ManualInputSheet(
                 colors =
                     OutlinedTextFieldDefaults.colors(
                         unfocusedBorderColor = ComponentStrokeColor,
-                        focusedBorderColor = AccentGreenColor,
+                        focusedBorderColor = AccentTurquoiseColor,
                         unfocusedLabelColor = TextColor,
-                        focusedLabelColor = AccentGreenColor,
+                        focusedLabelColor = AccentTurquoiseColor,
                     ),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 maxLines = 1,
@@ -187,11 +167,21 @@ fun ManualInputSheet(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        DropdownMenu(storageLocations, stringResource(R.string.storage_location))
+        DropdownMenu(
+            storageLocation.intValue,
+            onSelect = { selectedStorageLocation = it },
+            "storageLocations",
+            stringResource(R.string.storage_location),
+        )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        DropdownMenu(categories, stringResource(R.string.category))
+        DropdownMenu(
+            category.intValue,
+            onSelect = { selectedCategory = it },
+            "categories",
+            stringResource(R.string.category),
+        )
 
         Spacer(modifier = Modifier.height(16.dp))
 
