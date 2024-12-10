@@ -62,8 +62,8 @@ fun EditProductSheet(foodItem: FoodItem) {
     var isThrownAwayChecked by remember { mutableStateOf(foodItem.isThrownAway) }
     val imageUrl by remember { mutableStateOf(foodItem.imageUrl) }
 
-    var selectedCategory by remember { mutableStateOf("Meat") }
-    var selectedStorageLocation by remember { mutableStateOf("Fridge") }
+    var selectedCategory by remember { mutableIntStateOf(R.string.meat) }
+    var selectedStorageLocation by remember { mutableIntStateOf(R.string.fridge) }
 
     Column(
         modifier =

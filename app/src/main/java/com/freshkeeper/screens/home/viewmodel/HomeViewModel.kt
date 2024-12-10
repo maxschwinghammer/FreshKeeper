@@ -20,13 +20,13 @@ class HomeViewModel : ViewModel() {
                 FoodItem(
                     1,
                     "Chicken strips",
-                    1701206400000,
+                    1734050600000,
                     500,
                     "g",
                     R.string.freezer,
                     R.string.meat,
-                    false,
-                    false,
+                    isConsumed = false,
+                    isThrownAway = false,
                     "",
                 ),
                 FoodItem(

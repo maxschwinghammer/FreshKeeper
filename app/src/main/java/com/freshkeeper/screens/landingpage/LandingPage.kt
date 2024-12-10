@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:import-ordering")
+
 package com.freshkeeper.screens.landingpage
 
 import androidx.compose.animation.core.Animatable

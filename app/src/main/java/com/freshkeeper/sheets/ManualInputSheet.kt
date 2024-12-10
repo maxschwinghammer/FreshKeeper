@@ -67,8 +67,8 @@ fun ManualInputSheet(
     val category = remember { mutableIntStateOf(R.string.dairy_goods) }
     var imageUrl by remember { mutableStateOf("") }
 
-    var selectedCategory by remember { mutableStateOf("Meat") }
-    var selectedStorageLocation by remember { mutableStateOf("Fridge") }
+    var selectedCategory by remember { mutableIntStateOf(R.string.meat) }
+    var selectedStorageLocation by remember { mutableIntStateOf(R.string.fridge) }
 
     val context = LocalContext.current
 
