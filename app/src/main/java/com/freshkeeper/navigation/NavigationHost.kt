@@ -37,8 +37,8 @@ fun NavigationHost(
     val notificationsViewModel: NotificationsViewModel = viewModel()
     val startDestination =
         when {
-            !accountService.hasUser() -> Screen.SignUp.route
-            accountService.getUserProfile().isAnonymous -> Screen.SignUp.route
+            !accountService.hasUser() -> Screen.LandingPage.route
+            accountService.getUserProfile().isAnonymous -> Screen.LandingPage.route
             else -> Screen.Home.route
         }
 

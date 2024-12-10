@@ -1,12 +1,11 @@
 <resources>
-    <string name="app_name">FreshKeeper</string>
+    <string name="app_name" translatable="false">FreshKeeper</string>
     <string name="asset_statements" translatable="false">
         [{
           \"include\": \"https://signin.freshkeeper.de/.well-known/assetlinks.json\"
         }]
     </string>
     <string name="webClientId" translatable="false">38219986067-vha0jgf2kvnku636sfccddil52ncu02i.apps.googleusercontent.com</string>
-
     <string name="overview">Overview</string>">
     <string name="current_inventories">Current inventories</string>">
     <string name="household">Household</string>
@@ -185,4 +184,5 @@
     <string name="terms_of_service">terms of service</string>
     <string name="sign_up_info_2">and the</string>
     <string name="privacy_policy">privacy policy</string>
+    <string name="skip_introduction">Skip introduction</string>
 </resources>
