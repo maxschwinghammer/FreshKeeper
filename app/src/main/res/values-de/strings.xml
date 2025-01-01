@@ -7,6 +7,11 @@
     <string name="average_food_waste">Durchschnittliche Lebensmittelabfälle pro Tag</string>
     <string name="authenticate">Authentifizieren</string>
     <string name="bag">Tasche</string>
+    <string name="biometric_auth_failed">Biometrische Authentifizierung fehlgeschlagen</string>
+    <string name="biometric_auth_subtitle">Authentifizieren Sie sich, um fortzufahren</string>
+    <string name="biometric_auth_text">Möchten Sie die biometrische Authentifizierung aktivieren?
+    </string>
+    <string name="biometric_auth_title">Biometrische Authentifizierung</string>
     <string name="box">Karton</string>
     <string name="bread">Brot</string>
     <string name="bread_box">Brotkorb</string>
@@ -85,6 +90,7 @@
     <string name="most_wasted_food_items">Am meisten verschwendete Produkte</string>
     <string name="ml">ml</string>
     <string name="new_entry">Neuer Eintrag</string>
+    <string name="no">Nein</string>
     <string name="no_accounts_error">Keine Google-Konten auf diesem Gerät gefunden</string>
     <string name="no_email">Keine E-Mail-Adresse angegeben.</string>
     <string name="no_password">Kein Passwort angegeben.</string>
@@ -190,5 +196,7 @@
     <string name="view_more_tips">Mehr Tipps anzeigen</string>
     <string name="view_savings">Einsparungen anzeigen</string>
     <string name="waste_reduction">Prozentuale Verringerung des Abfalls</string>
+    <string name="yes">Ja</string>
     <string name="yesterday">Gestern</string>
+    <string name="notification_settings">Benachrichtigungseinstellungen</string>
 </resources>

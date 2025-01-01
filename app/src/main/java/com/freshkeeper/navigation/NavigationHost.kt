@@ -19,6 +19,7 @@ import com.freshkeeper.screens.home.tips.TipsScreen
 import com.freshkeeper.screens.household.HouseholdScreen
 import com.freshkeeper.screens.inventory.InventoryScreen
 import com.freshkeeper.screens.landingpage.LandingPageScreen
+import com.freshkeeper.screens.notificationSettings.NotificationSettingsScreen
 import com.freshkeeper.screens.notifications.NotificationsScreen
 import com.freshkeeper.screens.notifications.NotificationsViewModel
 import com.freshkeeper.screens.profile.ProfileScreen
@@ -107,6 +108,12 @@ fun NavigationHost(
         }
         composable(Screen.ProfileSettings.route) {
             ProfileSettingsScreen(
+                navController = navController,
+                notificationsViewModel = notificationsViewModel,
+            )
+        }
+        composable(Screen.NotificationSettings.route) {
+            NotificationSettingsScreen(
                 navController = navController,
                 notificationsViewModel = notificationsViewModel,
             )

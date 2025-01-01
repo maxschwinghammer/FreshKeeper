@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.home.viewmodel
+package com.freshkeeper.screens.inventory
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

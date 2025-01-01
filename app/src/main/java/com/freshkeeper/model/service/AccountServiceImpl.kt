@@ -21,7 +21,11 @@ class AccountServiceImpl
     constructor() : AccountService {
         init {
             val languageCode = Locale.getDefault().language
-            FirebaseAuth.getInstance().setLanguageCode(languageCode)
+            if (languageCode.isNotEmpty()) {
+                FirebaseAuth.getInstance().setLanguageCode(languageCode)
+            } else {
+                Log.e("AccountServiceImpl", "Language code is empty or null")
+            }
         }
 
         override val currentUser: Flow<User?>
@@ -84,7 +88,7 @@ class AccountServiceImpl
             email: String,
             password: String,
         ) {
-            linkAccountWithEmail(email, password)
+            // linkAccountWithEmail(email, password)
             Firebase.auth.createUserWithEmailAndPassword(email, password).await()
         }
 

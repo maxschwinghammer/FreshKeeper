@@ -1,5 +1,10 @@
 package com.freshkeeper.screens.authentication.signIn
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.credentials.GetCredentialException
+import android.util.Log
+import android.widget.EditText
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +29,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,6 +44,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.credentials.CredentialManager
+import androidx.credentials.GetCredentialRequest
+import androidx.credentials.GetPasswordOption
+import androidx.credentials.PendingGetCredentialRequest
+import androidx.credentials.pendingGetCredentialRequest
+import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
@@ -46,7 +59,9 @@ import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
+import kotlinx.coroutines.launch
 
+@SuppressLint("NewApi")
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun EmailSignInScreen(
@@ -58,13 +73,7 @@ fun EmailSignInScreen(
     val password = viewModel.password.collectAsState()
     val errorMessage = viewModel.errorMessage.collectAsState()
     val context = LocalContext.current
-
-    /*LaunchedEffect(Unit) {
-        viewModel.retrieveSavedCredentials(context) { savedEmail, savedPassword ->
-            viewModel.updateEmail(savedEmail)
-            viewModel.updatePassword(savedPassword)
-        }
-    }*/
+    val activity = context as FragmentActivity
 
     FreshKeeperTheme {
         Scaffold { it ->
@@ -176,7 +185,7 @@ fun EmailSignInScreen(
                     Spacer(Modifier.padding(2.dp))
 
                     Button(
-                        onClick = { viewModel.onSignInClick(navController) },
+                        onClick = { viewModel.onSignInClick(navController, context, activity) },
                         colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
                         modifier =
                             modifier
@@ -204,6 +213,48 @@ fun EmailSignInScreen(
                             color = TextColor,
                         )
                     }
+                }
+            }
+        }
+    }
+
+    @Composable
+    fun setupAutofillForCredentials(
+        context: Context,
+        usernameEditText: EditText,
+        passwordEditText: EditText,
+    ) {
+        val getPasswordOption = GetPasswordOption()
+
+        val getCredRequest =
+            GetCredentialRequest(
+                listOf(getPasswordOption),
+            )
+
+        val coroutineScope = rememberCoroutineScope()
+        LaunchedEffect(Unit) {
+            coroutineScope.launch {
+                try {
+                    val credentialManager = CredentialManager.create(context)
+                    val result =
+                        credentialManager.getCredential(
+                            context = context,
+                            request = getCredRequest,
+                        )
+
+                    usernameEditText.pendingGetCredentialRequest =
+                        PendingGetCredentialRequest(
+                            getCredRequest,
+                        ) {
+                        }
+
+                    passwordEditText.pendingGetCredentialRequest =
+                        PendingGetCredentialRequest(
+                            getCredRequest,
+                        ) {
+                        }
+                } catch (e: GetCredentialException) {
+                    Log.d("CredentialError", e.message.orEmpty())
                 }
             }
         }

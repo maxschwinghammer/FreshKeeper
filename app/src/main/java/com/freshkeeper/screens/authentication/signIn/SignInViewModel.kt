@@ -1,5 +1,9 @@
 package com.freshkeeper.screens.authentication.signIn
 
+import android.content.Context
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.freshkeeper.R
 import com.freshkeeper.model.service.AccountService
@@ -9,7 +13,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
+import kotlin.coroutines.resume
 
 @HiltViewModel
 class SignInViewModel
@@ -37,23 +43,38 @@ class SignInViewModel
             _password.value = newPassword
         }
 
-        fun onSignInClick(navController: NavController) {
-            launchCatching {
-                if (_email.value.isEmpty()) {
-                    _errorMessage.value = R.string.no_email
-                    return@launchCatching
+        fun onSignInClick(
+            navController: NavController,
+            context: Context,
+            activity: FragmentActivity,
+        ) {
+            if (isBiometricEnabled(context)) {
+                launchCatching {
+                    val authenticated = authenticateBiometric(context, activity)
+                    if (authenticated) {
+                        navController.navigate("home") { launchSingleTop = true }
+                    } else {
+                        _errorMessage.value = R.string.biometric_auth_failed
+                    }
                 }
-                if (_password.value.isEmpty()) {
-                    _errorMessage.value = R.string.no_password
-                    return@launchCatching
+            } else {
+                launchCatching {
+                    if (_email.value.isEmpty()) {
+                        _errorMessage.value = R.string.no_email
+                        return@launchCatching
+                    }
+                    if (_password.value.isEmpty()) {
+                        _errorMessage.value = R.string.no_password
+                        return@launchCatching
+                    }
+                    if (!_email.value.isValidEmail()) {
+                        _errorMessage.value = R.string.email_invalid
+                        return@launchCatching
+                    }
+                    _errorMessage.value = null
+                    accountService.signInWithEmail(_email.value, _password.value)
+                    navController.navigate("home") { launchSingleTop = true }
                 }
-                if (!_email.value.isValidEmail()) {
-                    _errorMessage.value = R.string.email_invalid
-                    return@launchCatching
-                }
-                _errorMessage.value = null
-                accountService.signInWithEmail(_email.value, _password.value)
-                navController.navigate("home") { launchSingleTop = true }
             }
         }
 
@@ -68,34 +89,54 @@ class SignInViewModel
             }
         }
 
-        /*fun retrieveSavedCredentials(
+        private fun isBiometricEnabled(context: Context): Boolean {
+            val sharedPreferences =
+                context.getSharedPreferences(
+                    "user_preferences",
+                    Context.MODE_PRIVATE,
+                )
+            return sharedPreferences.getBoolean("biometric_enabled", false)
+        }
+
+        private suspend fun authenticateBiometric(
             context: Context,
-            onCredentialsRetrieved: (email: String, password: String) -> Unit,
-        ) {
-            val credentialManager = CredentialManager.create(context)
-            val request = GetCredentialRequest(listOf(GetPasswordOption()))
+            activity: FragmentActivity,
+        ): Boolean =
+            suspendCancellableCoroutine { continuation ->
+                val executor = ContextCompat.getMainExecutor(context)
+                val biometricPrompt =
+                    BiometricPrompt(
+                        activity,
+                        executor,
+                        object : BiometricPrompt.AuthenticationCallback() {
+                            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                                continuation.resume(true)
+                                launchCatching {
+                                    accountService.signInWithEmail(_email.value, _password.value)
+                                }
+                            }
 
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    // Hier den richtigen Context nutzen
-                    val response = credentialManager.getCredential(request) // Kein zusätzlicher Kontext nötig
-                    val credential = response.credential
+                            override fun onAuthenticationFailed() {
+                                continuation.resume(false)
+                            }
 
-                    if (credential is PasswordCredential) {
-                        withContext(Dispatchers.Main) {
-                            onCredentialsRetrieved(credential.id, credential.password)
-                        }
-                    } else {
-                        withContext(Dispatchers.Main) {
-                            onCredentialsRetrieved("", "") // Kein Passwort gefunden
-                        }
-                    }
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    withContext(Dispatchers.Main) {
-                        onCredentialsRetrieved("", "") // Fehler beim Abrufen
-                    }
-                }
+                            override fun onAuthenticationError(
+                                errorCode: Int,
+                                errString: CharSequence,
+                            ) {
+                                continuation.resume(false)
+                            }
+                        },
+                    )
+
+                val promptInfo =
+                    BiometricPrompt.PromptInfo
+                        .Builder()
+                        .setTitle("Biometrische Authentifizierung")
+                        .setSubtitle("Bitte authentifizieren Sie sich, um fortzufahren")
+                        .setNegativeButtonText("Abbrechen")
+                        .build()
+
+                biometricPrompt.authenticate(promptInfo)
             }
-        }*/
     }

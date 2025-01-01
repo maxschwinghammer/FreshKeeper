@@ -25,6 +25,8 @@ sealed class Screen(
 
     data object ProfileSettings : Screen("profileSettings")
 
+    data object NotificationSettings : Screen("notificationSettings")
+
     data object Statistics : Screen("statistics")
 
     data object LandingPage : Screen("landingPage")

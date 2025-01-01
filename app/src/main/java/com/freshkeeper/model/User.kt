@@ -7,4 +7,5 @@ data class User(
     val displayName: String = "",
     val isAnonymous: Boolean = true,
     val isEmailVerified: Boolean = false,
+    val isBiometricEnabled: Boolean = false,
 )

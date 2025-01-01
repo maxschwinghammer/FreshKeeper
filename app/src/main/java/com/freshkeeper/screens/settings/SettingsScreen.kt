@@ -114,6 +114,37 @@ fun SettingsScreen(
                         }
                     }
                     item {
+                        Button(
+                            onClick = { navController.navigate("notificationSettings") },
+                            colors =
+                                ButtonDefaults.buttonColors(
+                                    containerColor = Color.Transparent,
+                                    contentColor = TextColor,
+                                ),
+                            shape = RoundedCornerShape(10.dp),
+                            border = BorderStroke(1.dp, ComponentStrokeColor),
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.Start,
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.notification_settings),
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = TextColor,
+                                    modifier =
+                                        Modifier.padding(
+                                            top = 10.dp,
+                                            bottom = 10.dp,
+                                            end = 10.dp,
+                                        ),
+                                )
+                            }
+                        }
+                    }
+                    item {
                         LanguageDropdownMenu(
                             currentLanguage = selectedLanguage,
                             onLanguageSelected = { languageCode ->

@@ -185,4 +185,12 @@
     <string name="sign_up_info_2">and the</string>
     <string name="privacy_policy">privacy policy</string>
     <string name="skip_introduction">Skip introduction</string>
+    <string name="biometric_auth_title">Biometric authentication</string>
+    <string name="biometric_auth_failed">Biometric authentication failed</string>
+    <string name="biometric_auth_subtitle">Authenticate to continue</string>
+    <string name="biometric_auth_text">Would you like to activate biometric authentication?
+    </string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="notification_settings">Notification settings</string>
 </resources>

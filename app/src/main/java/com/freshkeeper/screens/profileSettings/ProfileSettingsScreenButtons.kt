@@ -1,5 +1,7 @@
 package com.freshkeeper.screens.profileSettings
 
+import android.content.Context
+import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,7 +20,10 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -29,12 +34,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.freshkeeper.R
 import com.freshkeeper.model.User
@@ -42,6 +52,7 @@ import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
+import com.freshkeeper.ui.theme.LightGreyColor
 import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 
@@ -417,5 +428,141 @@ fun RemoveAccountCard(onRemoveAccountClick: () -> Unit) {
             },
             onDismissRequest = { showRemoveAccDialog = false },
         )
+    }
+}
+
+@Suppress("ktlint:standard:function-naming")
+@Composable
+fun BiometricSwitch() {
+    val activity = LocalContext.current as? FragmentActivity
+    Card(
+        colors = CardDefaults.cardColors(containerColor = ComponentBackgroundColor),
+        modifier = Modifier.card().border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+    ) {
+        val context = LocalContext.current
+        val sharedPreferences =
+            context.getSharedPreferences("user_preferences", Context.MODE_PRIVATE)
+
+        var isBiometricEnabled by remember {
+            mutableStateOf(sharedPreferences.getBoolean("biometric_enabled", false))
+        }
+        var showBiometricDialog by remember { mutableStateOf(false) }
+
+        Row(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(id = R.string.biometric_auth_title),
+                modifier = Modifier.weight(1f),
+                color = Color.White,
+                fontSize = 16.sp,
+            )
+            Switch(
+                checked = isBiometricEnabled,
+                onCheckedChange = { isChecked ->
+                    if (!isChecked) {
+                        isBiometricEnabled = false
+                        sharedPreferences.edit().putBoolean("biometric_enabled", false).apply()
+                    } else {
+                        activity?.let {
+                            val executor = ContextCompat.getMainExecutor(context)
+                            val biometricPrompt =
+                                BiometricPrompt(
+                                    it,
+                                    executor,
+                                    object : BiometricPrompt.AuthenticationCallback() {
+                                        override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                                            isBiometricEnabled = true
+                                            sharedPreferences.edit().putBoolean("biometric_enabled", true).apply()
+                                        }
+
+                                        override fun onAuthenticationFailed() {
+                                            isBiometricEnabled = false
+                                            sharedPreferences.edit().putBoolean("biometric_enabled", false).apply()
+                                        }
+
+                                        override fun onAuthenticationError(
+                                            errorCode: Int,
+                                            errString: CharSequence,
+                                        ) {
+                                            isBiometricEnabled = false
+                                            sharedPreferences.edit().putBoolean("biometric_enabled", false).apply()
+                                        }
+                                    },
+                                )
+
+                            val promptInfo =
+                                BiometricPrompt.PromptInfo
+                                    .Builder()
+                                    .setTitle("Biometrische Authentifizierung")
+                                    .setSubtitle("Bitte authentifizieren Sie sich, um fortzufahren")
+                                    .setNegativeButtonText("Abbrechen")
+                                    .build()
+
+                            biometricPrompt.authenticate(promptInfo)
+                        }
+                    }
+                },
+                colors =
+                    SwitchDefaults.colors(
+                        checkedBorderColor = ComponentStrokeColor,
+                        checkedTrackColor = GreyColor,
+                        checkedThumbColor = AccentTurquoiseColor,
+                        uncheckedBorderColor = ComponentStrokeColor,
+                        uncheckedTrackColor = GreyColor,
+                        uncheckedThumbColor = LightGreyColor,
+                    ),
+                modifier = Modifier.scale(0.9f),
+            )
+        }
+
+        if (showBiometricDialog) {
+            AlertDialog(
+                containerColor = ComponentBackgroundColor,
+                title = { Text("Biometrische Authentifizierung") },
+                text = { Text("Möchten Sie die biometrische Authentifizierung aktivieren?") },
+                dismissButton = {
+                    Button(
+                        onClick = {
+                            isBiometricEnabled = false
+                            sharedPreferences.edit().putBoolean("biometric_enabled", false).apply()
+                            showBiometricDialog = false
+                        },
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = GreyColor,
+                                contentColor = TextColor,
+                            ),
+                        shape = RoundedCornerShape(20.dp),
+                        border = BorderStroke(1.dp, ComponentStrokeColor),
+                    ) {
+                        Text(text = "Nein", color = TextColor)
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            isBiometricEnabled = true
+                            sharedPreferences.edit().putBoolean("biometric_enabled", true).apply()
+                            showBiometricDialog = false
+                        },
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = AccentTurquoiseColor,
+                                contentColor = TextColor,
+                            ),
+                        shape = RoundedCornerShape(20.dp),
+                        border = BorderStroke(1.dp, ComponentStrokeColor),
+                    ) {
+                        Text(text = "Ja", color = TextColor)
+                    }
+                },
+                onDismissRequest = { showBiometricDialog = false },
+            )
+        }
     }
 }

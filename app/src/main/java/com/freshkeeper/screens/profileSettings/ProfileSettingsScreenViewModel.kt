@@ -24,6 +24,10 @@ class ProfileSettingsScreenViewModel
             }
         }
 
+        fun onBiometricSwitchClick() {
+            _user.value = _user.value.copy(isBiometricEnabled = !_user.value.isBiometricEnabled)
+        }
+
         fun onUpdateDisplayNameClick(newDisplayName: String) {
             launchCatching {
                 accountService.updateDisplayName(newDisplayName)
