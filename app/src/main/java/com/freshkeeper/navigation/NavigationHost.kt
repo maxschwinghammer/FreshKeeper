@@ -1,6 +1,8 @@
 package com.freshkeeper.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -17,6 +19,7 @@ import com.freshkeeper.screens.authentication.signUp.SignUpScreen
 import com.freshkeeper.screens.home.HomeScreen
 import com.freshkeeper.screens.home.tips.TipsScreen
 import com.freshkeeper.screens.household.HouseholdScreen
+import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.screens.inventory.InventoryScreen
 import com.freshkeeper.screens.landingpage.LandingPageScreen
 import com.freshkeeper.screens.notificationSettings.NotificationSettingsScreen
@@ -36,6 +39,12 @@ fun NavigationHost(
     onLocaleChange: (String) -> Unit,
 ) {
     val notificationsViewModel: NotificationsViewModel = viewModel()
+    val householdViewModel: HouseholdViewModel = viewModel()
+
+    val totalFoodWaste by householdViewModel.totalFoodWaste.observeAsState(0)
+    val averageFoodWastePerDay by householdViewModel.averageFoodWastePerDay.observeAsState(0f)
+    val daysWithNoWaste by householdViewModel.daysWithNoWaste.observeAsState(0)
+    val mostWastedItems by householdViewModel.mostWastedItems.observeAsState(emptyList())
     val startDestination =
         when {
             !accountService.hasUser() -> Screen.LandingPage.route
@@ -128,6 +137,10 @@ fun NavigationHost(
             StatisticsScreen(
                 navController = navController,
                 notificationsViewModel = notificationsViewModel,
+                totalFoodWaste = totalFoodWaste,
+                averageFoodWastePerDay = averageFoodWastePerDay,
+                daysWithNoWaste = daysWithNoWaste,
+                mostWastedItems = mostWastedItems,
             )
         }
         composable(Screen.LandingPage.route) {

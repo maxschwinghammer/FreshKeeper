@@ -199,4 +199,8 @@
     <string name="yes">Ja</string>
     <string name="yesterday">Gestern</string>
     <string name="notification_settings">Benachrichtigungseinstellungen</string>
+    <string name="settings_terms_of_service">Nutzungsbedingungen</string>
+    <string name="settings_privacy_policy">Datenschutzerklärung</string>
+    <string name="settings_imprint">Impressum</string>
+    <string name="legal_information">Rechtliche Hinweise</string>
 </resources>

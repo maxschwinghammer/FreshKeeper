@@ -22,12 +22,14 @@ class HomeViewModel : ViewModel() {
         loadFoodItemsFromFirestore()
     }
 
-    fun loadFoodItemsFromFirestore() {
+    private fun loadFoodItemsFromFirestore() {
         if (userId == null) return
 
         firestore
             .collection("foodItems")
             .whereEqualTo("userId", userId)
+            .whereEqualTo("consumed", false)
+            .whereEqualTo("thrownAway", false)
             .get()
             .addOnSuccessListener { documents ->
                 val currentTimestamp = Instant.now().toEpochMilli()
@@ -45,7 +47,7 @@ class HomeViewModel : ViewModel() {
 
                 _expiringSoonItems.value =
                     foodItems
-                        .filter { it.daysDifference >= 0 }
+                        .filter { it.daysDifference in 0..30 }
                         .sortedBy { it.expiryTimestamp }
 
                 _expiredItems.value =

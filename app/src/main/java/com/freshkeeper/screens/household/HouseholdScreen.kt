@@ -49,6 +49,10 @@ fun HouseholdScreen(
     val coroutineScope = rememberCoroutineScope()
     val inviteSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val qrCodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    val totalFoodWaste by viewModel.totalFoodWaste.observeAsState(0)
+    val averageFoodWastePerDay by viewModel.averageFoodWastePerDay.observeAsState(0f)
+    val daysWithNoWaste by viewModel.daysWithNoWaste.observeAsState(0)
     val mostWastedItems by viewModel.mostWastedItems.observeAsState(emptyList())
 
     val listState = rememberLazyListState()
@@ -101,7 +105,15 @@ fun HouseholdScreen(
                                 )
                             }
                             item { ActivitiesSection(viewModel = viewModel()) }
-                            item { StatisticsSection(navController, mostWastedItems) }
+                            item {
+                                StatisticsSection(
+                                    navController,
+                                    totalFoodWaste,
+                                    averageFoodWastePerDay,
+                                    daysWithNoWaste,
+                                    mostWastedItems,
+                                )
+                            }
                         }
 
                         if (showTransition) {

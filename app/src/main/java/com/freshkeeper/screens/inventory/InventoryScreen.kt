@@ -202,13 +202,11 @@ fun InventoryScreen(
                     sheetState = manualInputSheetState,
                     containerColor = ComponentBackgroundColor,
                 ) {
-                    foodItem?.let { item ->
-                        ManualInputSheet(
-                            sheetState = manualInputSheetState,
-                            barcode = scannedBarcode,
-                            expiryTimestamp = item.expiryTimestamp,
-                        )
-                    }
+                    ManualInputSheet(
+                        sheetState = manualInputSheetState,
+                        barcode = scannedBarcode,
+                        expiryTimestamp = expiryDate,
+                    )
                 }
             }
 

@@ -31,6 +31,8 @@ fun CurrentInventoriesSection(
     val bakeryItems by viewModel.bakeryItems.observeAsState(emptyList())
     val spiceItems by viewModel.spicesItems.observeAsState(emptyList())
     val pantryItems by viewModel.pantryItems.observeAsState(emptyList())
+    val fruitBasketItems by viewModel.fruitBasketItems.observeAsState(emptyList())
+    val otherItems by viewModel.otherItems.observeAsState(emptyList())
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -113,6 +115,26 @@ fun CurrentInventoriesSection(
                 editProductSheetState = editProductSheetState,
             )
             Spacer(modifier = Modifier.height(6.dp))
+        }
+
+        if (fruitBasketItems.isNotEmpty()) {
+            InventoryCategory(
+                title = stringResource(R.string.fruit_basket),
+                image = painterResource(id = R.drawable.fruit_basket),
+                items = fruitBasketItems,
+                editProductSheetState = editProductSheetState,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
+        if (otherItems.isNotEmpty()) {
+            InventoryCategory(
+                title = stringResource(R.string.other),
+                image = painterResource(id = R.drawable.other),
+                items = otherItems,
+                editProductSheetState = editProductSheetState,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 }

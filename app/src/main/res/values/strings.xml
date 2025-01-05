@@ -193,4 +193,8 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="notification_settings">Notification settings</string>
+    <string name="settings_terms_of_service">Terms of Service</string>
+    <string name="settings_privacy_policy">Privacy Policy</string>
+    <string name="settings_imprint">Imprint</string>
+    <string name="legal_information">Legal information</string>
 </resources>

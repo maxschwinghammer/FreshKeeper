@@ -42,6 +42,9 @@ import com.freshkeeper.ui.theme.WhiteColor
 @Composable
 fun StatisticsSection(
     navController: NavController,
+    totalFoodWaste: Int,
+    averageFoodWastePerDay: Float,
+    daysWithNoWaste: Int,
     mostWastedItems: List<Pair<String, String>>,
 ) {
     Card(
@@ -87,7 +90,7 @@ fun StatisticsSection(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text =
-                    stringResource(R.string.total_food_waste) + ": 15 " +
+                    stringResource(R.string.total_food_waste) + ": $totalFoodWaste " +
                         stringResource(R.string.items),
                 color = TextColor,
                 fontSize = 14.sp,
@@ -95,15 +98,16 @@ fun StatisticsSection(
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text =
-                    stringResource(R.string.average_food_waste) + ": 0.5 " +
-                        stringResource(R.string.items_per_day),
+                    stringResource(R.string.average_food_waste) +
+                        ": ${"%.2f".format(averageFoodWastePerDay)} " +
+                        stringResource(R.string.items),
                 color = TextColor,
                 fontSize = 14.sp,
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text =
-                    stringResource(R.string.days_without_waste) + ": 25 " +
+                    stringResource(R.string.days_without_waste) + ": $daysWithNoWaste " +
                         stringResource(R.string.days),
                 color = TextColor,
                 fontSize = 14.sp,
