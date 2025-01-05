@@ -1,7 +1,12 @@
 package com.freshkeeper.screens.home
 
 import java.time.LocalDate
-import java.util.Locale
+import java.time.ZoneOffset
+
+fun getMaxDaysOfMonth(
+    month: Int,
+    year: Int,
+): Int = LocalDate.of(year, month, 1).lengthOfMonth()
 
 fun isValidDate(date: String): Boolean {
     val parts = date.split("-", "/", ".")
@@ -27,7 +32,8 @@ fun isValidDate(date: String): Boolean {
             val year = parts[1].toInt()
             val fullYear = if (year < 100) year + 2000 else year
 
-            val parsedExpiryDate = LocalDate.of(fullYear, month, 1)
+            val maxDays = getMaxDaysOfMonth(month, fullYear)
+            val parsedExpiryDate = LocalDate.of(fullYear, month, maxDays)
             val currentDate = LocalDate.now()
             val tenYearsLater = currentDate.plusYears(10)
 
@@ -42,34 +48,27 @@ fun isValidDate(date: String): Boolean {
     }
 }
 
-fun formatDate(date: String): String {
+fun convertToUnixTimestamp(date: String): Long {
     val parts = date.split("-", "/", ".")
-    val locale = Locale.ROOT
     return when (parts.size) {
         3 -> {
-            val year =
-                if (parts[2].length == 2) {
-                    "20${parts[2]}"
-                } else {
-                    parts[2]
-                }
-            String.format(
-                locale,
-                "%02d.%02d.%04d",
-                parts[0].toInt(),
-                parts[1].toInt(),
-                year.toInt(),
-            )
+            val day = parts[0].toInt()
+            val month = parts[1].toInt()
+            val year = parts[2].toInt()
+            val fullYear = if (year < 100) year + 2000 else year
+
+            val parsedExpiryDate = LocalDate.of(fullYear, month, day)
+            parsedExpiryDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
         }
         2 -> {
-            val year =
-                if (parts[1].length == 2) {
-                    "20${parts[1]}"
-                } else {
-                    parts[1]
-                }
-            String.format(locale, "%02d.%02d.%04d", 31, parts[0].toInt(), year.toInt())
+            val month = parts[0].toInt()
+            val year = parts[1].toInt()
+            val fullYear = if (year < 100) year + 2000 else year
+
+            val maxDays = getMaxDaysOfMonth(month, fullYear)
+            val parsedExpiryDate = LocalDate.of(fullYear, month, maxDays)
+            parsedExpiryDate.atStartOfDay().toInstant(ZoneOffset.UTC).toEpochMilli()
         }
-        else -> date
+        else -> 0L
     }
 }

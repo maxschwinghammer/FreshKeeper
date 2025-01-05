@@ -34,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
@@ -54,6 +55,7 @@ fun SignUpScreen(
     googleViewModel: GoogleViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
+    val activity = context as FragmentActivity
 
     FreshKeeperTheme {
         Scaffold {
@@ -124,7 +126,12 @@ fun SignUpScreen(
                     Spacer(Modifier.padding(4.dp))
 
                     AuthenticationButton(R.string.sign_up_with_google) { credential ->
-                        googleViewModel.onSignInWithGoogle(credential, navController)
+                        googleViewModel.onSignInWithGoogle(
+                            credential,
+                            navController,
+                            context,
+                            activity,
+                        )
                     }
 
                     Spacer(Modifier.padding(8.dp))

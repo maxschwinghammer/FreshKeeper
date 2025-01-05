@@ -1,6 +1,5 @@
 package com.freshkeeper.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -56,7 +56,6 @@ import com.freshkeeper.screens.notifications.NotificationsViewModel
 import com.freshkeeper.sheets.AddEntrySheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
 import com.freshkeeper.sheets.EditProductSheet
-import com.freshkeeper.sheets.FoodRecognitionSheet
 import com.freshkeeper.sheets.ManualInputSheet
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
@@ -75,13 +74,12 @@ fun HomeScreen(
     notificationsViewModel: NotificationsViewModel,
 ) {
     var scannedBarcode by remember { mutableStateOf("") }
-    var expiryDate by remember { mutableStateOf("") }
+    var expiryDate by remember { mutableLongStateOf(0L) }
 
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val editProductSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val foodRecognitionSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val barcodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val expiringSoonItems by viewModel.expiringSoonItems.observeAsState(emptyList())
     val expiredItems by viewModel.expiredItems.observeAsState(emptyList())
@@ -131,61 +129,70 @@ fun HomeScreen(
                                     .padding(start = 15.dp, end = 15.dp),
                             verticalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
-                            item {
-                                FoodList(
-                                    title = stringResource(id = R.string.expiring_soon),
-                                    image = painterResource(id = R.drawable.expiring_soon),
-                                    items =
-                                        expiringSoonItems.map { item ->
-                                            val displayText =
-                                                when {
-                                                    item.daysDifference == 1 ->
-                                                        stringResource(R.string.tomorrow)
-                                                    item.daysDifference > 1 ->
-                                                        stringResource(
-                                                            R.string.in_days,
-                                                            item.daysDifference,
-                                                        )
-                                                    item.daysDifference == 0 ->
-                                                        stringResource(R.string.today)
-                                                    else -> ""
-                                                }
-                                            Triple(item.id, item.name, displayText)
+                            if (expiringSoonItems.isNotEmpty()) {
+                                item {
+                                    FoodList(
+                                        title = stringResource(id = R.string.expiring_soon),
+                                        image = painterResource(id = R.drawable.expiring_soon),
+                                        items =
+                                            expiringSoonItems.map { item ->
+                                                val displayText =
+                                                    when {
+                                                        item.daysDifference == 1 ->
+                                                            stringResource(R.string.tomorrow)
+
+                                                        item.daysDifference > 1 ->
+                                                            stringResource(
+                                                                R.string.in_days,
+                                                                item.daysDifference,
+                                                            )
+
+                                                        item.daysDifference == 0 ->
+                                                            stringResource(R.string.today)
+
+                                                        else -> ""
+                                                    }
+                                                Triple(item.id, item.name, displayText)
+                                            },
+                                        editProductSheetState = editProductSheetState,
+                                        onEditProduct = { id ->
+                                            foodItem = expiringSoonItems.find { it.id == id }
+                                            coroutineScope.launch { editProductSheetState.show() }
                                         },
-                                    editProductSheetState = editProductSheetState,
-                                    onEditProduct = { id ->
-                                        foodItem = expiringSoonItems.find { it.id == id }
-                                        coroutineScope.launch { editProductSheetState.show() }
-                                    },
-                                )
+                                    )
+                                }
                             }
-                            item {
-                                FoodList(
-                                    title = stringResource(R.string.expired),
-                                    image = painterResource(id = R.drawable.warning),
-                                    items =
-                                        expiredItems.map { item ->
-                                            val displayText =
-                                                when {
-                                                    -item.daysDifference == 1 ->
-                                                        stringResource(
-                                                            R.string.yesterday,
-                                                        )
-                                                    item.daysDifference < 0 ->
-                                                        stringResource(
-                                                            R.string.days_ago,
-                                                            -item.daysDifference,
-                                                        )
-                                                    else -> ""
-                                                }
-                                            Triple(item.id, item.name, displayText)
+                            if (expiredItems.isNotEmpty()) {
+                                item {
+                                    FoodList(
+                                        title = stringResource(R.string.expired),
+                                        image = painterResource(id = R.drawable.warning),
+                                        items =
+                                            expiredItems.map { item ->
+                                                val displayText =
+                                                    when {
+                                                        -item.daysDifference == 1 ->
+                                                            stringResource(
+                                                                R.string.yesterday,
+                                                            )
+
+                                                        item.daysDifference < 0 ->
+                                                            stringResource(
+                                                                R.string.days_ago,
+                                                                -item.daysDifference,
+                                                            )
+
+                                                        else -> ""
+                                                    }
+                                                Triple(item.id, item.name, displayText)
+                                            },
+                                        editProductSheetState = editProductSheetState,
+                                        onEditProduct = { id ->
+                                            foodItem = expiredItems.find { it.id == id }
+                                            coroutineScope.launch { editProductSheetState.show() }
                                         },
-                                    editProductSheetState = editProductSheetState,
-                                    onEditProduct = { id ->
-                                        foodItem = expiredItems.find { it.id == id }
-                                        coroutineScope.launch { editProductSheetState.show() }
-                                    },
-                                )
+                                    )
+                                }
                             }
                             item {
                                 Spacer(modifier = Modifier.height(10.dp))
@@ -238,7 +245,6 @@ fun HomeScreen(
                 AddEntrySheet(
                     sheetState,
                     barcodeSheetState,
-                    foodRecognitionSheetState,
                     manualInputSheetState,
                 )
             }
@@ -260,39 +266,17 @@ fun HomeScreen(
                 }
             }
 
-            if (foodRecognitionSheetState.isVisible) {
-                ModalBottomSheet(
-                    onDismissRequest = {
-                        coroutineScope.launch {
-                            foodRecognitionSheetState.hide()
-                        }
-                    },
-                    sheetState = foodRecognitionSheetState,
-                    containerColor = ComponentBackgroundColor,
-                ) {
-                    FoodRecognitionSheet(
-                        sheetState = foodRecognitionSheetState,
-                        onFoodRecognized = { recognizedFood ->
-                            println("Recognised food: $recognizedFood")
-                            coroutineScope.launch { manualInputSheetState.show() }
-                        },
-                    )
-                }
-            }
-
             if (manualInputSheetState.isVisible) {
                 ModalBottomSheet(
                     onDismissRequest = { coroutineScope.launch { manualInputSheetState.hide() } },
                     sheetState = manualInputSheetState,
                     containerColor = ComponentBackgroundColor,
                 ) {
-                    foodItem?.let { item ->
-                        ManualInputSheet(
-                            sheetState = manualInputSheetState,
-                            barcode = scannedBarcode,
-                            expiryTimestamp = item.expiryTimestamp,
-                        )
-                    }
+                    ManualInputSheet(
+                        sheetState = manualInputSheetState,
+                        barcode = scannedBarcode,
+                        expiryTimestamp = expiryDate,
+                    )
                 }
             }
 
@@ -302,9 +286,8 @@ fun HomeScreen(
                     sheetState = editProductSheetState,
                     containerColor = ComponentBackgroundColor,
                 ) {
-                    Log.d("EditProductSheet", "Food Item: $foodItem")
                     foodItem?.let { item ->
-                        EditProductSheet(foodItem = item)
+                        EditProductSheet(foodItem = item, sheetState = editProductSheetState)
                     }
                 }
             }

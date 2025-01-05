@@ -1,5 +1,6 @@
 package com.freshkeeper.sheets
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -18,15 +19,19 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,21 +54,30 @@ import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun EditProductSheet(foodItem: FoodItem) {
+fun EditProductSheet(
+    sheetState: SheetState,
+    foodItem: FoodItem,
+) {
     var productName by remember { mutableStateOf(foodItem.name) }
     var quantity by remember { mutableStateOf(foodItem.quantity.toString()) }
     val unit = remember { mutableStateOf(foodItem.unit) }
     val storageLocation = remember { mutableIntStateOf(foodItem.storageLocation) }
     val category = remember { mutableIntStateOf(foodItem.category) }
-    var isConsumedChecked by remember { mutableStateOf(foodItem.isConsumed) }
-    var isThrownAwayChecked by remember { mutableStateOf(foodItem.isThrownAway) }
+    var isConsumedChecked by remember { mutableStateOf(foodItem.consumed) }
+    var isThrownAwayChecked by remember { mutableStateOf(foodItem.thrownAway) }
     val imageUrl by remember { mutableStateOf(foodItem.imageUrl) }
 
     var selectedCategory by remember { mutableIntStateOf(R.string.meat) }
     var selectedStorageLocation by remember { mutableIntStateOf(R.string.fridge) }
+
+    var expiryDate by remember { mutableLongStateOf(foodItem.expiryTimestamp) }
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier =
@@ -100,7 +114,14 @@ fun EditProductSheet(foodItem: FoodItem) {
 
                 Spacer(modifier = Modifier.height(8.dp))
 
-                ExpiryDatePicker(foodItem.expiryTimestamp)
+                ExpiryDatePicker(
+                    expiryDate = expiryDate,
+                    onDateChange = { newDate ->
+                        if (newDate != null) {
+                            expiryDate = newDate
+                        }
+                    },
+                )
             }
 
             if (imageUrl.isNotEmpty()) {
@@ -216,7 +237,41 @@ fun EditProductSheet(foodItem: FoodItem) {
 
         Button(
             onClick = {
-                // Handle submit action here
+                val firestore = FirebaseFirestore.getInstance()
+
+                firestore
+                    .collection("foodItems")
+                    .whereEqualTo("id", foodItem.id)
+                    .get()
+                    .addOnSuccessListener { querySnapshot ->
+                        val document = querySnapshot.documents.firstOrNull()
+                        if (document != null) {
+                            document.reference
+                                .update(
+                                    mapOf(
+                                        "name" to productName,
+                                        "quantity" to quantity.toInt(),
+                                        "unit" to unit.value,
+                                        "storageLocation" to selectedStorageLocation,
+                                        "category" to selectedCategory,
+                                        "expiryTimestamp" to expiryDate,
+                                        "consumed" to isConsumedChecked,
+                                        "thrownAway" to isThrownAwayChecked,
+                                    ),
+                                ).addOnSuccessListener {
+                                    Log.d("Firestore", "Product updated successfully")
+                                    coroutineScope.launch {
+                                        sheetState.hide()
+                                    }
+                                }.addOnFailureListener { e ->
+                                    Log.w("Firestore", "Error when updating the product", e)
+                                }
+                        } else {
+                            Log.w("Firestore", "No document found with the given ID")
+                        }
+                    }.addOnFailureListener { e ->
+                        Log.w("Firestore", "Error retrieving document", e)
+                    }
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),

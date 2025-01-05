@@ -22,11 +22,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.freshkeeper"
-        buildConfigField(
-            "String",
-            "GOOGLE_API_KEY",
-            "\"${project.properties["GOOGLE_API_KEY"]}\"",
-        )
     }
 
     buildTypes {
@@ -86,6 +81,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.gms.google.services)
     implementation(libs.gms.play.services.mlkit.image.labeling)
     implementation(libs.google.accompanist.pager)
     implementation(libs.google.accompanist.pager.indicators)
@@ -99,6 +95,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.play.services.auth)
     implementation(libs.play.services.base)
+    implementation(libs.play.services.identity)
     implementation(libs.play.services.mlkit.text.recognition)
     implementation(libs.play.services.mlkit.text.recognition.common)
     implementation(libs.text.recognition)

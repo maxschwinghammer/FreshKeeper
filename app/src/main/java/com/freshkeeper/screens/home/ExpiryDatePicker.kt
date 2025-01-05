@@ -40,16 +40,18 @@ import java.util.Locale
 @Composable
 fun ExpiryDatePicker(
     expiryDate: Long?,
+    onDateChange: (Long?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var selectedDate by remember { mutableStateOf(expiryDate) }
     var showModal by remember { mutableStateOf(false) }
+    val currentDate = System.currentTimeMillis()
 
     OutlinedTextField(
-        value = selectedDate?.let { convertMillisToDate(it) } ?: "DD.MM.YYYY",
+        value = selectedDate?.let { convertMillisToDate(it) } ?: convertMillisToDate(currentDate),
         onValueChange = { },
         label = { Text(stringResource(R.string.expiry_date)) },
-        placeholder = { Text("DD.MM.YYYY") },
+        placeholder = { Text(convertMillisToDate(currentDate)) },
         trailingIcon = {
             Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.select_date))
         },
@@ -76,7 +78,11 @@ fun ExpiryDatePicker(
 
     if (showModal) {
         DatePickerModal(
-            onDateSelected = { selectedDate = it },
+            initialDate = selectedDate ?: currentDate,
+            onDateSelected = { date ->
+                selectedDate = date
+                onDateChange(date)
+            },
             onDismiss = { showModal = false },
         )
     }
@@ -91,10 +97,11 @@ fun convertMillisToDate(millis: Long): String {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerModal(
+    initialDate: Long?,
     onDateSelected: (Long?) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val datePickerState = rememberDatePickerState()
+    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = initialDate)
 
     DatePickerDialog(
         modifier = Modifier.size(400.dp, 550.dp),

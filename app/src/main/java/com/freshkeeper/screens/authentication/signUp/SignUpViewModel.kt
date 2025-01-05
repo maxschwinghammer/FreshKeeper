@@ -195,7 +195,10 @@ class SignUpViewModel
                         activity,
                         executor,
                         object : BiometricPrompt.AuthenticationCallback() {
-                            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                            override fun onAuthenticationSucceeded(
+                                result: BiometricPrompt
+                                    .AuthenticationResult,
+                            ) {
                                 continuation.resume(true)
                             }
 

@@ -35,75 +35,84 @@ fun CurrentInventoriesSection(
     Column(
         modifier = Modifier.fillMaxWidth(),
     ) {
-        InventoryCategory(
-            title = stringResource(R.string.fridge),
-            image = painterResource(id = R.drawable.fridge),
-            items = fridgeItems,
-            editProductSheetState = editProductSheetState,
-        )
+        if (fridgeItems.isNotEmpty()) {
+            InventoryCategory(
+                title = stringResource(R.string.fridge),
+                image = painterResource(id = R.drawable.fridge),
+                items = fridgeItems,
+                editProductSheetState = editProductSheetState,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        if (cupboardItems.isNotEmpty()) {
+            InventoryCategory(
+                title = stringResource(R.string.cupboard),
+                image = painterResource(id = R.drawable.cupboard),
+                items = cupboardItems,
+                editProductSheetState = editProductSheetState,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        InventoryCategory(
-            title = stringResource(R.string.cupboard),
-            image = painterResource(id = R.drawable.cupboard),
-            items = cupboardItems,
-            editProductSheetState = editProductSheetState,
-        )
+        if (freezerItems.isNotEmpty()) {
+            InventoryCategory(
+                title = stringResource(R.string.freezer),
+                image = painterResource(id = R.drawable.freezer),
+                items = freezerItems,
+                editProductSheetState = editProductSheetState,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        if (countertopItems.isNotEmpty()) {
+            InventoryCategory(
+                title = stringResource(R.string.counter_top),
+                image = painterResource(id = R.drawable.counter_top),
+                items = countertopItems,
+                editProductSheetState = editProductSheetState,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        InventoryCategory(
-            title = stringResource(R.string.freezer),
-            image = painterResource(id = R.drawable.freezer),
-            items = freezerItems,
-            editProductSheetState = editProductSheetState,
-        )
+        if (cellarItems.isNotEmpty()) {
+            InventoryCategory(
+                title = stringResource(R.string.cellar),
+                image = painterResource(id = R.drawable.cellar),
+                items = cellarItems,
+                editProductSheetState = editProductSheetState,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        if (bakeryItems.isNotEmpty()) {
+            InventoryCategory(
+                title = stringResource(R.string.bread_box),
+                image = painterResource(id = R.drawable.bread_box),
+                items = bakeryItems,
+                editProductSheetState = editProductSheetState,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        InventoryCategory(
-            title = stringResource(R.string.counter_top),
-            image = painterResource(id = R.drawable.counter_top),
-            items = countertopItems,
-            editProductSheetState = editProductSheetState,
-        )
+        if (spiceItems.isNotEmpty()) {
+            InventoryCategory(
+                title = stringResource(R.string.spice_rack),
+                image = painterResource(id = R.drawable.spice_rack),
+                items = spiceItems,
+                editProductSheetState = editProductSheetState,
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
-
-        InventoryCategory(
-            title = stringResource(R.string.cellar),
-            image = painterResource(id = R.drawable.cellar),
-            items = cellarItems,
-            editProductSheetState = editProductSheetState,
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        InventoryCategory(
-            title = stringResource(R.string.bread_box),
-            image = painterResource(id = R.drawable.bread_box),
-            items = bakeryItems,
-            editProductSheetState = editProductSheetState,
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        InventoryCategory(
-            title = stringResource(R.string.spice_rack),
-            image = painterResource(id = R.drawable.spice_rack),
-            items = spiceItems,
-            editProductSheetState = editProductSheetState,
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        InventoryCategory(
-            title = stringResource(R.string.pantry),
-            image = painterResource(id = R.drawable.pantry),
-            items = pantryItems,
-            editProductSheetState = editProductSheetState,
-        )
-        Spacer(modifier = Modifier.height(6.dp))
+        if (pantryItems.isNotEmpty()) {
+            InventoryCategory(
+                title = stringResource(R.string.pantry),
+                image = painterResource(id = R.drawable.pantry),
+                items = pantryItems,
+                editProductSheetState = editProductSheetState,
+            )
+            Spacer(modifier = Modifier.height(6.dp))
+        }
     }
 }

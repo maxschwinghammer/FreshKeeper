@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -39,7 +40,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.freshkeeper.R
-import com.freshkeeper.screens.home.formatDate
+import com.freshkeeper.screens.home.convertToUnixTimestamp
 import com.freshkeeper.screens.home.isValidDate
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
@@ -60,13 +61,13 @@ import kotlinx.coroutines.launch
 @Composable
 fun BarcodeScannerSheet(
     sheetState: SheetState,
-    onBarcodeScanned: (String, String) -> Unit,
+    onBarcodeScanned: (String, Long) -> Unit,
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     var isBarcodeScanned by remember { mutableStateOf(false) }
     val isExpiryDateScanned by remember { mutableStateOf(false) }
     var scannedBarcode by remember { mutableStateOf("") }
-    var expiryDate by remember { mutableStateOf("") }
+    var expiryDate by remember { mutableLongStateOf(0L) }
     val coroutineScope = rememberCoroutineScope()
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -214,7 +215,7 @@ fun BarcodeScannerSheet(
                                                                     if (isValidDate(match.value)) {
                                                                         isFullDateFound = true
                                                                         expiryDate =
-                                                                            formatDate(
+                                                                            convertToUnixTimestamp(
                                                                                 match.value,
                                                                             )
                                                                         onBarcodeScanned(
@@ -241,7 +242,7 @@ fun BarcodeScannerSheet(
                                                             for (match in monthYearMatches) {
                                                                 if (isValidDate(match.value)) {
                                                                     expiryDate =
-                                                                        formatDate(
+                                                                        convertToUnixTimestamp(
                                                                             match.value,
                                                                         )
                                                                     onBarcodeScanned(
@@ -293,7 +294,7 @@ fun BarcodeScannerSheet(
                             .align(Alignment.BottomCenter)
                             .padding(bottom = 20.dp),
                     onClick = {
-                        onBarcodeScanned(scannedBarcode, "")
+                        onBarcodeScanned(scannedBarcode, 0L)
                         coroutineScope.launch {
                             manualInputSheetState.show()
                             sheetState.hide()

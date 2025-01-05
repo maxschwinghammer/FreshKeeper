@@ -2,7 +2,7 @@
 accompanistFlowlayout = "0.36.0"
 accompanistPagerVersion = "0.31.2-alpha"
 activityCompose = "1.9.3"
-agp = "8.7.2"
+agp = "8.7.3"
 androidxCredentials = "1.5.0-beta01"
 androidxJunit = "1.1.5"
 appauthVersion = "0.11.1"
@@ -18,6 +18,7 @@ coreKtx = "1.15.0"
 espressoCore = "3.6.1"
 firebaseFirestore = "25.1.1"
 googleCore = "3.4.1"
+googleServicesVersion = "4.4.2"
 imageLabelingVersion = "17.0.9"
 journeyappsZxingAndroidEmbedded = "4.3.0"
 json = "20210307"
@@ -29,6 +30,7 @@ navigationCompose = "2.8.5"
 navigationRuntimeKtx = "2.8.5"
 okhttp = "5.0.0-alpha.14"
 playServicesBase = "18.5.0"
+playServicesIdentity = "18.1.0"
 playServicesMlkitImageLabelingVersion = "16.0.8"
 playServicesMlkitTextRecognition = "19.0.1"
 playServicesMlkitTextRecognitionCommon = "19.1.0"
@@ -54,6 +56,7 @@ androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJu
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
 com-journeyapps-zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "journeyappsZxingAndroidEmbedded" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore", version.ref = "firebaseFirestore" }
+gms-google-services = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
 gms-play-services-mlkit-image-labeling = { module = "com.google.android.gms:play-services-mlkit-image-labeling", version.ref = "playServicesMlkitImageLabelingVersion" }
 google-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPagerVersion" }
 google-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistPagerVersion" }
@@ -63,6 +66,7 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 json = { group = "org.json", name = "json", version.ref = "json" }
 accompanist-flowlayout = { group = "com.google.accompanist", name = "accompanist-flowlayout", version.ref = "accompanistFlowlayout" }
 barcode-scanning = { group = "com.google.mlkit", name = "barcode-scanning", version.ref = "barcodeScanning" }
+play-services-identity = { module = "com.google.android.gms:play-services-identity", version.ref = "playServicesIdentity" }
 text-recognition = { group = "com.google.mlkit", name = "text-recognition", version.ref = "textRecognition" }
 camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraCamera2" }
 camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraLifecycle" }

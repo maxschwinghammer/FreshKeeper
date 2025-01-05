@@ -29,6 +29,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -67,11 +68,10 @@ fun InventoryScreen(
     notificationsViewModel: NotificationsViewModel,
 ) {
     var scannedBarcode by remember { mutableStateOf("") }
-    var expiryDate by remember { mutableStateOf("") }
+    var expiryDate by remember { mutableLongStateOf(0L) }
 
     val coroutineScope = rememberCoroutineScope()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val foodRecognitionSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val editProductSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val barcodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -112,7 +112,12 @@ fun InventoryScreen(
                         modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 16.dp),
                     )
 
-                    Box(modifier = Modifier.weight(1f).padding(bottom = 5.dp)) {
+                    Box(
+                        modifier =
+                            Modifier
+                                .weight(1f)
+                                .padding(bottom = 5.dp),
+                    ) {
                         LazyColumn(
                             state = listState,
                             modifier = Modifier.padding(top = 10.dp, start = 15.dp, end = 15.dp),
@@ -171,7 +176,7 @@ fun InventoryScreen(
             }
 
             if (sheetState.isVisible) {
-                AddEntrySheet(sheetState, barcodeSheetState, foodRecognitionSheetState, manualInputSheetState)
+                AddEntrySheet(sheetState, barcodeSheetState, manualInputSheetState)
             }
 
             if (barcodeSheetState.isVisible) {
@@ -215,6 +220,7 @@ fun InventoryScreen(
                 ) {
                     foodItem?.let { it1 ->
                         EditProductSheet(
+                            sheetState = editProductSheetState,
                             foodItem = it1,
                         )
                     }

@@ -28,6 +28,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
@@ -47,10 +48,11 @@ fun SignInScreen(
     googleViewModel: GoogleViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
+    val activity = context as FragmentActivity
 
     LaunchedEffect(Unit) {
         launchCredManBottomSheet(context) { result ->
-            googleViewModel.onSignInWithGoogle(result, navController)
+            googleViewModel.onSignInWithGoogle(result, navController, context, activity)
         }
     }
 
@@ -118,7 +120,12 @@ fun SignInScreen(
                     Spacer(Modifier.padding(4.dp))
 
                     AuthenticationButton(buttonText = R.string.sign_in_with_google) { credential ->
-                        googleViewModel.onSignInWithGoogle(credential, navController)
+                        googleViewModel.onSignInWithGoogle(
+                            credential,
+                            navController,
+                            context,
+                            activity,
+                        )
                     }
 
                     Spacer(Modifier.padding(8.dp))
