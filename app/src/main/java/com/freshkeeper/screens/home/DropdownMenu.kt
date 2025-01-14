@@ -19,19 +19,17 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.toSize
 import com.freshkeeper.R
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
@@ -40,20 +38,52 @@ import java.util.Locale
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun DropdownMenu(
-    options: List<String>,
+    selectedId: Int,
+    onSelect: (Int) -> Unit,
+    type: String,
     label: String,
 ) {
-    var selectedText by
-        when (label) {
-            stringResource(R.string.category) -> {
-                remember { mutableStateOf("Dairy goods") }
-            }
-            else -> {
-                remember { mutableStateOf("Fridge") }
-            }
-        }
-    var textFieldSize by remember { mutableStateOf(Size.Zero) }
     var expanded by remember { mutableStateOf(false) }
+    var selectedIdState by remember { mutableIntStateOf(selectedId) }
+    val selected = stringResource(id = selectedIdState)
+
+    val storageLocations =
+        listOf(
+            R.string.fridge,
+            R.string.cupboard,
+            R.string.freezer,
+            R.string.counter_top,
+            R.string.cellar,
+            R.string.bread_box,
+            R.string.spice_rack,
+            R.string.pantry,
+            R.string.fruit_basket,
+            R.string.other,
+        )
+    val categories =
+        listOf(
+            R.string.dairy_goods,
+            R.string.vegetables,
+            R.string.fruits,
+            R.string.meat,
+            R.string.fish,
+            R.string.frozen_goods,
+            R.string.spices,
+            R.string.bread,
+            R.string.confectionery,
+            R.string.drinks,
+            R.string.noodles,
+            R.string.canned_goods,
+            R.string.candy,
+            R.string.other,
+        )
+
+    val options =
+        when (type) {
+            "storageLocations" -> storageLocations
+            "categories" -> categories
+            else -> emptyList()
+        }
 
     val icon =
         if (expanded) {
@@ -62,20 +92,15 @@ fun DropdownMenu(
             Icons.Filled.KeyboardArrowDown
         }
 
-    var translatedSelectedText = stringResource(id = getCategoryStringRes(selectedText))
-
     Column {
         OutlinedTextField(
-            value = translatedSelectedText,
-            onValueChange = { translatedSelectedText = it },
+            value = selected,
+            onValueChange = {},
             modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .onGloballyPositioned { coordinates ->
-                        textFieldSize = coordinates.size.toSize()
-                    },
+            Modifier
+                .fillMaxWidth(),
             label = { Text(label, color = TextColor) },
-            leadingIcon = { LeadingIcon(selectedText) },
+            leadingIcon = { LeadingIcon(selected) },
             trailingIcon = {
                 Icon(
                     icon,
@@ -85,28 +110,28 @@ fun DropdownMenu(
             },
             readOnly = true,
             colors =
-                OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = ComponentStrokeColor,
-                    focusedBorderColor = AccentGreenColor,
-                    unfocusedLabelColor = TextColor,
-                    focusedLabelColor = AccentGreenColor,
-                    focusedTextColor = TextColor,
-                    unfocusedTextColor = TextColor,
-                ),
+            OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = ComponentStrokeColor,
+                focusedBorderColor = AccentTurquoiseColor,
+                unfocusedLabelColor = TextColor,
+                focusedLabelColor = AccentTurquoiseColor,
+                focusedTextColor = TextColor,
+                unfocusedTextColor = TextColor,
+            ),
         )
 
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
             modifier =
-                Modifier
-                    .width(200.dp)
-                    .background(GreyColor)
-                    .clip(RoundedCornerShape(10.dp)),
+            Modifier
+                .width(200.dp)
+                .background(GreyColor)
+                .clip(RoundedCornerShape(10.dp)),
         ) {
             options.forEach { option ->
-                val translatedLabel = stringResource(id = getCategoryStringRes(option))
-                val iconName = option.lowercase(Locale.ROOT).replace(" ", "_")
+                val optionString = stringResource(id = option)
+                val iconName = optionString.lowercase(Locale.ROOT).replace(" ", "_")
                 val iconResId =
                     try {
                         R.drawable::class.java.getDeclaredField(iconName).getInt(null)
@@ -115,18 +140,19 @@ fun DropdownMenu(
                     }
 
                 DropdownMenuItem(
-                    text = { Text(translatedLabel, color = TextColor) },
+                    text = { Text(optionString, color = TextColor) },
                     leadingIcon = {
                         iconResId?.let {
                             Image(
                                 painter = painterResource(id = it),
-                                contentDescription = option,
+                                contentDescription = optionString,
                                 modifier = Modifier.size(25.dp),
                             )
                         }
                     },
                     onClick = {
-                        selectedText = option
+                        selectedIdState = option
+                        onSelect(option)
                         expanded = false
                     },
                 )
@@ -134,34 +160,6 @@ fun DropdownMenu(
         }
     }
 }
-
-fun getCategoryStringRes(category: String): Int =
-    when (category) {
-        "Dairy goods" -> R.string.dairy_goods
-        "Vegetables" -> R.string.vegetables
-        "Fruits" -> R.string.fruits
-        "Meat" -> R.string.meat
-        "Fish" -> R.string.fish
-        "Frozen Goods" -> R.string.frozen_goods
-        "Spices" -> R.string.spices
-        "Bread" -> R.string.bread
-        "Confectionery" -> R.string.confectionery
-        "Drinks" -> R.string.drinks
-        "Noodles" -> R.string.noodles
-        "Canned goods" -> R.string.canned_goods
-        "Candy" -> R.string.candy
-        "Fridge" -> R.string.fridge
-        "Cupboard" -> R.string.cupboard
-        "Freezer" -> R.string.freezer
-        "Counter top" -> R.string.counter_top
-        "Cellar" -> R.string.cellar
-        "Bread box" -> R.string.bread_box
-        "Spice rack" -> R.string.spice_rack
-        "Pantry" -> R.string.pantry
-        "Fruit basket" -> R.string.fruit_basket
-        "Other" -> R.string.other
-        else -> R.string.other
-    }
 
 @Suppress("ktlint:standard:function-naming")
 @Composable

@@ -13,19 +13,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.navigation.BottomNavigationBar
-import com.freshkeeper.screens.notifications.NotificationsViewModel
+import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun TipsScreen(
-    navController: NavHostController,
-    notificationsViewModel: NotificationsViewModel,
-) {
+fun TipsScreen(navController: NavHostController) {
+    val notificationsViewModel: NotificationsViewModel = hiltViewModel()
+
     FreshKeeperTheme {
         Scaffold(
             bottomBar = {

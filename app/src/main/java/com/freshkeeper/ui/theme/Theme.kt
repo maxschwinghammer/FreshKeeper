@@ -5,7 +5,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme =
@@ -13,7 +12,7 @@ private val DarkColorScheme =
         primary = WhiteColor,
         secondary = WhiteColor,
         tertiary = WhiteColor,
-        background = Color(0xFF010101),
+        background = BackgroundColor,
     )
 
 @Suppress("ktlint:standard:function-naming")

@@ -27,7 +27,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.freshkeeper.R
-import com.freshkeeper.screens.notifications.NotificationsViewModel
+import com.freshkeeper.model.BarItem
+import com.freshkeeper.model.Icon
+import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.ui.theme.ActiveIndicatorColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.BottomNavIconColor

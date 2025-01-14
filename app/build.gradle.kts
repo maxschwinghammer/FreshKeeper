@@ -22,11 +22,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.freshkeeper"
-        buildConfigField(
-            "String",
-            "GOOGLE_API_KEY",
-            "\"${project.properties["GOOGLE_API_KEY"]}\"",
-        )
     }
 
     buildTypes {
@@ -55,8 +50,11 @@ android {
 }
 
 dependencies {
+    implementation("com.vanniktech:android-image-cropper:4.6.0")
+    implementation(libs.com.journeyapps.zxing.android.embedded)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.biometric)
     implementation(libs.androidx.credentials)
     implementation(libs.androidx.credentials.playServicesAuth)
     implementation(libs.androidx.core.ktx)
@@ -81,16 +79,24 @@ dependencies {
     implementation(libs.camera.view)
     implementation(libs.coil.compose)
     implementation(libs.firebase.auth)
-    implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.ui.auth)
+    implementation(libs.firebase.firestore)
+    implementation(libs.gms.google.services)
+    implementation(libs.gms.play.services.mlkit.image.labeling)
+    implementation(libs.google.accompanist.pager)
+    implementation(libs.google.accompanist.pager.indicators)
+    implementation(libs.google.core)
     implementation(libs.hilt)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.json)
     implementation(libs.junit)
     implementation(libs.material)
+    implementation(libs.mlkit.image.labeling)
     implementation(libs.okhttp)
     implementation(libs.play.services.auth)
     implementation(libs.play.services.base)
+    implementation(libs.play.services.identity)
     implementation(libs.play.services.mlkit.text.recognition)
     implementation(libs.play.services.mlkit.text.recognition.common)
     implementation(libs.text.recognition)
@@ -100,6 +106,7 @@ dependencies {
     implementation(libs.firebase.auth.ktx)
     implementation(libs.firebase.common.ktx)
     implementation(libs.firebase.firestore.ktx)
+    implementation(libs.image.labeling.common)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

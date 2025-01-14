@@ -20,6 +20,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,9 +30,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.freshkeeper.R
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
@@ -40,10 +44,13 @@ import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun StatisticsSection(
-    navController: NavController,
-    mostWastedItems: List<Pair<String, String>>,
-) {
+fun StatisticsSection(navController: NavController) {
+    val viewModel: HouseholdViewModel = hiltViewModel()
+    val totalFoodWaste by viewModel.totalFoodWaste.observeAsState(0)
+    val averageFoodWastePerDay by viewModel.averageFoodWastePerDay.observeAsState(0f)
+    val daysWithNoWaste by viewModel.daysWithNoWaste.observeAsState(0)
+    val mostWastedItems by viewModel.mostWastedItems.observeAsState(emptyList())
+
     Card(
         modifier =
             Modifier
@@ -62,7 +69,7 @@ fun StatisticsSection(
             ) {
                 Text(
                     text = stringResource(R.string.statistics),
-                    color = AccentGreenColor,
+                    color = AccentTurquoiseColor,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                 )
@@ -87,26 +94,29 @@ fun StatisticsSection(
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text =
-                    stringResource(R.string.total_food_waste) + ": 15 " +
+                    stringResource(R.string.total_food_waste) + ": $totalFoodWaste " +
                         stringResource(R.string.items),
                 color = TextColor,
                 fontSize = 14.sp,
             )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text =
-                    stringResource(R.string.average_food_waste) + ": 0.5 " +
-                        stringResource(R.string.items_per_day),
+                    stringResource(R.string.average_food_waste) +
+                        ": ${"%.2f".format(averageFoodWastePerDay)} " +
+                        stringResource(R.string.items),
                 color = TextColor,
                 fontSize = 14.sp,
             )
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text =
-                    stringResource(R.string.days_without_waste) + ": 25 " +
+                    stringResource(R.string.days_without_waste) + ": $daysWithNoWaste " +
                         stringResource(R.string.days),
                 color = TextColor,
                 fontSize = 14.sp,
             )
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(R.string.most_wasted_food_items) + ":",
                 color = TextColor,
@@ -156,7 +166,7 @@ fun StatisticsSection(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text = stringResource(R.string.waste_reduction) + ": 20%",
                 color = TextColor,
@@ -164,4 +174,5 @@ fun StatisticsSection(
             )
         }
     }
+    Spacer(modifier = Modifier.height(20.dp))
 }

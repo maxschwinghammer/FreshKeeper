@@ -30,7 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.toSize
 import com.freshkeeper.R
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
@@ -87,9 +87,9 @@ fun UnitSelector(unit: MutableState<String>) {
             colors =
                 OutlinedTextFieldDefaults.colors(
                     unfocusedBorderColor = ComponentStrokeColor,
-                    focusedBorderColor = AccentGreenColor,
+                    focusedBorderColor = AccentTurquoiseColor,
                     unfocusedLabelColor = TextColor,
-                    focusedLabelColor = AccentGreenColor,
+                    focusedLabelColor = AccentTurquoiseColor,
                     focusedTextColor = TextColor,
                     unfocusedTextColor = TextColor,
                 ),

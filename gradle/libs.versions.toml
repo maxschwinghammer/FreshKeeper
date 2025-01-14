@@ -1,52 +1,72 @@
 [versions]
 accompanistFlowlayout = "0.36.0"
+accompanistPagerVersion = "0.31.2-alpha"
 activityCompose = "1.9.3"
-agp = "8.7.2"
+agp = "8.7.3"
 androidxCredentials = "1.5.0-beta01"
 androidxJunit = "1.1.5"
 appauthVersion = "0.11.1"
 barcodeScanning = "17.3.0"
 barcodeScanningCommon = "17.0.0"
-cameraCamera2 = "1.4.0"
-cameraLifecycle = "1.4.0"
-cameraView = "1.4.0"
+biometric = "1.1.0"
+cameraCamera2 = "1.4.1"
+cameraLifecycle = "1.4.1"
+cameraView = "1.4.1"
 coilCompose = "2.7.0"
-composeBom = "2024.11.00"
+composeBom = "2024.12.01"
 coreKtx = "1.15.0"
 espressoCore = "3.6.1"
+firebaseFirestore = "25.1.1"
+googleCore = "3.4.1"
+googleServicesVersion = "4.4.2"
+imageLabelingVersion = "17.0.9"
+journeyappsZxingAndroidEmbedded = "4.3.0"
 json = "20210307"
 junit = "4.13.2"
 kotlin = "2.0.0"
 lifecycleRuntimeKtx = "2.8.7"
 material = "1.12.0"
-navigationCompose = "2.8.4"
-navigationRuntimeKtx = "2.8.4"
+navigationCompose = "2.8.5"
+navigationRuntimeKtx = "2.8.5"
 okhttp = "5.0.0-alpha.14"
 playServicesBase = "18.5.0"
+playServicesIdentity = "18.1.0"
+playServicesMlkitImageLabelingVersion = "16.0.8"
 playServicesMlkitTextRecognition = "19.0.1"
 playServicesMlkitTextRecognitionCommon = "19.1.0"
-runtimeLivedata = "1.7.5"
+runtimeLivedata = "1.7.6"
 textRecognition = "16.0.1"
 googleid = "1.1.1"
 runner = "1.6.2"
-playServicesAuth = "21.2.0"
+playServicesAuth = "21.3.0"
 firebaseCommonKtx = "21.0.0"
 firebaseAuthKtx = "23.1.0"
-firebaseBom = "33.6.0"
+firebaseBom = "33.7.0"
 firebaseAuth = "23.1.0"
 firebaseUiAuth = "8.0.0"
 firebaseAnalytics = "22.1.2"
 firebaseFirestoreKtx = "25.1.1"
 hilt = "2.52"
 hilt-navigation-compose = "1.2.0"
+imageLabelingCommon = "18.1.0"
 
 [libraries]
+androidx-biometric = { module = "androidx.biometric:biometric", version.ref = "biometric" }
 androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
+com-journeyapps-zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "journeyappsZxingAndroidEmbedded" }
+firebase-firestore = { module = "com.google.firebase:firebase-firestore", version.ref = "firebaseFirestore" }
+gms-google-services = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
+gms-play-services-mlkit-image-labeling = { module = "com.google.android.gms:play-services-mlkit-image-labeling", version.ref = "playServicesMlkitImageLabelingVersion" }
+google-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPagerVersion" }
+google-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistPagerVersion" }
+google-core = { module = "com.google.zxing:core", version.ref = "googleCore" }
+mlkit-image-labeling = { module = "com.google.mlkit:image-labeling", version.ref = "imageLabelingVersion" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 json = { group = "org.json", name = "json", version.ref = "json" }
 accompanist-flowlayout = { group = "com.google.accompanist", name = "accompanist-flowlayout", version.ref = "accompanistFlowlayout" }
 barcode-scanning = { group = "com.google.mlkit", name = "barcode-scanning", version.ref = "barcodeScanning" }
+play-services-identity = { module = "com.google.android.gms:play-services-identity", version.ref = "playServicesIdentity" }
 text-recognition = { group = "com.google.mlkit", name = "text-recognition", version.ref = "textRecognition" }
 camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraCamera2" }
 camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "cameraLifecycle" }
@@ -88,6 +108,7 @@ firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-fires
 hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
+image-labeling-common = { group = "com.google.mlkit", name = "image-labeling-common", version.ref = "imageLabelingCommon" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -1,7 +1,6 @@
 package com.freshkeeper.screens.authentication.signUp
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,39 +9,39 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.screens.authentication.AuthenticationButton
-import com.freshkeeper.screens.authentication.launchCredManBottomSheet
+import com.freshkeeper.screens.authentication.GoogleViewModel
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
-import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.LightGreyColor
 import com.freshkeeper.ui.theme.TextColor
@@ -53,22 +52,13 @@ import com.freshkeeper.ui.theme.WhiteColor
 fun SignUpScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModel: SignUpViewModel = hiltViewModel(),
+    googleViewModel: GoogleViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
-
-    val email = viewModel.email.collectAsState()
-    val password = viewModel.password.collectAsState()
-    val confirmPassword = viewModel.confirmPassword.collectAsState()
-
-    LaunchedEffect(Unit) {
-        launchCredManBottomSheet(context) { result ->
-            viewModel.onSignUpWithGoogle(result, navController)
-        }
-    }
+    val activity = context as FragmentActivity
 
     FreshKeeperTheme {
-        Scaffold { it ->
+        Scaffold {
             Box(
                 modifier =
                     Modifier
@@ -103,93 +93,25 @@ fun SignUpScreen(
 
                     Spacer(Modifier.padding(12.dp))
 
-                    OutlinedTextField(
-                        singleLine = true,
-                        modifier =
-                            modifier
-                                .fillMaxWidth()
-                                .padding(16.dp, 4.dp)
-                                .clip(RoundedCornerShape(20.dp))
-                                .border(2.dp, ComponentStrokeColor, RoundedCornerShape(20.dp)),
-                        value = email.value,
-                        onValueChange = { viewModel.updateEmail(it) },
-                        placeholder = { Text(stringResource(R.string.email)) },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Email,
-                                contentDescription = "Email",
-                            )
-                        },
-                    )
-
-                    OutlinedTextField(
-                        singleLine = true,
-                        modifier =
-                            modifier
-                                .fillMaxWidth()
-                                .padding(16.dp, 4.dp)
-                                .clip(RoundedCornerShape(20.dp))
-                                .border(2.dp, ComponentStrokeColor, RoundedCornerShape(20.dp)),
-                        value = password.value,
-                        onValueChange = { viewModel.updatePassword(it) },
-                        placeholder = { Text(stringResource(R.string.password)) },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Lock,
-                                contentDescription = "Email",
-                            )
-                        },
-                        visualTransformation = PasswordVisualTransformation(),
-                    )
-
-                    OutlinedTextField(
-                        singleLine = true,
-                        modifier =
-                            modifier
-                                .fillMaxWidth()
-                                .padding(16.dp, 4.dp)
-                                .clip(RoundedCornerShape(20.dp))
-                                .border(2.dp, ComponentStrokeColor, RoundedCornerShape(20.dp)),
-                        value = confirmPassword.value,
-                        onValueChange = { viewModel.updateConfirmPassword(it) },
-                        placeholder = { Text(stringResource(R.string.confirm_password)) },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = Icons.Default.Lock,
-                                contentDescription = "Email",
-                            )
-                        },
-                        visualTransformation = PasswordVisualTransformation(),
-                    )
-
-                    Spacer(modifier = Modifier.padding(4.dp))
-
-                    Text(
-                        text = stringResource(R.string.sign_up_info),
-                        fontSize = 12.sp,
-                        color = LightGreyColor,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.padding(horizontal = 20.dp),
-                    )
-
-                    Spacer(Modifier.padding(8.dp))
-
                     Button(
-                        onClick = { viewModel.onSignUpClick(navController) },
-                        colors =
-                            ButtonDefaults.buttonColors(
-                                containerColor = WhiteColor,
-                            ),
+                        onClick = { navController.navigate("emailSignUp") },
+                        colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
                         modifier =
-                            modifier
+                            Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp, 0.dp),
                     ) {
+                        Icon(
+                            imageVector = Icons.Default.Email,
+                            contentDescription = "Email icon",
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                        )
+
                         Text(
-                            text = stringResource(R.string.sign_up),
-                            fontSize = 16.sp,
+                            text = stringResource(R.string.sign_up_with_email),
                             color = ComponentBackgroundColor,
-                            modifier = modifier.padding(0.dp, 6.dp),
+                            fontSize = 16.sp,
+                            modifier = Modifier.padding(0.dp, 6.dp),
                         )
                     }
 
@@ -204,10 +126,19 @@ fun SignUpScreen(
                     Spacer(Modifier.padding(4.dp))
 
                     AuthenticationButton(R.string.sign_up_with_google) { credential ->
-                        viewModel.onSignUpWithGoogle(credential, navController)
+                        googleViewModel.onSignInWithGoogle(
+                            credential,
+                            navController,
+                            context,
+                            activity,
+                        )
                     }
 
-                    Spacer(Modifier.padding(4.dp))
+                    Spacer(Modifier.padding(8.dp))
+
+                    SignUpInfo()
+
+                    Spacer(Modifier.padding(8.dp))
 
                     TextButton(
                         onClick = { navController.navigate("signIn") },
@@ -224,4 +155,40 @@ fun SignUpScreen(
             }
         }
     }
+}
+
+@Composable
+fun signUpInfoText(): AnnotatedString =
+    buildAnnotatedString {
+        pushStyle(SpanStyle(color = WhiteColor, fontSize = 14.sp))
+        append(stringResource(R.string.sign_up_info_1) + " ")
+
+        pushStyle(SpanStyle(color = AccentTurquoiseColor))
+        withLink(LinkAnnotation.Url(url = "https://github.com/maxschwinghammer/FreshKeeper/blob/master/terms-of-service.md")) {
+            append(stringResource(R.string.terms_of_service))
+        }
+
+        pushStyle(SpanStyle(color = WhiteColor))
+        append(" " + stringResource(R.string.sign_up_info_2) + " ")
+
+        pushStyle(SpanStyle(color = AccentTurquoiseColor))
+        withLink(LinkAnnotation.Url(url = "https://github.com/maxschwinghammer/FreshKeeper/blob/master/privacy-policy.md")) {
+            append(stringResource(R.string.privacy_policy))
+        }
+    }
+
+@Suppress("ktlint:standard:function-naming")
+@Composable
+fun SignUpInfo() {
+    val annotatedText = signUpInfoText()
+
+    Text(
+        text = annotatedText,
+        style =
+            TextStyle(
+                fontSize = 12.sp,
+                color = LightGreyColor,
+                textAlign = TextAlign.Center,
+            ),
+    )
 }
