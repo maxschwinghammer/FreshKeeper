@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation("com.vanniktech:android-image-cropper:4.6.0")
     implementation(libs.com.journeyapps.zxing.android.embedded)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.activity.compose)

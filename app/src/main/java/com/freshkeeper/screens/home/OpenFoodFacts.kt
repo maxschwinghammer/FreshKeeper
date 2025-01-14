@@ -2,6 +2,7 @@ package com.freshkeeper.screens.home
 
 import android.content.Context
 import android.widget.Toast
+import com.freshkeeper.model.ProductData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -58,7 +59,11 @@ suspend fun fetchProductDataFromBarcode(
 }
 
 fun splitQuantityAndUnit(quantityWithUnit: String): Pair<String, String> {
-    val match = Regex("^(\\d+)(.*)$").find(quantityWithUnit.trim())
+    val cleanedQuantityWithUnit =
+        quantityWithUnit
+            .replace(Regex("\\(.*?\\)"), "")
+            .trim()
+    val match = Regex("^(\\d+)(.*)$").find(cleanedQuantityWithUnit)
     val quantity = match?.groups?.get(1)?.value ?: ""
     val unit =
         match

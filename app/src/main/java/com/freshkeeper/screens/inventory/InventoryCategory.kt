@@ -29,7 +29,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.freshkeeper.screens.home.viewmodel.FoodItem
+import com.freshkeeper.model.FoodItem
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -44,6 +44,7 @@ fun InventoryCategory(
     image: Painter,
     items: List<FoodItem>,
     editProductSheetState: SheetState,
+    onItemClick: (FoodItem) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -86,7 +87,10 @@ fun InventoryCategory(
                         Modifier
                             .clip(RoundedCornerShape(10.dp))
                             .clickable {
-                                coroutineScope.launch { editProductSheetState.show() }
+                                coroutineScope.launch {
+                                    onItemClick(item)
+                                    editProductSheetState.show()
+                                }
                             }.border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                 ) {

@@ -25,7 +25,8 @@ import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.model.User
 import com.freshkeeper.navigation.BottomNavigationBar
-import com.freshkeeper.screens.notifications.NotificationsViewModel
+import com.freshkeeper.screens.notificationSettings.viewmodel.NotificationSettingsViewModel
+import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
@@ -34,10 +35,10 @@ import com.freshkeeper.ui.theme.TextColor
 @Composable
 fun NotificationSettingsScreen(
     navController: NavHostController,
-    notificationsViewModel: NotificationsViewModel,
     modifier: Modifier = Modifier,
-    viewModel: NotificationSettingsScreenViewModel = hiltViewModel(),
 ) {
+    val viewModel: NotificationSettingsViewModel = hiltViewModel()
+    val notificationsViewModel: NotificationsViewModel = hiltViewModel()
     val user by viewModel.user.collectAsState(initial = User())
 
     FreshKeeperTheme {

@@ -2,6 +2,7 @@ package com.freshkeeper
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
@@ -37,6 +38,8 @@ class MainActivity : FragmentActivity() {
         updateLocale(savedLanguage ?: Locale.getDefault().language)
 
         requestPermissions()
+
+        handleDeepLink(intent)
 
         setContent {
             FreshKeeperApp { languageCode ->
@@ -92,8 +95,23 @@ class MainActivity : FragmentActivity() {
             )
         }
     }
+
+    private fun handleDeepLink(intent: Intent) {
+        intent.data?.let { uri ->
+            if (uri.host == "freshkeeper.de" && uri.pathSegments.contains("invite")) {
+                val householdId = uri.getQueryParameter("householdId")
+                if (householdId != null) {
+                    openHousehold(householdId)
+                }
+            }
+        }
+    }
+
+    private fun openHousehold(householdId: String) {
+    }
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun FreshKeeperApp(onLocaleChange: (String) -> Unit) {

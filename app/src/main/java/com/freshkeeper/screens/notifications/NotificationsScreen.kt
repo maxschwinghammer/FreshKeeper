@@ -26,21 +26,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
+import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun NotificationsScreen(
-    navController: NavHostController,
-    notificationsViewModel: NotificationsViewModel,
-) {
+fun NotificationsScreen(navController: NavHostController) {
+    val notificationsViewModel: NotificationsViewModel = hiltViewModel()
+
     LaunchedEffect(Unit) {
         notificationsViewModel.updateBadgeCount(5)
     }

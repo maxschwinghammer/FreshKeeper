@@ -20,6 +20,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,8 +30,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.freshkeeper.R
+import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -40,13 +44,13 @@ import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun StatisticsSection(
-    navController: NavController,
-    totalFoodWaste: Int,
-    averageFoodWastePerDay: Float,
-    daysWithNoWaste: Int,
-    mostWastedItems: List<Pair<String, String>>,
-) {
+fun StatisticsSection(navController: NavController) {
+    val viewModel: HouseholdViewModel = hiltViewModel()
+    val totalFoodWaste by viewModel.totalFoodWaste.observeAsState(0)
+    val averageFoodWastePerDay by viewModel.averageFoodWastePerDay.observeAsState(0f)
+    val daysWithNoWaste by viewModel.daysWithNoWaste.observeAsState(0)
+    val mostWastedItems by viewModel.mostWastedItems.observeAsState(emptyList())
+
     Card(
         modifier =
             Modifier

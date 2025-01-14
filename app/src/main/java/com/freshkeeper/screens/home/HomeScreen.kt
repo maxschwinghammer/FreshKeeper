@@ -44,15 +44,16 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
+import com.freshkeeper.model.FoodItem
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
-import com.freshkeeper.screens.home.viewmodel.FoodItem
 import com.freshkeeper.screens.home.viewmodel.HomeViewModel
-import com.freshkeeper.screens.notifications.NotificationsViewModel
+import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.sheets.AddEntrySheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
 import com.freshkeeper.sheets.EditProductSheet
@@ -71,8 +72,9 @@ import kotlinx.coroutines.launch
 fun HomeScreen(
     navController: NavHostController,
     viewModel: HomeViewModel = viewModel(),
-    notificationsViewModel: NotificationsViewModel,
 ) {
+    val notificationsViewModel: NotificationsViewModel = hiltViewModel()
+
     var scannedBarcode by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
 
@@ -287,7 +289,7 @@ fun HomeScreen(
                     containerColor = ComponentBackgroundColor,
                 ) {
                     foodItem?.let { item ->
-                        EditProductSheet(foodItem = item, sheetState = editProductSheetState)
+                        EditProductSheet(editProductSheetState, item)
                     }
                 }
             }

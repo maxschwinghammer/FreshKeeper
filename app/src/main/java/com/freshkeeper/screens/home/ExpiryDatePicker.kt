@@ -19,6 +19,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -43,12 +44,14 @@ fun ExpiryDatePicker(
     onDateChange: (Long?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var selectedDate by remember { mutableStateOf(expiryDate) }
+    var selectedDate by remember {
+        mutableLongStateOf(if ((expiryDate ?: 0L) <= 0L) System.currentTimeMillis() else expiryDate!!)
+    }
     var showModal by remember { mutableStateOf(false) }
     val currentDate = System.currentTimeMillis()
 
     OutlinedTextField(
-        value = selectedDate?.let { convertMillisToDate(it) } ?: convertMillisToDate(currentDate),
+        value = convertMillisToDate(selectedDate),
         onValueChange = { },
         label = { Text(stringResource(R.string.expiry_date)) },
         placeholder = { Text(convertMillisToDate(currentDate)) },
@@ -78,9 +81,11 @@ fun ExpiryDatePicker(
 
     if (showModal) {
         DatePickerModal(
-            initialDate = selectedDate ?: currentDate,
+            initialDate = selectedDate,
             onDateSelected = { date ->
-                selectedDate = date
+                if (date != null) {
+                    selectedDate = date
+                }
                 onDateChange(date)
             },
             onDismiss = { showModal = false },
@@ -90,6 +95,7 @@ fun ExpiryDatePicker(
 
 fun convertMillisToDate(millis: Long): String {
     val formatter = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+    formatter.timeZone = java.util.TimeZone.getDefault()
     return formatter.format(Date(millis))
 }
 
@@ -101,14 +107,18 @@ fun DatePickerModal(
     onDateSelected: (Long?) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    val datePickerState = rememberDatePickerState(initialSelectedDateMillis = initialDate)
+    val datePickerState =
+        rememberDatePickerState(
+            initialSelectedDateMillis = initialDate ?: System.currentTimeMillis(),
+        )
 
     DatePickerDialog(
         modifier = Modifier.size(400.dp, 550.dp),
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = {
-                onDateSelected(datePickerState.selectedDateMillis)
+                val selectedDate = datePickerState.selectedDateMillis ?: System.currentTimeMillis()
+                onDateSelected(selectedDate)
                 onDismiss()
             }) {
                 Text("OK", color = AccentTurquoiseColor)

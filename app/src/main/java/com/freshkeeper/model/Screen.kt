@@ -1,4 +1,4 @@
-package com.freshkeeper.navigation
+package com.freshkeeper.model
 
 sealed class Screen(
     val route: String,
@@ -26,6 +26,8 @@ sealed class Screen(
     data object ProfileSettings : Screen("profileSettings")
 
     data object NotificationSettings : Screen("notificationSettings")
+
+    data object HouseholdSettings : Screen("householdSettings")
 
     data object Statistics : Screen("statistics")
 

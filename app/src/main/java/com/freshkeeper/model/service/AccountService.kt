@@ -43,4 +43,10 @@ interface AccountService {
     suspend fun deleteAccount()
 
     suspend fun sendEmailVerification()
+
+    suspend fun getHouseholdId(): String
+
+    suspend fun updateProfilePicture(base64Image: String)
+
+    suspend fun getProfilePicture(): String?
 }

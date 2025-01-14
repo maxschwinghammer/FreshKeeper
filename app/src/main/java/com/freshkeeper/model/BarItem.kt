@@ -1,4 +1,4 @@
-package com.freshkeeper.navigation
+package com.freshkeeper.model
 
 data class BarItem(
     val title: String,

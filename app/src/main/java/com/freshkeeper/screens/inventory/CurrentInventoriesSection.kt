@@ -15,6 +15,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.freshkeeper.R
+import com.freshkeeper.model.FoodItem
+import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
@@ -22,6 +24,7 @@ import com.freshkeeper.R
 fun CurrentInventoriesSection(
     viewModel: InventoryViewModel = viewModel(),
     editProductSheetState: SheetState,
+    onItemClick: (FoodItem) -> Unit,
 ) {
     val fridgeItems by viewModel.fridgeItems.observeAsState(emptyList())
     val cupboardItems by viewModel.cupboardItems.observeAsState(emptyList())
@@ -43,6 +46,7 @@ fun CurrentInventoriesSection(
                 image = painterResource(id = R.drawable.fridge),
                 items = fridgeItems,
                 editProductSheetState = editProductSheetState,
+                onItemClick = onItemClick,
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -53,6 +57,7 @@ fun CurrentInventoriesSection(
                 image = painterResource(id = R.drawable.cupboard),
                 items = cupboardItems,
                 editProductSheetState = editProductSheetState,
+                onItemClick = onItemClick,
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -63,6 +68,7 @@ fun CurrentInventoriesSection(
                 image = painterResource(id = R.drawable.freezer),
                 items = freezerItems,
                 editProductSheetState = editProductSheetState,
+                onItemClick = onItemClick,
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -73,6 +79,7 @@ fun CurrentInventoriesSection(
                 image = painterResource(id = R.drawable.counter_top),
                 items = countertopItems,
                 editProductSheetState = editProductSheetState,
+                onItemClick = onItemClick,
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -83,6 +90,7 @@ fun CurrentInventoriesSection(
                 image = painterResource(id = R.drawable.cellar),
                 items = cellarItems,
                 editProductSheetState = editProductSheetState,
+                onItemClick = onItemClick,
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -93,6 +101,7 @@ fun CurrentInventoriesSection(
                 image = painterResource(id = R.drawable.bread_box),
                 items = bakeryItems,
                 editProductSheetState = editProductSheetState,
+                onItemClick = onItemClick,
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -103,6 +112,7 @@ fun CurrentInventoriesSection(
                 image = painterResource(id = R.drawable.spice_rack),
                 items = spiceItems,
                 editProductSheetState = editProductSheetState,
+                onItemClick = onItemClick,
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -113,6 +123,7 @@ fun CurrentInventoriesSection(
                 image = painterResource(id = R.drawable.pantry),
                 items = pantryItems,
                 editProductSheetState = editProductSheetState,
+                onItemClick = onItemClick,
             )
             Spacer(modifier = Modifier.height(6.dp))
         }
@@ -123,6 +134,7 @@ fun CurrentInventoriesSection(
                 image = painterResource(id = R.drawable.fruit_basket),
                 items = fruitBasketItems,
                 editProductSheetState = editProductSheetState,
+                onItemClick = onItemClick,
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
@@ -133,6 +145,7 @@ fun CurrentInventoriesSection(
                 image = painterResource(id = R.drawable.other),
                 items = otherItems,
                 editProductSheetState = editProductSheetState,
+                onItemClick = onItemClick,
             )
             Spacer(modifier = Modifier.height(16.dp))
         }

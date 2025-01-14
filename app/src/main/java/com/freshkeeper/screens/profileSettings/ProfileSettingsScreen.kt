@@ -1,5 +1,7 @@
 package com.freshkeeper.screens.profileSettings
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -29,20 +31,22 @@ import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.model.User
 import com.freshkeeper.navigation.BottomNavigationBar
-import com.freshkeeper.screens.notifications.NotificationsViewModel
+import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
+import com.freshkeeper.screens.profileSettings.viewmodel.ProfileSettingsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun ProfileSettingsScreen(
     navController: NavHostController,
-    notificationsViewModel: NotificationsViewModel,
     modifier: Modifier = Modifier,
-    viewModel: ProfileSettingsScreenViewModel = hiltViewModel(),
+    viewModel: ProfileSettingsViewModel = hiltViewModel(),
 ) {
+    val notificationsViewModel: NotificationsViewModel = hiltViewModel()
     val user by viewModel.user.collectAsState(initial = User())
 
     FreshKeeperTheme {
@@ -86,8 +90,10 @@ fun ProfileSettingsScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(15.dp),
                         ) {
-                            DisplayNameCard(user.displayName) {
-                                viewModel.onUpdateDisplayNameClick(it)
+                            user.displayName?.let { user ->
+                                DisplayNameCard(user) {
+                                    viewModel.onUpdateDisplayNameClick(it)
+                                }
                             }
 
                             if (user.isAnonymous) {
@@ -106,6 +112,13 @@ fun ProfileSettingsScreen(
                                 }
                             } else {
                                 EmailCard(viewModel = viewModel, navController = navController, user = user)
+                                ProfilePictureCard(
+                                    profilePictureBase64 = viewModel.profilePicture.toString(),
+                                    onProfilePictureUpdated = { base64 ->
+                                        viewModel.updateProfilePicture(base64)
+                                    },
+                                )
+                                UserIdCard(user.id)
                                 ResetPasswordCard(viewModel = viewModel, navController = navController)
                                 BiometricSwitch()
                                 SignOutCard {

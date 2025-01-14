@@ -13,7 +13,9 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -31,6 +33,8 @@ import kotlinx.coroutines.launch
 fun InviteSheet(
     qrCodeSheetState: SheetState,
     inviteSheetState: SheetState,
+    addUserByIdSheetState: SheetState,
+    householdId: String,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -63,7 +67,7 @@ fun InviteSheet(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                AddEntryButton(
+          /*      AddEntryButton(
                     text = "QR-Code",
                     iconId = R.drawable.qr_code,
                     onClick = {
@@ -73,12 +77,13 @@ fun InviteSheet(
                         }
                     },
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))*/
                 AddEntryButton(
                     text = stringResource(R.string.share),
                     iconId = R.drawable.share,
                     onClick = {
-                        val message = context.getString(R.string.invite_message)
+//                        val inviteLink = "https://freshkeeper.de/invite?householdId=$householdId"
+                        val message = context.getString(R.string.invite_message) + " " + householdId
 
                         val shareIntent =
                             Intent(Intent.ACTION_SEND).apply {
@@ -89,6 +94,17 @@ fun InviteSheet(
                         context.startActivity(
                             Intent.createChooser(shareIntent, context.getString(R.string.share)),
                         )
+                    },
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                AddEntryButton(
+                    text = stringResource(R.string.add_user_by_id),
+                    iconId = R.drawable.invite,
+                    onClick = {
+                        coroutineScope.launch {
+                            inviteSheetState.hide()
+                            addUserByIdSheetState.show()
+                        }
                     },
                 )
             }

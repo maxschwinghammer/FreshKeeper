@@ -2,7 +2,7 @@
 -keep class androidx.credentials.playservices.** {
   *;
 }
--keepclassmembers class com.freshkeeper.screens.home.viewmodel.FoodItem {
+-keepclassmembers class com.freshkeeper.model.FoodItem {
     public <init>();
 }
 -keep class com.google.android.gms.** { *; }

@@ -97,8 +97,8 @@ fun DropdownMenu(
             value = selected,
             onValueChange = {},
             modifier =
-                Modifier
-                    .fillMaxWidth(),
+            Modifier
+                .fillMaxWidth(),
             label = { Text(label, color = TextColor) },
             leadingIcon = { LeadingIcon(selected) },
             trailingIcon = {
@@ -110,24 +110,24 @@ fun DropdownMenu(
             },
             readOnly = true,
             colors =
-                OutlinedTextFieldDefaults.colors(
-                    unfocusedBorderColor = ComponentStrokeColor,
-                    focusedBorderColor = AccentTurquoiseColor,
-                    unfocusedLabelColor = TextColor,
-                    focusedLabelColor = AccentTurquoiseColor,
-                    focusedTextColor = TextColor,
-                    unfocusedTextColor = TextColor,
-                ),
+            OutlinedTextFieldDefaults.colors(
+                unfocusedBorderColor = ComponentStrokeColor,
+                focusedBorderColor = AccentTurquoiseColor,
+                unfocusedLabelColor = TextColor,
+                focusedLabelColor = AccentTurquoiseColor,
+                focusedTextColor = TextColor,
+                unfocusedTextColor = TextColor,
+            ),
         )
 
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
             modifier =
-                Modifier
-                    .width(200.dp)
-                    .background(GreyColor)
-                    .clip(RoundedCornerShape(10.dp)),
+            Modifier
+                .width(200.dp)
+                .background(GreyColor)
+                .clip(RoundedCornerShape(10.dp)),
         ) {
             options.forEach { option ->
                 val optionString = stringResource(id = option)

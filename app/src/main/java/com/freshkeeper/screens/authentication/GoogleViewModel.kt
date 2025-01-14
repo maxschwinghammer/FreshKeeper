@@ -11,12 +11,18 @@ import androidx.navigation.NavController
 import com.freshkeeper.ERROR_TAG
 import com.freshkeeper.R
 import com.freshkeeper.UNEXPECTED_CREDENTIAL
+import com.freshkeeper.model.User
 import com.freshkeeper.model.service.AccountService
 import com.freshkeeper.screens.AppViewModel
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
+import com.google.firebase.Firebase
+import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -27,7 +33,14 @@ class GoogleViewModel
     constructor(
         private val accountService: AccountService,
     ) : AppViewModel() {
+        @Suppress("ktlint:standard:backing-property-naming")
         private val _errorMessage = MutableStateFlow<Int?>(null)
+
+        private val _email = MutableStateFlow("")
+        val email: StateFlow<String> = _email.asStateFlow()
+
+        private val _displayName = MutableStateFlow("")
+        val displayName: StateFlow<String> = _displayName.asStateFlow()
 
         fun onSignInWithGoogle(
             credential: Credential,
@@ -55,6 +68,12 @@ class GoogleViewModel
                                 credential.data,
                             )
                         accountService.signInWithGoogle(googleIdTokenCredential.idToken)
+                        val user = Firebase.auth.currentUser
+                        user?.let {
+                            _email.value = it.email.orEmpty()
+                            _displayName.value = it.displayName.orEmpty()
+                            saveUserToFirestore(it.uid, _email.value, _displayName.value)
+                        }
                         navController.navigate("home") { launchSingleTop = true }
                     } else {
                         Log.e(ERROR_TAG, UNEXPECTED_CREDENTIAL)
@@ -129,4 +148,43 @@ class GoogleViewModel
 
                 biometricPrompt.authenticate(promptInfo)
             }
+
+        private fun saveUserToFirestore(
+            userId: String,
+            email: String,
+            displayName: String,
+        ) {
+            val firestore = FirebaseFirestore.getInstance()
+
+            firestore
+                .collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
+                    if (!documentSnapshot.exists()) {
+                        val user =
+                            User(
+                                id = userId,
+                                email = email,
+                                displayName = displayName,
+                                createdAt = System.currentTimeMillis(),
+                                provider = "google",
+                            )
+
+                        firestore
+                            .collection("users")
+                            .document(userId)
+                            .set(user)
+                            .addOnSuccessListener {
+                                Log.d("SignUp", "User successfully saved to Firestore with ID: $userId")
+                            }.addOnFailureListener { e ->
+                                Log.e("SignUp", "Error saving user to Firestore: ${e.message}", e)
+                            }
+                    } else {
+                        Log.d("SignUp", "User already exists in Firestore with ID: $userId")
+                    }
+                }.addOnFailureListener { e ->
+                    Log.e("SignUp", "Error checking if user exists in Firestore: ${e.message}", e)
+                }
+        }
     }

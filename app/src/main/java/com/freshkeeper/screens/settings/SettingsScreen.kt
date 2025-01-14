@@ -35,10 +35,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.navigation.BottomNavigationBar
-import com.freshkeeper.screens.notifications.NotificationsViewModel
+import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
@@ -50,9 +51,10 @@ import java.util.Locale
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
-    notificationsViewModel: NotificationsViewModel,
     onLocaleChange: (String) -> Unit,
 ) {
+    val notificationsViewModel: NotificationsViewModel = hiltViewModel()
+
     var selectedLanguage by remember { mutableStateOf(Locale.getDefault().language) }
     val termsOfServiceUrl = "https://github.com/maxschwinghammer/FreshKeeper/blob/master/terms-of-service.md"
     val privacyPolicyUrl = "https://github.com/maxschwinghammer/FreshKeeper/blob/master/privacy-policy.md"
@@ -92,67 +94,21 @@ fun SettingsScreen(
                     verticalArrangement = Arrangement.spacedBy(15.dp),
                 ) {
                     item {
-                        Button(
-                            onClick = { navController.navigate("profileSettings") },
-                            colors =
-                                ButtonDefaults.buttonColors(
-                                    containerColor = Color.Transparent,
-                                    contentColor = TextColor,
-                                ),
-                            shape = RoundedCornerShape(10.dp),
-                            border = BorderStroke(1.dp, ComponentStrokeColor),
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Start,
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.profile_settings),
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = TextColor,
-                                    modifier =
-                                        Modifier.padding(
-                                            top = 10.dp,
-                                            bottom = 10.dp,
-                                            end = 10.dp,
-                                        ),
-                                )
-                            }
+                        SettingsButton(stringResource(R.string.profile_settings)) {
+                            navController.navigate("profileSettings")
                         }
                     }
                     item {
-                        Button(
-                            onClick = { navController.navigate("notificationSettings") },
-                            colors =
-                                ButtonDefaults.buttonColors(
-                                    containerColor = Color.Transparent,
-                                    contentColor = TextColor,
-                                ),
-                            shape = RoundedCornerShape(10.dp),
-                            border = BorderStroke(1.dp, ComponentStrokeColor),
-                            modifier = Modifier.fillMaxWidth(),
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.Start,
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.notification_settings),
-                                    fontSize = 16.sp,
-                                    fontWeight = FontWeight.Bold,
-                                    color = TextColor,
-                                    modifier =
-                                        Modifier.padding(
-                                            top = 10.dp,
-                                            bottom = 10.dp,
-                                            end = 10.dp,
-                                        ),
-                                )
-                            }
+                        SettingsButton(stringResource(R.string.household_settings)) {
+                            navController.navigate("householdSettings")
                         }
                     }
+                    item {
+                        SettingsButton(stringResource(R.string.notification_settings)) {
+                            navController.navigate("notificationSettings")
+                        }
+                    }
+
                     item {
                         LanguageDropdownMenu(
                             currentLanguage = selectedLanguage,
@@ -166,6 +122,7 @@ fun SettingsScreen(
                                     .padding(top = 16.dp),
                         )
                     }
+
                     item {
                         Column(
                             modifier =
@@ -182,21 +139,53 @@ fun SettingsScreen(
                                 color = TextColor,
                             )
                             ExternalLinkButton(
-                                url = termsOfServiceUrl,
-                                label = stringResource(R.string.settings_terms_of_service),
+                                termsOfServiceUrl,
+                                stringResource(R.string.settings_terms_of_service),
                             )
                             ExternalLinkButton(
-                                url = privacyPolicyUrl,
-                                label = stringResource(R.string.settings_privacy_policy),
+                                privacyPolicyUrl,
+                                stringResource(R.string.settings_privacy_policy),
                             )
                             ExternalLinkButton(
-                                url = imprintUrl,
-                                label = stringResource(R.string.settings_imprint),
+                                imprintUrl,
+                                stringResource(R.string.settings_imprint),
                             )
                         }
                     }
                 }
             }
+        }
+    }
+}
+
+@Suppress("ktlint:standard:function-naming")
+@Composable
+fun SettingsButton(
+    label: String,
+    onClick: () -> Unit,
+) {
+    Button(
+        onClick = onClick,
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent,
+                contentColor = TextColor,
+            ),
+        shape = RoundedCornerShape(10.dp),
+        border = BorderStroke(1.dp, ComponentStrokeColor),
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+        ) {
+            Text(
+                text = label,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                color = TextColor,
+                modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, end = 10.dp),
+            )
         }
     }
 }

@@ -50,7 +50,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
                 <data android:scheme="${appAuthRedirectScheme}" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https"
+                    android:host="freshkeeper.de"
+                    android:pathPrefix="/invite" />
+            </intent-filter>
         </activity>
+        <activity
+            android:name="com.canhub.cropper.CropImageActivity"
+            android:theme="@style/Theme.AppCompat"
+            android:configChanges="orientation|screenSize|keyboardHidden|keyboard|screenLayout|smallestScreenSize"
+            android:launchMode="singleTask" />
 
     </application>
 </manifest>

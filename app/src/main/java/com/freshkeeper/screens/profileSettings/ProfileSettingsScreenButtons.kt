@@ -1,8 +1,17 @@
 package com.freshkeeper.screens.profileSettings
 
+import android.content.ClipboardManager
 import android.content.Context
+import android.graphics.Bitmap
+import android.media.Image
+import android.net.Uri
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -11,9 +20,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
@@ -34,8 +45,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -46,8 +59,13 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
+import com.canhub.cropper.CropImageView
 import com.freshkeeper.R
 import com.freshkeeper.model.User
+import com.freshkeeper.screens.profileSettings.viewmodel.ProfileSettingsViewModel
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -179,7 +197,7 @@ fun DisplayNameCard(
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun EmailCard(
-    viewModel: ProfileSettingsScreenViewModel,
+    viewModel: ProfileSettingsViewModel,
     navController: NavController,
     user: User,
 ) {
@@ -262,10 +280,115 @@ fun EmailCard(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+@Suppress("ktlint:standard:function-naming")
+@Composable
+fun ProfilePictureCard(
+    profilePictureBase64: String?,
+    onProfilePictureUpdated: (String) -> Unit,
+) {
+    var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
+
+    val context = LocalContext.current
+
+    val cropImage =
+        rememberLauncherForActivityResult(
+            contract = CropImageContract(),
+            onResult = { result ->
+                if (result.isSuccessful) {
+                    val croppedImageUri = result.uriContent
+                    croppedImageUri?.let {
+                        val compressedBitmap = compressImage(it, context)
+                        compressedBitmap?.let { bitmap ->
+                            val base64String = convertBitmapToBase64(bitmap)
+                            onProfilePictureUpdated(base64String)
+                        }
+                    }
+                }
+            },
+        )
+
+    val pickImage =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.GetContent(),
+            onResult = { uri ->
+                uri?.let {
+                    selectedImageUri = it
+                    cropImage.launch(
+                        CropImageContractOptions(
+                            uri = it,
+                            cropImageOptions =
+                                CropImageOptions(
+                                    guidelines = CropImageView.Guidelines.ON,
+                                    outputCompressFormat = Bitmap.CompressFormat.PNG,
+                                    fixAspectRatio = true,
+                                    aspectRatioX = 1,
+                                    aspectRatioY = 1,
+                                ),
+                        ),
+                    )
+                }
+            },
+        )
+
+    AccountCenterCard(
+        title = "Profile picture",
+        icon = painterResource(R.drawable.profile),
+        modifier =
+            Modifier
+                .card()
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+    ) {
+        pickImage.launch("image/*")
+    }
+
+    if (profilePictureBase64 != null) {
+        val bitmap = remember { convertBase64ToBitmap(profilePictureBase64) }
+
+        if (bitmap != null) {
+            Image(
+                bitmap = bitmap.asImageBitmap(),
+                contentDescription = "Profile picture",
+                modifier =
+                    Modifier
+                        .size(80.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, ComponentStrokeColor, CircleShape),
+            )
+        }
+    } else {
+        selectedImageUri?.let {
+            val bitmap = remember { getBitmapFromUri(context, it) }
+
+            if (bitmap != null) {
+                Image(
+                    bitmap = bitmap.asImageBitmap(),
+                    contentDescription = "Profile picture",
+                    modifier =
+                        Modifier
+                            .size(80.dp)
+                            .clip(CircleShape)
+                            .border(2.dp, ComponentStrokeColor, CircleShape),
+                )
+            }
+        } ?: run {
+            Icon(
+                imageVector = Icons.Default.AccountCircle,
+                contentDescription = "No profile picture",
+                modifier =
+                    Modifier
+                        .size(80.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, ComponentStrokeColor, CircleShape),
+            )
+        }
+    }
+}
+
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun ResetPasswordCard(
-    viewModel: ProfileSettingsScreenViewModel,
+    viewModel: ProfileSettingsViewModel,
     navController: NavController,
 ) {
     var showResetPasswordDialog by remember { mutableStateOf(false) }
@@ -564,5 +687,24 @@ fun BiometricSwitch() {
                 onDismissRequest = { showBiometricDialog = false },
             )
         }
+    }
+}
+
+@Suppress("ktlint:standard:function-naming")
+@Composable
+fun UserIdCard(userId: String) {
+    val context = LocalContext.current
+    val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
+    AccountCenterCard(
+        title = "User ID: $userId",
+        icon = painterResource(R.drawable.copy),
+        modifier =
+            Modifier
+                .card()
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+    ) {
+        val clip = android.content.ClipData.newPlainText("User ID", userId)
+        clipboardManager.setPrimaryClip(clip)
     }
 }

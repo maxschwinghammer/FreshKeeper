@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.freshkeeper.R
+import com.freshkeeper.model.User
 import com.freshkeeper.model.service.AccountService
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.screens.authentication.isValidEmail
@@ -109,14 +110,16 @@ class SignUpViewModel
             userId: String,
             email: String,
         ) {
-            val db = FirebaseFirestore.getInstance()
+            val firestore = FirebaseFirestore.getInstance()
             val user =
-                mapOf(
-                    "email" to email,
-                    "createdAt" to System.currentTimeMillis(),
+                User(
+                    id = userId,
+                    email = email,
+                    createdAt = System.currentTimeMillis(),
+                    provider = "email",
                 )
 
-            db
+            firestore
                 .collection("users")
                 .document(userId)
                 .set(user)

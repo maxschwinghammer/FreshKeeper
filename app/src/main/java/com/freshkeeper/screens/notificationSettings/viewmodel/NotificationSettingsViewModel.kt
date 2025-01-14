@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.notificationSettings
+package com.freshkeeper.screens.notificationSettings.viewmodel
 
 import com.freshkeeper.model.User
 import com.freshkeeper.model.service.AccountService
@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 
 @HiltViewModel
-class NotificationSettingsScreenViewModel
+class NotificationSettingsViewModel
     @Inject
     constructor(
         private val accountService: AccountService,

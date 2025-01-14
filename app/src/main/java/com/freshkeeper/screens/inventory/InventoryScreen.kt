@@ -41,13 +41,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
+import com.freshkeeper.model.FoodItem
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
-import com.freshkeeper.screens.home.viewmodel.FoodItem
-import com.freshkeeper.screens.notifications.NotificationsViewModel
+import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
+import com.freshkeeper.screens.profileSettings.viewmodel.ProfileSettingsViewModel
 import com.freshkeeper.sheets.AddEntrySheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
 import com.freshkeeper.sheets.EditProductSheet
@@ -63,10 +65,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun InventoryScreen(
-    navController: NavHostController,
-    notificationsViewModel: NotificationsViewModel,
-) {
+fun InventoryScreen(navController: NavHostController) {
+    val notificationsViewModel: NotificationsViewModel = hiltViewModel()
+    val profileSettingsViewModel: ProfileSettingsViewModel = hiltViewModel()
+
     var scannedBarcode by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
 
@@ -75,7 +77,7 @@ fun InventoryScreen(
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val editProductSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val barcodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val foodItem by remember { mutableStateOf<FoodItem?>(null) }
+    var foodItem by remember { mutableStateOf<FoodItem?>(null) }
 
     val listState = rememberLazyListState()
     val showTransition by remember {
@@ -125,6 +127,9 @@ fun InventoryScreen(
                             item {
                                 CurrentInventoriesSection(
                                     editProductSheetState = editProductSheetState,
+                                    onItemClick = { item ->
+                                        foodItem = item
+                                    },
                                 )
                             }
                             item {
@@ -216,11 +221,8 @@ fun InventoryScreen(
                     sheetState = editProductSheetState,
                     containerColor = ComponentBackgroundColor,
                 ) {
-                    foodItem?.let { it1 ->
-                        EditProductSheet(
-                            sheetState = editProductSheetState,
-                            foodItem = it1,
-                        )
+                    foodItem?.let { item ->
+                        EditProductSheet(editProductSheetState, item)
                     }
                 }
             }

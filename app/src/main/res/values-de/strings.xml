@@ -69,11 +69,13 @@
     <string name="household">Haushalt</string>
     <string name="in_days">In %1$d Tagen</string>
     <string name="invite">Einladen</string>
+    <string name="invite_people">Personen einladen</string>
     <string name="invite_text">Laden Sie eine Person in Ihren Haushalt ein</string>
     <string name="invite_message">Hallo! Mit der App FreshKeeper behalte ich den Überblick
         über meine Lebensmittel und minimiere Verschwendung 🥬🍎\n\nDie App erinnert mich
         rechtzeitig an ablaufende Produkte und hilft mir, klüger zu konsumieren 📅\n\nProbier
-        es aus und werde Teil unseres Haushalts! Hier ist der Link:\nhttps://example.com/invite
+        es aus und werde Teil unseres Haushalts! Gebe zum Beitrete einfach folgende Haushalts-ID in
+        den Einstellungen ein:
     </string>
     <string name="item">Produkt</string>
     <string name="items">Produkte</string>
@@ -155,7 +157,7 @@
     <string name="see_more">Mehr</string>
     <string name="see_statistics">Statistiken anzeigen</string>
     <string name="settings">Einstellungen</string>
-    <string name="share">Teilen</string>
+    <string name="share">Haushalts-ID teilen</string>
     <string name="sign_in">Einloggen</string>
     <string name="sign_in_description">Sie haben bereits ein Konto?
         Klicken Sie hier, um sich anzumelden!</string>
@@ -203,4 +205,24 @@
     <string name="settings_privacy_policy">Datenschutzerklärung</string>
     <string name="settings_imprint">Impressum</string>
     <string name="legal_information">Rechtliche Hinweise</string>
+    <string name="household_name">Name des Haushalts</string>
+    <string name="household_settings">Haushaltseinstellungen</string>
+    <string name="create">Erstellen</string>
+    <string name="create_household">Haushalt erstellen</string>
+    <string name="select_household_type">Haushaltstyp wählen</string>
+    <string name="household_type">Haushaltstyp</string>
+    <string name="delete_household">Haushalt löschen</string>
+    <string name="delete_household_description">Der Haushalt wird endgültig gelöscht und kann nicht
+        wiederhergestellt werden.</string>
+    <string name="leave_household">Haushalt verlassenq</string>
+    <string name="leave_household_description">Sie werden aus dem Haushalt entfernt und verlieren
+        alle aktuellen Bestände.</string>
+    <string name="add_user_by_id">Benutzer mit ID hinzufügen</string>
+    <string name="user_not_found">Benutzer nicht gefunden</string>
+    <string name="user_added">Benutzer hinzugefügt</string>
+    <string name="join">Beitreten</string>
+    <string name="join_household">Haushalt beitreten</string>
+    <string name="enter_household_id">Haushalts-ID eingeben</string>
+    <string name="household_id">Haushalts-ID</string>
+    <string name="household_not_found">Haushalt nicht gefunden</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.freshkeeper.navigation
+package com.freshkeeper.model
 
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector

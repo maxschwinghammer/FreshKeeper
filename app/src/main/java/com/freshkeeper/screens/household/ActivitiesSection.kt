@@ -38,6 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.freshkeeper.R
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -49,7 +50,8 @@ import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun ActivitiesSection(viewModel: HouseholdViewModel) {
+fun ActivitiesSection() {
+    val viewModel: HouseholdViewModel = hiltViewModel()
     val activities by viewModel.activities.observeAsState(emptyList())
     val drawableMap =
         mapOf(
@@ -58,103 +60,106 @@ fun ActivitiesSection(viewModel: HouseholdViewModel) {
             "add_location" to R.drawable.plus,
             "edit" to R.drawable.edit,
             "remove" to R.drawable.remove,
-            "update_quantity" to R.drawable.update,
+            "update" to R.drawable.update,
         )
 
     fun getDrawableId(imageId: String): Int = drawableMap[imageId] ?: R.drawable.plus
 
-    Card(
-        modifier =
-            Modifier
-                .fillMaxWidth()
-                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(15.dp)),
-        shape = RoundedCornerShape(15.dp),
-        colors = CardDefaults.cardColors(containerColor = ComponentBackgroundColor),
-    ) {
-        Column(
-            modifier = Modifier.padding(16.dp),
+    if (activities?.isNotEmpty() == true) {
+        Card(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, ComponentStrokeColor, RoundedCornerShape(15.dp)),
+            shape = RoundedCornerShape(15.dp),
+            colors = CardDefaults.cardColors(containerColor = ComponentBackgroundColor),
         ) {
-            Text(
-                text = stringResource(id = R.string.activities),
-                color = AccentTurquoiseColor,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            activities?.forEach { activity ->
-                var offsetX by remember { mutableFloatStateOf(0f) }
-                val animatedOffsetX by animateDpAsState(targetValue = offsetX.dp, label = "")
+            Column(
+                modifier = Modifier.padding(16.dp),
+            ) {
+                Text(
+                    text = stringResource(id = R.string.activities),
+                    color = AccentTurquoiseColor,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+                activities?.forEach { activity ->
+                    var offsetX by remember { mutableFloatStateOf(0f) }
+                    val animatedOffsetX by animateDpAsState(targetValue = offsetX.dp, label = "")
 
-                Box(
-                    modifier =
-                        Modifier
-                            .fillMaxWidth()
-                            .height(IntrinsicSize.Max)
-                            .background(Color.Transparent),
-                ) {
-                    Row(
+                    Box(
                         modifier =
                             Modifier
-                                .fillMaxSize()
-                                .clip(RoundedCornerShape(10.dp))
-                                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
-                                .background(RedColor)
-                                .padding(end = 16.dp),
-                        horizontalArrangement = Arrangement.End,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.delete),
-                            contentDescription = "Delete Icon",
-                            tint = WhiteColor,
-                            modifier = Modifier.size(15.dp),
-                        )
-                    }
-
-                    Row(
-                        modifier =
-                            Modifier
-                                .offset { IntOffset(animatedOffsetX.roundToPx(), 0) }
                                 .fillMaxWidth()
-                                .clip(RoundedCornerShape(10.dp))
-                                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
-                                .background(ComponentBackgroundColor, RoundedCornerShape(10.dp))
-                                .padding(10.dp)
-                                .pointerInput(Unit) {
-                                    detectHorizontalDragGestures(
-                                        onDragEnd = {
-                                            if (offsetX < -100) {
-                                                viewModel.removeActivity(activity)
-                                                offsetX = 0f
-                                            } else {
-                                                offsetX = 0f
-                                            }
-                                        },
-                                        onHorizontalDrag = { _, dragAmount ->
-                                            offsetX =
-                                                (offsetX + dragAmount)
-                                                    .coerceAtMost(0f)
-                                        },
-                                    )
-                                },
-                        verticalAlignment = Alignment.CenterVertically,
+                                .height(IntrinsicSize.Max)
+                                .background(Color.Transparent),
                     ) {
-                        Icon(
-                            painter = painterResource(id = getDrawableId(activity.iconId)),
-                            contentDescription = null,
-                            tint = WhiteColor,
-                            modifier = Modifier.size(15.dp),
-                        )
-                        Text(
-                            text = activity.text,
-                            color = TextColor,
-                            fontSize = 14.sp,
-                            modifier = Modifier.padding(horizontal = 10.dp).fillMaxWidth(),
-                        )
+                        Row(
+                            modifier =
+                                Modifier
+                                    .fillMaxSize()
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+                                    .background(RedColor)
+                                    .padding(end = 16.dp),
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.delete),
+                                contentDescription = "Delete Icon",
+                                tint = WhiteColor,
+                                modifier = Modifier.size(15.dp),
+                            )
+                        }
+
+                        Row(
+                            modifier =
+                                Modifier
+                                    .offset { IntOffset(animatedOffsetX.roundToPx(), 0) }
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+                                    .background(ComponentBackgroundColor, RoundedCornerShape(10.dp))
+                                    .padding(10.dp)
+                                    .pointerInput(Unit) {
+                                        detectHorizontalDragGestures(
+                                            onDragEnd = {
+                                                if (offsetX < -100) {
+                                                    viewModel.removeActivity(activity)
+                                                    offsetX = 0f
+                                                } else {
+                                                    offsetX = 0f
+                                                }
+                                            },
+                                            onHorizontalDrag = { _, dragAmount ->
+                                                offsetX =
+                                                    (offsetX + dragAmount)
+                                                        .coerceAtMost(0f)
+                                            },
+                                        )
+                                    },
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Icon(
+                                painter = painterResource(id = getDrawableId(activity.type)),
+                                contentDescription = null,
+                                tint = WhiteColor,
+                                modifier = Modifier.size(15.dp),
+                            )
+                            Text(
+                                text = activity.text,
+                                color = TextColor,
+                                fontSize = 14.sp,
+                                modifier = Modifier.padding(horizontal = 10.dp).fillMaxWidth(),
+                            )
+                        }
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
-                Spacer(modifier = Modifier.height(8.dp))
             }
         }
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
