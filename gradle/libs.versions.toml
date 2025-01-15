@@ -2,7 +2,7 @@
 accompanistFlowlayout = "0.36.0"
 accompanistPagerVersion = "0.31.2-alpha"
 activityCompose = "1.9.3"
-agp = "8.7.3"
+agp = "8.8.0"
 androidxCredentials = "1.5.0-beta01"
 androidxJunit = "1.1.5"
 appauthVersion = "0.11.1"
