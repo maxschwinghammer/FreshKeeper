@@ -2,6 +2,8 @@ package com.freshkeeper.screens.inventory
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,18 +13,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -36,7 +43,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -49,12 +58,12 @@ import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
-import com.freshkeeper.screens.profileSettings.viewmodel.ProfileSettingsViewModel
 import com.freshkeeper.sheets.AddEntrySheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
 import com.freshkeeper.sheets.EditProductSheet
 import com.freshkeeper.sheets.ManualInputSheet
 import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -67,7 +76,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun InventoryScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
-    val profileSettingsViewModel: ProfileSettingsViewModel = hiltViewModel()
 
     var scannedBarcode by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
@@ -86,6 +94,8 @@ fun InventoryScreen(navController: NavHostController) {
         }
     }
 
+    var searchQuery by remember { mutableStateOf("") }
+
     FreshKeeperTheme {
         Scaffold(
             bottomBar = {
@@ -98,7 +108,7 @@ fun InventoryScreen(navController: NavHostController) {
                     BottomNavigationBar(selectedIndex = 1, navController, notificationsViewModel)
                 }
             },
-        ) {
+        ) { it ->
             Box(
                 modifier =
                     Modifier
@@ -113,6 +123,55 @@ fun InventoryScreen(navController: NavHostController) {
                         color = TextColor,
                         modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 16.dp),
                     )
+                    Row(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        OutlinedTextField(
+                            value = searchQuery,
+                            onValueChange = { searchQuery = it },
+                            label = { Text(stringResource(R.string.search), color = TextColor) },
+                            trailingIcon = {
+                                IconButton(onClick = { /* Handle search action */ }) {
+                                    Icon(Icons.Filled.Search, contentDescription = "Search")
+                                }
+                            },
+                            modifier =
+                                Modifier
+                                    .weight(1f),
+                            colors =
+                                OutlinedTextFieldDefaults.colors(
+                                    unfocusedBorderColor = ComponentStrokeColor,
+                                    focusedBorderColor = AccentTurquoiseColor,
+                                    unfocusedLabelColor = TextColor,
+                                    focusedLabelColor = AccentTurquoiseColor,
+                                ),
+                            shape = RoundedCornerShape(10.dp),
+                        )
+                        Spacer(modifier = Modifier.width(10.dp))
+                        Box(
+                            modifier =
+                                Modifier
+                                    .padding(top = 8.dp)
+                                    .height(57.dp)
+                                    .width(55.dp)
+                                    .background(Color.Transparent)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.filter),
+                                contentDescription = "Filter",
+                                tint = Color.White,
+                                modifier = Modifier.size(20.dp),
+                            )
+                        }
+                    }
 
                     Box(
                         modifier =

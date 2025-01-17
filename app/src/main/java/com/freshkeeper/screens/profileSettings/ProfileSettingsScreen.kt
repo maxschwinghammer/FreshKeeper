@@ -44,8 +44,8 @@ import com.freshkeeper.ui.theme.TextColor
 fun ProfileSettingsScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModel: ProfileSettingsViewModel = hiltViewModel(),
 ) {
+    val viewModel: ProfileSettingsViewModel = hiltViewModel()
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
     val user by viewModel.user.collectAsState(initial = User())
 
@@ -113,9 +113,9 @@ fun ProfileSettingsScreen(
                             } else {
                                 EmailCard(viewModel = viewModel, navController = navController, user = user)
                                 ProfilePictureCard(
-                                    profilePictureBase64 = viewModel.profilePicture.toString(),
-                                    onProfilePictureUpdated = { base64 ->
-                                        viewModel.updateProfilePicture(base64)
+                                    profilePicture = viewModel.profilePicture,
+                                    onProfilePictureUpdated = { profilePicture ->
+                                        viewModel.updateProfilePicture(profilePicture)
                                     },
                                 )
                                 UserIdCard(user.id)

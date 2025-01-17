@@ -318,13 +318,12 @@ fun ManualInputSheet(
                     firestore
                         .collection("foodItems")
                         .add(foodItem)
-                        .addOnSuccessListener { documentReference ->
-                            Log.d("Firestore", "Product added: ${documentReference.id}")
+                        .addOnSuccessListener {
                             coroutineScope.launch {
                                 sheetState.hide()
                             }
                         }.addOnFailureListener { e ->
-                            Log.w("Firestore", "Error when adding the product", e)
+                            Log.e("Firestore", "Error when adding the product", e)
                         }
                 }
 
@@ -349,7 +348,7 @@ fun ManualInputSheet(
                             val updatedActivity = activity.copy(id = documentReference.id)
                             documentReference.update("id", updatedActivity.id)
                         }.addOnFailureListener { e ->
-                            Log.w("Firestore", "Error when adding the activity", e)
+                            Log.e("Firestore", "Error when adding the activity", e)
                         }
                 }
             },

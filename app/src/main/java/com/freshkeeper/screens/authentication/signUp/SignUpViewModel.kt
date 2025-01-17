@@ -123,9 +123,7 @@ class SignUpViewModel
                 .collection("users")
                 .document(userId)
                 .set(user)
-                .addOnSuccessListener {
-                    Log.d("SignUp", "User successfully saved to Firestore with ID: $userId")
-                }.addOnFailureListener { e ->
+                .addOnFailureListener { e ->
                     Log.e("SignUp", "Error saving user to Firestore: ${e.message}", e)
                 }
         }
@@ -135,7 +133,7 @@ class SignUpViewModel
             context: Context,
             activity: FragmentActivity,
         ) {
-            while (!accountService.getUserProfile().isEmailVerified) {
+            while (!accountService.getUserObject().isEmailVerified) {
                 try {
                     Firebase.auth.currentUser
                         ?.reload()
@@ -149,15 +147,10 @@ class SignUpViewModel
             val enableBiometric = askForBiometricActivation(context)
             saveBiometricPreference(context, enableBiometric)
             if (enableBiometric) {
-                Log.d("SignUp", "User agreed to enable biometric, starting authentication")
                 val authenticated = authenticateBiometric(context, activity)
-                if (authenticated) {
-                    Log.d("SignUp", "Biometric authentication successful")
-                } else {
+                if (!authenticated) {
                     Log.e("SignUp", "Biometric authentication failed")
                 }
-            } else {
-                Log.d("SignUp", "User declined biometric activation")
             }
         }
 

@@ -1,15 +1,17 @@
 package com.freshkeeper.model.service
 
+import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import kotlinx.coroutines.flow.Flow
 
 interface AccountService {
     val currentUser: Flow<User?>
-    val currentUserId: String
 
     fun hasUser(): Boolean
 
     fun getUserProfile(): User
+
+    suspend fun getUserObject(): User
 
     suspend fun createAnonymousAccount()
 
@@ -48,5 +50,5 @@ interface AccountService {
 
     suspend fun updateProfilePicture(base64Image: String)
 
-    suspend fun getProfilePicture(): String?
+    suspend fun getProfilePicture(userId: String): ProfilePicture?
 }

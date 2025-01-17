@@ -1,6 +1,7 @@
 package com.freshkeeper.model.service
 
 import android.util.Log
+import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import com.google.firebase.Firebase
 import com.google.firebase.auth.EmailAuthProvider
@@ -22,6 +23,7 @@ class AccountServiceImpl
     constructor() : AccountService {
         private val auth: FirebaseAuth = Firebase.auth
         private val firestore = Firebase.firestore
+        private val userId = auth.currentUser?.uid.orEmpty()
 
         init {
             val languageCode = Locale.getDefault().language
@@ -44,22 +46,28 @@ class AccountServiceImpl
                                 trySend(firebaseUser.toUser())
                             }
                         }
-                    Firebase.auth.addAuthStateListener(listener)
-                    awaitClose { Firebase.auth.removeAuthStateListener(listener) }
+                    auth.addAuthStateListener(listener)
+                    awaitClose { auth.removeAuthStateListener(listener) }
                 }
 
-        override val currentUserId: String
-            get() =
-                auth.currentUser
-                    ?.uid
-                    .orEmpty()
+        override fun hasUser(): Boolean = auth.currentUser != null
 
-        override fun hasUser(): Boolean = Firebase.auth.currentUser != null
+        override fun getUserProfile(): User = auth.currentUser.toUser()
 
-        override fun getUserProfile(): User = Firebase.auth.currentUser.toUser()
+        override suspend fun getUserObject(): User {
+            val currentUser = auth.currentUser
+            return if (currentUser != null) {
+                val userId = currentUser.uid
+                val userDocumentRef = firestore.collection("users").document(userId)
+                val userSnapshot = userDocumentRef.get().await()
+                userSnapshot.toObject(User::class.java) ?: User()
+            } else {
+                User()
+            }
+        }
 
         override suspend fun createAnonymousAccount() {
-            Firebase.auth.signInAnonymously().await()
+            auth.signInAnonymously().await()
         }
 
         override suspend fun updateDisplayName(newDisplayName: String) {
@@ -92,7 +100,7 @@ class AccountServiceImpl
             email: String,
             password: String,
         ) {
-            Firebase.auth.createUserWithEmailAndPassword(email, password).await()
+            auth.createUserWithEmailAndPassword(email, password).await()
         }
 
         override suspend fun signInWithEmail(
@@ -100,14 +108,15 @@ class AccountServiceImpl
             password: String,
         ) {
             try {
-                val authResult = Firebase.auth.signInWithEmailAndPassword(email, password).await()
+                val authResult = auth.signInWithEmailAndPassword(email, password).await()
                 val firebaseUser = authResult.user
 
                 if (firebaseUser != null && !firebaseUser.isEmailVerified) {
-                    throw Exception("Email address not verified. Please verify your email before signing in.")
+                    throw Exception(
+                        "Email address not verified. " +
+                            "Please verify your email before signing in.",
+                    )
                 }
-
-                Log.d("AccountServiceImpl", "Sign-in successful for user: ${firebaseUser?.email}")
             } catch (e: Exception) {
                 Log.e("AccountServiceImpl", "Sign-in failed", e)
                 throw e
@@ -116,7 +125,6 @@ class AccountServiceImpl
 
         override suspend fun signOut() {
             auth.signOut()
-            Log.d("AccountServiceImpl", "User signed out")
         }
 
         override suspend fun changeEmail(newEmail: String) {
@@ -124,7 +132,6 @@ class AccountServiceImpl
                 auth.currentUser
                     ?.verifyBeforeUpdateEmail(newEmail)
                     ?.await()
-                Log.d("AccountServiceImpl", "Email address updated to $newEmail")
             } catch (e: Exception) {
                 Log.e("AccountServiceImpl", "Failed to update email address", e)
                 throw e
@@ -141,14 +148,77 @@ class AccountServiceImpl
 
         override suspend fun deleteAccount() {
             try {
-                Firebase.auth.currentUser
-                    ?.delete()
-                    ?.await()
-                auth.signOut()
-                Log.d("AccountServiceImpl", "User account deleted and signed out")
+                val currentUser = auth.currentUser
+                currentUser?.delete()?.await()
+
+                val user = getUserObject()
+
+                if (user.id.isNotEmpty()) {
+                    val userDoc =
+                        firestore
+                            .collection("users")
+                            .document(user.id)
+                            .get()
+                            .await()
+
+                    val profilePictureId = userDoc.getString("profilePicture")
+
+                    profilePictureId?.let { id ->
+                        firestore
+                            .collection("profilePictures")
+                            .document(id)
+                            .delete()
+                            .await()
+                    }
+
+                    deleteLinkedDocuments(user.id)
+
+                    firestore
+                        .collection("users")
+                        .document(user.id)
+                        .delete()
+                        .await()
+
+                    auth.signOut()
+                }
             } catch (e: Exception) {
                 Log.e("AccountServiceImpl", "Error deleting account", e)
                 throw e
+            }
+        }
+
+        private suspend fun deleteLinkedDocuments(userId: String) {
+            val householdDocuments =
+                firestore
+                    .collection("households")
+                    .whereEqualTo("ownerId", userId)
+                    .get()
+                    .await()
+
+            householdDocuments.documents.forEach { household ->
+                firestore
+                    .collection("households")
+                    .document(household.id)
+                    .delete()
+                    .await()
+            }
+
+            val collections = listOf("foodItems", "activities")
+            collections.forEach { collection ->
+                val documents =
+                    firestore
+                        .collection(collection)
+                        .whereEqualTo("userId", userId)
+                        .get()
+                        .await()
+
+                documents.documents.forEach { document ->
+                    firestore
+                        .collection(collection)
+                        .document(document.id)
+                        .delete()
+                        .await()
+                }
             }
         }
 
@@ -175,13 +245,26 @@ class AccountServiceImpl
                 val user = auth.currentUser
                 user?.reload()?.await()
 
-                if (user != null && user.isEmailVerified) {
-                    Log.d("AccountServiceImpl", "Email is already verified")
-                }
+                if (user != null) {
+                    val isVerified = user.isEmailVerified
 
-                if (user != null && !user.isEmailVerified) {
-                    user.sendEmailVerification().await()
-                    Log.d("AccountServiceImpl", "Email verification sent")
+                    firestore
+                        .collection("users")
+                        .document(user.uid)
+                        .update("isEmailVerified", isVerified)
+                        .addOnFailureListener { e ->
+                            Log.e(
+                                "AccountServiceImpl",
+                                "Error updating isEmailVerified: ${e.message}",
+                                e,
+                            )
+                        }
+
+                    if (!isVerified) {
+                        user.sendEmailVerification().await()
+                    } else {
+                        Log.e("AccountServiceImpl", "Email is already verified")
+                    }
                 }
             } catch (e: Exception) {
                 Log.e("AccountServiceImpl", "Failed to send email verification", e)
@@ -220,7 +303,7 @@ class AccountServiceImpl
                 }
 
                 val profilePictureRef = firestore.collection("profilePictures").document()
-                profilePictureRef.set(mapOf("image" to base64Image)).await()
+                profilePictureRef.set(ProfilePicture(base64Image, "base64")).await()
 
                 val profilePictureId = profilePictureRef.id
 
@@ -231,19 +314,24 @@ class AccountServiceImpl
             }
         }
 
-        override suspend fun getProfilePicture(): String? {
-            val userId = auth.currentUser?.uid ?: return null
+        override suspend fun getProfilePicture(userId: String): ProfilePicture? {
             val userRef = firestore.collection("users").document(userId)
-            val userSnapshot = userRef.get().await()
+            return try {
+                val userSnapshot = userRef.get().await()
 
-            val profilePictureId = userSnapshot.getString("profilePicture")
+                val profilePictureId = userSnapshot.getString("profilePicture")
 
-            if (profilePictureId != null) {
-                val pictureRef = firestore.collection("profilePictures").document(profilePictureId)
-                val pictureSnapshot = pictureRef.get().await()
-                return pictureSnapshot.getString("image")
+                if (profilePictureId != null) {
+                    val pictureRef = firestore.collection("profilePictures").document(profilePictureId)
+                    val pictureSnapshot = pictureRef.get().await()
+
+                    pictureSnapshot.toObject(ProfilePicture::class.java)
+                } else {
+                    null
+                }
+            } catch (e: Exception) {
+                Log.e("AccountService", "Error retrieving profile picture for userId: $userId", e)
+                null
             }
-
-            return null
         }
     }

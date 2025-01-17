@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.profile.viewmodel
 
+import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import com.freshkeeper.model.service.AccountService
 import com.freshkeeper.screens.AppViewModel
@@ -28,27 +29,24 @@ class ProfileViewModel
         private val _memberSinceDays = MutableStateFlow<Long>(0)
         val memberSinceDays: StateFlow<Long> = _memberSinceDays.asStateFlow()
 
-        private val _profilePictureBase64 = MutableStateFlow<String?>(null)
-        val profilePictureBase64: StateFlow<String?> = _profilePictureBase64.asStateFlow()
+        private val _profilePicture = MutableStateFlow<ProfilePicture?>(null)
+        val profilePicture: StateFlow<ProfilePicture?> = _profilePicture.asStateFlow()
 
-        init {
+        fun loadUserProfile(userId: String) {
             launchCatching {
-                val userProfile = accountService.getUserProfile()
-                _user.value = userProfile
-                loadMemberSinceDays(userProfile.id)
-                _profilePictureBase64.value = accountService.getProfilePicture()
-            }
-        }
+                val snapshot =
+                    firestore
+                        .collection("users")
+                        .document(userId)
+                        .get()
+                        .await()
+                _user.value = snapshot.toObject(User::class.java)
 
-        private suspend fun loadMemberSinceDays(userId: String) {
-            val snapshot =
-                firestore
-                    .collection("users")
-                    .document(userId)
-                    .get()
-                    .await()
-            val createdAt = snapshot.getLong("createdAt") ?: 0L
-            _memberSinceDays.value = calculateDaysSince(createdAt)
+                val createdAt = snapshot.getLong("createdAt") ?: 0L
+                _memberSinceDays.value = calculateDaysSince(createdAt)
+
+                _profilePicture.value = accountService.getProfilePicture(userId)
+            }
         }
 
         private fun calculateDaysSince(createdAt: Long): Long {

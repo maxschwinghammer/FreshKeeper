@@ -254,7 +254,7 @@ fun EmailSignInScreen(
                         ) {
                         }
                 } catch (e: GetCredentialException) {
-                    Log.d("CredentialError", e.message.orEmpty())
+                    Log.e("CredentialError", e.message.orEmpty())
                 }
             }
         }

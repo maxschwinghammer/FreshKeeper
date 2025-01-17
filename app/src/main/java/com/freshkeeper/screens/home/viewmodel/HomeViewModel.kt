@@ -36,7 +36,7 @@ class HomeViewModel : ViewModel() {
                 householdId = document.getString("householdId")
                 loadFoodItemsFromFirestore()
             }.addOnFailureListener {
-                Log.d("HomeViewModel", "Error loading householdId from Firestore")
+                Log.e("HomeViewModel", "Error loading householdId from Firestore")
             }
     }
 
@@ -78,7 +78,7 @@ class HomeViewModel : ViewModel() {
                 _expiredItems.value =
                     foodItems.filter { it.daysDifference < 0 }.sortedByDescending { it.expiryTimestamp }
             }.addOnFailureListener {
-                Log.d("HomeViewModel", "Error loading food items from Firestore")
+                Log.e("HomeViewModel", "Error loading food items from Firestore")
             }
     }
 }

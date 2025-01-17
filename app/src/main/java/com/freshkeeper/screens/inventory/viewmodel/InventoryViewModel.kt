@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.freshkeeper.model.FoodItem
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 
@@ -41,7 +42,11 @@ class InventoryViewModel : ViewModel() {
     private val _otherItems = MutableLiveData<List<FoodItem>>()
     val otherItems: LiveData<List<FoodItem>> = _otherItems
 
+    private val userId = FirebaseAuth.getInstance().currentUser?.uid
+    private var householdId: String? = null
+
     init {
+        loadHouseholdId()
         loadStorageLocationItems("fridge", _fridgeItems)
         loadStorageLocationItems("cupboard", _cupboardItems)
         loadStorageLocationItems("freezer", _freezerItems)
@@ -54,12 +59,38 @@ class InventoryViewModel : ViewModel() {
         loadStorageLocationItems("other", _otherItems)
     }
 
+    private fun loadHouseholdId() {
+        if (userId == null) return
+
+        firestore
+            .collection("users")
+            .document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                householdId = document.getString("householdId")
+            }.addOnFailureListener {
+                Log.e("HomeViewModel", "Error loading householdId from Firestore")
+            }
+    }
+
     private fun loadStorageLocationItems(
         storageLocation: String,
         liveData: MutableLiveData<List<FoodItem>>,
     ) {
-        firestore
-            .collection("foodItems")
+        if (userId == null) return
+
+        val query =
+            if (householdId != null) {
+                firestore
+                    .collection("foodItems")
+                    .whereEqualTo("householdId", householdId)
+            } else {
+                firestore
+                    .collection("foodItems")
+                    .whereEqualTo("userId", userId)
+            }
+
+        query
             .whereEqualTo("storageLocation", storageLocation)
             .whereEqualTo("consumed", false)
             .whereEqualTo("thrownAway", false)

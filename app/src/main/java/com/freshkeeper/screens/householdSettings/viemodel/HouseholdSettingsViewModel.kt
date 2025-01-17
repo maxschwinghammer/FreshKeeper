@@ -31,7 +31,7 @@ class HouseholdSettingsViewModel
 
         init {
             launchCatching {
-                _user.value = accountService.getUserProfile()
+                _user.value = accountService.getUserObject()
                 loadHousehold()
             }
         }
@@ -68,11 +68,12 @@ class HouseholdSettingsViewModel
         ) {
             launchCatching {
                 val userId = _user.value.id
+                val user = _user.value
                 val newHousehold =
                     Household(
                         id = firestore.collection("households").document().id,
                         type = type,
-                        users = listOf(userId),
+                        users = listOf(user),
                         name = name,
                         createdAt = System.currentTimeMillis(),
                         invites = emptyList(),
@@ -114,9 +115,79 @@ class HouseholdSettingsViewModel
             }
         }
 
-        fun onUpdateHouseholdTypeClick(newType: String) {
+        fun onUpdateHouseholdTypeClick(
+            newType: String,
+            selectedUser: String?,
+        ) {
             launchCatching {
                 val householdId = _household.value.id
+                val ownerId = _household.value.ownerId
+
+                if (newType == "Single household") {
+                    try {
+                        val usersToRemove = _household.value.users.filter { it?.id != ownerId }
+
+                        val batch = firestore.batch()
+
+                        batch.update(
+                            firestore.collection("households").document(householdId),
+                            "users",
+                            FieldValue.arrayRemove(*usersToRemove.toTypedArray()),
+                        )
+
+                        usersToRemove.forEach { user ->
+                            user?.let {
+                                batch.update(
+                                    firestore.collection("users").document(it.id),
+                                    "householdId",
+                                    null,
+                                )
+                            }
+                        }
+
+                        batch.commit().await()
+
+                        _household.value = _household.value.copy(users = listOf(_household.value.users.find { it?.id == ownerId }))
+                    } catch (e: Exception) {
+                        Log.e("UpdateHouseholdType", "Error when updating users", e)
+                    }
+                } else if (newType == "Pair" && selectedUser != null) {
+                    try {
+                        val usersToRemove = _household.value.users.filter { it?.id != ownerId && it?.id != selectedUser }
+
+                        val batch = firestore.batch()
+
+                        batch.update(
+                            firestore.collection("households").document(householdId),
+                            "users",
+                            FieldValue.arrayRemove(*usersToRemove.toTypedArray()),
+                        )
+
+                        usersToRemove.forEach { user ->
+                            user?.let {
+                                batch.update(
+                                    firestore.collection("users").document(it.id),
+                                    "householdId",
+                                    null,
+                                )
+                            }
+                        }
+
+                        batch.commit().await()
+
+                        _household.value =
+                            _household.value.copy(
+                                users =
+                                    listOf(
+                                        _household.value.users.find { it?.id == ownerId },
+                                        _household.value.users.find { it?.id == selectedUser },
+                                    ),
+                            )
+                    } catch (e: Exception) {
+                        Log.e("UpdateHouseholdType", "Error when updating users", e)
+                    }
+                }
+
                 firestore
                     .collection("households")
                     .document(householdId)
@@ -130,7 +201,6 @@ class HouseholdSettingsViewModel
         fun onDeleteHousehold() {
             launchCatching {
                 val householdId = _household.value.id
-                Log.d("DeleteHousehold", "Deleting household with ID: $householdId")
 
                 try {
                     firestore
@@ -201,15 +271,18 @@ class HouseholdSettingsViewModel
                         .document(userId)
                         .get()
                         .await()
+
                 if (!userSnapshot.exists()) {
                     Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show()
                     return@launchCatching
                 }
 
+                val user = userSnapshot.toObject(User::class.java)
+
                 firestore
                     .collection("households")
                     .document(householdId)
-                    .update("users", FieldValue.arrayUnion(userId))
+                    .update("users", FieldValue.arrayUnion(user))
                     .await()
 
                 firestore
@@ -220,7 +293,7 @@ class HouseholdSettingsViewModel
 
                 _household.value =
                     _household.value.copy(
-                        users = _household.value.users + userId,
+                        users = _household.value.users + user,
                     )
 
                 Toast.makeText(context, successText, Toast.LENGTH_SHORT).show()

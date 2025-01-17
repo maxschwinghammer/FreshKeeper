@@ -64,6 +64,7 @@ fun HouseholdScreen(navController: NavHostController) {
     }
 
     val errorText = stringResource(R.string.user_not_found)
+    val householdErrorText = stringResource(R.string.household_not_found)
     val successText = stringResource(R.string.user_added)
 
     FreshKeeperTheme {
@@ -111,9 +112,10 @@ fun HouseholdScreen(navController: NavHostController) {
                                         householdSettingsViewModel.joinHouseholdById(
                                             householdId,
                                             context,
-                                            errorText,
+                                            householdErrorText,
                                         )
                                     },
+                                    household,
                                 )
                             }
                             item { ActivitiesSection() }

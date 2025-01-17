@@ -97,8 +97,12 @@ fun NavigationHost(
         composable(Screen.HouseholdSettings.route) {
             HouseholdSettingsScreen(navController = navController)
         }
-        composable(Screen.Profile.route) {
-            ProfileScreen(navController = navController)
+        composable(
+            route = "profile/{userId}",
+            arguments = listOf(navArgument("userId") { type = NavType.StringType }),
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: ""
+            ProfileScreen(navController = navController, userId = userId)
         }
         composable(Screen.Statistics.route) {
             StatisticsScreen(navController = navController)

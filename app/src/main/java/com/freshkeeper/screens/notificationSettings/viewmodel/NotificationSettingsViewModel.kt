@@ -20,7 +20,7 @@ class NotificationSettingsViewModel
 
         init {
             launchCatching {
-                _user.value = accountService.getUserProfile()
+                _user.value = accountService.getUserObject()
             }
         }
     }

@@ -11,6 +11,7 @@ import androidx.navigation.NavController
 import com.freshkeeper.ERROR_TAG
 import com.freshkeeper.R
 import com.freshkeeper.UNEXPECTED_CREDENTIAL
+import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import com.freshkeeper.model.service.AccountService
 import com.freshkeeper.screens.AppViewModel
@@ -42,6 +43,8 @@ class GoogleViewModel
         private val _displayName = MutableStateFlow("")
         val displayName: StateFlow<String> = _displayName.asStateFlow()
 
+        val firestore = FirebaseFirestore.getInstance()
+
         fun onSignInWithGoogle(
             credential: Credential,
             navController: NavController,
@@ -72,7 +75,23 @@ class GoogleViewModel
                         user?.let {
                             _email.value = it.email.orEmpty()
                             _displayName.value = it.displayName.orEmpty()
-                            saveUserToFirestore(it.uid, _email.value, _displayName.value)
+
+                            val profilePictureUrl = it.photoUrl?.toString() ?: ""
+                            if (profilePictureUrl.isNotEmpty()) {
+                                saveUserToFirestore(
+                                    it.uid,
+                                    _email.value,
+                                    _displayName.value,
+                                    profilePictureUrl,
+                                )
+                            } else {
+                                saveUserToFirestore(
+                                    it.uid,
+                                    _email.value,
+                                    _displayName.value,
+                                    null,
+                                )
+                            }
                         }
                         navController.navigate("home") { launchSingleTop = true }
                     } else {
@@ -153,9 +172,36 @@ class GoogleViewModel
             userId: String,
             email: String,
             displayName: String,
+            profilePictureUrl: String?,
         ) {
-            val firestore = FirebaseFirestore.getInstance()
+            if (profilePictureUrl != null) {
+                val profilePictureData = ProfilePicture(image = profilePictureUrl, type = "url")
 
+                firestore
+                    .collection("profilePictures")
+                    .add(profilePictureData)
+                    .addOnSuccessListener { documentReference ->
+                        val profilePictureId = documentReference.id
+
+                        saveUserDocument(userId, email, displayName, profilePictureId)
+                    }.addOnFailureListener { e ->
+                        Log.e(
+                            "ProfilePicture",
+                            "Error saving profile picture: ${e.message}",
+                            e,
+                        )
+                    }
+            } else {
+                saveUserDocument(userId, email, displayName, null)
+            }
+        }
+
+        private fun saveUserDocument(
+            userId: String,
+            email: String,
+            displayName: String,
+            profilePictureId: String?,
+        ) {
             firestore
                 .collection("users")
                 .document(userId)
@@ -167,6 +213,7 @@ class GoogleViewModel
                                 id = userId,
                                 email = email,
                                 displayName = displayName,
+                                profilePicture = profilePictureId,
                                 createdAt = System.currentTimeMillis(),
                                 provider = "google",
                             )
@@ -175,16 +222,20 @@ class GoogleViewModel
                             .collection("users")
                             .document(userId)
                             .set(user)
-                            .addOnSuccessListener {
-                                Log.d("SignUp", "User successfully saved to Firestore with ID: $userId")
-                            }.addOnFailureListener { e ->
-                                Log.e("SignUp", "Error saving user to Firestore: ${e.message}", e)
+                            .addOnFailureListener { e ->
+                                Log.e(
+                                    "SignUp",
+                                    "Error saving user to Firestore: ${e.message}",
+                                    e,
+                                )
                             }
-                    } else {
-                        Log.d("SignUp", "User already exists in Firestore with ID: $userId")
                     }
                 }.addOnFailureListener { e ->
-                    Log.e("SignUp", "Error checking if user exists in Firestore: ${e.message}", e)
+                    Log.e(
+                        "SignUp",
+                        "Error checking if user exists in Firestore: ${e.message}",
+                        e,
+                    )
                 }
         }
     }

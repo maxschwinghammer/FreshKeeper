@@ -105,6 +105,7 @@
     <string name="unit">Unit</string>
     <string name="invite">Invite</string>
     <string name="invite_people">Invite people</string>
+    <string name="invite_partner">Invite partner</string>
     <string name="invite_text">Invite a person to your household</string>
     <string name="share">Share household id</string>
     <string name="invite_message">
@@ -211,6 +212,7 @@
     <string name="leave_household_description">You will be removed from the household and loose all
         current inventories.</string>
     <string name="add_user_by_id">Add user by id</string>
+    <string name="add_user">Add user</string>
     <string name="user_not_found">User not found</string>
     <string name="user_added">User added</string>
     <string name="join">Join</string>
@@ -218,4 +220,15 @@
     <string name="enter_household_id">Enter household ID</string>
     <string name="household_id">Household ID</string>
     <string name="household_not_found">Household not found</string>
+    <string name="buy_a_coffee">Buy a coffee</string>
+    <string name="user_id">User ID</string>
+    <string name="upgrade_to_premium">Upgrade to premium</string>
+    <string name="single_household_warning">Changing to a single household will remove all other
+        members from this household. Do you want to continue?</string>
+    <string name="warning">Warning</string>
+    <string name="confirm">Confirm</string>
+    <string name="pair_household_warning">Please select one user to keep in the household.
+        Other users will be removed.</string>
+    <string name="pair_selection_info">Select the partner who will remain in the household:</string>
+    <string name="search">Search</string>
 </resources>

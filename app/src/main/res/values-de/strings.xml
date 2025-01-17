@@ -70,6 +70,7 @@
     <string name="in_days">In %1$d Tagen</string>
     <string name="invite">Einladen</string>
     <string name="invite_people">Personen einladen</string>
+    <string name="invite_partner">Partner einladen</string>
     <string name="invite_text">Laden Sie eine Person in Ihren Haushalt ein</string>
     <string name="invite_message">Hallo! Mit der App FreshKeeper behalte ich den Überblick
         über meine Lebensmittel und minimiere Verschwendung 🥬🍎\n\nDie App erinnert mich
@@ -217,7 +218,8 @@
     <string name="leave_household">Haushalt verlassenq</string>
     <string name="leave_household_description">Sie werden aus dem Haushalt entfernt und verlieren
         alle aktuellen Bestände.</string>
-    <string name="add_user_by_id">Benutzer mit ID hinzufügen</string>
+    <string name="add_user_by_id">Benutzer über ID hinzufügen</string>
+    <string name="add_user">Benutzer hinzufügen</string>
     <string name="user_not_found">Benutzer nicht gefunden</string>
     <string name="user_added">Benutzer hinzugefügt</string>
     <string name="join">Beitreten</string>
@@ -225,4 +227,15 @@
     <string name="enter_household_id">Haushalts-ID eingeben</string>
     <string name="household_id">Haushalts-ID</string>
     <string name="household_not_found">Haushalt nicht gefunden</string>
+    <string name="buy_a_coffee">Kaufe einen Kaffee</string>
+    <string name="user_id">Benutzer-ID</string>
+    <string name="upgrade_to_premium">Upgrade auf Premium</string>
+    <string name="single_household_warning">Durch den Wechsel zu einem Single-Haushalt werden alle
+        anderen Mitglieder aus diesem Haushalt entfernt. Möchten Sie fortfahren?</string>
+    <string name="warning">Warnung</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="pair_household_warning">Bitte wählen Sie einen Benutzer aus, der im Haushalt
+        verbleiben soll. Andere Benutzer werden entfernt.</string>
+    <string name="pair_selection_info">Wählen Sie den Partner, der im Haushalt bleiben soll:</string>
+    <string name="search">Suchen</string>
 </resources>
