@@ -238,4 +238,15 @@
         verbleiben soll. Andere Benutzer werden entfernt.</string>
     <string name="pair_selection_info">Wählen Sie den Partner, der im Haushalt bleiben soll:</string>
     <string name="search">Suchen</string>
+    <string name="download_data_title">Datenexport</string>
+    <string name="download_data_text">Möchten Sie die zu Ihrem Account assoziierten Daten als
+        JSON-Datei exportieren?</string>
+    <string name="download_data_error">Daten konnten nicht heruntergeladen werden</string>
+    <string name="download_data_success">Daten erfolgreich in Ihren „Downloads“-Ordner
+        heruntergeladen</string>
+    <string name="added_product">hat einen Artikel hinzugefügt</string>
+    <string name="enter_product_name">Bitte einen Produktnamen eingeben</string>
+    <string name="select_expiry_date">Bitte ein Haltbarkeitsdatum wählen</string>
+    <string name="enter_quantity">Bitte Menge eingeben</string>
+    <string name="select_unit">Bitte eine Einheit auswählen</string>
 </resources>

@@ -3,6 +3,7 @@ package com.freshkeeper.screens.inventory
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -61,6 +62,7 @@ import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.sheets.AddEntrySheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
 import com.freshkeeper.sheets.EditProductSheet
+import com.freshkeeper.sheets.FilterSheet
 import com.freshkeeper.sheets.ManualInputSheet
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -85,6 +87,13 @@ fun InventoryScreen(navController: NavHostController) {
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val editProductSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val barcodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val filterSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    var selectedCategories by remember { mutableStateOf(emptyList<String>()) }
+    var selectedStorageLocations by remember { mutableStateOf(emptyList<String>()) }
+
+    var foodItems by remember { mutableStateOf(emptyList<FoodItem>()) }
+
     var foodItem by remember { mutableStateOf<FoodItem?>(null) }
 
     val listState = rememberLazyListState()
@@ -95,6 +104,38 @@ fun InventoryScreen(navController: NavHostController) {
     }
 
     var searchQuery by remember { mutableStateOf("") }
+
+    val storageLocationMap =
+        mapOf(
+            "fridge" to R.string.fridge,
+            "cupboard" to R.string.cupboard,
+            "freezer" to R.string.freezer,
+            "counter_top" to R.string.counter_top,
+            "cellar" to R.string.cellar,
+            "bread_box" to R.string.bread_box,
+            "spice_rack" to R.string.spice_rack,
+            "pantry" to R.string.pantry,
+            "fruit_basket" to R.string.fruit_basket,
+            "other" to R.string.other,
+        )
+
+    val categoryMap =
+        mapOf(
+            "dairy_goods" to R.string.dairy_goods,
+            "vegetables" to R.string.vegetables,
+            "fruits" to R.string.fruits,
+            "meat" to R.string.meat,
+            "fish" to R.string.fish,
+            "frozen_goods" to R.string.frozen_goods,
+            "spices" to R.string.spices,
+            "bread" to R.string.bread,
+            "confectionery" to R.string.confectionery,
+            "drinks" to R.string.drinks,
+            "noodles" to R.string.noodles,
+            "canned_goods" to R.string.canned_goods,
+            "candy" to R.string.candy,
+            "other" to R.string.other,
+        )
 
     FreshKeeperTheme {
         Scaffold(
@@ -161,14 +202,17 @@ fun InventoryScreen(navController: NavHostController) {
                                     .width(55.dp)
                                     .background(Color.Transparent)
                                     .clip(RoundedCornerShape(10.dp))
-                                    .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+                                    .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+                                    .clickable { coroutineScope.launch { filterSheetState.show() } },
                             contentAlignment = Alignment.Center,
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.filter),
                                 contentDescription = "Filter",
                                 tint = Color.White,
-                                modifier = Modifier.size(20.dp),
+                                modifier =
+                                    Modifier
+                                        .size(20.dp),
                             )
                         }
                     }
@@ -188,6 +232,11 @@ fun InventoryScreen(navController: NavHostController) {
                                     editProductSheetState = editProductSheetState,
                                     onItemClick = { item ->
                                         foodItem = item
+                                    },
+                                    selectedStorageLocations = selectedStorageLocations,
+                                    selectedCategories = selectedCategories,
+                                    onItemsUpdated = { items ->
+                                        foodItems = items
                                     },
                                 )
                             }
@@ -283,6 +332,44 @@ fun InventoryScreen(navController: NavHostController) {
                     foodItem?.let { item ->
                         EditProductSheet(editProductSheetState, item)
                     }
+                }
+            }
+
+            if (filterSheetState.isVisible) {
+                ModalBottomSheet(
+                    onDismissRequest = { coroutineScope.launch { filterSheetState.hide() } },
+                    sheetState = filterSheetState,
+                    containerColor = ComponentBackgroundColor,
+                ) {
+                    FilterSheet(
+                        filterSheetState = filterSheetState,
+                        foodItems = foodItems,
+                        categories = categoryMap,
+                        storageLocations = storageLocationMap,
+                        selectedCategories = selectedCategories,
+                        selectedStorageLocations = selectedStorageLocations,
+                        onUpdateCategories = { updatedCategories ->
+                            selectedCategories = updatedCategories.toList()
+                        },
+                        onUpdateStorageLocations = { updatedLocations ->
+                            selectedStorageLocations = updatedLocations.toList()
+                        },
+                        onApplyFilter = { categories, locations ->
+                            foodItems =
+                                foodItems.filter {
+                                    (
+                                        categories.isEmpty() ||
+                                            categories.contains(it.category)
+                                    ) &&
+                                        (
+                                            locations.isEmpty() ||
+                                                locations.contains(it.storageLocation)
+                                        )
+                                }
+                            selectedCategories = categories
+                            selectedStorageLocations = locations
+                        },
+                    )
                 }
             }
         }

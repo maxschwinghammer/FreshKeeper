@@ -47,7 +47,7 @@ import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.User
 import com.freshkeeper.model.service.AccountServiceImpl
-import com.freshkeeper.model.service.ProductService
+import com.freshkeeper.model.service.ProductServiceImpl
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
@@ -70,6 +70,7 @@ fun EditProductSheet(
     profileSettingsViewModel: ProfileSettingsViewModel = hiltViewModel(),
 ) {
     val accountService = remember { AccountServiceImpl() }
+    val productService = remember { ProductServiceImpl(accountService) }
 
     var productName by remember { mutableStateOf(foodItem.name) }
     var quantity by remember { mutableStateOf(foodItem.quantity.toString()) }
@@ -79,11 +80,6 @@ fun EditProductSheet(
     var isConsumedChecked by remember { mutableStateOf(foodItem.consumed) }
     var isThrownAwayChecked by remember { mutableStateOf(foodItem.thrownAway) }
     val imageUrl by remember { mutableStateOf(foodItem.imageUrl) }
-
-    val productService =
-        remember {
-            ProductService(accountService)
-        }
 
     val storageLocationMap =
         mapOf(

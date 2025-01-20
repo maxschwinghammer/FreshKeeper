@@ -69,10 +69,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun HomeScreen(
-    navController: NavHostController,
-    viewModel: HomeViewModel = viewModel(),
-) {
+fun HomeScreen(navController: NavHostController) {
+    val viewModel: HomeViewModel = hiltViewModel()
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
 
     var scannedBarcode by remember { mutableStateOf("") }

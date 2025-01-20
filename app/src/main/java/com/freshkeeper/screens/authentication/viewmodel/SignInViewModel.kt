@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.authentication.signIn
+package com.freshkeeper.screens.authentication.viewmodel
 
 import android.content.Context
 import androidx.biometric.BiometricPrompt

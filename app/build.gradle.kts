@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.vanniktech:android-image-cropper:4.6.0")
     implementation(libs.com.journeyapps.zxing.android.embedded)
     implementation(libs.accompanist.flowlayout)

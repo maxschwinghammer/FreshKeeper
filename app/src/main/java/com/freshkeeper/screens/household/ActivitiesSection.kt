@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,11 +48,13 @@ import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
+import kotlinx.coroutines.launch
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun ActivitiesSection() {
     val viewModel: HouseholdViewModel = hiltViewModel()
+    val coroutineScope = rememberCoroutineScope()
     val activities by viewModel.activities.observeAsState(emptyList())
     val drawableMap =
         mapOf(
@@ -127,7 +130,9 @@ fun ActivitiesSection() {
                                         detectHorizontalDragGestures(
                                             onDragEnd = {
                                                 if (offsetX < -100) {
-                                                    viewModel.removeActivity(activity)
+                                                    coroutineScope.launch {
+                                                        viewModel.removeActivity(activity)
+                                                    }
                                                     offsetX = 0f
                                                 } else {
                                                     offsetX = 0f

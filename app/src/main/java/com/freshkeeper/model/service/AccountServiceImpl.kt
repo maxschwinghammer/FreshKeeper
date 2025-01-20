@@ -1,8 +1,18 @@
 package com.freshkeeper.model.service
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
+import android.widget.Toast
+import androidx.core.content.FileProvider
+import com.freshkeeper.R
+import com.freshkeeper.model.Activity
+import com.freshkeeper.model.DownloadableUserData
+import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.Household
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
@@ -11,10 +21,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.firestore
+import com.google.gson.Gson
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
+import java.io.File
 import java.util.Locale
 import javax.inject.Inject
 
@@ -23,7 +35,6 @@ class AccountServiceImpl
     constructor() : AccountService {
         private val auth: FirebaseAuth = Firebase.auth
         private val firestore = Firebase.firestore
-        private val userId = auth.currentUser?.uid.orEmpty()
 
         init {
             val languageCode = Locale.getDefault().language
@@ -333,5 +344,86 @@ class AccountServiceImpl
                 Log.e("AccountService", "Error retrieving profile picture for userId: $userId", e)
                 null
             }
+        }
+
+        override suspend fun downloadUserData(
+            userId: String,
+            context: Context,
+        ) {
+            val fileName = "user_data.json"
+
+            firestore
+                .collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener { userDoc ->
+                    if (userDoc != null) {
+                        val user = userDoc.toObject(User::class.java)
+                        if (user != null) {
+                            val activitiesTask =
+                                firestore
+                                    .collection("activities")
+                                    .whereEqualTo("userId", userId)
+                                    .get()
+
+                            val foodItemsTask =
+                                firestore
+                                    .collection("foodItems")
+                                    .whereEqualTo("userId", userId)
+                                    .get()
+
+                            val householdTask =
+                                user.householdId?.let { householdId ->
+                                    firestore.collection("households").document(householdId).get()
+                                }
+
+                            Tasks.whenAllComplete(activitiesTask, foodItemsTask, householdTask).addOnCompleteListener {
+                                val activities = activitiesTask.result?.toObjects(Activity::class.java) ?: emptyList()
+                                val foodItems = foodItemsTask.result?.toObjects(FoodItem::class.java) ?: emptyList()
+                                val household = householdTask?.result?.toObject(Household::class.java)
+
+                                val downloadableData =
+                                    DownloadableUserData(
+                                        user,
+                                        activities,
+                                        foodItems,
+                                        household,
+                                    )
+
+                                val jsonString = Gson().toJson(downloadableData)
+
+                                val file = File(context.cacheDir, fileName)
+                                file.writeText(jsonString)
+
+                                val uri =
+                                    FileProvider.getUriForFile(
+                                        context,
+                                        "${context.packageName}.provider",
+                                        file,
+                                    )
+
+                                val intent =
+                                    Intent(Intent.ACTION_SEND).apply {
+                                        type = "application/json"
+                                        putExtra(Intent.EXTRA_STREAM, uri)
+                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                    }
+                                context.startActivity(
+                                    Intent.createChooser(
+                                        intent,
+                                        context.getString(R.string.download_data_title),
+                                    ),
+                                )
+                            }
+                        }
+                    }
+                }.addOnFailureListener {
+                    Toast
+                        .makeText(
+                            context,
+                            context.getString(R.string.download_data_error),
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                }
         }
     }

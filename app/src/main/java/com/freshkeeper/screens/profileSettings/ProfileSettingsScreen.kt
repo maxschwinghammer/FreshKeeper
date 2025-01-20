@@ -7,11 +7,14 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -19,7 +22,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -31,6 +36,8 @@ import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.model.User
 import com.freshkeeper.navigation.BottomNavigationBar
+import com.freshkeeper.screens.LowerTransition
+import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.screens.profileSettings.viewmodel.ProfileSettingsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
@@ -48,6 +55,13 @@ fun ProfileSettingsScreen(
     val viewModel: ProfileSettingsViewModel = hiltViewModel()
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
     val user by viewModel.user.collectAsState(initial = User())
+
+    val listState = rememberLazyListState()
+    val showTransition by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0
+        }
+    }
 
     FreshKeeperTheme {
         Scaffold(
@@ -80,6 +94,7 @@ fun ProfileSettingsScreen(
                         Modifier
                             .fillMaxSize()
                             .padding(top = 55.dp),
+                    verticalArrangement = Arrangement.spacedBy(15.dp),
                 ) {
                     item {
                         Column(
@@ -111,7 +126,7 @@ fun ProfileSettingsScreen(
                                     navController.navigate("signIn")
                                 }
                             } else {
-                                EmailCard(viewModel = viewModel, navController = navController, user = user)
+                                EmailCard(viewModel, navController, user)
                                 ProfilePictureCard(
                                     profilePicture = viewModel.profilePicture,
                                     onProfilePictureUpdated = { profilePicture ->
@@ -119,8 +134,9 @@ fun ProfileSettingsScreen(
                                     },
                                 )
                                 UserIdCard(user.id)
-                                ResetPasswordCard(viewModel = viewModel, navController = navController)
+                                ResetPasswordCard(viewModel, navController)
                                 BiometricSwitch()
+                                DownloadDataButton(user.id, viewModel)
                                 SignOutCard {
                                     viewModel.onSignOutClick {
                                         navController.navigate("signIn") {
@@ -135,6 +151,15 @@ fun ProfileSettingsScreen(
                             }
                         }
                     }
+                    item {
+                        Spacer(modifier = Modifier.height(10.dp))
+                    }
+                }
+                if (showTransition) {
+                    UpperTransition()
+                    LowerTransition(
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                    )
                 }
             }
         }

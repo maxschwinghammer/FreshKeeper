@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.authentication
+package com.freshkeeper.screens.authentication.viewmodel
 
 import android.content.Context
 import android.util.Log

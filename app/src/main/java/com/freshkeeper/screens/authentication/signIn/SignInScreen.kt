@@ -33,8 +33,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.screens.authentication.AuthenticationButton
-import com.freshkeeper.screens.authentication.GoogleViewModel
 import com.freshkeeper.screens.authentication.launchCredManBottomSheet
+import com.freshkeeper.screens.authentication.viewmodel.GoogleViewModel
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor

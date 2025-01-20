@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.authentication.signUp
+package com.freshkeeper.screens.authentication.viewmodel
 
 import android.app.AlertDialog
 import android.content.Context

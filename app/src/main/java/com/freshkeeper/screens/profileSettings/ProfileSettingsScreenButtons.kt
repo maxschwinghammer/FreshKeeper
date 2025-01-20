@@ -57,6 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
@@ -749,5 +750,66 @@ fun UserIdCard(userId: String) {
     ) {
         val clip = newPlainText("User ID", userId)
         clipboardManager.setPrimaryClip(clip)
+    }
+}
+
+@Suppress("ktlint:standard:function-naming")
+@Composable
+fun DownloadDataButton(
+    userId: String,
+    viewModel: ProfileSettingsViewModel,
+) {
+    var showDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    if (showDialog) {
+        AlertDialog(
+            containerColor = ComponentBackgroundColor,
+            title = { Text(text = stringResource(R.string.download_data_title)) },
+            text = { Text(text = stringResource(R.string.download_data_text)) },
+            dismissButton = {
+                Button(
+                    onClick = { showDialog = false },
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = GreyColor,
+                            contentColor = TextColor,
+                        ),
+                    shape = RoundedCornerShape(20.dp),
+                    border = BorderStroke(1.dp, ComponentStrokeColor),
+                ) {
+                    Text(text = stringResource(R.string.no), color = TextColor)
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.downloadUserData(userId, context)
+                        showDialog = false
+                    },
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = AccentTurquoiseColor,
+                            contentColor = TextColor,
+                        ),
+                    shape = RoundedCornerShape(20.dp),
+                    border = BorderStroke(1.dp, ComponentStrokeColor),
+                ) {
+                    Text(text = stringResource(R.string.yes), color = TextColor)
+                }
+            },
+            onDismissRequest = { showDialog = false },
+        )
+    }
+
+    AccountCenterCard(
+        title = stringResource(R.string.download_data_title),
+        icon = painterResource(R.drawable.download),
+        modifier =
+            Modifier
+                .card()
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+    ) {
+        showDialog = true
     }
 }

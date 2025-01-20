@@ -231,4 +231,14 @@
         Other users will be removed.</string>
     <string name="pair_selection_info">Select the partner who will remain in the household:</string>
     <string name="search">Search</string>
+    <string name="download_data_title">Data export</string>
+    <string name="download_data_text">Would you like to export the data associated with your
+        account as a JSON file?</string>
+    <string name="download_data_error">Data could not be downloaded</string>
+    <string name="download_data_success">Data downloaded successfully to your "Downloads"-folder</string>
+    <string name="added_product">added a product</string>
+    <string name="enter_product_name">Please enter a product name</string>
+    <string name="select_expiry_date">Please select an expiry date</string>
+    <string name="enter_quantity">Please enter the quantity</string>
+    <string name="select_unit">Please select a unit</string>
 </resources>

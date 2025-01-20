@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.profileSettings.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
@@ -78,6 +79,15 @@ class ProfileSettingsViewModel
                 } catch (e: Exception) {
                     _profilePicture.value = null
                 }
+            }
+        }
+
+        fun downloadUserData(
+            userId: String,
+            context: Context,
+        ) {
+            launchCatching {
+                accountService.downloadUserData(userId, context)
             }
         }
     }

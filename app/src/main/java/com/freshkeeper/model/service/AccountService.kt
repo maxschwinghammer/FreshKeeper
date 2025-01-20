@@ -1,5 +1,6 @@
 package com.freshkeeper.model.service
 
+import android.content.Context
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import kotlinx.coroutines.flow.Flow
@@ -51,4 +52,9 @@ interface AccountService {
     suspend fun updateProfilePicture(base64Image: String)
 
     suspend fun getProfilePicture(userId: String): ProfilePicture?
+
+    suspend fun downloadUserData(
+        userId: String,
+        context: Context,
+    )
 }
