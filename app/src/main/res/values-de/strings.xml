@@ -249,4 +249,5 @@
     <string name="select_expiry_date">Bitte ein Haltbarkeitsdatum wählen</string>
     <string name="enter_quantity">Bitte Menge eingeben</string>
     <string name="select_unit">Bitte eine Einheit auswählen</string>
+    <string name="barcode_scanner">Barcode scanner</string>
 </resources>

@@ -241,4 +241,5 @@
     <string name="select_expiry_date">Please select an expiry date</string>
     <string name="enter_quantity">Please enter the quantity</string>
     <string name="select_unit">Please select a unit</string>
+    <string name="barcode_scanner">Barcode scanner</string>
 </resources>

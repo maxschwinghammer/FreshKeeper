@@ -45,8 +45,9 @@ import com.freshkeeper.ui.theme.WhiteColor
 fun SignInScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    googleViewModel: GoogleViewModel = hiltViewModel(),
 ) {
+    val googleViewModel: GoogleViewModel = hiltViewModel()
+
     val context = LocalContext.current
     val activity = context as FragmentActivity
 

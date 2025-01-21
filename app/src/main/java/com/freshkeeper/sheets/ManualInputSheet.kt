@@ -43,7 +43,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.R
-import com.freshkeeper.model.Activity
 import com.freshkeeper.model.service.AccountServiceImpl
 import com.freshkeeper.model.service.ProductServiceImpl
 import com.freshkeeper.screens.home.DropdownMenu
@@ -300,12 +299,8 @@ fun ManualInputSheet(
                     return@Button
                 }
 
-                val userId = auth.currentUser?.uid ?: return@Button
-                val userRef = firestore.collection("users").document(userId)
-
                 coroutineScope.launch {
                     val householdId = accountService.getHouseholdId()
-
                     productService.addProduct(
                         productName,
                         expiryDate,
@@ -314,36 +309,12 @@ fun ManualInputSheet(
                         storageLocation.value,
                         category.value,
                         imageUrl,
-                        userId,
                         householdId,
                         coroutineScope,
                         { coroutineScope.launch { sheetState.hide() } },
                         { e -> Log.e("Firestore", "Error when adding the product", e) },
+                        addedText,
                     )
-                }
-
-                userRef.get().addOnSuccessListener { documentSnapshot ->
-                    val userName = documentSnapshot.getString("name") ?: "User"
-                    val activityText = "$userName $addedText: $productName"
-
-                    val activity =
-                        Activity(
-                            id = null,
-                            userId = userId,
-                            type = "product_added",
-                            text = activityText,
-                            timestamp = System.currentTimeMillis(),
-                        )
-
-                    firestore
-                        .collection("activities")
-                        .add(activity)
-                        .addOnSuccessListener { documentReference ->
-                            val updatedActivity = activity.copy(id = documentReference.id)
-                            documentReference.update("id", updatedActivity.id)
-                        }.addOnFailureListener { e ->
-                            Log.e("Firestore", "Error when adding the activity", e)
-                        }
                 }
             },
             modifier =

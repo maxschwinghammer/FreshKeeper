@@ -69,7 +69,7 @@ fun AddEntrySheet(
             Spacer(modifier = Modifier.height(16.dp))
 
             AddEntryButton(
-                text = "Barcode scanner",
+                text = stringResource(R.string.barcode_scanner),
                 iconId = R.drawable.barcode,
                 onClick = {
                     coroutineScope.launch {

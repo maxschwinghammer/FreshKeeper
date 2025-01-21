@@ -54,8 +54,9 @@ import com.freshkeeper.ui.theme.WhiteColor
 fun EmailSignUpScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModel: SignUpViewModel = hiltViewModel(),
 ) {
+    val viewModel: SignUpViewModel = hiltViewModel()
+
     val email = viewModel.email.collectAsState()
     val password = viewModel.password.collectAsState()
     val confirmPassword = viewModel.confirmPassword.collectAsState()

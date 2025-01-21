@@ -68,8 +68,9 @@ import kotlinx.coroutines.launch
 fun EmailSignInScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModel: SignInViewModel = hiltViewModel(),
 ) {
+    val viewModel: SignInViewModel = hiltViewModel()
+
     val email = viewModel.email.collectAsState()
     val password = viewModel.password.collectAsState()
     val errorMessage = viewModel.errorMessage.collectAsState()

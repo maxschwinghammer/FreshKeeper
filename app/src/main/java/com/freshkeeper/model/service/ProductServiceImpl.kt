@@ -3,9 +3,14 @@ package com.freshkeeper.model.service
 import android.util.Log
 import com.freshkeeper.model.Activity
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,6 +21,16 @@ class ProductServiceImpl
     ) : ProductService {
         val firestore = FirebaseFirestore.getInstance()
         val auth = FirebaseAuth.getInstance()
+        val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+        private var _user = MutableStateFlow<User?>(null)
+        val user: StateFlow<User?> get() = _user.asStateFlow()
+
+        init {
+            coroutineScope.launch {
+                _user.value = accountService.getUserObject()
+            }
+        }
 
         override suspend fun addProduct(
             productName: String,
@@ -25,16 +40,17 @@ class ProductServiceImpl
             storageLocation: String,
             category: String,
             imageUrl: String,
-            userId: String,
             householdId: String,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
             onFailure: (Exception) -> Unit,
+            addedText: String,
         ) {
+            val currentUser = _user.value ?: return
             val foodItem =
                 FoodItem(
                     id = System.currentTimeMillis(),
-                    userId = userId,
+                    userId = currentUser.id,
                     householdId = householdId,
                     name = productName,
                     expiryTimestamp = expiryTimestamp,
@@ -52,7 +68,15 @@ class ProductServiceImpl
                     .collection("foodItems")
                     .add(foodItem)
                     .addOnSuccessListener {
-                        coroutineScope.launch { onSuccess() }
+                        coroutineScope.launch {
+                            logActivity(
+                                foodItem,
+                                productName,
+                                "product_added",
+                                addedText,
+                            )
+                            onSuccess()
+                        }
                     }.addOnFailureListener { e ->
                         onFailure(e)
                     }
@@ -71,13 +95,11 @@ class ProductServiceImpl
             expiryDate: Long,
             isConsumedChecked: Boolean,
             isThrownAwayChecked: Boolean,
-            userName: String?,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
             onFailure: (Exception) -> Unit,
+            addedText: String,
         ) {
-            val userId = auth.currentUser?.uid ?: return
-
             firestore
                 .collection("foodItems")
                 .whereEqualTo("id", foodItem.id)
@@ -101,14 +123,22 @@ class ProductServiceImpl
                             .update(updates)
                             .addOnSuccessListener {
                                 coroutineScope.launch {
-                                    logActivity(
-                                        foodItem,
-                                        productName,
-                                        isConsumedChecked,
-                                        isThrownAwayChecked,
-                                        userName ?: "Unknown",
-                                        userId,
-                                    )
+                                    coroutineScope.launch {
+                                        val activityType =
+                                            when {
+                                                isConsumedChecked -> "consumed"
+                                                isThrownAwayChecked -> "thrown_away"
+                                                else -> "edit"
+                                            }
+                                        logActivity(
+                                            foodItem,
+                                            productName,
+                                            activityType,
+                                            addedText,
+                                        )
+                                        onSuccess()
+                                    }
+
                                     onSuccess()
                                 }
                             }.addOnFailureListener { e ->
@@ -128,25 +158,17 @@ class ProductServiceImpl
         override suspend fun logActivity(
             foodItem: FoodItem,
             productName: String,
-            isConsumedChecked: Boolean,
-            isThrownAwayChecked: Boolean,
-            userName: String,
-            userId: String,
+            activityType: String,
+            addedText: String,
         ) {
-            val activityType =
-                when {
-                    isConsumedChecked -> "remove"
-                    isThrownAwayChecked -> "remove"
-                    productName != foodItem.name -> "edit"
-                    else -> "edit"
-                }
-
+            val currentUser = _user.value ?: return
             val activityText =
-                when {
-                    isConsumedChecked -> "$userName marked $productName as consumed"
-                    isThrownAwayChecked -> "$userName marked $productName as thrown away"
-                    productName != foodItem.name -> "$userName edited the name of '${foodItem.name}' to '$productName'"
-                    else -> "$userName edited the product $productName"
+                when (activityType) {
+                    "consumed" -> "${currentUser.displayName} marked $productName as consumed"
+                    "thrown_away" -> "${currentUser.displayName} marked $productName as thrown away"
+                    "edit" -> "${currentUser.displayName} edited the product $productName"
+                    "product_added" -> "${currentUser.displayName} $addedText: $productName"
+                    else -> "${currentUser.displayName} performed an activity on $productName"
                 }
 
             val householdId = accountService.getHouseholdId()
@@ -154,7 +176,7 @@ class ProductServiceImpl
             val activity =
                 Activity(
                     id = null,
-                    userId = userId,
+                    userId = currentUser.id,
                     householdId = householdId,
                     type = activityType,
                     text = activityText,

@@ -12,11 +12,11 @@ interface ProductService {
         storageLocation: String,
         category: String,
         imageUrl: String,
-        userId: String,
         householdId: String,
         coroutineScope: CoroutineScope,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit,
+        addedText: String,
     )
 
     fun updateProduct(
@@ -29,18 +29,16 @@ interface ProductService {
         expiryDate: Long,
         isConsumedChecked: Boolean,
         isThrownAwayChecked: Boolean,
-        userName: String?,
         coroutineScope: CoroutineScope,
         onSuccess: () -> Unit,
         onFailure: (Exception) -> Unit,
-    ) {}
+        addedText: String,
+    )
 
     suspend fun logActivity(
         foodItem: FoodItem,
         productName: String,
-        isConsumedChecked: Boolean,
-        isThrownAwayChecked: Boolean,
-        userName: String,
-        userId: String,
-    ) {}
+        activityType: String,
+        addedText: String,
+    )
 }

@@ -26,7 +26,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -41,17 +40,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
-import com.freshkeeper.model.User
 import com.freshkeeper.model.service.AccountServiceImpl
 import com.freshkeeper.model.service.ProductServiceImpl
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
-import com.freshkeeper.screens.profileSettings.viewmodel.ProfileSettingsViewModel
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
@@ -67,7 +63,6 @@ import kotlinx.coroutines.launch
 fun EditProductSheet(
     sheetState: SheetState,
     foodItem: FoodItem,
-    profileSettingsViewModel: ProfileSettingsViewModel = hiltViewModel(),
 ) {
     val accountService = remember { AccountServiceImpl() }
     val productService = remember { ProductServiceImpl(accountService) }
@@ -151,7 +146,7 @@ fun EditProductSheet(
     var expiryDate by remember { mutableLongStateOf(foodItem.expiryTimestamp) }
     val coroutineScope = rememberCoroutineScope()
 
-    val user by profileSettingsViewModel.user.collectAsState(initial = User())
+    val addedText = stringResource(R.string.added_product)
 
     Column(
         modifier =
@@ -326,7 +321,6 @@ fun EditProductSheet(
                         expiryDate = expiryDate,
                         isConsumedChecked = isConsumedChecked,
                         isThrownAwayChecked = isThrownAwayChecked,
-                        userName = user.displayName,
                         coroutineScope = coroutineScope,
                         onSuccess = {
                             coroutineScope.launch {
@@ -334,6 +328,7 @@ fun EditProductSheet(
                             }
                         },
                         onFailure = { e -> Log.e("ProductService", "Error updating product", e) },
+                        addedText = addedText,
                     )
                 }
             },

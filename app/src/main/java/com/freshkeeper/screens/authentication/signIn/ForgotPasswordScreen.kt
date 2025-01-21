@@ -50,9 +50,10 @@ import com.freshkeeper.ui.theme.WhiteColor
 fun ForgotPasswordScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModel: SignInViewModel = hiltViewModel(),
     email: String,
 ) {
+    val viewModel: SignInViewModel = hiltViewModel()
+
     LaunchedEffect(Unit) {
         viewModel.updateEmail(email)
     }
