@@ -54,8 +54,6 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 @Suppress("ktlint:standard:function-naming")
@@ -79,8 +77,6 @@ fun ManualInputSheet(
     val category = remember { mutableStateOf("dairy_goods") }
 
     val context = LocalContext.current
-    val auth = FirebaseAuth.getInstance()
-    val firestore = FirebaseFirestore.getInstance()
     val coroutineScope = rememberCoroutineScope()
 
     val storageLocationMap =

@@ -8,7 +8,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "com.freshkeeper"
     compileSdk = 35
