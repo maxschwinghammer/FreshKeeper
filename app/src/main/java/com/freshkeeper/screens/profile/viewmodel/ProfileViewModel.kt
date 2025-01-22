@@ -2,8 +2,8 @@ package com.freshkeeper.screens.profile.viewmodel
 
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
-import com.freshkeeper.model.service.AccountService
 import com.freshkeeper.screens.AppViewModel
+import com.freshkeeper.service.AccountService
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -56,6 +56,7 @@ fun ActivitiesSection() {
     val viewModel: HouseholdViewModel = hiltViewModel()
     val coroutineScope = rememberCoroutineScope()
     val activities by viewModel.activities.observeAsState(emptyList())
+
     val drawableMap =
         mapOf(
             "user_joined" to R.drawable.user_joined,

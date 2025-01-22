@@ -1,4 +1,4 @@
-package com.freshkeeper.model.service
+package com.freshkeeper.service
 
 import android.util.Log
 import com.freshkeeper.model.Activity

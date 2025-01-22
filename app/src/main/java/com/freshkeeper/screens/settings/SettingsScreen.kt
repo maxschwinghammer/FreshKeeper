@@ -13,13 +13,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,28 +35,38 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
+import com.freshkeeper.model.Membership
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
+import com.freshkeeper.screens.settings.viewmodel.SettingsViewModel
+import com.freshkeeper.sheets.ManagePremiumSheet
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
+import kotlinx.coroutines.launch
 import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun SettingsScreen(
     navController: NavHostController,
     onLocaleChange: (String) -> Unit,
 ) {
+    val settingsViewModel: SettingsViewModel = hiltViewModel()
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
 
     var selectedLanguage by remember { mutableStateOf(Locale.getDefault().language) }
     val termsOfServiceUrl = "https://github.com/maxschwinghammer/FreshKeeper/blob/master/terms-of-service.md"
     val privacyPolicyUrl = "https://github.com/maxschwinghammer/FreshKeeper/blob/master/privacy-policy.md"
     val imprintUrl = "https://github.com/maxschwinghammer/FreshKeeper/blob/master/imprint.md"
+
+    val membership by settingsViewModel.membership.collectAsState(initial = Membership())
+    val managePremiumSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val coroutineScope = rememberCoroutineScope()
 
     val listState = rememberLazyListState()
     val showTransition by remember {
@@ -123,7 +137,14 @@ fun SettingsScreen(
                         )
                     }
                     item { BuyACoffeeButton() }
-                    item { UpgradeToPremiumVersionButton() }
+                    item {
+                        UpgradeToPremiumVersionButton(
+                            membership = membership,
+                            onManagePremiumClick = {
+                                coroutineScope.launch { managePremiumSheetState.show() }
+                            },
+                        )
+                    }
                     item {
                         Column(
                             modifier =
@@ -154,6 +175,11 @@ fun SettingsScreen(
                         }
                     }
                     item {
+                        SettingsButton(stringResource(R.string.help_and_contact)) {
+                            navController.navigate("help")
+                        }
+                    }
+                    item {
                         Spacer(modifier = Modifier.height(10.dp))
                     }
                 }
@@ -163,6 +189,14 @@ fun SettingsScreen(
                         modifier = Modifier.align(Alignment.BottomCenter),
                     )
                 }
+            }
+            if (managePremiumSheetState.isVisible) {
+                ManagePremiumSheet(
+                    managePremiumSheetState,
+                    membership,
+                    onCancelPremium = {},
+                    onChangePlan = {},
+                )
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.freshkeeper.model.service
+package com.freshkeeper.service
 
 import android.content.Context
 import android.content.Intent
@@ -64,6 +64,12 @@ class AccountServiceImpl
         override fun hasUser(): Boolean = auth.currentUser != null
 
         override fun getUserProfile(): User = auth.currentUser.toUser()
+
+        override fun getEmailForCurrentUser(): String {
+            val currentUser = auth.currentUser
+            return currentUser?.email
+                ?: throw IllegalStateException("Current user is not logged in or email is unavailable")
+        }
 
         override suspend fun getUserObject(): User {
             val currentUser = auth.currentUser

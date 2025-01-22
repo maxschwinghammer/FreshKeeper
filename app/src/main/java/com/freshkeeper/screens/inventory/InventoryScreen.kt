@@ -1,6 +1,5 @@
 package com.freshkeeper.screens.inventory
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -101,8 +100,6 @@ fun InventoryScreen(navController: NavHostController) {
     var selectedStorageLocations by remember { mutableStateOf(emptyList<String>()) }
 
     val items by inventoryViewModel.foodItems.observeAsState(emptyList())
-
-    Log.d("InventoryScreen", "filter food items: $items")
 
     var foodItems by remember { mutableStateOf(emptyList<FoodItem>()) }
     var foodItem by remember { mutableStateOf<FoodItem?>(null) }

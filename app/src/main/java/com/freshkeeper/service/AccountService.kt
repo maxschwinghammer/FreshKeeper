@@ -1,4 +1,4 @@
-package com.freshkeeper.model.service
+package com.freshkeeper.service
 
 import android.content.Context
 import com.freshkeeper.model.ProfilePicture
@@ -13,6 +13,8 @@ interface AccountService {
     fun getUserProfile(): User
 
     suspend fun getUserObject(): User
+
+    fun getEmailForCurrentUser(): String
 
     suspend fun createAnonymousAccount()
 

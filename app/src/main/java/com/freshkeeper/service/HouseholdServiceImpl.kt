@@ -1,4 +1,4 @@
-package com.freshkeeper.model.service
+package com.freshkeeper.service
 
 import android.util.Log
 import com.freshkeeper.model.Activity
@@ -38,11 +38,11 @@ class HouseholdServiceImpl
                 .document(userId)
                 .get()
                 .addOnSuccessListener { document ->
-                    val householdId = document.getString("householdId")
+                    householdId = document.getString("householdId")
                     if (householdId != null) {
                         firestore
                             .collection("households")
-                            .document(householdId)
+                            .document(householdId!!)
                             .get()
                             .addOnSuccessListener { householdDoc ->
                                 val household = householdDoc.toObject(Household::class.java)

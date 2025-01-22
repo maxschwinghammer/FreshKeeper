@@ -16,5 +16,5 @@ data class User(
     val isBiometricEnabled: Boolean = false,
     val createdAt: Long = 0,
     val householdId: String? = null,
-    val hasPremium: Boolean = false,
+    val membershipId: String? = null,
 )

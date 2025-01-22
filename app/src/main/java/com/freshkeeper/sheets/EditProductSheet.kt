@@ -43,11 +43,11 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
-import com.freshkeeper.model.service.AccountServiceImpl
-import com.freshkeeper.model.service.ProductServiceImpl
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
+import com.freshkeeper.service.AccountServiceImpl
+import com.freshkeeper.service.ProductServiceImpl
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor

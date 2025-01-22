@@ -8,11 +8,12 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.freshkeeper.R
+import com.freshkeeper.model.Membership
 import com.freshkeeper.model.User
-import com.freshkeeper.model.service.AccountService
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.screens.authentication.isValidEmail
 import com.freshkeeper.screens.authentication.isValidPassword
+import com.freshkeeper.service.AccountService
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
@@ -111,20 +112,37 @@ class SignUpViewModel
             email: String,
         ) {
             val firestore = FirebaseFirestore.getInstance()
-            val user =
-                User(
-                    id = userId,
-                    email = email,
-                    createdAt = System.currentTimeMillis(),
-                    provider = "email",
+
+            val membership =
+                Membership(
+                    id = firestore.collection("membership").document().id,
                 )
 
             firestore
-                .collection("users")
-                .document(userId)
-                .set(user)
-                .addOnFailureListener { e ->
-                    Log.e("SignUp", "Error saving user to Firestore: ${e.message}", e)
+                .collection("membership")
+                .document(membership.id)
+                .set(membership)
+                .addOnSuccessListener {
+                    val user =
+                        User(
+                            id = userId,
+                            email = email,
+                            createdAt = System.currentTimeMillis(),
+                            provider = "email",
+                            membershipId = membership.id,
+                        )
+
+                    firestore
+                        .collection("users")
+                        .document(userId)
+                        .set(user)
+                        .addOnSuccessListener {
+                            Log.d("SignUp", "User erfolgreich mit Membership gespeichert.")
+                        }.addOnFailureListener { e ->
+                            Log.e("SignUp", "Fehler beim Speichern des Users: ${e.message}", e)
+                        }
+                }.addOnFailureListener { e ->
+                    Log.e("SignUp", "Fehler beim Erstellen der Membership: ${e.message}", e)
                 }
         }
 

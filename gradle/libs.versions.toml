@@ -2,7 +2,7 @@
 accompanistFlowlayout = "0.36.0"
 accompanistPagerVersion = "0.31.2-alpha"
 activityCompose = "1.10.0"
-agp = "8.7.3"
+agp = "8.8.0"
 androidImageCropper = "4.6.0"
 androidxCredentials = "1.5.0-rc01"
 androidxJunit = "1.1.5"
@@ -22,6 +22,7 @@ googleCore = "3.4.1"
 googleServicesVersion = "4.4.2"
 gson = "2.10.1"
 imageLabelingVersion = "17.0.9"
+javaxMail = "1.6.2"
 journeyappsZxingAndroidEmbedded = "4.3.0"
 json = "20210307"
 junit = "4.13.2"
@@ -65,6 +66,7 @@ google-accompanist-pager = { module = "com.google.accompanist:accompanist-pager"
 google-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistPagerVersion" }
 google-core = { module = "com.google.zxing:core", version.ref = "googleCore" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
+javax-mail = { module = "com.sun.mail:javax.mail", version.ref = "javaxMail" }
 mlkit-image-labeling = { module = "com.google.mlkit:image-labeling", version.ref = "imageLabelingVersion" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
 json = { group = "org.json", name = "json", version.ref = "json" }

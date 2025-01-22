@@ -1,4 +1,4 @@
-package com.freshkeeper.model.service
+package com.freshkeeper.service
 
 import com.freshkeeper.model.FoodItem
 import kotlinx.coroutines.CoroutineScope

@@ -11,10 +11,11 @@ import androidx.navigation.NavController
 import com.freshkeeper.ERROR_TAG
 import com.freshkeeper.R
 import com.freshkeeper.UNEXPECTED_CREDENTIAL
+import com.freshkeeper.model.Membership
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
-import com.freshkeeper.model.service.AccountService
 import com.freshkeeper.screens.AppViewModel
+import com.freshkeeper.service.AccountService
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Companion.TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
 import com.google.firebase.Firebase
@@ -174,26 +175,50 @@ class GoogleViewModel
             displayName: String,
             profilePictureUrl: String?,
         ) {
-            if (profilePictureUrl != null) {
-                val profilePictureData = ProfilePicture(image = profilePictureUrl, type = "url")
+            val membership =
+                Membership(
+                    id = firestore.collection("membership").document().id,
+                )
 
-                firestore
-                    .collection("profilePictures")
-                    .add(profilePictureData)
-                    .addOnSuccessListener { documentReference ->
-                        val profilePictureId = documentReference.id
+            firestore
+                .collection("memberships")
+                .add(membership)
+                .addOnSuccessListener { membershipReference ->
+                    val membershipId = membershipReference.id
 
-                        saveUserDocument(userId, email, displayName, profilePictureId)
-                    }.addOnFailureListener { e ->
-                        Log.e(
-                            "ProfilePicture",
-                            "Error saving profile picture: ${e.message}",
-                            e,
-                        )
-                    }
-            } else {
-                saveUserDocument(userId, email, displayName, null)
-            }
+                    firestore
+                        .collection("memberships")
+                        .document(membershipId)
+                        .update("id", membershipId)
+                        .addOnSuccessListener {
+                            if (profilePictureUrl != null) {
+                                val profilePictureData = ProfilePicture(image = profilePictureUrl, type = "url")
+
+                                firestore
+                                    .collection("profilePictures")
+                                    .add(profilePictureData)
+                                    .addOnSuccessListener { documentReference ->
+                                        val profilePictureId = documentReference.id
+
+                                        saveUserDocument(userId, email, displayName, profilePictureId, membershipId)
+                                    }.addOnFailureListener { e ->
+                                        Log.e(
+                                            "ProfilePicture",
+                                            "Error saving profile picture: ${e.message}",
+                                            e,
+                                        )
+                                    }
+                            } else {
+                                saveUserDocument(userId, email, displayName, null, membershipId)
+                            }
+                        }
+                }.addOnFailureListener { e ->
+                    Log.e(
+                        "Membership",
+                        "Error creating membership: ${e.message}",
+                        e,
+                    )
+                }
         }
 
         private fun saveUserDocument(
@@ -201,6 +226,7 @@ class GoogleViewModel
             email: String,
             displayName: String,
             profilePictureId: String?,
+            membershipId: String,
         ) {
             firestore
                 .collection("users")
@@ -216,6 +242,7 @@ class GoogleViewModel
                                 profilePicture = profilePictureId,
                                 createdAt = System.currentTimeMillis(),
                                 provider = "google",
+                                membershipId = membershipId,
                             )
 
                         firestore

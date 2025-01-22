@@ -242,4 +242,18 @@
     <string name="enter_quantity">Please enter the quantity</string>
     <string name="select_unit">Please select a unit</string>
     <string name="barcode_scanner">Barcode scanner</string>
+    <string name="loading">Loading</string>
+    <string name="manage_premium_membership">Manage premium membership</string>
+    <string name="activate_premium_membership">Upgrade to premium</string>
+    <string name="test_premium_membership">Test premium for free</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="subject">Subject</string>
+    <string name="your_message">Your message</string>
+    <string name="enter_subject">Enter subject</string>
+    <string name="enter_message">Enter your message</string>
+    <string name="send_message">Send message</string>
+    <string name="faq">FAQs</string>
+    <string name="answer_not_found">You didn’t find an answer to your question?</string>
+    <string name="send_us_message">Send us a message</string>
+    <string name="help_and_contact">Help and contact</string>
 </resources>

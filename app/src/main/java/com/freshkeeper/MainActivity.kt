@@ -15,8 +15,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.rememberNavController
-import com.freshkeeper.model.service.AccountServiceImpl
 import com.freshkeeper.navigation.NavigationHost
+import com.freshkeeper.service.AccountServiceImpl
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 

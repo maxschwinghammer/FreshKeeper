@@ -250,4 +250,18 @@
     <string name="enter_quantity">Bitte Menge eingeben</string>
     <string name="select_unit">Bitte eine Einheit auswählen</string>
     <string name="barcode_scanner">Barcode scanner</string>
+    <string name="loading">Lädt</string>
+    <string name="manage_premium_membership">Premium-Mitgliedschaft verwalten</string>
+    <string name="activate_premium_membership">Auf Premium upgraden</string>
+    <string name="test_premium_membership">Premium kostenlos testen</string>
+    <string name="contact_us">Kontaktieren Sie uns</string>
+    <string name="subject">Betreff</string>
+    <string name="your_message">Ihre Nachricht</string>
+    <string name="enter_subject">Geben Sie den Betreff ein</string>
+    <string name="enter_message">Geben Sie Ihre Nachricht ein</string>
+    <string name="send_message">Nachricht senden</string>
+    <string name="faq">Häufige Fragen</string>
+    <string name="answer_not_found">Haben Sie keine Antwort auf Ihre Frage gefunden?</string>
+    <string name="send_us_message">Senden Sie uns eine Nachricht</string>
+    <string name="help_and_contact">Hilfe und Kontakt</string>
 </resources>

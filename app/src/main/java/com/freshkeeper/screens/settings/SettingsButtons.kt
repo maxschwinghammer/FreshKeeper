@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
+import com.freshkeeper.model.Membership
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
@@ -151,13 +152,28 @@ fun BuyACoffeeButton() {
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun UpgradeToPremiumVersionButton() {
+fun UpgradeToPremiumVersionButton(
+    membership: Membership,
+    onManagePremiumClick: () -> Unit,
+) {
     val context = LocalContext.current
-    val premiumUrl = "https://play.google.com/store/apps/details?id=com.freshkeeper"
+    val premiumUrl = "https://freshkeeper.de"
+
+    val buttonText =
+        when {
+            membership.hasPremium -> stringResource(R.string.manage_premium_membership)
+            membership.hasTested -> stringResource(R.string.activate_premium_membership)
+            else -> stringResource(R.string.test_premium_membership)
+        }
+
     Button(
         onClick = {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(premiumUrl))
-            context.startActivity(intent)
+            if (membership.hasPremium) {
+                onManagePremiumClick()
+            } else {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(premiumUrl))
+                context.startActivity(intent)
+            }
         },
         colors =
             ButtonDefaults.buttonColors(
@@ -174,7 +190,7 @@ fun UpgradeToPremiumVersionButton() {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = stringResource(R.string.upgrade_to_premium),
+                text = buttonText,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 color = TextColor,

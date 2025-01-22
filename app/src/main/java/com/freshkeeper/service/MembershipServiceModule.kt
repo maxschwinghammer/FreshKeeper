@@ -1,4 +1,4 @@
-package com.freshkeeper.model.service
+package com.freshkeeper.service
 
 import dagger.Binds
 import dagger.Module
@@ -8,8 +8,8 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class ProductServiceModule {
+abstract class MembershipServiceModule {
     @Binds
     @Singleton
-    abstract fun bindProductService(productServiceImpl: ProductServiceImpl): ProductService
+    abstract fun bindMembershipService(membershipServiceImpl: MembershipServiceImpl): MembershipService
 }

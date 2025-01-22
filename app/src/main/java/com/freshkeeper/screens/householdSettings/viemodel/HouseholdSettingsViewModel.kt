@@ -5,8 +5,8 @@ import android.util.Log
 import android.widget.Toast
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.User
-import com.freshkeeper.model.service.AccountService
 import com.freshkeeper.screens.AppViewModel
+import com.freshkeeper.service.AccountService
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel

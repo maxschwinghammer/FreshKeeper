@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.freshkeeper.model.Activity
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.Member
-import com.freshkeeper.model.service.HouseholdService
+import com.freshkeeper.service.HouseholdService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -59,7 +59,7 @@ class HouseholdViewModel
                     onFailure = {
                         _household.value = Household()
                         _isInHousehold.value = false
-                        Log.e("HouseholdViewModel", "Error loading householdId")
+                        Log.d("HouseholdViewModel", "User is not in a household")
                     },
                 )
             }
