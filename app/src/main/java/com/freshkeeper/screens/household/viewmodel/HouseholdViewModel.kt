@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.freshkeeper.model.Activity
+import com.freshkeeper.model.Household
 import com.freshkeeper.model.Member
 import com.freshkeeper.model.service.HouseholdService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,42 +40,45 @@ class HouseholdViewModel
         private val _isInHousehold = MutableLiveData(false)
         val isInHousehold: LiveData<Boolean> = _isInHousehold
 
-        private val _householdId = MutableLiveData<String?>()
-        val householdId: LiveData<String?> = _householdId
+        private val _household = MutableLiveData<Household?>()
+        val household: MutableLiveData<Household?> = _household
 
         init {
-            loadHouseholdId()
+            loadHousehold()
         }
 
-        private fun loadHouseholdId() {
+        private fun loadHousehold() {
             viewModelScope.launch {
-                householdService.getHouseholdId(
-                    onResult = { householdId ->
-                        _householdId.value = householdId
-                        householdId?.let { loadHouseholdData(it) }
+                householdService.getHousehold(
+                    onResult = { household ->
+                        _household.value = household
+                        _isInHousehold.value = true
+
+                        loadHouseholdData()
                     },
-                    onFailure = { Log.e("HouseholdViewModel", "Error loading householdId") },
+                    onFailure = {
+                        _household.value = Household()
+                        _isInHousehold.value = false
+                        Log.e("HouseholdViewModel", "Error loading householdId")
+                    },
                 )
             }
         }
 
-        private fun loadHouseholdData(householdId: String) {
+        private fun loadHouseholdData() {
             viewModelScope.launch {
                 householdService.getMembers(
-                    householdId,
                     coroutineScope = this,
                     onResult = { _members.value = it },
                     onFailure = { Log.e("HouseholdViewModel", "Error loading members") },
                 )
 
                 householdService.getActivities(
-                    householdId,
                     onResult = { _activities.value = it },
                     onFailure = { Log.e("HouseholdViewModel", "Error loading activities") },
                 )
 
                 householdService.getFoodWasteData(
-                    householdId,
                     onResult = { _totalFoodWaste.value = it.size },
                     onFailure = { Log.e("HouseholdViewModel", "Error loading food waste data") },
                 )

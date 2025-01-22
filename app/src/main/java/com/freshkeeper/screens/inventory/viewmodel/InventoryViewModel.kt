@@ -17,6 +17,9 @@ class InventoryViewModel
     constructor() : ViewModel() {
         private val firestore = FirebaseFirestore.getInstance()
 
+        private val _foodItems = MutableLiveData<List<FoodItem>>()
+        val foodItems: LiveData<List<FoodItem>> = _foodItems
+
         private val _fridgeItems = MutableLiveData<List<FoodItem>>()
         val fridgeItems: LiveData<List<FoodItem>> = _fridgeItems
 
@@ -62,6 +65,34 @@ class InventoryViewModel
             loadStorageLocationItems("pantry", _pantryItems)
             loadStorageLocationItems("fruit_basket", _fruitBasketItems)
             loadStorageLocationItems("other", _otherItems)
+            loadAllFoodItems()
+        }
+
+        private fun loadAllFoodItems() {
+            if (userId == null) return
+
+            val query =
+                if (householdId != null) {
+                    firestore
+                        .collection("foodItems")
+                        .whereEqualTo("householdId", householdId)
+                } else {
+                    firestore
+                        .collection("foodItems")
+                        .whereEqualTo("userId", userId)
+                }
+
+            query
+                .whereEqualTo("consumed", false)
+                .whereEqualTo("thrownAway", false)
+                .get()
+                .addOnSuccessListener { documents ->
+                    val items = documents.documents.mapNotNull { it.toObject<FoodItem>() }
+                    _foodItems.value = items
+                }.addOnFailureListener {
+                    _foodItems.value = emptyList()
+                    Log.e("InventoryViewModel", "Error loading all food items", it)
+                }
         }
 
         private fun loadHouseholdId() {
@@ -110,6 +141,21 @@ class InventoryViewModel
                         "Error loading category items for storage location: $storageLocation",
                         it,
                     )
+                }
+        }
+
+        fun moveItemToNewLocation(
+            item: FoodItem,
+            newLocation: String,
+        ) {
+            firestore
+                .collection("foodItems")
+                .document(item.id.toString())
+                .update("storageLocation", newLocation)
+                .addOnSuccessListener {
+                    Log.d("InventoryViewModel", "Item moved successfully.")
+                }.addOnFailureListener { e ->
+                    Log.e("InventoryViewModel", "Error moving item: ", e)
                 }
         }
     }

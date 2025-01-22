@@ -394,9 +394,9 @@ fun SelectHouseholdTypeCard(
                         modifier = Modifier.padding(8.dp),
                     )
                     household.users.forEach { user ->
-                        val borderColor = if (selectedUser == user?.id) AccentTurquoiseColor else Color.Transparent
+                        val borderColor = if (selectedUser == user) AccentTurquoiseColor else Color.Transparent
                         Button(
-                            onClick = { selectedUser = user?.id },
+                            onClick = { selectedUser = user },
                             colors =
                                 ButtonDefaults.buttonColors(
                                     containerColor = GreyColor,
@@ -406,7 +406,7 @@ fun SelectHouseholdTypeCard(
                             border = BorderStroke(1.dp, borderColor),
                             modifier = Modifier.padding(vertical = 2.dp).align(Alignment.CenterHorizontally),
                         ) {
-                            Text(text = user?.displayName ?: "Unknown")
+                            Text(text = user)
                         }
                     }
                 }

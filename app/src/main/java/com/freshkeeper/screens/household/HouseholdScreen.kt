@@ -115,7 +115,6 @@ fun HouseholdScreen(navController: NavHostController) {
                                             householdErrorText,
                                         )
                                     },
-                                    household,
                                 )
                             }
                             item { ActivitiesSection() }

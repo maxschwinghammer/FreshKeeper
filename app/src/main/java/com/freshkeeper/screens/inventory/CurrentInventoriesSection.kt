@@ -70,12 +70,15 @@ fun CurrentInventoriesSection(
                 }
 
             if (filteredItems.isNotEmpty()) {
-                InventoryCategory(
+                StorageLocation(
                     title = title,
                     image = painterResource(id = image),
                     items = filteredItems,
                     editProductSheetState = editProductSheetState,
                     onItemClick = onItemClick,
+                    onItemMoved = { item, newLocation ->
+                        viewModel.moveItemToNewLocation(item, newLocation)
+                    },
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }

@@ -1,9 +1,11 @@
 package com.freshkeeper.screens.inventory
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,9 +19,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -37,6 +41,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -58,6 +63,7 @@ import com.freshkeeper.model.FoodItem
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
+import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.sheets.AddEntrySheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
@@ -70,6 +76,7 @@ import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
+import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
 import kotlinx.coroutines.launch
 
@@ -78,6 +85,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun InventoryScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
+    val inventoryViewModel: InventoryViewModel = hiltViewModel()
 
     var scannedBarcode by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
@@ -92,8 +100,11 @@ fun InventoryScreen(navController: NavHostController) {
     var selectedCategories by remember { mutableStateOf(emptyList<String>()) }
     var selectedStorageLocations by remember { mutableStateOf(emptyList<String>()) }
 
-    var foodItems by remember { mutableStateOf(emptyList<FoodItem>()) }
+    val items by inventoryViewModel.foodItems.observeAsState(emptyList())
 
+    Log.d("InventoryScreen", "filter food items: $items")
+
+    var foodItems by remember { mutableStateOf(emptyList<FoodItem>()) }
     var foodItem by remember { mutableStateOf<FoodItem?>(null) }
 
     val listState = rememberLazyListState()
@@ -136,6 +147,10 @@ fun InventoryScreen(navController: NavHostController) {
             "candy" to R.string.candy,
             "other" to R.string.other,
         )
+
+    val labelMap = categoryMap + storageLocationMap
+
+    fun getLabel(key: String): Int? = labelMap[key]
 
     FreshKeeperTheme {
         Scaffold(
@@ -214,6 +229,51 @@ fun InventoryScreen(navController: NavHostController) {
                                     Modifier
                                         .size(20.dp),
                             )
+                        }
+                    }
+                    if (selectedCategories.isNotEmpty() || selectedStorageLocations.isNotEmpty()) {
+                        Row(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .horizontalScroll(rememberScrollState())
+                                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            (selectedCategories + selectedStorageLocations).forEach { filter ->
+                                Box(
+                                    modifier =
+                                        Modifier
+                                            .clip(RoundedCornerShape(20.dp))
+                                            .background(GreyColor)
+                                            .border(1.dp, ComponentStrokeColor, RoundedCornerShape(20.dp))
+                                            .clickable {
+                                                if (selectedCategories.contains(filter)) {
+                                                    selectedCategories = selectedCategories - filter
+                                                } else {
+                                                    selectedStorageLocations = selectedStorageLocations - filter
+                                                }
+                                            }.padding(horizontal = 12.dp, vertical = 6.dp),
+                                    contentAlignment = Alignment.Center,
+                                ) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        val labelId = getLabel(filter)
+
+                                        Text(
+                                            text = if (labelId != null) stringResource(id = labelId) else "",
+                                            fontSize = 12.sp,
+                                            color = TextColor,
+                                        )
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        Icon(
+                                            imageVector = Icons.Default.Close,
+                                            contentDescription = null,
+                                            tint = TextColor,
+                                            modifier = Modifier.size(14.dp),
+                                        )
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -343,7 +403,7 @@ fun InventoryScreen(navController: NavHostController) {
                 ) {
                     FilterSheet(
                         filterSheetState = filterSheetState,
-                        foodItems = foodItems,
+                        foodItems = items,
                         categories = categoryMap,
                         storageLocations = storageLocationMap,
                         selectedCategories = selectedCategories,

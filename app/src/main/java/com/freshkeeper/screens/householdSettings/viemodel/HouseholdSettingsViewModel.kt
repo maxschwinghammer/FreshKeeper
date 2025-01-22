@@ -37,11 +37,11 @@ class HouseholdSettingsViewModel
         }
 
         private suspend fun loadHousehold() {
-            val userId = _user.value.id
+            val user = _user.value
             val snapshot =
                 firestore
                     .collection("households")
-                    .whereArrayContains("users", userId)
+                    .whereArrayContains("users", user.id)
                     .get()
                     .await()
 
@@ -67,17 +67,16 @@ class HouseholdSettingsViewModel
             type: String,
         ) {
             launchCatching {
-                val userId = _user.value.id
                 val user = _user.value
                 val newHousehold =
                     Household(
                         id = firestore.collection("households").document().id,
                         type = type,
-                        users = listOf(user),
+                        users = listOf(user.id),
                         name = name,
                         createdAt = System.currentTimeMillis(),
                         invites = emptyList(),
-                        ownerId = userId,
+                        ownerId = user.id,
                     )
 
                 try {
@@ -89,14 +88,14 @@ class HouseholdSettingsViewModel
 
                     firestore
                         .collection("users")
-                        .document(userId)
+                        .document(user.id)
                         .update("householdId", newHousehold.id)
                         .await()
 
                     val foodItemsQuerySnapshot =
                         firestore
                             .collection("foodItems")
-                            .whereEqualTo("userId", userId)
+                            .whereEqualTo("userId", user.id)
                             .get()
                             .await()
 
@@ -125,7 +124,7 @@ class HouseholdSettingsViewModel
 
                 if (newType == "Single household") {
                     try {
-                        val usersToRemove = _household.value.users.filter { it?.id != ownerId }
+                        val usersToRemove = _household.value.users.filter { it != ownerId && it != selectedUser }
 
                         val batch = firestore.batch()
 
@@ -136,9 +135,9 @@ class HouseholdSettingsViewModel
                         )
 
                         usersToRemove.forEach { user ->
-                            user?.let {
+                            user.let {
                                 batch.update(
-                                    firestore.collection("users").document(it.id),
+                                    firestore.collection("users").document(it),
                                     "householdId",
                                     null,
                                 )
@@ -147,13 +146,16 @@ class HouseholdSettingsViewModel
 
                         batch.commit().await()
 
-                        _household.value = _household.value.copy(users = listOf(_household.value.users.find { it?.id == ownerId }))
+                        _household.value =
+                            _household.value.copy(
+                                users = listOfNotNull(_household.value.users.find { it == ownerId }),
+                            )
                     } catch (e: Exception) {
                         Log.e("UpdateHouseholdType", "Error when updating users", e)
                     }
                 } else if (newType == "Pair" && selectedUser != null) {
                     try {
-                        val usersToRemove = _household.value.users.filter { it?.id != ownerId && it?.id != selectedUser }
+                        val usersToRemove = _household.value.users.filter { it != ownerId && it != selectedUser }
 
                         val batch = firestore.batch()
 
@@ -164,9 +166,9 @@ class HouseholdSettingsViewModel
                         )
 
                         usersToRemove.forEach { user ->
-                            user?.let {
+                            user.let {
                                 batch.update(
-                                    firestore.collection("users").document(it.id),
+                                    firestore.collection("users").document(it),
                                     "householdId",
                                     null,
                                 )
@@ -178,9 +180,9 @@ class HouseholdSettingsViewModel
                         _household.value =
                             _household.value.copy(
                                 users =
-                                    listOf(
-                                        _household.value.users.find { it?.id == ownerId },
-                                        _household.value.users.find { it?.id == selectedUser },
+                                    listOfNotNull(
+                                        _household.value.users.find { it == ownerId },
+                                        _household.value.users.find { it == selectedUser },
                                     ),
                             )
                     } catch (e: Exception) {
@@ -279,11 +281,13 @@ class HouseholdSettingsViewModel
 
                 val user = userSnapshot.toObject(User::class.java)
 
-                firestore
-                    .collection("households")
-                    .document(householdId)
-                    .update("users", FieldValue.arrayUnion(user))
-                    .await()
+                if (user != null) {
+                    firestore
+                        .collection("households")
+                        .document(householdId)
+                        .update("users", FieldValue.arrayUnion(user.id))
+                        .await()
+                }
 
                 firestore
                     .collection("users")
@@ -291,10 +295,12 @@ class HouseholdSettingsViewModel
                     .update("householdId", householdId)
                     .await()
 
-                _household.value =
-                    _household.value.copy(
-                        users = _household.value.users + user,
-                    )
+                if (user != null) {
+                    _household.value =
+                        _household.value.copy(
+                            users = _household.value.users + user.id,
+                        )
+                }
 
                 Toast.makeText(context, successText, Toast.LENGTH_SHORT).show()
             }

@@ -1,5 +1,6 @@
 package com.freshkeeper.sheets
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -51,7 +52,7 @@ fun FilterSheet(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    val filteredFoodItems =
+    val displayedFoodItems =
         if (selectedCategories.isEmpty() && selectedStorageLocations.isEmpty()) {
             foodItems
         } else {
@@ -60,6 +61,8 @@ fun FilterSheet(
                     (selectedStorageLocations.isEmpty() || selectedStorageLocations.contains(it.storageLocation))
             }
         }
+
+    Log.d("FilterSheet", "Displayed food items: $displayedFoodItems")
 
     FreshKeeperTheme {
         ModalBottomSheet(
@@ -74,7 +77,7 @@ fun FilterSheet(
                         .padding(16.dp),
             ) {
                 Text(
-                    text = "Filter (${filteredFoodItems.size})",
+                    text = "Filter (${displayedFoodItems.size})",
                     fontSize = 20.sp,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 16.dp),

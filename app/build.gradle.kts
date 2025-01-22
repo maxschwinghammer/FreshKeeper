@@ -50,7 +50,7 @@ android {
 
 dependencies {
     implementation(libs.gson)
-    implementation("com.vanniktech:android-image-cropper:4.6.0")
+    implementation(libs.android.image.cropper)
     implementation(libs.com.journeyapps.zxing.android.embedded)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.activity.compose)
@@ -114,6 +114,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.junit)
     kapt(libs.hilt.compiler)
+    implementation("com.google.dagger:hilt-android:2.52")
+    kapt("com.google.dagger:hilt-compiler:2.52")
 }
 
 java {

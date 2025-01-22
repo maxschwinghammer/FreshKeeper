@@ -45,9 +45,9 @@ import kotlinx.coroutines.launch
 fun FoodList(
     title: String,
     image: Painter,
-    items: List<Triple<Long, String, String>>,
+    items: List<Triple<String?, String, String>>,
     editProductSheetState: SheetState,
-    onEditProduct: (Long) -> Unit,
+    onEditProduct: (String) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -82,6 +82,7 @@ fun FoodList(
         Spacer(modifier = Modifier.height(16.dp))
 
         items.forEach { (id, item, date) ->
+            val safeId = id ?: ""
             Row(
                 modifier =
                     Modifier
@@ -90,7 +91,7 @@ fun FoodList(
                         .clickable {
                             coroutineScope.launch {
                                 editProductSheetState.show()
-                                onEditProduct(id)
+                                onEditProduct(safeId)
                             }
                         }.clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp))
                         .clip(RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp)),

@@ -1,5 +1,6 @@
 package com.freshkeeper.model.service
 
+import android.util.Log
 import com.freshkeeper.model.Activity
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
@@ -18,10 +19,40 @@ import javax.inject.Inject
 
 class HouseholdServiceImpl
     @Inject
-    constructor(
-        private val firestore: FirebaseFirestore,
-    ) : HouseholdService {
+    constructor() : HouseholdService {
+        private val firestore = FirebaseFirestore.getInstance()
         private val userId = FirebaseAuth.getInstance().currentUser?.uid
+        private var householdId: String? = null
+
+        override suspend fun getHousehold(
+            onResult: (Household?) -> Unit,
+            onFailure: () -> Unit,
+        ) {
+            if (userId == null) {
+                onFailure()
+                return
+            }
+
+            firestore
+                .collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener { document ->
+                    val householdId = document.getString("householdId")
+                    if (householdId != null) {
+                        firestore
+                            .collection("households")
+                            .document(householdId)
+                            .get()
+                            .addOnSuccessListener { householdDoc ->
+                                val household = householdDoc.toObject(Household::class.java)
+                                onResult(household)
+                            }.addOnFailureListener { onFailure() }
+                    } else {
+                        onFailure()
+                    }
+                }.addOnFailureListener { onFailure() }
+        }
 
         override suspend fun getHouseholdId(
             onResult: (String?) -> Unit,
@@ -37,77 +68,86 @@ class HouseholdServiceImpl
                 .document(userId)
                 .get()
                 .addOnSuccessListener { document ->
-                    onResult(document.getString("householdId"))
+                    householdId = document.getString("householdId")
+                    onResult(householdId)
                 }.addOnFailureListener { onFailure() }
         }
 
         override suspend fun getMembers(
-            householdId: String,
             coroutineScope: CoroutineScope,
             onResult: (List<Member>?) -> Unit,
             onFailure: (Exception) -> Unit,
         ) {
+            Log.d("HouseholdServiceImpl", "Loading members for householdId: $householdId")
+
             firestore
                 .collection("households")
-                .document(householdId)
+                .document(householdId!!)
                 .get()
                 .addOnSuccessListener { document ->
                     val household = document.toObject(Household::class.java)
-                    household?.users?.let { userIds ->
+                    household?.users?.let { users ->
                         coroutineScope.launch {
-                            loadUserDetails(userIds, coroutineScope, onResult, onFailure)
+                            loadUserDetails(users, coroutineScope, onResult, onFailure)
+                            Log.d("HouseholdServiceImpl", "Loaded ${users.size} members")
                         }
                     }
-                }.addOnFailureListener(onFailure)
+                }.addOnFailureListener {
+                    Log.e("HouseholdServiceImpl", "Error loading members")
+                }
         }
 
         override suspend fun loadUserDetails(
-            userIds: List<User?>,
+            userIds: List<String>,
             coroutineScope: CoroutineScope,
             onResult: (List<Member>?) -> Unit,
             onFailure: (Exception) -> Unit,
         ) {
-            firestore
-                .collection("users")
-                .whereIn("id", userIds)
-                .get()
-                .addOnSuccessListener { documents ->
-                    val membersList = mutableListOf<Member>()
-                    var loadedCount = 0
-                    val totalCount = documents.size()
+            if (userIds.isEmpty()) {
+                onResult(emptyList())
+                return
+            }
 
-                    documents.forEach { document ->
-                        val user = document.toObject(User::class.java)
-                        val profilePictureId = user.profilePicture
+            try {
+                val documents =
+                    firestore
+                        .collection("users")
+                        .whereIn("id", userIds)
+                        .get()
+                        .await()
 
-                        coroutineScope.launch {
-                            val profilePicture =
-                                if (!profilePictureId.isNullOrEmpty()) {
-                                    getProfilePicture(profilePictureId)
-                                } else {
-                                    null
-                                }
+                val membersList = mutableListOf<Member>()
+                val totalCount = documents.size()
 
-                            val member =
-                                Member(
-                                    profilePicture = profilePicture,
-                                    name = user.displayName ?: "Unknown",
-                                    userId = user.id,
-                                )
+                documents.forEach { document ->
+                    val user = document.toObject(User::class.java)
+                    val profilePictureId = user.profilePicture
 
-                            membersList.add(member)
-                            loadedCount++
-
-                            if (loadedCount == totalCount) {
-                                onResult(membersList)
-                            }
+                    val profilePicture =
+                        if (!profilePictureId.isNullOrEmpty()) {
+                            getProfilePicture(profilePictureId)
+                        } else {
+                            null
                         }
-                    }
-                }.addOnFailureListener(onFailure)
+
+                    val member =
+                        Member(
+                            profilePicture = profilePicture,
+                            name = user.displayName ?: "Unknown",
+                            userId = user.id,
+                        )
+
+                    membersList.add(member)
+                }
+
+                onResult(membersList)
+                Log.d("HouseholdServiceImpl", "Loaded $totalCount members")
+            } catch (exception: Exception) {
+                onFailure(exception)
+            }
         }
 
         override suspend fun getActivities(
-            householdId: String?,
             onResult: (List<Activity>?) -> Unit,
             onFailure: (Exception) -> Unit,
         ) {
@@ -130,7 +170,6 @@ class HouseholdServiceImpl
         }
 
         override suspend fun getFoodWasteData(
-            householdId: String?,
             onResult: (List<FoodItem>) -> Unit,
             onFailure: (Exception) -> Unit,
         ) {

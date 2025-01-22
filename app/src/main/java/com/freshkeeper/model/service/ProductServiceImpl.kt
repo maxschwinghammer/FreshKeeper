@@ -49,7 +49,6 @@ class ProductServiceImpl
             val currentUser = _user.value ?: return
             val foodItem =
                 FoodItem(
-                    id = System.currentTimeMillis(),
                     userId = currentUser.id,
                     householdId = householdId,
                     name = productName,
@@ -67,16 +66,27 @@ class ProductServiceImpl
                 firestore
                     .collection("foodItems")
                     .add(foodItem)
-                    .addOnSuccessListener {
-                        coroutineScope.launch {
-                            logActivity(
-                                foodItem,
-                                productName,
-                                "product_added",
-                                addedText,
-                            )
-                            onSuccess()
-                        }
+                    .addOnSuccessListener { documentReference ->
+                        val updatedFoodItem = foodItem.copy(id = documentReference.id)
+                        firestore
+                            .collection("foodItems")
+                            .document(documentReference.id)
+                            .update("id", documentReference.id)
+                            .addOnSuccessListener {
+                                coroutineScope.launch {
+                                    if (currentUser.householdId != null) {
+                                        logActivity(
+                                            updatedFoodItem,
+                                            productName,
+                                            "product_added",
+                                            addedText,
+                                        )
+                                    }
+                                    onSuccess()
+                                }
+                            }.addOnFailureListener { e ->
+                                onFailure(e)
+                            }
                     }.addOnFailureListener { e ->
                         onFailure(e)
                     }
@@ -100,6 +110,8 @@ class ProductServiceImpl
             onFailure: (Exception) -> Unit,
             addedText: String,
         ) {
+            val currentUser = _user.value ?: return
+
             firestore
                 .collection("foodItems")
                 .whereEqualTo("id", foodItem.id)
@@ -130,12 +142,14 @@ class ProductServiceImpl
                                                 isThrownAwayChecked -> "thrown_away"
                                                 else -> "edit"
                                             }
-                                        logActivity(
-                                            foodItem,
-                                            productName,
-                                            activityType,
-                                            addedText,
-                                        )
+                                        if (currentUser.householdId != null) {
+                                            logActivity(
+                                                foodItem,
+                                                productName,
+                                                activityType,
+                                                addedText,
+                                            )
+                                        }
                                         onSuccess()
                                     }
 
@@ -162,6 +176,7 @@ class ProductServiceImpl
             addedText: String,
         ) {
             val currentUser = _user.value ?: return
+
             val activityText =
                 when (activityType) {
                     "consumed" -> "${currentUser.displayName} marked $productName as consumed"

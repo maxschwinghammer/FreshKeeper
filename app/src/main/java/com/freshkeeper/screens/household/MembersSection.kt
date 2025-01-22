@@ -51,7 +51,6 @@ import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
 import com.freshkeeper.R
-import com.freshkeeper.model.Household
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.screens.profileSettings.convertBase64ToBitmap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -71,15 +70,15 @@ fun MembersSection(
     inviteSheetState: SheetState,
     onCreateHouseholdClick: (String, String) -> Unit,
     onJoinHouseholdClick: (String) -> Unit,
-    household: Household,
 ) {
     val viewModel: HouseholdViewModel = hiltViewModel()
     val members by viewModel.members.observeAsState(emptyList())
     val isInHousehold by viewModel.isInHousehold.observeAsState(false)
+    val household by viewModel.household.observeAsState()
 
-    val householdId = remember { mutableStateOf(household.id) }
-    val householdName = remember { mutableStateOf(household.name) }
-    var householdType by remember { mutableStateOf(household.type) }
+    var householdId = remember { household?.id ?: "" }
+    var householdName = remember { household?.name ?: "" }
+    var householdType = remember { household?.type ?: "" }
 
     val showJoinHouseholdDialog = remember { mutableStateOf(false) }
     var showCreateHouseholdDialog by remember { mutableStateOf(false) }
@@ -179,7 +178,10 @@ fun MembersSection(
                 }
 
                 if (isInHousehold) {
-                    if (household.type != "Single household" && (household.type != "Pair" || household.users.size < 2)) {
+                    if (household != null &&
+                        householdType != "Single household" &&
+                        (householdType != "Pair" || household!!.users.size < 2)
+                    ) {
                         Box(
                             modifier =
                                 Modifier
@@ -287,7 +289,7 @@ fun MembersSection(
                 text = {
                     Column {
                         TextField(
-                            value = householdId.value,
+                            value = householdId,
                             colors =
                                 TextFieldDefaults.colors(
                                     focusedTextColor = TextColor,
@@ -297,7 +299,7 @@ fun MembersSection(
                                     focusedIndicatorColor = AccentTurquoiseColor,
                                     unfocusedIndicatorColor = Color.Transparent,
                                 ),
-                            onValueChange = { id -> householdId.value = id },
+                            onValueChange = { id -> householdId = id },
                             placeholder = { Text(text = stringResource(R.string.household_id)) },
                         )
                     }
@@ -319,7 +321,7 @@ fun MembersSection(
                 confirmButton = {
                     Button(
                         onClick = {
-                            onJoinHouseholdClick(householdId.value)
+                            onJoinHouseholdClick(householdId)
                             showJoinHouseholdDialog.value = false
                         },
                         colors =
@@ -327,7 +329,7 @@ fun MembersSection(
                                 containerColor = AccentTurquoiseColor,
                                 contentColor = TextColor,
                             ),
-                        enabled = householdId.value.length == 20,
+                        enabled = householdId.length == 20,
                         shape = RoundedCornerShape(20.dp),
                         border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
@@ -345,7 +347,7 @@ fun MembersSection(
                 text = {
                     Column {
                         TextField(
-                            value = householdName.value,
+                            value = householdName,
                             colors =
                                 TextFieldDefaults.colors(
                                     focusedTextColor = TextColor,
@@ -355,7 +357,7 @@ fun MembersSection(
                                     focusedIndicatorColor = AccentTurquoiseColor,
                                     unfocusedIndicatorColor = Color.Transparent,
                                 ),
-                            onValueChange = { householdName.value = it },
+                            onValueChange = { householdName = it },
                             placeholder = { Text(text = stringResource(R.string.household_name)) },
                         )
                     }
@@ -386,8 +388,8 @@ fun MembersSection(
                                 contentColor = TextColor,
                             ),
                         enabled =
-                            householdName.value.isNotEmpty() &&
-                                householdName.value.all
+                            householdName.isNotEmpty() &&
+                                householdName.all
                                     { it.isLetter() || it.isWhitespace() },
                         shape = RoundedCornerShape(20.dp),
                         border = BorderStroke(1.dp, ComponentStrokeColor),
@@ -453,7 +455,7 @@ fun MembersSection(
                 confirmButton = {
                     Button(
                         onClick = {
-                            onCreateHouseholdClick(householdName.value, householdType)
+                            onCreateHouseholdClick(householdName, householdType)
                             showHouseholdTypeDialog = false
                         },
                         colors =

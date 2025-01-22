@@ -64,6 +64,7 @@ class MainActivity : FragmentActivity() {
             Locale.setDefault(newLocale)
             val config = resources.configuration
             config.setLocale(newLocale)
+            @Suppress("DEPRECATION")
             resources.updateConfiguration(config, resources.displayMetrics)
             recreate()
         }
@@ -101,7 +102,7 @@ class MainActivity : FragmentActivity() {
             if (uri.host == "freshkeeper.de" && uri.pathSegments.contains("invite")) {
                 val householdId = uri.getQueryParameter("householdId")
                 if (householdId != null) {
-                    openHousehold(householdId)
+                    // openHousehold(householdId)
                 }
             }
         }
