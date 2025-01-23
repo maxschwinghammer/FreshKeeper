@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.core.app.ActivityCompat
@@ -25,7 +24,6 @@ class MainActivity : FragmentActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private val cameraPermissionRequestCode = 101
 
-    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -63,9 +61,17 @@ class MainActivity : FragmentActivity() {
         if (currentLocale.language != newLocale.language) {
             Locale.setDefault(newLocale)
             val config = resources.configuration
-            config.setLocale(newLocale)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                config.setLocale(newLocale)
+            } else {
+                @Suppress("DEPRECATION")
+                config.locale = newLocale
+            }
+
             @Suppress("DEPRECATION")
             resources.updateConfiguration(config, resources.displayMetrics)
+
             recreate()
         }
     }
@@ -112,7 +118,6 @@ class MainActivity : FragmentActivity() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun FreshKeeperApp(onLocaleChange: (String) -> Unit) {

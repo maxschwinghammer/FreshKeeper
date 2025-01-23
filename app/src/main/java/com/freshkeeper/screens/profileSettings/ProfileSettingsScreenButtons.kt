@@ -5,10 +5,9 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
+import androidx.activity.compose.LocalActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -57,7 +56,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
@@ -300,7 +298,6 @@ fun EmailCard(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun ProfilePictureCard(
@@ -563,7 +560,7 @@ fun RemoveAccountCard(onRemoveAccountClick: () -> Unit) {
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun BiometricSwitch() {
-    val activity = LocalContext.current as? FragmentActivity
+    val activity = LocalActivity.current as? FragmentActivity
     Card(
         colors = CardDefaults.cardColors(containerColor = ComponentBackgroundColor),
         modifier = Modifier.card().border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
@@ -665,9 +662,9 @@ fun BiometricSwitch() {
                             val promptInfo =
                                 BiometricPrompt.PromptInfo
                                     .Builder()
-                                    .setTitle("Biometrische Authentifizierung")
-                                    .setSubtitle("Bitte authentifizieren Sie sich, um fortzufahren")
-                                    .setNegativeButtonText("Abbrechen")
+                                    .setTitle("Biometric authentication")
+                                    .setSubtitle("Please authenticate yourself to continue")
+                                    .setNegativeButtonText("Cancel")
                                     .build()
 
                             biometricPrompt.authenticate(promptInfo)
