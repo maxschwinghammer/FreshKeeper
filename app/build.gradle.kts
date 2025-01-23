@@ -24,9 +24,10 @@ android {
     }
 
     buildTypes {
-        release {
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
+                @Suppress("UnstableApiUsage")
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
@@ -39,17 +40,13 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    buildFeatures {
-        buildConfig = true
-        compose = true
-    }
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.5"
     }
 }
 
 dependencies {
-    implementation(libs.gson)
     implementation(libs.android.image.cropper)
     implementation(libs.com.journeyapps.zxing.android.embedded)
     implementation(libs.accompanist.flowlayout)
@@ -87,6 +84,7 @@ dependencies {
     implementation(libs.google.accompanist.pager)
     implementation(libs.google.accompanist.pager.indicators)
     implementation(libs.google.core)
+    implementation(libs.gson)
     implementation(libs.hilt)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.json)
@@ -107,6 +105,7 @@ dependencies {
     implementation(libs.firebase.common.ktx)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.image.labeling.common)
+    implementation(libs.javax.mail)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -114,8 +113,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.junit)
     kapt(libs.hilt.compiler)
-    implementation("com.google.dagger:hilt-android:2.52")
-    kapt("com.google.dagger:hilt-compiler:2.52")
 }
 
 java {
