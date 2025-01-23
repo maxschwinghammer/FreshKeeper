@@ -53,6 +53,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
+import com.freshkeeper.screens.authentication.viewmodel.SignInViewModel
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
@@ -67,8 +68,9 @@ import kotlinx.coroutines.launch
 fun EmailSignInScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModel: SignInViewModel = hiltViewModel(),
 ) {
+    val viewModel: SignInViewModel = hiltViewModel()
+
     val email = viewModel.email.collectAsState()
     val password = viewModel.password.collectAsState()
     val errorMessage = viewModel.errorMessage.collectAsState()
@@ -254,7 +256,7 @@ fun EmailSignInScreen(
                         ) {
                         }
                 } catch (e: GetCredentialException) {
-                    Log.d("CredentialError", e.message.orEmpty())
+                    Log.e("CredentialError", e.message.orEmpty())
                 }
             }
         }

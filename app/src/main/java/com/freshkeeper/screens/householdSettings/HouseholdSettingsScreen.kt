@@ -129,15 +129,19 @@ fun HouseholdSettingsScreen(
                                     viewModel.onUpdateHouseholdNameClick(it)
                                 }
                                 SelectHouseholdTypeCard(
-                                    householdType = household.type,
                                     selectedHouseholdType = selectedHouseholdType,
-                                    onHouseholdTypeSelected = {
-                                        selectedHouseholdType = it
-                                        viewModel.onUpdateHouseholdTypeClick(it)
+                                    onHouseholdTypeSelected = { type, user ->
+                                        selectedHouseholdType = type
+                                        viewModel.onUpdateHouseholdTypeClick(type, user)
                                     },
+                                    household,
+                                    user,
                                 )
+                                HouseholdIdCard(household.id)
                                 if (household.ownerId == user.id) {
-                                    InviteCard(inviteSheetState)
+                                    if (household.type != "Single household" && (household.type != "Pair" || household.users.size < 2)) {
+                                        InviteCard(inviteSheetState, household)
+                                    }
                                     DeleteHouseholdCard {
                                         viewModel.onDeleteHousehold()
                                     }

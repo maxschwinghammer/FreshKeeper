@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.inventory
+package com.freshkeeper.screens.inventory.model
 
 import com.freshkeeper.R
 

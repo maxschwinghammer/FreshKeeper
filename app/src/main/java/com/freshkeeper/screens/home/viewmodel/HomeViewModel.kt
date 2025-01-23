@@ -5,80 +5,64 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.freshkeeper.model.FoodItem
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import java.time.Instant
-import java.time.temporal.ChronoUnit
+import com.freshkeeper.service.HouseholdService
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
-    private val _expiringSoonItems = MutableLiveData<List<FoodItem>>()
-    val expiringSoonItems: LiveData<List<FoodItem>> = _expiringSoonItems
+@HiltViewModel
+class HomeViewModel
+    @Inject
+    constructor(
+        private val householdService: HouseholdService,
+    ) : ViewModel() {
+        private val _expiringSoonItems = MutableLiveData<List<FoodItem>>()
+        val expiringSoonItems: LiveData<List<FoodItem>> = _expiringSoonItems
 
-    private val _expiredItems = MutableLiveData<List<FoodItem>>()
-    val expiredItems: LiveData<List<FoodItem>> = _expiredItems
+        private val _expiredItems = MutableLiveData<List<FoodItem>>()
+        val expiredItems: LiveData<List<FoodItem>> = _expiredItems
 
-    private val firestore = FirebaseFirestore.getInstance()
-    private val userId = FirebaseAuth.getInstance().currentUser?.uid
-    private var householdId: String? = null
+        private val _householdId = MutableLiveData<String?>()
+        val householdId: LiveData<String?> = _householdId
 
-    init {
-        loadHouseholdId()
-    }
+        init {
+            loadHouseholdId()
+        }
 
-    private fun loadHouseholdId() {
-        if (userId == null) return
-
-        firestore
-            .collection("users")
-            .document(userId)
-            .get()
-            .addOnSuccessListener { document ->
-                householdId = document.getString("householdId")
-                loadFoodItemsFromFirestore()
-            }.addOnFailureListener {
-                Log.d("HomeViewModel", "Error loading householdId from Firestore")
+        private fun loadHouseholdId() {
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    householdService.getHouseholdId(
+                        onResult = { householdId ->
+                            _householdId.value = householdId
+                        },
+                        onFailure = { Log.e("HouseholdViewModel", "Error loading householdId") },
+                    )
+                    loadFoodItemsFromService()
+                } catch (e: Exception) {
+                    Log.e("HomeViewModel", "Error loading householdId from Firestore", e)
+                }
             }
-    }
+        }
 
-    private fun loadFoodItemsFromFirestore() {
-        if (userId == null) return
-
-        val query =
-            if (householdId != null) {
-                firestore
-                    .collection("foodItems")
-                    .whereEqualTo("householdId", householdId)
-            } else {
-                firestore
-                    .collection("foodItems")
-                    .whereEqualTo("userId", userId)
+        private suspend fun loadFoodItemsFromService() {
+            try {
+                val foodItems = householdService.getFoodItems(householdId.value)
+                withContext(Dispatchers.Main) {
+                    _expiringSoonItems.value =
+                        foodItems
+                            .filter { it.daysDifference in 0..30 }
+                            .sortedBy { it.expiryTimestamp }
+                    _expiredItems.value =
+                        foodItems
+                            .filter { it.daysDifference < 0 }
+                            .sortedByDescending { it.expiryTimestamp }
+                }
+            } catch (e: Exception) {
+                Log.e("HomeViewModel", "Error loading food items from Firestore", e)
             }
-
-        query
-            .whereEqualTo("consumed", false)
-            .whereEqualTo("thrownAway", false)
-            .get()
-            .addOnSuccessListener { documents ->
-                val currentTimestamp = Instant.now().toEpochMilli()
-                val foodItems =
-                    documents.mapNotNull { doc ->
-                        doc.toObject(FoodItem::class.java).apply {
-                            daysDifference =
-                                ChronoUnit.DAYS
-                                    .between(
-                                        Instant.ofEpochMilli(currentTimestamp),
-                                        Instant.ofEpochMilli(expiryTimestamp),
-                                    ).toInt()
-                        }
-                    }
-
-                _expiringSoonItems.value =
-                    foodItems.filter { it.daysDifference in 0..30 }.sortedBy { it.expiryTimestamp }
-
-                _expiredItems.value =
-                    foodItems.filter { it.daysDifference < 0 }.sortedByDescending { it.expiryTimestamp }
-            }.addOnFailureListener {
-                Log.d("HomeViewModel", "Error loading food items from Firestore")
-            }
+        }
     }
-}

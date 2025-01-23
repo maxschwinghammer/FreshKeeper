@@ -70,6 +70,7 @@
     <string name="in_days">In %1$d Tagen</string>
     <string name="invite">Einladen</string>
     <string name="invite_people">Personen einladen</string>
+    <string name="invite_partner">Partner einladen</string>
     <string name="invite_text">Laden Sie eine Person in Ihren Haushalt ein</string>
     <string name="invite_message">Hallo! Mit der App FreshKeeper behalte ich den Überblick
         über meine Lebensmittel und minimiere Verschwendung 🥬🍎\n\nDie App erinnert mich
@@ -217,7 +218,8 @@
     <string name="leave_household">Haushalt verlassenq</string>
     <string name="leave_household_description">Sie werden aus dem Haushalt entfernt und verlieren
         alle aktuellen Bestände.</string>
-    <string name="add_user_by_id">Benutzer mit ID hinzufügen</string>
+    <string name="add_user_by_id">Benutzer über ID hinzufügen</string>
+    <string name="add_user">Benutzer hinzufügen</string>
     <string name="user_not_found">Benutzer nicht gefunden</string>
     <string name="user_added">Benutzer hinzugefügt</string>
     <string name="join">Beitreten</string>
@@ -225,4 +227,41 @@
     <string name="enter_household_id">Haushalts-ID eingeben</string>
     <string name="household_id">Haushalts-ID</string>
     <string name="household_not_found">Haushalt nicht gefunden</string>
+    <string name="buy_a_coffee">Kaufe einen Kaffee</string>
+    <string name="user_id">Benutzer-ID</string>
+    <string name="upgrade_to_premium">Upgrade auf Premium</string>
+    <string name="single_household_warning">Durch den Wechsel zu einem Single-Haushalt werden alle
+        anderen Mitglieder aus diesem Haushalt entfernt. Möchten Sie fortfahren?</string>
+    <string name="warning">Warnung</string>
+    <string name="confirm">Bestätigen</string>
+    <string name="pair_household_warning">Bitte wählen Sie einen Benutzer aus, der im Haushalt
+        verbleiben soll. Andere Benutzer werden entfernt.</string>
+    <string name="pair_selection_info">Wählen Sie den Partner, der im Haushalt bleiben soll:</string>
+    <string name="search">Suchen</string>
+    <string name="download_data_title">Datenexport</string>
+    <string name="download_data_text">Möchten Sie die zu Ihrem Account assoziierten Daten als
+        JSON-Datei exportieren?</string>
+    <string name="download_data_error">Daten konnten nicht heruntergeladen werden</string>
+    <string name="download_data_success">Daten erfolgreich in Ihren „Downloads“-Ordner
+        heruntergeladen</string>
+    <string name="added_product">hat einen Artikel hinzugefügt</string>
+    <string name="enter_product_name">Bitte einen Produktnamen eingeben</string>
+    <string name="select_expiry_date">Bitte ein Haltbarkeitsdatum wählen</string>
+    <string name="enter_quantity">Bitte Menge eingeben</string>
+    <string name="select_unit">Bitte eine Einheit auswählen</string>
+    <string name="barcode_scanner">Barcode scanner</string>
+    <string name="loading">Lädt</string>
+    <string name="manage_premium_membership">Premium-Mitgliedschaft verwalten</string>
+    <string name="activate_premium_membership">Auf Premium upgraden</string>
+    <string name="test_premium_membership">Premium kostenlos testen</string>
+    <string name="contact_us">Kontaktieren Sie uns</string>
+    <string name="subject">Betreff</string>
+    <string name="your_message">Ihre Nachricht</string>
+    <string name="enter_subject">Geben Sie den Betreff ein</string>
+    <string name="enter_message">Geben Sie Ihre Nachricht ein</string>
+    <string name="send_message">Nachricht senden</string>
+    <string name="faq">Häufige Fragen</string>
+    <string name="answer_not_found">Haben Sie keine Antwort auf Ihre Frage gefunden?</string>
+    <string name="send_us_message">Senden Sie uns eine Nachricht</string>
+    <string name="help_and_contact">Hilfe und Kontakt</string>
 </resources>

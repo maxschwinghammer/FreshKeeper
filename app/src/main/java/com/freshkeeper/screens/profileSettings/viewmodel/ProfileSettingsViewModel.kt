@@ -1,11 +1,11 @@
 package com.freshkeeper.screens.profileSettings.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
 import androidx.lifecycle.viewModelScope
+import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
-import com.freshkeeper.model.service.AccountService
 import com.freshkeeper.screens.AppViewModel
+import com.freshkeeper.service.AccountService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -22,19 +22,19 @@ class ProfileSettingsViewModel
         private val _user = MutableStateFlow(User())
         val user: StateFlow<User> = _user.asStateFlow()
 
-        private val _profilePicture = MutableLiveData<String?>()
-        val profilePicture: LiveData<String?> get() = _profilePicture
+        private val _profilePicture = MutableStateFlow<ProfilePicture?>(null)
+        val profilePicture: StateFlow<ProfilePicture?> = _profilePicture.asStateFlow()
 
         init {
             launchCatching {
-                _user.value = accountService.getUserProfile()
+                _user.value = accountService.getUserObject()
             }
         }
 
         fun onUpdateDisplayNameClick(newDisplayName: String) {
             launchCatching {
                 accountService.updateDisplayName(newDisplayName)
-                _user.value = accountService.getUserProfile()
+                _user.value = accountService.getUserObject()
             }
         }
 
@@ -64,21 +64,30 @@ class ProfileSettingsViewModel
             }
         }
 
-        fun updateProfilePicture(base64: String) {
+        fun updateProfilePicture(profilePicture: String) {
             launchCatching {
-                accountService.updateProfilePicture(base64)
-                _user.value = accountService.getUserProfile()
+                accountService.updateProfilePicture(profilePicture)
+                _user.value = accountService.getUserObject()
             }
         }
 
         fun getProfilePicture() {
             viewModelScope.launch {
                 try {
-                    val base64Image = accountService.getProfilePicture()
-                    _profilePicture.value = base64Image
+                    val profilePicture = accountService.getProfilePicture(user.value.id)
+                    _profilePicture.value = profilePicture
                 } catch (e: Exception) {
                     _profilePicture.value = null
                 }
+            }
+        }
+
+        fun downloadUserData(
+            userId: String,
+            context: Context,
+        ) {
+            launchCatching {
+                accountService.downloadUserData(userId, context)
             }
         }
     }

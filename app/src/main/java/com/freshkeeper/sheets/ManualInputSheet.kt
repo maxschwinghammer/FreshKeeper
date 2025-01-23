@@ -43,20 +43,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.R
-import com.freshkeeper.model.Activity
-import com.freshkeeper.model.FoodItem
-import com.freshkeeper.model.service.AccountServiceImpl
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
 import com.freshkeeper.screens.home.fetchProductDataFromBarcode
+import com.freshkeeper.service.AccountServiceImpl
+import com.freshkeeper.service.ProductServiceImpl
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 @Suppress("ktlint:standard:function-naming")
@@ -68,6 +65,7 @@ fun ManualInputSheet(
     expiryTimestamp: Long,
 ) {
     val accountService = remember { AccountServiceImpl() }
+    val productService = remember { ProductServiceImpl(accountService) }
 
     var productName by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(expiryTimestamp) }
@@ -79,8 +77,6 @@ fun ManualInputSheet(
     val category = remember { mutableStateOf("dairy_goods") }
 
     val context = LocalContext.current
-    val auth = FirebaseAuth.getInstance()
-    val firestore = FirebaseFirestore.getInstance()
     val coroutineScope = rememberCoroutineScope()
 
     val storageLocationMap =
@@ -274,83 +270,47 @@ fun ManualInputSheet(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        val addedText = stringResource(R.string.added_product)
+        val enterProductName = stringResource(R.string.enter_product_name)
+        val selectExpiryDate = stringResource(R.string.select_expiry_date)
+        val enterQuantity = stringResource(R.string.enter_quantity)
+        val selectUnit = stringResource(R.string.select_unit)
+
         Button(
             onClick = {
                 if (productName.isBlank()) {
-                    Toast.makeText(context, "Please enter a product name", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, enterProductName, Toast.LENGTH_SHORT).show()
                     return@Button
                 }
                 if (expiryDate == 0L) {
-                    Toast.makeText(context, "Please select an expiration date", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, selectExpiryDate, Toast.LENGTH_SHORT).show()
                     return@Button
                 }
                 if (quantity.isBlank() || quantity.toIntOrNull() == null || quantity.toInt() <= 0) {
-                    Toast.makeText(context, "Please enter a valid quantity", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, enterQuantity, Toast.LENGTH_SHORT).show()
                     return@Button
                 }
                 if (unit.value.isBlank()) {
-                    Toast.makeText(context, "Please select a unit", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, selectUnit, Toast.LENGTH_SHORT).show()
                     return@Button
                 }
 
-                val userId = auth.currentUser?.uid ?: return@Button
-                val userRef = firestore.collection("users").document(userId)
-
                 coroutineScope.launch {
                     val householdId = accountService.getHouseholdId()
-
-                    val foodItem =
-                        FoodItem(
-                            id = System.currentTimeMillis(),
-                            userId = userId,
-                            householdId = householdId,
-                            name = productName,
-                            expiryTimestamp = expiryDate,
-                            quantity = quantity.toInt(),
-                            unit = unit.value,
-                            storageLocation = storageLocation.value,
-                            category = category.value,
-                            consumed = false,
-                            thrownAway = false,
-                            imageUrl = imageUrl,
-                        )
-
-                    firestore
-                        .collection("foodItems")
-                        .add(foodItem)
-                        .addOnSuccessListener { documentReference ->
-                            Log.d("Firestore", "Product added: ${documentReference.id}")
-                            coroutineScope.launch {
-                                sheetState.hide()
-                            }
-                        }.addOnFailureListener { e ->
-                            Log.w("Firestore", "Error when adding the product", e)
-                        }
-                }
-
-                userRef.get().addOnSuccessListener { documentSnapshot ->
-                    val userName = documentSnapshot.getString("name") ?: "User"
-
-                    val activityText = "$userName added a new product: $productName"
-
-                    val activity =
-                        Activity(
-                            id = null,
-                            userId = userId,
-                            type = "product_added",
-                            text = activityText,
-                            timestamp = System.currentTimeMillis(),
-                        )
-
-                    firestore
-                        .collection("activities")
-                        .add(activity)
-                        .addOnSuccessListener { documentReference ->
-                            val updatedActivity = activity.copy(id = documentReference.id)
-                            documentReference.update("id", updatedActivity.id)
-                        }.addOnFailureListener { e ->
-                            Log.w("Firestore", "Error when adding the activity", e)
-                        }
+                    productService.addProduct(
+                        productName,
+                        expiryDate,
+                        quantity.toInt(),
+                        unit.value,
+                        storageLocation.value,
+                        category.value,
+                        imageUrl,
+                        householdId,
+                        coroutineScope,
+                        { coroutineScope.launch { sheetState.hide() } },
+                        { e -> Log.e("Firestore", "Error when adding the product", e) },
+                        addedText,
+                    )
                 }
             },
             modifier =

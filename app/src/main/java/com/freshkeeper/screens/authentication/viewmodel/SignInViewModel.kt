@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.authentication.signIn
+package com.freshkeeper.screens.authentication.viewmodel
 
 import android.content.Context
 import androidx.biometric.BiometricPrompt
@@ -6,9 +6,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.freshkeeper.R
-import com.freshkeeper.model.service.AccountService
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.screens.authentication.isValidEmail
+import com.freshkeeper.service.AccountService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

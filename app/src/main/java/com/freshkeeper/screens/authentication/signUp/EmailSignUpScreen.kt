@@ -41,6 +41,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
+import com.freshkeeper.screens.authentication.viewmodel.SignUpViewModel
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
@@ -53,8 +54,9 @@ import com.freshkeeper.ui.theme.WhiteColor
 fun EmailSignUpScreen(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    viewModel: SignUpViewModel = hiltViewModel(),
 ) {
+    val viewModel: SignUpViewModel = hiltViewModel()
+
     val email = viewModel.email.collectAsState()
     val password = viewModel.password.collectAsState()
     val confirmPassword = viewModel.confirmPassword.collectAsState()

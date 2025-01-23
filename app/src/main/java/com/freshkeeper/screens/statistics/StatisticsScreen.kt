@@ -84,6 +84,7 @@ fun StatisticsScreen(navController: NavHostController) {
                     LazyColumn(
                         modifier =
                             Modifier
+                                .fillMaxWidth()
                                 .wrapContentHeight()
                                 .clip(RoundedCornerShape(10.dp))
                                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
@@ -110,8 +111,8 @@ fun StatisticsScreen(navController: NavHostController) {
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text =
-                                    stringResource(R.string.days_without_waste) + ": $daysWithNoWaste " +
-                                        stringResource(R.string.days),
+                                    stringResource(R.string.days_without_waste) + ": " +
+                                        "$daysWithNoWaste " + stringResource(R.string.days),
                                 color = TextColor,
                                 fontSize = 14.sp,
                             )
@@ -134,8 +135,12 @@ fun StatisticsScreen(navController: NavHostController) {
                                     Box(
                                         modifier =
                                             Modifier
-                                                .clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp))
-                                                .weight(1f)
+                                                .clip(
+                                                    RoundedCornerShape(
+                                                        topStart = 10.dp,
+                                                        bottomStart = 10.dp,
+                                                    ),
+                                                ).weight(1f)
                                                 .background(WhiteColor)
                                                 .padding(horizontal = 10.dp, vertical = 2.dp),
                                     ) {
@@ -150,8 +155,12 @@ fun StatisticsScreen(navController: NavHostController) {
                                     Box(
                                         modifier =
                                             Modifier
-                                                .clip(RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp))
-                                                .weight(1f)
+                                                .clip(
+                                                    RoundedCornerShape(
+                                                        topEnd = 10.dp,
+                                                        bottomEnd = 10.dp,
+                                                    ),
+                                                ).weight(1f)
                                                 .background(GreyColor)
                                                 .padding(horizontal = 10.dp, vertical = 2.dp),
                                         contentAlignment = Alignment.Center,

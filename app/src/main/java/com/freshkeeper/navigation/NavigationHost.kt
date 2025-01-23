@@ -3,7 +3,6 @@ package com.freshkeeper.navigation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -11,12 +10,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.freshkeeper.model.Screen
-import com.freshkeeper.model.service.AccountService
 import com.freshkeeper.screens.authentication.signIn.EmailSignInScreen
 import com.freshkeeper.screens.authentication.signIn.ForgotPasswordScreen
 import com.freshkeeper.screens.authentication.signIn.SignInScreen
 import com.freshkeeper.screens.authentication.signUp.EmailSignUpScreen
 import com.freshkeeper.screens.authentication.signUp.SignUpScreen
+import com.freshkeeper.screens.contact.ContactScreen
+import com.freshkeeper.screens.help.HelpScreen
 import com.freshkeeper.screens.home.HomeScreen
 import com.freshkeeper.screens.home.tips.TipsScreen
 import com.freshkeeper.screens.household.HouseholdScreen
@@ -29,6 +29,7 @@ import com.freshkeeper.screens.profile.ProfileScreen
 import com.freshkeeper.screens.profileSettings.ProfileSettingsScreen
 import com.freshkeeper.screens.settings.SettingsScreen
 import com.freshkeeper.screens.statistics.StatisticsScreen
+import com.freshkeeper.service.AccountService
 
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Suppress("ktlint:standard:function-naming")
@@ -97,8 +98,12 @@ fun NavigationHost(
         composable(Screen.HouseholdSettings.route) {
             HouseholdSettingsScreen(navController = navController)
         }
-        composable(Screen.Profile.route) {
-            ProfileScreen(navController = navController)
+        composable(
+            route = "profile/{userId}",
+            arguments = listOf(navArgument("userId") { type = NavType.StringType }),
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getString("userId") ?: ""
+            ProfileScreen(navController = navController, userId = userId)
         }
         composable(Screen.Statistics.route) {
             StatisticsScreen(navController = navController)
@@ -108,6 +113,12 @@ fun NavigationHost(
         }
         composable(Screen.Tips.route) {
             TipsScreen(navController = navController)
+        }
+        composable(Screen.Contact.route) {
+            ContactScreen(navController = navController)
+        }
+        composable(Screen.Help.route) {
+            HelpScreen(navController = navController)
         }
     }
 }

@@ -85,9 +85,9 @@ private suspend fun launchCredManButtonUI(
 
         onRequestResult(result.credential)
     } catch (e: NoCredentialException) {
-        Log.d(ERROR_TAG, e.message.orEmpty())
+        Log.e(ERROR_TAG, e.message.orEmpty())
     } catch (e: GetCredentialException) {
-        Log.d(ERROR_TAG, e.message.orEmpty())
+        Log.e(ERROR_TAG, e.message.orEmpty())
     }
 }
 
@@ -118,12 +118,12 @@ suspend fun launchCredManBottomSheet(
 
         onRequestResult(result.credential)
     } catch (e: NoCredentialException) {
-        Log.d(ERROR_TAG, e.message.orEmpty())
+        Log.e(ERROR_TAG, e.message.orEmpty())
 
         if (hasFilter) {
             launchCredManBottomSheet(context, hasFilter = false, onRequestResult)
         }
     } catch (e: GetCredentialException) {
-        Log.d(ERROR_TAG, e.message.orEmpty())
+        Log.e(ERROR_TAG, e.message.orEmpty())
     }
 }

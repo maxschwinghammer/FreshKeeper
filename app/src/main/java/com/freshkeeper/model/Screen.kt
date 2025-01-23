@@ -21,8 +21,6 @@ sealed class Screen(
 
     data object Notifications : Screen("notifications")
 
-    data object Profile : Screen("profile")
-
     data object ProfileSettings : Screen("profileSettings")
 
     data object NotificationSettings : Screen("notificationSettings")
@@ -34,4 +32,8 @@ sealed class Screen(
     data object LandingPage : Screen("landingPage")
 
     data object Tips : Screen("tips")
+
+    data object Contact : Screen("contact")
+
+    data object Help : Screen("help")
 }

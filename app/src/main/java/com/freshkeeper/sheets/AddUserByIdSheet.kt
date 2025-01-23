@@ -22,8 +22,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.freshkeeper.R
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -53,7 +55,7 @@ fun AddUserByIdSheet(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = "Add User by ID",
+                text = stringResource(R.string.add_user_by_id),
                 fontSize = 18.sp,
                 style = MaterialTheme.typography.titleMedium,
             )
@@ -84,7 +86,7 @@ fun AddUserByIdSheet(
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = AccentTurquoiseColor),
             ) {
-                Text("Add User")
+                Text(stringResource(R.string.add_user))
             }
         }
     }

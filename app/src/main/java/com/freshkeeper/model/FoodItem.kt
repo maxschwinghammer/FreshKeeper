@@ -1,7 +1,7 @@
 package com.freshkeeper.model
 
 data class FoodItem(
-    val id: Long,
+    val id: String? = null,
     val userId: String,
     val householdId: String,
     val name: String,
@@ -16,7 +16,7 @@ data class FoodItem(
     var daysDifference: Int = 0,
 ) {
     constructor() : this(
-        0,
+        "",
         "",
         "",
         "",

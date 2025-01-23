@@ -29,9 +29,15 @@ fun getBitmapFromUri(
 fun convertBase64ToBitmap(base64String: String): Bitmap? =
     try {
         val decodedString = Base64.decode(base64String, Base64.DEFAULT)
-        BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+        val bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+        if (bitmap != null) {
+            bitmap
+        } else {
+            Log.e("ImageError", "Decoded byte array could not be converted to bitmap")
+            null
+        }
     } catch (e: Exception) {
-        Log.e("ImageError", "Fehler beim Dekodieren des Bildes: ${e.message}")
+        Log.e("ImageError", "Error when decoding the image: ${e.message}")
         null
     }
 

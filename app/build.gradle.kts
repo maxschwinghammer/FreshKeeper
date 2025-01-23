@@ -8,7 +8,6 @@ plugins {
     id("kotlin-kapt")
 }
 
-@Suppress("UnstableApiUsage")
 android {
     namespace = "com.freshkeeper"
     compileSdk = 35
@@ -50,7 +49,8 @@ android {
 }
 
 dependencies {
-    implementation("com.vanniktech:android-image-cropper:4.6.0")
+    implementation(libs.gson)
+    implementation(libs.android.image.cropper)
     implementation(libs.com.journeyapps.zxing.android.embedded)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.activity.compose)
@@ -114,6 +114,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.junit)
     kapt(libs.hilt.compiler)
+    implementation("com.google.dagger:hilt-android:2.52")
+    kapt("com.google.dagger:hilt-compiler:2.52")
 }
 
 java {

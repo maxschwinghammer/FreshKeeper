@@ -26,7 +26,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -41,17 +40,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.R
-import com.freshkeeper.model.Activity
 import com.freshkeeper.model.FoodItem
-import com.freshkeeper.model.User
-import com.freshkeeper.model.service.AccountServiceImpl
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
-import com.freshkeeper.screens.profileSettings.viewmodel.ProfileSettingsViewModel
+import com.freshkeeper.service.AccountServiceImpl
+import com.freshkeeper.service.ProductServiceImpl
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
@@ -59,8 +55,6 @@ import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,9 +63,9 @@ import kotlinx.coroutines.launch
 fun EditProductSheet(
     sheetState: SheetState,
     foodItem: FoodItem,
-    profileSettingsViewModel: ProfileSettingsViewModel = hiltViewModel(),
 ) {
     val accountService = remember { AccountServiceImpl() }
+    val productService = remember { ProductServiceImpl(accountService) }
 
     var productName by remember { mutableStateOf(foodItem.name) }
     var quantity by remember { mutableStateOf(foodItem.quantity.toString()) }
@@ -81,9 +75,6 @@ fun EditProductSheet(
     var isConsumedChecked by remember { mutableStateOf(foodItem.consumed) }
     var isThrownAwayChecked by remember { mutableStateOf(foodItem.thrownAway) }
     val imageUrl by remember { mutableStateOf(foodItem.imageUrl) }
-
-    val auth = FirebaseAuth.getInstance()
-    val firestore = FirebaseFirestore.getInstance()
 
     val storageLocationMap =
         mapOf(
@@ -155,7 +146,7 @@ fun EditProductSheet(
     var expiryDate by remember { mutableLongStateOf(foodItem.expiryTimestamp) }
     val coroutineScope = rememberCoroutineScope()
 
-    val user by profileSettingsViewModel.user.collectAsState(initial = User())
+    val addedText = stringResource(R.string.added_product)
 
     Column(
         modifier =
@@ -319,112 +310,27 @@ fun EditProductSheet(
 
         Button(
             onClick = {
-                val userId = auth.currentUser?.uid ?: return@Button
-                val userRef = firestore.collection("users").document(userId)
-
-                firestore
-                    .collection("foodItems")
-                    .whereEqualTo("id", foodItem.id)
-                    .get()
-                    .addOnSuccessListener { querySnapshot ->
-                        val document = querySnapshot.documents.firstOrNull()
-                        if (document != null) {
-                            val updates =
-                                mapOf(
-                                    "name" to productName,
-                                    "quantity" to quantity.toInt(),
-                                    "unit" to unit.value,
-                                    "storageLocation" to storageLocation.value,
-                                    "category" to category.value,
-                                    "expiryTimestamp" to expiryDate,
-                                    "consumed" to isConsumedChecked,
-                                    "thrownAway" to isThrownAwayChecked,
-                                )
-
-                            document.reference
-                                .update(updates)
-                                .addOnSuccessListener {
-                                    Log.d("Firestore", "Product updated successfully")
-                                    coroutineScope.launch {
-                                        sheetState.hide()
-                                    }
-                                }.addOnFailureListener { e ->
-                                    Log.w("Firestore", "Error when updating the product", e)
-                                }
-
-                            userRef.get().addOnSuccessListener {
-                                val userName = user.displayName
-
-                                val activityType: String
-                                val activityText: String
-
-                                if (isConsumedChecked) {
-                                    activityType = "remove"
-                                    activityText = "$userName marked $productName as consumed"
-                                } else if (isThrownAwayChecked) {
-                                    activityType = "remove"
-                                    activityText = "$userName marked $productName as thrown away"
-                                } else if (productName != foodItem.name) {
-                                    activityType = "edit"
-                                    activityText = "$userName edited the name of '${foodItem.name}' to '$productName'"
-                                } else {
-                                    val changes = mutableListOf<String>()
-
-                                    if (expiryDate != foodItem.expiryTimestamp) changes.add("expiry date")
-                                    if (quantity.toInt() != foodItem.quantity) changes.add("quantity")
-                                    if (unit.value != foodItem.unit) changes.add("unit")
-                                    if (storageLocation.value != foodItem.storageLocation) changes.add("storage location")
-                                    if (category.value != foodItem.category) changes.add("category")
-
-                                    activityType =
-                                        if (changes.size > 1) {
-                                            "edit"
-                                        } else if (changes.size == 1) {
-                                            "update"
-                                        } else {
-                                            "edit"
-                                        }
-
-                                    activityText =
-                                        if (changes.size > 1) {
-                                            "$userName edited the product $productName"
-                                        } else if (changes.size == 1) {
-                                            "$userName updated the ${changes.first()} of '$productName'"
-                                        } else {
-                                            "$userName edited the product $productName"
-                                        }
-                                }
-
-                                coroutineScope.launch {
-                                    val householdId = accountService.getHouseholdId()
-
-                                    val activity =
-                                        Activity(
-                                            id = null,
-                                            userId = userId,
-                                            householdId = householdId,
-                                            type = activityType,
-                                            text = activityText,
-                                            timestamp = System.currentTimeMillis(),
-                                        )
-
-                                    firestore
-                                        .collection("activities")
-                                        .add(activity)
-                                        .addOnSuccessListener { documentReference ->
-                                            val updatedActivity = activity.copy(id = documentReference.id)
-                                            documentReference.update("id", updatedActivity.id)
-                                        }.addOnFailureListener { e ->
-                                            Log.w("Firestore", "Error when adding the activity", e)
-                                        }
-                                }
+                coroutineScope.launch {
+                    productService.updateProduct(
+                        foodItem = foodItem,
+                        productName = productName,
+                        quantity = quantity.toInt(),
+                        unit = unit.value,
+                        storageLocation = storageLocation.value,
+                        category = category.value,
+                        expiryDate = expiryDate,
+                        isConsumedChecked = isConsumedChecked,
+                        isThrownAwayChecked = isThrownAwayChecked,
+                        coroutineScope = coroutineScope,
+                        onSuccess = {
+                            coroutineScope.launch {
+                                sheetState.hide()
                             }
-                        } else {
-                            Log.w("Firestore", "No document found with the given ID")
-                        }
-                    }.addOnFailureListener { e ->
-                        Log.w("Firestore", "Error retrieving document", e)
-                    }
+                        },
+                        onFailure = { e -> Log.e("ProductService", "Error updating product", e) },
+                        addedText = addedText,
+                    )
+                }
             },
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),

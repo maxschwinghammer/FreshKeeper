@@ -15,8 +15,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.compose.rememberNavController
-import com.freshkeeper.model.service.AccountServiceImpl
 import com.freshkeeper.navigation.NavigationHost
+import com.freshkeeper.service.AccountServiceImpl
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -64,6 +64,7 @@ class MainActivity : FragmentActivity() {
             Locale.setDefault(newLocale)
             val config = resources.configuration
             config.setLocale(newLocale)
+            @Suppress("DEPRECATION")
             resources.updateConfiguration(config, resources.displayMetrics)
             recreate()
         }
@@ -101,7 +102,7 @@ class MainActivity : FragmentActivity() {
             if (uri.host == "freshkeeper.de" && uri.pathSegments.contains("invite")) {
                 val householdId = uri.getQueryParameter("householdId")
                 if (householdId != null) {
-                    openHousehold(householdId)
+                    // openHousehold(householdId)
                 }
             }
         }

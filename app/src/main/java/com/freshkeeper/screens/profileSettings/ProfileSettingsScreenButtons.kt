@@ -1,9 +1,9 @@
 package com.freshkeeper.screens.profileSettings
 
+import android.content.ClipData.newPlainText
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
-import android.media.Image
 import android.net.Uri
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -24,7 +24,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.AlertDialog
@@ -58,12 +57,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.freshkeeper.R
+import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.profileSettings.viewmodel.ProfileSettingsViewModel
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -73,12 +74,15 @@ import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.LightGreyColor
 import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.flow.StateFlow
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun AccountCenterCard(
     title: String,
-    icon: Any,
+    icon: Any?,
     modifier: Modifier = Modifier,
     onCardClick: () -> Unit,
 ) {
@@ -95,20 +99,22 @@ fun AccountCenterCard(
                     .padding(16.dp),
         ) {
             Column(modifier = Modifier.weight(1f)) { Text(title, color = TextColor) }
-            when (icon) {
-                is ImageVector ->
-                    Icon(
-                        imageVector = icon,
-                        contentDescription = "Icon",
-                        modifier = Modifier.size(24.dp),
-                    )
-                is Painter ->
-                    Icon(
-                        painter = icon,
-                        contentDescription = "Icon",
-                        modifier = Modifier.size(24.dp),
-                    )
-                else -> throw IllegalArgumentException("Unsupported icon type")
+            if (icon != null) {
+                when (icon) {
+                    is ImageVector ->
+                        Icon(
+                            imageVector = icon,
+                            contentDescription = "Icon",
+                            modifier = Modifier.size(24.dp),
+                        )
+                    is Painter ->
+                        Icon(
+                            painter = icon,
+                            contentDescription = "Icon",
+                            modifier = Modifier.size(24.dp),
+                        )
+                    else -> throw IllegalArgumentException("Unsupported icon type")
+                }
             }
         }
     }
@@ -183,6 +189,10 @@ fun DisplayNameCard(
                             containerColor = AccentTurquoiseColor,
                             contentColor = TextColor,
                         ),
+                    enabled =
+                        newDisplayName.isNotEmpty() &&
+                            newDisplayName.all
+                                { it.isLetter() || it.isWhitespace() },
                     shape = RoundedCornerShape(20.dp),
                     border = BorderStroke(1.dp, ComponentStrokeColor),
                 ) {
@@ -209,14 +219,23 @@ fun EmailCard(
             user.email,
         )
 
+    val icon: ImageVector? =
+        if (user.provider != "google") {
+            Icons.Filled.Edit
+        } else {
+            null
+        }
+
     AccountCenterCard(
         cardTitle,
-        Icons.Filled.Edit,
+        icon,
         Modifier
             .card()
             .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
-        showChangeEmailDialog = true
+        if (user.provider != "google") {
+            showChangeEmailDialog = true
+        }
     }
 
     if (showChangeEmailDialog) {
@@ -240,6 +259,7 @@ fun EmailCard(
                                 focusedIndicatorColor = AccentTurquoiseColor,
                                 unfocusedIndicatorColor = Color.Transparent,
                             ),
+                        enabled = user.provider != "google",
                     )
                 }
             },
@@ -284,7 +304,7 @@ fun EmailCard(
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun ProfilePictureCard(
-    profilePictureBase64: String?,
+    profilePicture: StateFlow<ProfilePicture?>,
     onProfilePictureUpdated: (String) -> Unit,
 ) {
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
@@ -342,46 +362,27 @@ fun ProfilePictureCard(
         pickImage.launch("image/*")
     }
 
-    if (profilePictureBase64 != null) {
-        val bitmap = remember { convertBase64ToBitmap(profilePictureBase64) }
-
-        if (bitmap != null) {
-            Image(
-                bitmap = bitmap.asImageBitmap(),
-                contentDescription = "Profile picture",
-                modifier =
-                    Modifier
-                        .size(80.dp)
-                        .clip(CircleShape)
-                        .border(2.dp, ComponentStrokeColor, CircleShape),
-            )
-        }
-    } else {
-        selectedImageUri?.let {
-            val bitmap = remember { getBitmapFromUri(context, it) }
-
-            if (bitmap != null) {
-                Image(
-                    bitmap = bitmap.asImageBitmap(),
-                    contentDescription = "Profile picture",
-                    modifier =
-                        Modifier
-                            .size(80.dp)
-                            .clip(CircleShape)
-                            .border(2.dp, ComponentStrokeColor, CircleShape),
-                )
+    val bitmap =
+        remember {
+            profilePicture.value?.let {
+                it.image?.let { it1 ->
+                    convertBase64ToBitmap(
+                        it1,
+                    )
+                }
             }
-        } ?: run {
-            Icon(
-                imageVector = Icons.Default.AccountCircle,
-                contentDescription = "No profile picture",
-                modifier =
-                    Modifier
-                        .size(80.dp)
-                        .clip(CircleShape)
-                        .border(2.dp, ComponentStrokeColor, CircleShape),
-            )
         }
+
+    if (bitmap != null) {
+        Image(
+            bitmap = bitmap.asImageBitmap(),
+            contentDescription = "Profile picture",
+            modifier =
+                Modifier
+                    .size(80.dp)
+                    .clip(CircleShape)
+                    .border(2.dp, ComponentStrokeColor, CircleShape),
+        )
     }
 }
 
@@ -517,7 +518,12 @@ fun RemoveAccountCard(onRemoveAccountClick: () -> Unit) {
         AlertDialog(
             containerColor = ComponentBackgroundColor,
             title = { Text(stringResource(R.string.delete_account_title)) },
-            text = { Text(stringResource(R.string.delete_account_description), color = TextColor) },
+            text = {
+                Text(
+                    stringResource(R.string.delete_account_description),
+                    color = TextColor,
+                )
+            },
             dismissButton = {
                 Button(
                     onClick = { showRemoveAccDialog = false },
@@ -571,6 +577,10 @@ fun BiometricSwitch() {
         }
         var showBiometricDialog by remember { mutableStateOf(false) }
 
+        val auth = FirebaseAuth.getInstance()
+        val user = auth.currentUser
+        val firestore = FirebaseFirestore.getInstance()
+
         Row(
             modifier =
                 Modifier
@@ -590,6 +600,14 @@ fun BiometricSwitch() {
                     if (!isChecked) {
                         isBiometricEnabled = false
                         sharedPreferences.edit().putBoolean("biometric_enabled", false).apply()
+
+                        user?.let { currentUser ->
+                            val userRef =
+                                firestore
+                                    .collection("users")
+                                    .document(currentUser.uid)
+                            userRef.update("isBiometricEnabled", false)
+                        }
                     } else {
                         activity?.let {
                             val executor = ContextCompat.getMainExecutor(context)
@@ -600,12 +618,33 @@ fun BiometricSwitch() {
                                     object : BiometricPrompt.AuthenticationCallback() {
                                         override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                                             isBiometricEnabled = true
-                                            sharedPreferences.edit().putBoolean("biometric_enabled", true).apply()
+                                            sharedPreferences
+                                                .edit()
+                                                .putBoolean(
+                                                    "biometric_enabled",
+                                                    true,
+                                                ).apply()
+
+                                            user?.let { currentUser ->
+                                                val userRef =
+                                                    firestore
+                                                        .collection("users")
+                                                        .document(currentUser.uid)
+                                                userRef.update(
+                                                    "isBiometricEnabled",
+                                                    true,
+                                                )
+                                            }
                                         }
 
                                         override fun onAuthenticationFailed() {
                                             isBiometricEnabled = false
-                                            sharedPreferences.edit().putBoolean("biometric_enabled", false).apply()
+                                            sharedPreferences
+                                                .edit()
+                                                .putBoolean(
+                                                    "biometric_enabled",
+                                                    false,
+                                                ).apply()
                                         }
 
                                         override fun onAuthenticationError(
@@ -613,7 +652,12 @@ fun BiometricSwitch() {
                                             errString: CharSequence,
                                         ) {
                                             isBiometricEnabled = false
-                                            sharedPreferences.edit().putBoolean("biometric_enabled", false).apply()
+                                            sharedPreferences
+                                                .edit()
+                                                .putBoolean(
+                                                    "biometric_enabled",
+                                                    false,
+                                                ).apply()
                                         }
                                     },
                                 )
@@ -646,8 +690,8 @@ fun BiometricSwitch() {
         if (showBiometricDialog) {
             AlertDialog(
                 containerColor = ComponentBackgroundColor,
-                title = { Text("Biometrische Authentifizierung") },
-                text = { Text("Möchten Sie die biometrische Authentifizierung aktivieren?") },
+                title = { Text(stringResource(R.string.biometric_auth_title)) },
+                text = { Text(stringResource(R.string.biometric_auth_text)) },
                 dismissButton = {
                     Button(
                         onClick = {
@@ -663,7 +707,7 @@ fun BiometricSwitch() {
                         shape = RoundedCornerShape(20.dp),
                         border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
-                        Text(text = "Nein", color = TextColor)
+                        Text(text = stringResource(R.string.no), color = TextColor)
                     }
                 },
                 confirmButton = {
@@ -681,7 +725,7 @@ fun BiometricSwitch() {
                         shape = RoundedCornerShape(20.dp),
                         border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
-                        Text(text = "Ja", color = TextColor)
+                        Text(text = stringResource(R.string.yes), color = TextColor)
                     }
                 },
                 onDismissRequest = { showBiometricDialog = false },
@@ -697,14 +741,75 @@ fun UserIdCard(userId: String) {
     val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
     AccountCenterCard(
-        title = "User ID: $userId",
+        title = stringResource(R.string.user_id) + ":\n" + userId,
         icon = painterResource(R.drawable.copy),
         modifier =
             Modifier
                 .card()
                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
-        val clip = android.content.ClipData.newPlainText("User ID", userId)
+        val clip = newPlainText("User ID", userId)
         clipboardManager.setPrimaryClip(clip)
+    }
+}
+
+@Suppress("ktlint:standard:function-naming")
+@Composable
+fun DownloadDataButton(
+    userId: String,
+    viewModel: ProfileSettingsViewModel,
+) {
+    var showDialog by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+    if (showDialog) {
+        AlertDialog(
+            containerColor = ComponentBackgroundColor,
+            title = { Text(text = stringResource(R.string.download_data_title)) },
+            text = { Text(text = stringResource(R.string.download_data_text)) },
+            dismissButton = {
+                Button(
+                    onClick = { showDialog = false },
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = GreyColor,
+                            contentColor = TextColor,
+                        ),
+                    shape = RoundedCornerShape(20.dp),
+                    border = BorderStroke(1.dp, ComponentStrokeColor),
+                ) {
+                    Text(text = stringResource(R.string.no), color = TextColor)
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.downloadUserData(userId, context)
+                        showDialog = false
+                    },
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = AccentTurquoiseColor,
+                            contentColor = TextColor,
+                        ),
+                    shape = RoundedCornerShape(20.dp),
+                    border = BorderStroke(1.dp, ComponentStrokeColor),
+                ) {
+                    Text(text = stringResource(R.string.yes), color = TextColor)
+                }
+            },
+            onDismissRequest = { showDialog = false },
+        )
+    }
+
+    AccountCenterCard(
+        title = stringResource(R.string.download_data_title),
+        icon = painterResource(R.drawable.download),
+        modifier =
+            Modifier
+                .card()
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+    ) {
+        showDialog = true
     }
 }

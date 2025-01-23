@@ -30,7 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.R
+import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.screens.profile.viewmodel.ProfileViewModel
@@ -43,10 +45,15 @@ import com.freshkeeper.ui.theme.TextColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun ProfileScreen(navController: NavHostController) {
+fun ProfileScreen(
+    navController: NavHostController,
+    userId: String,
+) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
 
     val profileViewModel: ProfileViewModel = hiltViewModel()
+    profileViewModel.loadUserProfile(userId)
+
     val user = profileViewModel.user.collectAsState().value
     val memberSinceDays = profileViewModel.memberSinceDays.collectAsState().value
 
@@ -96,7 +103,7 @@ fun ProfileScreen(navController: NavHostController) {
                                 ProfileCard(
                                     name = it.displayName,
                                     memberSince = "Member since $memberSinceDays days",
-                                    profilePictureBase64 = profileViewModel.profilePictureBase64.collectAsState().value,
+                                    profilePicture = profileViewModel.profilePicture.collectAsState().value,
                                 )
                             }
                         }
@@ -112,7 +119,7 @@ fun ProfileScreen(navController: NavHostController) {
 fun ProfileCard(
     name: String?,
     memberSince: String?,
-    profilePictureBase64: String?,
+    profilePicture: ProfilePicture?,
 ) {
     Card(
         modifier =
@@ -136,21 +143,32 @@ fun ProfileCard(
                             .clip(RoundedCornerShape(50))
                             .border(1.dp, ComponentStrokeColor, RoundedCornerShape(50)),
                 ) {
-                    profilePictureBase64?.let {
-                        val decodedImage = convertBase64ToBitmap(it)
-                        if (decodedImage != null) {
-                            Image(
-                                bitmap = decodedImage.asImageBitmap(),
-                                contentDescription = "Profile Picture",
-                                modifier = Modifier.fillMaxSize(),
-                            )
+                    profilePicture?.let {
+                        when (it.type) {
+                            "base64" -> {
+                                val decodedImage = it.image?.let { it1 -> convertBase64ToBitmap(it1) }
+                                if (decodedImage != null) {
+                                    Image(
+                                        bitmap = decodedImage.asImageBitmap(),
+                                        contentDescription = "Profile Picture",
+                                        modifier = Modifier.fillMaxSize(),
+                                    )
+                                }
+                            }
+                            "url" -> {
+                                Image(
+                                    painter = rememberAsyncImagePainter(it.image),
+                                    contentDescription = "Profile Picture",
+                                    modifier = Modifier.fillMaxSize(),
+                                )
+                            }
                         }
                     }
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Column {
                     Text(
-                        text = name ?: "Unknown User",
+                        text = name ?: "Unknown user",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
                         color = TextColor,

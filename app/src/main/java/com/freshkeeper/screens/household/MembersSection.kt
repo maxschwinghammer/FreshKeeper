@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -40,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,6 +47,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.ImageLoader
+import coil.compose.rememberAsyncImagePainter
+import coil.request.CachePolicy
 import com.freshkeeper.R
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.screens.profileSettings.convertBase64ToBitmap
@@ -71,13 +74,22 @@ fun MembersSection(
     val viewModel: HouseholdViewModel = hiltViewModel()
     val members by viewModel.members.observeAsState(emptyList())
     val isInHousehold by viewModel.isInHousehold.observeAsState(false)
+    val household by viewModel.household.observeAsState()
 
-    val householdId = remember { mutableStateOf("") }
-    val householdName = remember { mutableStateOf("") }
+    var householdId = remember { household?.id ?: "" }
+    var householdName = remember { household?.name ?: "" }
+    var householdType = remember { household?.type ?: "" }
+
     val showJoinHouseholdDialog = remember { mutableStateOf(false) }
     var showCreateHouseholdDialog by remember { mutableStateOf(false) }
-    var householdType by remember { mutableStateOf("Single household") }
     var showHouseholdTypeDialog by remember { mutableStateOf(false) }
+
+    val imageLoader =
+        ImageLoader
+            .Builder(LocalContext.current)
+            .diskCachePolicy(CachePolicy.ENABLED)
+            .memoryCachePolicy(CachePolicy.ENABLED)
+            .build()
 
     Card(
         modifier =
@@ -106,9 +118,10 @@ fun MembersSection(
                         modifier =
                             Modifier
                                 .clip(RoundedCornerShape(10.dp))
-                                .clickable { navController.navigate("profile") }
-                                .width(100.dp)
-                                .height(80.dp)
+                                .clickable {
+                                    navController.navigate("profile/${member.userId}")
+                                }.width(100.dp)
+                                .height(100.dp)
                                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                                 .background(ComponentBackgroundColor)
                                 .padding(10.dp),
@@ -118,20 +131,42 @@ fun MembersSection(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
-                            val profilePictureBase64 = member.profilePictureBase64
-                            if (profilePictureBase64.isNullOrEmpty()) {
-                                Log.d("Profile", "No picture available")
-                            }
-                            profilePictureBase64?.let {
-                                val decodedImage = convertBase64ToBitmap(it)
-                                if (decodedImage != null) {
-                                    Image(
-                                        bitmap = decodedImage.asImageBitmap(),
-                                        contentDescription = "Profile Picture",
-                                        modifier = Modifier.fillMaxSize(),
-                                    )
+                            val profilePicture = member.profilePicture
+                            profilePicture?.let {
+                                when (it.type) {
+                                    "base64" -> {
+                                        val decodedImage =
+                                            it.image?.let { it1 ->
+                                                convertBase64ToBitmap(
+                                                    it1,
+                                                )
+                                            }
+                                        if (decodedImage != null) {
+                                            Image(
+                                                bitmap = decodedImage.asImageBitmap(),
+                                                contentDescription = "Profile Picture",
+                                                modifier = Modifier.size(55.dp).clip(RoundedCornerShape(50)),
+                                            )
+                                        } else {
+                                            Log.e("MembersSection", "Base64 decoding failed")
+                                        }
+                                    }
+                                    "url" -> {
+                                        Image(
+                                            painter =
+                                                rememberAsyncImagePainter(
+                                                    model = it.image,
+                                                    imageLoader = imageLoader,
+                                                ),
+                                            contentDescription = "Profile Picture",
+                                            modifier = Modifier.size(55.dp).clip(RoundedCornerShape(50)),
+                                        )
+                                    }
+
+                                    else -> {}
                                 }
                             }
+                            Spacer(modifier = Modifier.height(5.dp))
                             Text(
                                 text = member.name.split(" ").first(),
                                 color = TextColor,
@@ -143,34 +178,40 @@ fun MembersSection(
                 }
 
                 if (isInHousehold) {
-                    Box(
-                        modifier =
-                            Modifier
-                                .width(100.dp)
-                                .height(80.dp)
-                                .clip(RoundedCornerShape(10.dp))
-                                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
-                                .background(ComponentBackgroundColor)
-                                .clickable { coroutineScope.launch { inviteSheetState.show() } }
-                                .padding(10.dp),
-                        contentAlignment = Alignment.Center,
+                    if (household != null &&
+                        householdType != "Single household" &&
+                        (householdType != "Pair" || household!!.users.size < 2)
                     ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
+                        Box(
+                            modifier =
+                                Modifier
+                                    .width(100.dp)
+                                    .height(100.dp)
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+                                    .background(ComponentBackgroundColor)
+                                    .clickable { coroutineScope.launch { inviteSheetState.show() } }
+                                    .padding(10.dp),
+                            contentAlignment = Alignment.Center,
                         ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.invite),
-                                contentDescription = null,
-                                modifier = Modifier.size(35.dp),
-                            )
-                            Spacer(modifier = Modifier.height(5.dp))
-                            Text(
-                                text = stringResource(R.string.invite),
-                                color = TextColor,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 14.sp,
-                            )
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Image(
+                                    painter = painterResource(id = R.drawable.invite),
+                                    contentDescription = null,
+                                    modifier = Modifier.size(40.dp),
+                                )
+                                Spacer(modifier = Modifier.height(10.dp))
+                                Text(
+                                    text = stringResource(R.string.invite),
+                                    color = TextColor,
+                                    fontWeight = FontWeight.Bold,
+                                    fontSize = 14.sp,
+                                )
+                            }
                         }
                     }
                 } else {
@@ -178,7 +219,7 @@ fun MembersSection(
                         modifier =
                             Modifier
                                 .width(100.dp)
-                                .height(80.dp)
+                                .height(100.dp)
                                 .clip(RoundedCornerShape(10.dp))
                                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                                 .background(ComponentBackgroundColor)
@@ -190,12 +231,13 @@ fun MembersSection(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
+                            Spacer(modifier = Modifier.height(10.dp))
                             Image(
                                 painter = painterResource(id = R.drawable.user_joined),
                                 contentDescription = null,
-                                modifier = Modifier.size(35.dp),
+                                modifier = Modifier.size(40.dp),
                             )
-                            Spacer(modifier = Modifier.height(5.dp))
+                            Spacer(modifier = Modifier.height(10.dp))
                             Text(
                                 text = stringResource(R.string.join),
                                 color = TextColor,
@@ -209,7 +251,7 @@ fun MembersSection(
                         modifier =
                             Modifier
                                 .width(100.dp)
-                                .height(80.dp)
+                                .height(100.dp)
                                 .clip(RoundedCornerShape(10.dp))
                                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                                 .background(ComponentBackgroundColor)
@@ -221,12 +263,13 @@ fun MembersSection(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.Center,
                         ) {
+                            Spacer(modifier = Modifier.height(10.dp))
                             Image(
                                 painter = painterResource(id = R.drawable.plus),
                                 contentDescription = null,
-                                modifier = Modifier.size(35.dp),
+                                modifier = Modifier.size(40.dp),
                             )
-                            Spacer(modifier = Modifier.height(5.dp))
+                            Spacer(modifier = Modifier.height(10.dp))
                             Text(
                                 text = stringResource(R.string.create),
                                 color = TextColor,
@@ -246,7 +289,7 @@ fun MembersSection(
                 text = {
                     Column {
                         TextField(
-                            value = householdId.value,
+                            value = householdId,
                             colors =
                                 TextFieldDefaults.colors(
                                     focusedTextColor = TextColor,
@@ -256,7 +299,7 @@ fun MembersSection(
                                     focusedIndicatorColor = AccentTurquoiseColor,
                                     unfocusedIndicatorColor = Color.Transparent,
                                 ),
-                            onValueChange = { id -> householdId.value = id },
+                            onValueChange = { id -> householdId = id },
                             placeholder = { Text(text = stringResource(R.string.household_id)) },
                         )
                     }
@@ -278,7 +321,7 @@ fun MembersSection(
                 confirmButton = {
                     Button(
                         onClick = {
-                            onJoinHouseholdClick(householdId.toString())
+                            onJoinHouseholdClick(householdId)
                             showJoinHouseholdDialog.value = false
                         },
                         colors =
@@ -286,6 +329,7 @@ fun MembersSection(
                                 containerColor = AccentTurquoiseColor,
                                 contentColor = TextColor,
                             ),
+                        enabled = householdId.length == 20,
                         shape = RoundedCornerShape(20.dp),
                         border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
@@ -303,7 +347,7 @@ fun MembersSection(
                 text = {
                     Column {
                         TextField(
-                            value = householdName.value,
+                            value = householdName,
                             colors =
                                 TextFieldDefaults.colors(
                                     focusedTextColor = TextColor,
@@ -313,7 +357,7 @@ fun MembersSection(
                                     focusedIndicatorColor = AccentTurquoiseColor,
                                     unfocusedIndicatorColor = Color.Transparent,
                                 ),
-                            onValueChange = { householdName.value = it },
+                            onValueChange = { householdName = it },
                             placeholder = { Text(text = stringResource(R.string.household_name)) },
                         )
                     }
@@ -343,6 +387,10 @@ fun MembersSection(
                                 containerColor = AccentTurquoiseColor,
                                 contentColor = TextColor,
                             ),
+                        enabled =
+                            householdName.isNotEmpty() &&
+                                householdName.all
+                                    { it.isLetter() || it.isWhitespace() },
                         shape = RoundedCornerShape(20.dp),
                         border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
@@ -363,7 +411,7 @@ fun MembersSection(
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        listOf("Family", "Shared Apartment", "Single Household", "Pair")
+                        listOf("Family", "Shared apartment", "Single household", "Pair")
                             .forEach { type ->
                                 val borderColor =
                                     if (householdType == type) {
@@ -407,7 +455,7 @@ fun MembersSection(
                 confirmButton = {
                     Button(
                         onClick = {
-                            onCreateHouseholdClick(householdName.value, householdType)
+                            onCreateHouseholdClick(householdName, householdType)
                             showHouseholdTypeDialog = false
                         },
                         colors =

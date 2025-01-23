@@ -45,7 +45,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
@@ -69,10 +68,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun HomeScreen(
-    navController: NavHostController,
-    viewModel: HomeViewModel = viewModel(),
-) {
+fun HomeScreen(navController: NavHostController) {
+    val viewModel: HomeViewModel = hiltViewModel()
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
 
     var scannedBarcode by remember { mutableStateOf("") }
