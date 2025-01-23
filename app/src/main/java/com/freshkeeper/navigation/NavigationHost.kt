@@ -1,7 +1,5 @@
 package com.freshkeeper.navigation
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -31,7 +29,6 @@ import com.freshkeeper.screens.settings.SettingsScreen
 import com.freshkeeper.screens.statistics.StatisticsScreen
 import com.freshkeeper.service.AccountService
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun NavigationHost(

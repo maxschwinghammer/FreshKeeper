@@ -1,7 +1,5 @@
 package com.freshkeeper.screens.profileSettings
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -45,7 +43,6 @@ import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
 
-@RequiresApi(Build.VERSION_CODES.TIRAMISU)
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun ProfileSettingsScreen(
