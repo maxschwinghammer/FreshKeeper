@@ -264,4 +264,25 @@
     <string name="answer_not_found">Haben Sie keine Antwort auf Ihre Frage gefunden?</string>
     <string name="send_us_message">Senden Sie uns eine Nachricht</string>
     <string name="help_and_contact">Hilfe und Kontakt</string>
+    <string name="tips">Tipps</string>
+    <string name="tip_title_herbs">Frische Kräuter länger aufbewahren</string>
+    <string name="tip_desc_herbs">Lagere Kräuter in einem Glas Wasser im Kühlschrank, um ihre Frische zu erhalten</string>
+    <string name="tip_title_temperature">Temperatur im Kühlschrank überprüfen</string>
+    <string name="tip_desc_temperature">Halte deinen Kühlschrank bei 4°C, um Lebensmittel länger haltbar zu machen</string>
+    <string name="tip_title_leftovers">Lebensmittelreste kreativ verwenden</string>
+    <string name="tip_desc_leftovers">Reste von Gemüse und Fleisch lassen sich gut in Suppen oder Eintöpfen verwerten</string>
+    <string name="tip_title_bread">Brot richtig lagern</string>
+    <string name="tip_desc_bread">Bewahre Brot in einem sauberen Baumwollbeutel auf, um Schimmelbildung zu vermeiden</string>
+    <string name="tip_title_freeze">Einfrieren leicht gemacht</string>
+    <string name="tip_desc_freeze">Portioniere Lebensmittel vor dem Einfrieren, um sie später einfacher zu verwenden</string>
+    <string name="tip_title_fruit_vegetable">Obst und Gemüse trennen</string>
+    <string name="tip_desc_fruit_vegetable">Bewahre Obst und Gemüse separat auf, da Obst Ethylen freisetzt, das Gemüse schneller altern lässt</string>
+    <string name="tip_title_smoothie">Reifes Obst verwenden</string>
+    <string name="tip_desc_smoothie">Reifes Obst kannst du zu Smoothies oder Marmeladen verarbeiten, statt es wegzuwerfen</string>
+    <string name="tip_title_cheese">Käse länger frisch halten</string>
+    <string name="tip_desc_cheese">Wickle Käse in Wachspapier ein, um ihn länger frisch zu halten</string>
+    <string name="tip_title_eggs">Eier auf Frische testen</string>
+    <string name="tip_desc_eggs">Lege ein Ei in ein Glas Wasser: Sinkt es, ist es frisch; schwimmt es, sollte es nicht mehr verwendet werden</string>
+    <string name="tip_title_potatoes">Kartoffeln richtig lagern</string>
+    <string name="tip_desc_potatoes">Lagere Kartoffeln an einem dunklen, kühlen Ort, aber nicht im Kühlschrank</string>
 </resources>

@@ -256,4 +256,25 @@
     <string name="answer_not_found">You didn’t find an answer to your question?</string>
     <string name="send_us_message">Send us a message</string>
     <string name="help_and_contact">Help and contact</string>
+    <string name="tips">Tips</string>
+    <string name="tip_title_herbs">Keep fresh herbs longer</string>
+    <string name="tip_desc_herbs">Store herbs in a glass of water in the fridge to keep them fresh</string>
+    <string name="tip_title_temperature">Check your fridge temperature</string>
+    <string name="tip_desc_temperature">Keep your fridge at 4°C to make food last longer</string>
+    <string name="tip_title_leftovers">Use leftovers creatively</string>
+    <string name="tip_desc_leftovers">Leftover vegetables and meat can be used in soups or stews</string>
+    <string name="tip_title_bread">Store bread properly</string>
+    <string name="tip_desc_bread">Keep bread in a clean cotton bag to prevent mold</string>
+    <string name="tip_title_freeze">Freezing made easy</string>
+    <string name="tip_desc_freeze">Portion food before freezing to make it easier to use later</string>
+    <string name="tip_title_fruit_vegetable">Separate fruits and vegetables</string>
+    <string name="tip_desc_fruit_vegetable">Store fruits and vegetables separately, as fruits release ethylene that makes vegetables spoil faster</string>
+    <string name="tip_title_smoothie">Use ripe fruits</string>
+    <string name="tip_desc_smoothie">Ripe fruits can be turned into smoothies or jams instead of being wasted</string>
+    <string name="tip_title_cheese">Keep cheese fresh longer</string>
+    <string name="tip_desc_cheese">Wrap cheese in wax paper to keep it fresh longer</string>
+    <string name="tip_title_eggs">Test egg freshness</string>
+    <string name="tip_desc_eggs">Place an egg in a glass of water: If it sinks, it’s fresh; if it floats, it should not be used</string>
+    <string name="tip_title_potatoes">Store potatoes properly</string>
+    <string name="tip_desc_potatoes">Store potatoes in a dark, cool place, but not in the fridge</string>
 </resources>

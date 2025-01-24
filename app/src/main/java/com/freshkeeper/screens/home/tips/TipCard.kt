@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.notifications
+package com.freshkeeper.screens.home.tips
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,17 +23,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
-import com.freshkeeper.model.Notification
+import com.freshkeeper.model.Tip
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun NotificationCard(
-    notification: Notification,
-    navController: NavHostController,
+fun TipCard(
+    tip: Tip,
     onRemove: () -> Unit,
 ) {
     Box(
@@ -54,11 +50,11 @@ fun NotificationCard(
                 Image(
                     modifier = Modifier.size(25.dp),
                     contentDescription = null,
-                    painter = painterResource(id = notification.imageResId),
+                    painter = painterResource(id = tip.imageResId),
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = notification.title,
+                    text = stringResource(id = tip.titleId),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextColor,
@@ -73,20 +69,10 @@ fun NotificationCard(
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = notification.description,
+                text = stringResource(id = tip.descriptionId),
                 fontSize = 14.sp,
                 color = TextColor,
             )
-            Spacer(modifier = Modifier.height(8.dp))
-            Button(
-                onClick = { navController.navigate(notification.destinationScreen) },
-                colors = ButtonDefaults.buttonColors(containerColor = TextColor),
-            ) {
-                Text(
-                    text = stringResource(id = notification.buttonTextId),
-                    color = ComponentBackgroundColor,
-                )
-            }
         }
     }
 }

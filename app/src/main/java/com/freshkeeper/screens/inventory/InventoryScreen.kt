@@ -105,9 +105,14 @@ fun InventoryScreen(navController: NavHostController) {
     var foodItem by remember { mutableStateOf<FoodItem?>(null) }
 
     val listState = rememberLazyListState()
-    val showTransition by remember {
+    val showUpperTransition by remember {
         derivedStateOf {
             listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0
+        }
+    }
+    val showLowerTransition by remember {
+        derivedStateOf {
+            listState.layoutInfo.visibleItemsInfo.size < items.size
         }
     }
 
@@ -301,8 +306,10 @@ fun InventoryScreen(navController: NavHostController) {
                                 Spacer(modifier = Modifier.height(10.dp))
                             }
                         }
-                        if (showTransition) {
+                        if (showUpperTransition) {
                             UpperTransition()
+                        }
+                        if (showLowerTransition) {
                             LowerTransition(
                                 modifier = Modifier.align(Alignment.BottomCenter),
                             )
