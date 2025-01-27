@@ -277,4 +277,24 @@
     <string name="tip_desc_eggs">Place an egg in a glass of water: If it sinks, it’s fresh; if it floats, it should not be used</string>
     <string name="tip_title_potatoes">Store potatoes properly</string>
     <string name="tip_desc_potatoes">Store potatoes in a dark, cool place, but not in the fridge</string>
+    <string name="tip_title_avocado">Store avocados properly</string>
+    <string name="tip_desc_avocado">Keep cut avocados with a drop of lemon juice and plastic wrap to preserve freshness</string>
+    <string name="tip_title_bananas">Keep bananas fresh longer</string>
+    <string name="tip_desc_bananas">Wrap the stems of bananas with plastic wrap to slow down ripening</string>
+    <string name="tip_title_milk">Use leftover milk wisely</string>
+    <string name="tip_desc_milk">Use leftover milk for pancakes or smoothies</string>
+    <string name="tip_title_pasta">Store cooked pasta</string>
+    <string name="tip_desc_pasta">Keep cooked pasta with a drizzle of oil in the fridge to prevent it from drying out</string>
+    <string name="tip_title_rice">Reuse leftover rice</string>
+    <string name="tip_desc_rice">Leftover rice can be used for fried rice or soups</string>
+    <string name="tip_title_lemons">Preserve lemons</string>
+    <string name="tip_desc_lemons">Store lemons in a jar of water in the fridge to keep them fresh longer</string>
+    <string name="tip_title_nuts">Keep nuts fresh</string>
+    <string name="tip_desc_nuts">Store nuts in an airtight container in a cool place</string>
+    <string name="tip_title_meat">Freeze meat efficiently</string>
+    <string name="tip_desc_meat">Freeze meat in portions to make it easier to defrost the amount you need</string>
+    <string name="tip_title_honey">Honey crystallized? No problem</string>
+    <string name="tip_desc_honey">Warm crystallized honey in warm water to make it liquid again</string>
+    <string name="tip_title_fish">Keep fish fresh</string>
+    <string name="tip_desc_fish">Store fresh fish on ice in the fridge to maintain its freshness</string>
 </resources>

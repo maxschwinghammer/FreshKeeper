@@ -285,4 +285,25 @@
     <string name="tip_desc_eggs">Lege ein Ei in ein Glas Wasser: Sinkt es, ist es frisch; schwimmt es, sollte es nicht mehr verwendet werden</string>
     <string name="tip_title_potatoes">Kartoffeln richtig lagern</string>
     <string name="tip_desc_potatoes">Lagere Kartoffeln an einem dunklen, kühlen Ort, aber nicht im Kühlschrank</string>
+    <string name="tip_title_avocado">Avocados richtig lagern</string>
+    <string name="tip_desc_avocado">Bewahre angeschnittene Avocados mit einem Tropfen Zitronensaft und Frischhaltefolie auf</string>
+    <string name="tip_title_bananas">Bananen länger frisch halten</string>
+    <string name="tip_desc_bananas">Wickle die Stiele von Bananen mit Folie ein, um die Reifung zu verlangsamen</string>
+    <string name="tip_title_milk">Milchreste sinnvoll verwenden</string>
+    <string name="tip_desc_milk">Verwende übrig gebliebene Milch für Pfannkuchen oder Smoothies</string>
+    <string name="tip_title_pasta">Gekochte Pasta aufbewahren</string>
+    <string name="tip_desc_pasta">Gekochte Nudeln mit einem Schuss Öl im Kühlschrank lagern, um sie vor dem Austrocknen zu schützen</string>
+    <string name="tip_title_rice">Reisreste nutzen</string>
+    <string name="tip_desc_rice">Übrig gebliebenen Reis kannst du für gebratenen Reis oder Suppen verwenden</string>
+    <string name="tip_title_lemons">Zitronen haltbar machen</string>
+    <string name="tip_desc_lemons">Lagere Zitronen in einem Glas Wasser im Kühlschrank, um sie länger frisch zu halten</string>
+    <string name="tip_title_nuts">Nüsse frisch halten</string>
+    <string name="tip_desc_nuts">Bewahre Nüsse in einem luftdichten Behälter an einem kühlen Ort auf</string>
+    <string name="tip_title_meat">Fleisch optimal einfrieren</string>
+    <string name="tip_desc_meat">Fleisch in Portionen einfrieren, um die gewünschte Menge leichter auftauen zu können</string>
+    <string name="tip_title_honey">Honig kristallisiert? Kein Problem</string>
+    <string name="tip_desc_honey">Erwärme kristallisierten Honig in warmem Wasser, um ihn wieder flüssig zu machen</string>
+    <string name="tip_title_fish">Fisch frisch halten</string>
+    <string name="tip_desc_fish">Bewahre frischen Fisch auf Eis im Kühlschrank auf, um seine Frische zu erhalten</string>
+
 </resources>

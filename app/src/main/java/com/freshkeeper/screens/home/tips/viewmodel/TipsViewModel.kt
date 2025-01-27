@@ -67,6 +67,56 @@ class TipsViewModel
                         descriptionId = R.string.tip_desc_potatoes,
                         imageResId = R.drawable.potatoes,
                     ),
+                    Tip(
+                        titleId = R.string.tip_title_avocado,
+                        descriptionId = R.string.tip_desc_avocado,
+                        imageResId = R.drawable.avocado,
+                    ),
+                    Tip(
+                        titleId = R.string.tip_title_bananas,
+                        descriptionId = R.string.tip_desc_bananas,
+                        imageResId = R.drawable.banana,
+                    ),
+                    Tip(
+                        titleId = R.string.tip_title_milk,
+                        descriptionId = R.string.tip_desc_milk,
+                        imageResId = R.drawable.milk,
+                    ),
+                    Tip(
+                        titleId = R.string.tip_title_pasta,
+                        descriptionId = R.string.tip_desc_pasta,
+                        imageResId = R.drawable.noodles,
+                    ),
+                    Tip(
+                        titleId = R.string.tip_title_rice,
+                        descriptionId = R.string.tip_desc_rice,
+                        imageResId = R.drawable.rice,
+                    ),
+                    Tip(
+                        titleId = R.string.tip_title_lemons,
+                        descriptionId = R.string.tip_desc_lemons,
+                        imageResId = R.drawable.lemon,
+                    ),
+                    Tip(
+                        titleId = R.string.tip_title_nuts,
+                        descriptionId = R.string.tip_desc_nuts,
+                        imageResId = R.drawable.nuts,
+                    ),
+                    Tip(
+                        titleId = R.string.tip_title_meat,
+                        descriptionId = R.string.tip_desc_meat,
+                        imageResId = R.drawable.meat,
+                    ),
+                    Tip(
+                        titleId = R.string.tip_title_honey,
+                        descriptionId = R.string.tip_desc_honey,
+                        imageResId = R.drawable.honey,
+                    ),
+                    Tip(
+                        titleId = R.string.tip_title_fish,
+                        descriptionId = R.string.tip_desc_fish,
+                        imageResId = R.drawable.fish,
+                    ),
                 ),
             )
 
