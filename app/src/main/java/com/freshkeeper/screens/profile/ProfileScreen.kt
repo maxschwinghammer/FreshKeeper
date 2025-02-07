@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -38,9 +39,9 @@ import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.screens.profile.viewmodel.ProfileViewModel
 import com.freshkeeper.screens.profileSettings.convertBase64ToBitmap
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
+import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
-import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
 
 @Suppress("ktlint:standard:function-naming")
@@ -50,12 +51,32 @@ fun ProfileScreen(
     userId: String,
 ) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
-
     val profileViewModel: ProfileViewModel = hiltViewModel()
+
     profileViewModel.loadUserProfile(userId)
 
     val user = profileViewModel.user.collectAsState().value
     val memberSinceDays = profileViewModel.memberSinceDays.collectAsState().value
+
+    fun formatMemberSince(days: Long): String =
+        when {
+            days > 365 -> {
+                val years = days / 365
+                val remainingMonths = (days % 365) / 30
+                if (remainingMonths > 0) {
+                    "Member since $years ${if (years == 1L) "year" else "years"} and $remainingMonths ${if (remainingMonths == 1L) "month" else "months"}"
+                } else {
+                    "Member since $years ${if (years == 1L) "year" else "years"}"
+                }
+            }
+            days > 30 -> {
+                val months = days / 30
+                "Member since $months ${if (months == 1L) "month" else "months"}"
+            }
+            days == 1L -> "Member since yesterday"
+            days == 0L -> "Member since today"
+            else -> "Member since $days days"
+        }
 
     FreshKeeperTheme {
         Scaffold(
@@ -102,7 +123,7 @@ fun ProfileScreen(
                             user?.let {
                                 ProfileCard(
                                     name = it.displayName,
-                                    memberSince = "Member since $memberSinceDays days",
+                                    memberSince = formatMemberSince(memberSinceDays),
                                     profilePicture = profileViewModel.profilePicture.collectAsState().value,
                                 )
                             }
@@ -131,7 +152,7 @@ fun ProfileCard(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .background(GreyColor)
+                    .background(ComponentBackgroundColor)
                     .padding(16.dp),
             contentAlignment = Alignment.CenterStart,
         ) {
@@ -173,6 +194,7 @@ fun ProfileCard(
                         fontWeight = FontWeight.Bold,
                         color = TextColor,
                     )
+                    Spacer(modifier = Modifier.height(4.dp))
                     Text(
                         text = memberSince ?: "Member since unknown",
                         fontSize = 14.sp,

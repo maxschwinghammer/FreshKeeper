@@ -36,4 +36,44 @@ class MembershipServiceImpl
                 Membership()
             }
         }
+
+        override suspend fun activateMembership(
+            paymentCycle: String,
+            durationInDays: Int,
+        ) {
+            try {
+                if (userId == null) return
+                val userDocRef = firestore.collection("users").document(userId)
+                val userDoc = userDocRef.get().await()
+                val user = userDoc.toObject(User::class.java) ?: return
+
+                val membershipId =
+                    user.membershipId ?: firestore
+                        .collection("memberships")
+                        .document()
+                        .id
+                val startDate = System.currentTimeMillis()
+                val endDate = startDate + durationInDays * 24 * 60 * 60 * 1000L
+
+                val updatedMembership =
+                    Membership(
+                        userId = userId,
+                        id = membershipId,
+                        hasPremium = true,
+                        hasTested = true,
+                        paymentCycle = paymentCycle,
+                        startDate = startDate,
+                        endDate = endDate,
+                    )
+
+                firestore
+                    .collection("memberships")
+                    .document(membershipId)
+                    .set(updatedMembership)
+                    .await()
+                userDocRef.update("membershipId", membershipId).await()
+            } catch (e: Exception) {
+                // Fehlerhandling, z. B. Logging
+            }
+        }
     }

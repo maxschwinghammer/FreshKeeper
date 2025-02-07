@@ -16,8 +16,8 @@ android {
         applicationId = "com.freshkeeper"
         minSdk = 26
         targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.freshkeeper"
@@ -48,7 +48,6 @@ android {
 
 dependencies {
     implementation(libs.android.image.cropper)
-    implementation(libs.com.journeyapps.zxing.android.embedded)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.biometric)
@@ -71,9 +70,11 @@ dependencies {
     implementation(libs.appauth)
     implementation(libs.barcode.scanning)
     implementation(libs.barcode.scanning.common)
+    implementation(libs.billing.ktx)
     implementation(libs.camera.camera2)
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
+    implementation(libs.com.journeyapps.zxing.android.embedded)
     implementation(libs.coil.compose)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.analytics)
@@ -87,6 +88,7 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.hilt)
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.firebase.messaging)
     implementation(libs.json)
     implementation(libs.junit)
     implementation(libs.material)
@@ -106,6 +108,7 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.image.labeling.common)
     implementation(libs.javax.mail)
+    implementation(libs.firebase.messaging.ktx)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

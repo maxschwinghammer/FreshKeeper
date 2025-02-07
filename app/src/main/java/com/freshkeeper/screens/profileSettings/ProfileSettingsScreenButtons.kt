@@ -10,7 +10,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
@@ -19,7 +18,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
@@ -37,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -47,6 +46,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
@@ -57,6 +57,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
@@ -151,6 +152,9 @@ fun DisplayNameCard(
                         value = newDisplayName,
                         colors =
                             TextFieldDefaults.colors(
+                                unfocusedLabelColor = AccentTurquoiseColor,
+                                focusedLabelColor = AccentTurquoiseColor,
+                                cursorColor = AccentTurquoiseColor,
                                 focusedTextColor = TextColor,
                                 unfocusedTextColor = TextColor,
                                 focusedContainerColor = GreyColor,
@@ -250,6 +254,9 @@ fun EmailCard(
                         placeholder = { Text(user.email) },
                         colors =
                             TextFieldDefaults.colors(
+                                unfocusedLabelColor = AccentTurquoiseColor,
+                                focusedLabelColor = AccentTurquoiseColor,
+                                cursorColor = AccentTurquoiseColor,
                                 focusedTextColor = TextColor,
                                 unfocusedTextColor = TextColor,
                                 focusedContainerColor = GreyColor,
@@ -305,8 +312,18 @@ fun ProfilePictureCard(
     onProfilePictureUpdated: (String) -> Unit,
 ) {
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
-
     val context = LocalContext.current
+    val profilePic = profilePicture.collectAsState()
+    val imagePainter =
+        when {
+            profilePic.value?.type == "url" && profilePic.value?.image != null ->
+                rememberAsyncImagePainter(profilePic.value!!.image)
+            profilePic.value?.image != null -> {
+                val bmp = profilePic.value!!.image?.let { convertBase64ToBitmap(it) }
+                bmp?.let { BitmapPainter(it.asImageBitmap()) }
+            }
+            else -> painterResource(R.drawable.profile)
+        }
 
     val cropImage =
         rememberLauncherForActivityResult(
@@ -350,36 +367,13 @@ fun ProfilePictureCard(
 
     AccountCenterCard(
         title = "Profile picture",
-        icon = painterResource(R.drawable.profile),
+        icon = imagePainter,
         modifier =
             Modifier
                 .card()
                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
         pickImage.launch("image/*")
-    }
-
-    val bitmap =
-        remember {
-            profilePicture.value?.let {
-                it.image?.let { it1 ->
-                    convertBase64ToBitmap(
-                        it1,
-                    )
-                }
-            }
-        }
-
-    if (bitmap != null) {
-        Image(
-            bitmap = bitmap.asImageBitmap(),
-            contentDescription = "Profile picture",
-            modifier =
-                Modifier
-                    .size(80.dp)
-                    .clip(CircleShape)
-                    .border(2.dp, ComponentStrokeColor, CircleShape),
-        )
     }
 }
 

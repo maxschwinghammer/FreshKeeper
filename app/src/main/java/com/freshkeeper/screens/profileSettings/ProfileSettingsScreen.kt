@@ -54,7 +54,12 @@ fun ProfileSettingsScreen(
     val user by viewModel.user.collectAsState(initial = User())
 
     val listState = rememberLazyListState()
-    val showTransition by remember {
+    val showUpperTransition by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0
+        }
+    }
+    val showLowerTransition by remember {
         derivedStateOf {
             listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0
         }
@@ -148,15 +153,13 @@ fun ProfileSettingsScreen(
                             }
                         }
                     }
-                    item {
-                        Spacer(modifier = Modifier.height(10.dp))
-                    }
+                    item { Spacer(modifier = Modifier.height(10.dp)) }
                 }
-                if (showTransition) {
+                if (showUpperTransition) {
                     UpperTransition()
-                    LowerTransition(
-                        modifier = Modifier.align(Alignment.BottomCenter),
-                    )
+                }
+                if (showLowerTransition) {
+                    LowerTransition(modifier = Modifier.align(Alignment.BottomCenter))
                 }
             }
         }

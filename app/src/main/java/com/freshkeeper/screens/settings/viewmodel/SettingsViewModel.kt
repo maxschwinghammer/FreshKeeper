@@ -23,4 +23,14 @@ class SettingsViewModel
                 _membership.value = membershipService.getMembershipStatus()
             }
         }
+
+        fun activatePremiumMembership(
+            paymentCycle: String,
+            durationInDays: Int,
+        ) {
+            launchCatching {
+                membershipService.activateMembership(paymentCycle, durationInDays)
+                _membership.value = membershipService.getMembershipStatus()
+            }
+        }
     }

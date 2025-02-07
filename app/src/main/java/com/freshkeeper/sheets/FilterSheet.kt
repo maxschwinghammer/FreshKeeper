@@ -5,6 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,10 +25,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
-import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
@@ -74,22 +75,21 @@ fun FilterSheet(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
+                        .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
             ) {
                 Text(
                     text = "Filter (${displayedFoodItems.size})",
-                    fontSize = 20.sp,
+                    fontSize = 18.sp,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 16.dp),
                 )
 
                 Text(
-                    text = "Categories",
+                    text = stringResource(R.string.categories),
                     fontSize = 16.sp,
                     style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.padding(bottom = 8.dp),
                 )
-
-                Spacer(modifier = Modifier.height(8.dp))
 
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
@@ -125,7 +125,8 @@ fun FilterSheet(
                                         Color.Transparent
                                     },
                                 ),
-                            modifier = Modifier.padding(vertical = 2.dp, horizontal = 4.dp),
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 4.dp),
+                            modifier = Modifier.padding(vertical = 0.dp, horizontal = 4.dp),
                         ) {
                             Text(text = stringResource(value), fontSize = 12.sp)
                         }
@@ -135,7 +136,7 @@ fun FilterSheet(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Storage Locations",
+                    text = stringResource(R.string.storage_locations),
                     fontSize = 16.sp,
                     style = MaterialTheme.typography.bodyMedium,
                 )
@@ -176,7 +177,8 @@ fun FilterSheet(
                                         Color.Transparent
                                     },
                                 ),
-                            modifier = Modifier.padding(vertical = 2.dp, horizontal = 4.dp),
+                            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 6.dp),
+                            modifier = Modifier.padding(vertical = 0.dp, horizontal = 4.dp),
                         ) {
                             Text(text = stringResource(value), fontSize = 12.sp)
                         }
@@ -186,13 +188,12 @@ fun FilterSheet(
                 Button(
                     onClick = { coroutineScope.launch { filterSheetState.hide() } },
                     colors = ButtonDefaults.buttonColors(containerColor = AccentTurquoiseColor),
-                    border = BorderStroke(1.dp, ComponentStrokeColor),
                     modifier =
                         Modifier
                             .fillMaxWidth()
                             .padding(top = 16.dp),
                 ) {
-                    Text(text = "Apply Filter", color = Color.White)
+                    Text(text = "Apply Filter", color = ComponentBackgroundColor)
                 }
             }
         }

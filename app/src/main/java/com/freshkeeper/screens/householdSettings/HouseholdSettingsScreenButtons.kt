@@ -138,8 +138,18 @@ fun CreateHouseholdCard(onCreateHouseholdClick: (String, String) -> Unit) {
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    listOf("Family", "Shared apartment", "Single household", "Pair").forEach { type ->
-                        val borderColor = if (householdType == type) AccentTurquoiseColor else Color.Transparent
+                    listOf(
+                        stringResource(R.string.family),
+                        stringResource(R.string.shared_apartment),
+                        stringResource(R.string.single_household),
+                        stringResource(R.string.pair),
+                    ).forEach { type ->
+                        val borderColor =
+                            if (householdType == type) {
+                                AccentTurquoiseColor
+                            } else {
+                                Color.Transparent
+                            }
                         Button(
                             onClick = { householdType = type },
                             colors =
@@ -149,7 +159,10 @@ fun CreateHouseholdCard(onCreateHouseholdClick: (String, String) -> Unit) {
                                 ),
                             shape = RoundedCornerShape(20.dp),
                             border = BorderStroke(1.dp, borderColor),
-                            modifier = Modifier.padding(vertical = 2.dp).align(Alignment.CenterHorizontally),
+                            modifier =
+                                Modifier.padding(vertical = 2.dp).align(
+                                    Alignment.CenterHorizontally,
+                                ),
                         ) {
                             Text(text = type)
                         }
@@ -195,22 +208,30 @@ fun CreateHouseholdCard(onCreateHouseholdClick: (String, String) -> Unit) {
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun HouseholdNameCard(
-    householdName: String,
     onUpdateHouseholdNameClick: (String) -> Unit,
+    household: Household,
+    user: User,
 ) {
     var showHouseholdNameDialog by remember { mutableStateOf(false) }
-    var newHouseholdName by remember { mutableStateOf(householdName) }
-    val cardTitle = householdName.ifBlank { stringResource(R.string.household_name) }
+    var householdName by remember { mutableStateOf(household.name) }
+    val cardTitle = household.name.ifBlank { stringResource(R.string.household_name) }
+    val isUserOwner by remember { mutableStateOf(household.ownerId == user.id) }
+    val nameChangeError = stringResource(R.string.name_change_error)
+    val context = LocalContext.current
 
     AccountCenterCard(
         "Name: $cardTitle",
-        Icons.Filled.Edit,
+        icon = if (isUserOwner) Icons.Filled.Edit else null,
         Modifier
             .card()
             .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
-        newHouseholdName = householdName
-        showHouseholdNameDialog = true
+        if (isUserOwner) {
+            householdName = household.name
+            showHouseholdNameDialog = true
+        } else {
+            Toast.makeText(context, nameChangeError, Toast.LENGTH_SHORT).show()
+        }
     }
 
     if (showHouseholdNameDialog) {
@@ -220,7 +241,7 @@ fun HouseholdNameCard(
             text = {
                 Column {
                     TextField(
-                        value = newHouseholdName,
+                        value = householdName,
                         colors =
                             TextFieldDefaults.colors(
                                 focusedTextColor = TextColor,
@@ -230,7 +251,7 @@ fun HouseholdNameCard(
                                 focusedIndicatorColor = AccentTurquoiseColor,
                                 unfocusedIndicatorColor = Color.Transparent,
                             ),
-                        onValueChange = { newHouseholdName = it },
+                        onValueChange = { householdName = it },
                     )
                 }
             },
@@ -251,7 +272,7 @@ fun HouseholdNameCard(
             confirmButton = {
                 Button(
                     onClick = {
-                        onUpdateHouseholdNameClick(newHouseholdName)
+                        onUpdateHouseholdNameClick(householdName)
                         showHouseholdNameDialog = false
                     },
                     colors =
@@ -288,6 +309,15 @@ fun SelectHouseholdTypeCard(
     val isUserOwner by remember { mutableStateOf(household.ownerId == user.id) }
     val context = LocalContext.current
 
+    val householdTypeMap =
+        mapOf(
+            stringResource(R.string.family) to "Family",
+            stringResource(R.string.shared_apartment) to "Shared apartment",
+            stringResource(R.string.single_household) to "Single household",
+            stringResource(R.string.pair) to "Pair",
+        )
+    val typeChangeError = stringResource(R.string.type_change_error)
+
     AccountCenterCard(
         title = stringResource(R.string.household_type) + ": " + household.type,
         icon = if (isUserOwner) Icons.Filled.Edit else null,
@@ -299,7 +329,7 @@ fun SelectHouseholdTypeCard(
             if (isUserOwner) {
                 showHouseholdTypeDialog = true
             } else {
-                Toast.makeText(context, "Only the owner can edit the type", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, typeChangeError, Toast.LENGTH_SHORT).show()
             }
         },
     )
@@ -314,8 +344,18 @@ fun SelectHouseholdTypeCard(
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    listOf("Family", "Shared apartment", "Single household", "Pair").forEach { type ->
-                        val borderColor = if (selectedType == type) AccentTurquoiseColor else Color.Transparent
+                    listOf(
+                        stringResource(R.string.family),
+                        stringResource(R.string.shared_apartment),
+                        stringResource(R.string.single_household),
+                        stringResource(R.string.pair),
+                    ).forEach { type ->
+                        val borderColor =
+                            if (selectedType == type) {
+                                AccentTurquoiseColor
+                            } else {
+                                Color.Transparent
+                            }
                         Button(
                             onClick = { selectedType = type },
                             colors =
@@ -325,7 +365,10 @@ fun SelectHouseholdTypeCard(
                                 ),
                             shape = RoundedCornerShape(20.dp),
                             border = BorderStroke(1.dp, borderColor),
-                            modifier = Modifier.padding(vertical = 2.dp).align(Alignment.CenterHorizontally),
+                            modifier =
+                                Modifier
+                                    .padding(vertical = 2.dp)
+                                    .align(Alignment.CenterHorizontally),
                         ) {
                             Text(text = type)
                         }
@@ -349,15 +392,16 @@ fun SelectHouseholdTypeCard(
             confirmButton = {
                 Button(
                     onClick = {
+                        val englishType = householdTypeMap[selectedType] ?: selectedType
                         when {
-                            selectedType == "Pair" && household.users.size > 2 -> {
+                            englishType == "Pair" && household.users.size > 2 -> {
                                 showWarningDialog = true
                             }
-                            selectedType == "Single household" && household.users.size > 1 -> {
+                            englishType == "Single household" && household.users.size > 1 -> {
                                 showSingleHouseholdWarningDialog = true
                             }
                             else -> {
-                                onHouseholdTypeSelected(selectedType, null)
+                                onHouseholdTypeSelected(englishType, null)
                             }
                         }
                         showHouseholdTypeDialog = false

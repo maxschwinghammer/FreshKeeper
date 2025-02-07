@@ -9,6 +9,10 @@ sealed class Screen(
 
     data object EmailSignUp : Screen("emailSignUp")
 
+    data object NameInput : Screen("nameInput")
+
+    data object SelectProfilePicture : Screen("selectProfilePicture")
+
     data object EmailSignIn : Screen("emailSignIn")
 
     data object Home : Screen("home")

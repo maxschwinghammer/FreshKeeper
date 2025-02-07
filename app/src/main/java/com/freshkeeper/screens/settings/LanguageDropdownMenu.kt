@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
+import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
@@ -39,7 +40,6 @@ import java.util.Locale
 fun LanguageDropdownMenu(
     currentLanguage: String,
     onLanguageSelected: (String) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedLanguage by remember { mutableStateOf(currentLanguage) }
@@ -90,6 +90,10 @@ fun LanguageDropdownMenu(
             readOnly = true,
             colors =
                 OutlinedTextFieldDefaults.colors(
+                    unfocusedContainerColor = ComponentBackgroundColor,
+                    focusedContainerColor = ComponentBackgroundColor,
+                    disabledContainerColor = ComponentBackgroundColor,
+                    errorContainerColor = ComponentBackgroundColor,
                     unfocusedBorderColor = ComponentStrokeColor,
                     focusedBorderColor = AccentTurquoiseColor,
                     unfocusedLabelColor = TextColor,
@@ -114,7 +118,9 @@ fun LanguageDropdownMenu(
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = languageDisplayName[languageCode] ?: languageCode.uppercase(Locale.ROOT),
+                            text =
+                                languageDisplayName[languageCode]
+                                    ?: languageCode.uppercase(Locale.ROOT),
                             color = TextColor,
                         )
                     },

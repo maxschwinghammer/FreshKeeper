@@ -3,6 +3,8 @@ package com.freshkeeper.sheets
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -36,8 +39,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -48,6 +53,10 @@ import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
 import com.freshkeeper.service.AccountServiceImpl
 import com.freshkeeper.service.ProductServiceImpl
+import com.freshkeeper.service.categoryMap
+import com.freshkeeper.service.categoryReverseMap
+import com.freshkeeper.service.storageLocationMap
+import com.freshkeeper.service.storageLocationReverseMap
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
@@ -62,6 +71,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun EditProductSheet(
     sheetState: SheetState,
+    productInfoSheetState: SheetState,
     foodItem: FoodItem,
 ) {
     val accountService = remember { AccountServiceImpl() }
@@ -75,70 +85,6 @@ fun EditProductSheet(
     var isConsumedChecked by remember { mutableStateOf(foodItem.consumed) }
     var isThrownAwayChecked by remember { mutableStateOf(foodItem.thrownAway) }
     val imageUrl by remember { mutableStateOf(foodItem.imageUrl) }
-
-    val storageLocationMap =
-        mapOf(
-            "fridge" to R.string.fridge,
-            "cupboard" to R.string.cupboard,
-            "freezer" to R.string.freezer,
-            "counter_top" to R.string.counter_top,
-            "cellar" to R.string.cellar,
-            "bread_box" to R.string.bread_box,
-            "spice_rack" to R.string.spice_rack,
-            "pantry" to R.string.pantry,
-            "fruit_basket" to R.string.fruit_basket,
-            "other" to R.string.other,
-        )
-
-    val categoryMap =
-        mapOf(
-            "dairy_goods" to R.string.dairy_goods,
-            "vegetables" to R.string.vegetables,
-            "fruits" to R.string.fruits,
-            "meat" to R.string.meat,
-            "fish" to R.string.fish,
-            "frozen_goods" to R.string.frozen_goods,
-            "spices" to R.string.spices,
-            "bread" to R.string.bread,
-            "confectionery" to R.string.confectionery,
-            "drinks" to R.string.drinks,
-            "noodles" to R.string.noodles,
-            "canned_goods" to R.string.canned_goods,
-            "candy" to R.string.candy,
-            "other" to R.string.other,
-        )
-
-    val storageLocationReverseMap =
-        mapOf(
-            R.string.fridge to "fridge",
-            R.string.cupboard to "cupboard",
-            R.string.freezer to "freezer",
-            R.string.counter_top to "counter_top",
-            R.string.cellar to "cellar",
-            R.string.bread_box to "bread_box",
-            R.string.spice_rack to "spice_rack",
-            R.string.pantry to "pantry",
-            R.string.fruit_basket to "fruit_basket",
-            R.string.other to "other",
-        )
-
-    val categoryReverseMap =
-        mapOf(
-            R.string.dairy_goods to "dairy_goods",
-            R.string.vegetables to "vegetables",
-            R.string.fruits to "fruits",
-            R.string.meat to "meat",
-            R.string.fish to "fish",
-            R.string.frozen_goods to "frozen_goods",
-            R.string.spices to "spices",
-            R.string.bread to "bread",
-            R.string.confectionery to "confectionery",
-            R.string.drinks to "drinks",
-            R.string.noodles to "noodles",
-            R.string.canned_goods to "canned_goods",
-            R.string.candy to "candy",
-            R.string.other to "other",
-        )
 
     val selectedStorageLocation = storageLocationMap[storageLocation.value] ?: R.string.fridge
     val selectedCategory = categoryMap[category.value] ?: R.string.dairy_goods
@@ -155,12 +101,34 @@ fun EditProductSheet(
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = stringResource(R.string.edit_product),
-            color = TextColor,
-            fontSize = 18.sp,
-            style = MaterialTheme.typography.titleMedium,
-        )
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = stringResource(R.string.edit_product),
+                color = TextColor,
+                fontSize = 18.sp,
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.weight(1f).padding(start = 30.dp),
+                textAlign = TextAlign.Center,
+            )
+            Image(
+                painter = painterResource(R.drawable.info),
+                contentDescription = "Info",
+                modifier =
+                    Modifier
+                        .padding(end = 10.dp)
+                        .size(20.dp)
+                        .clickable {
+                            coroutineScope.launch {
+                                productInfoSheetState.show()
+                                sheetState.hide()
+                            }
+                        },
+            )
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -245,7 +213,8 @@ fun EditProductSheet(
         DropdownMenu(
             selectedStorageLocation,
             onSelect = { selectedStorageLocation ->
-                storageLocation.value = storageLocationReverseMap[selectedStorageLocation] ?: "fridge"
+                storageLocation.value = storageLocationReverseMap[selectedStorageLocation]
+                    ?: "fridge"
             },
             "storageLocations",
             stringResource(R.string.storage_location),
@@ -327,7 +296,13 @@ fun EditProductSheet(
                                 sheetState.hide()
                             }
                         },
-                        onFailure = { e -> Log.e("ProductService", "Error updating product", e) },
+                        onFailure = { e ->
+                            Log.e(
+                                "ProductService",
+                                "Error updating product",
+                                e,
+                            )
+                        },
                         addedText = addedText,
                     )
                 }

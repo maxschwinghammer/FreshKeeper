@@ -29,6 +29,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
+import com.freshkeeper.service.categoryReverseMap
+import com.freshkeeper.service.storageLocationReverseMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
@@ -75,6 +77,10 @@ fun DropdownMenu(
             R.string.noodles,
             R.string.canned_goods,
             R.string.candy,
+            R.string.groats,
+            R.string.sauces,
+            R.string.pet_food,
+            R.string.child_food,
             R.string.other,
         )
 
@@ -97,10 +103,10 @@ fun DropdownMenu(
             value = selected,
             onValueChange = {},
             modifier =
-            Modifier
-                .fillMaxWidth(),
+                Modifier
+                    .fillMaxWidth(),
             label = { Text(label, color = TextColor) },
-            leadingIcon = { LeadingIcon(selected) },
+            leadingIcon = { LeadingIcon(selectedIdState, type) },
             trailingIcon = {
                 Icon(
                     icon,
@@ -110,28 +116,34 @@ fun DropdownMenu(
             },
             readOnly = true,
             colors =
-            OutlinedTextFieldDefaults.colors(
-                unfocusedBorderColor = ComponentStrokeColor,
-                focusedBorderColor = AccentTurquoiseColor,
-                unfocusedLabelColor = TextColor,
-                focusedLabelColor = AccentTurquoiseColor,
-                focusedTextColor = TextColor,
-                unfocusedTextColor = TextColor,
-            ),
+                OutlinedTextFieldDefaults.colors(
+                    unfocusedBorderColor = ComponentStrokeColor,
+                    focusedBorderColor = AccentTurquoiseColor,
+                    unfocusedLabelColor = TextColor,
+                    focusedLabelColor = AccentTurquoiseColor,
+                    focusedTextColor = TextColor,
+                    unfocusedTextColor = TextColor,
+                ),
         )
 
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false },
             modifier =
-            Modifier
-                .width(200.dp)
-                .background(GreyColor)
-                .clip(RoundedCornerShape(10.dp)),
+                Modifier
+                    .width(200.dp)
+                    .background(GreyColor)
+                    .clip(RoundedCornerShape(10.dp)),
         ) {
             options.forEach { option ->
-                val optionString = stringResource(id = option)
-                val iconName = optionString.lowercase(Locale.ROOT).replace(" ", "_")
+                val englishName =
+                    when (type) {
+                        "storageLocations" -> storageLocationReverseMap[option]
+                        "categories" -> categoryReverseMap[option]
+                        else -> null
+                    } ?: stringResource(id = option)
+
+                val iconName = englishName.lowercase(Locale.ROOT).replace(" ", "_")
                 val iconResId =
                     try {
                         R.drawable::class.java.getDeclaredField(iconName).getInt(null)
@@ -140,12 +152,12 @@ fun DropdownMenu(
                     }
 
                 DropdownMenuItem(
-                    text = { Text(optionString, color = TextColor) },
+                    text = { Text(stringResource(id = option), color = TextColor) },
                     leadingIcon = {
                         iconResId?.let {
                             Image(
                                 painter = painterResource(id = it),
-                                contentDescription = optionString,
+                                contentDescription = englishName,
                                 modifier = Modifier.size(25.dp),
                             )
                         }
@@ -163,8 +175,18 @@ fun DropdownMenu(
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun LeadingIcon(selectedText: String) {
-    val iconName = selectedText.lowercase(Locale.ROOT).replace(" ", "_")
+fun LeadingIcon(
+    selectedId: Int,
+    type: String,
+) {
+    val englishName =
+        when (type) {
+            "storageLocations" -> storageLocationReverseMap[selectedId]
+            "categories" -> categoryReverseMap[selectedId]
+            else -> null
+        } ?: stringResource(id = selectedId)
+
+    val iconName = englishName.lowercase(Locale.ROOT).replace(" ", "_")
     val iconResId =
         try {
             R.drawable::class.java.getDeclaredField(iconName).getInt(null)
@@ -175,7 +197,7 @@ fun LeadingIcon(selectedText: String) {
     iconResId?.let {
         Image(
             painter = painterResource(id = it),
-            contentDescription = selectedText,
+            contentDescription = englishName,
             modifier = Modifier.size(25.dp),
         )
     }

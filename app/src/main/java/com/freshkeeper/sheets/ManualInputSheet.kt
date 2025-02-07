@@ -1,9 +1,18 @@
 package com.freshkeeper.sheets
 
+import android.app.AlertDialog
+import android.content.Context
+import android.graphics.Bitmap
+import android.net.Uri
+import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -46,15 +56,20 @@ import com.freshkeeper.R
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
-import com.freshkeeper.screens.home.fetchProductDataFromBarcode
 import com.freshkeeper.service.AccountServiceImpl
+import com.freshkeeper.service.ProductDetailsServiceImpl
 import com.freshkeeper.service.ProductServiceImpl
+import com.freshkeeper.service.categoryMap
+import com.freshkeeper.service.categoryReverseMap
+import com.freshkeeper.service.storageLocationMap
+import com.freshkeeper.service.storageLocationReverseMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
 import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 
 @Suppress("ktlint:standard:function-naming")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,6 +80,7 @@ fun ManualInputSheet(
     expiryTimestamp: Long,
 ) {
     val accountService = remember { AccountServiceImpl() }
+    val productDetailsService = remember { ProductDetailsServiceImpl() }
     val productService = remember { ProductServiceImpl(accountService) }
 
     var productName by remember { mutableStateOf("") }
@@ -72,86 +88,66 @@ fun ManualInputSheet(
     var quantity by remember { mutableStateOf("") }
     val unit = remember { mutableStateOf("") }
     var imageUrl by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    val defaultImageRes = R.drawable.default_product_image
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+
+    val launcher =
+        rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                imageUri = uri
+                imageUrl = uri.toString()
+            }
+        }
+
+    val cameraLauncher =
+        rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+            if (bitmap != null) {
+                val bytes = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes)
+                val path =
+                    MediaStore.Images.Media.insertImage(
+                        context.contentResolver,
+                        bitmap,
+                        "Product Image",
+                        null,
+                    )
+                imageUri = Uri.parse(path)
+                imageUrl = imageUri.toString()
+            }
+        }
 
     val storageLocation = remember { mutableStateOf("fridge") }
     val category = remember { mutableStateOf("dairy_goods") }
-
-    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-
-    val storageLocationMap =
-        mapOf(
-            "fridge" to R.string.fridge,
-            "cupboard" to R.string.cupboard,
-            "freezer" to R.string.freezer,
-            "counter_top" to R.string.counter_top,
-            "cellar" to R.string.cellar,
-            "bread_box" to R.string.bread_box,
-            "spice_rack" to R.string.spice_rack,
-            "pantry" to R.string.pantry,
-            "fruit_basket" to R.string.fruit_basket,
-            "other" to R.string.other,
-        )
-
-    val categoryMap =
-        mapOf(
-            "dairy_goods" to R.string.dairy_goods,
-            "vegetables" to R.string.vegetables,
-            "fruits" to R.string.fruits,
-            "meat" to R.string.meat,
-            "fish" to R.string.fish,
-            "frozen_goods" to R.string.frozen_goods,
-            "spices" to R.string.spices,
-            "bread" to R.string.bread,
-            "confectionery" to R.string.confectionery,
-            "drinks" to R.string.drinks,
-            "noodles" to R.string.noodles,
-            "canned_goods" to R.string.canned_goods,
-            "candy" to R.string.candy,
-            "other" to R.string.other,
-        )
-
-    val storageLocationReverseMap =
-        mapOf(
-            R.string.fridge to "fridge",
-            R.string.cupboard to "cupboard",
-            R.string.freezer to "freezer",
-            R.string.counter_top to "counter_top",
-            R.string.cellar to "cellar",
-            R.string.bread_box to "bread_box",
-            R.string.spice_rack to "spice_rack",
-            R.string.pantry to "pantry",
-            R.string.fruit_basket to "fruit_basket",
-            R.string.other to "other",
-        )
-
-    val categoryReverseMap =
-        mapOf(
-            R.string.dairy_goods to "dairy_goods",
-            R.string.vegetables to "vegetables",
-            R.string.fruits to "fruits",
-            R.string.meat to "meat",
-            R.string.fish to "fish",
-            R.string.frozen_goods to "frozen_goods",
-            R.string.spices to "spices",
-            R.string.bread to "bread",
-            R.string.confectionery to "confectionery",
-            R.string.drinks to "drinks",
-            R.string.noodles to "noodles",
-            R.string.canned_goods to "canned_goods",
-            R.string.candy to "candy",
-            R.string.other to "other",
-        )
 
     val selectedStorageLocation = storageLocationMap[storageLocation.value] ?: R.string.fridge
     val selectedCategory = categoryMap[category.value] ?: R.string.dairy_goods
 
     LaunchedEffect(barcode) {
-        val productData = fetchProductDataFromBarcode(context, barcode)
+        val productData = productDetailsService.fetchProductDataFromBarcode(context, barcode)
         productName = productData?.name ?: barcode
         quantity = productData?.quantity ?: ""
         unit.value = productData?.unit ?: ""
         imageUrl = productData?.imageUrl ?: ""
+    }
+
+    fun showImagePicker(
+        context: Context,
+        galleryLauncher: ManagedActivityResultLauncher<String, Uri?>,
+        cameraLauncher: ManagedActivityResultLauncher<Void?, Bitmap?>,
+    ) {
+        val options = arrayOf("Take photo", "Select from gallery", "Cancel")
+        AlertDialog
+            .Builder(context)
+            .setTitle("Select image")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> cameraLauncher.launch(null)
+                    1 -> galleryLauncher.launch("image/*")
+                }
+            }.show()
     }
 
     Column(
@@ -199,26 +195,50 @@ fun ManualInputSheet(
                 )
             }
 
-            if (imageUrl.isNotEmpty()) {
-                Box(
+            Box(
+                modifier =
+                    Modifier
+                        .padding(top = 8.dp, start = 16.dp)
+                        .defaultMinSize(minWidth = 150.dp, minHeight = 129.dp)
+                        .weight(1f)
+                        .heightIn(max = 129.dp)
+                        .clip(RoundedCornerShape(10.dp))
+                        .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+                        .clickable {
+                            AlertDialog
+                                .Builder(context)
+                                .setTitle("Picture options")
+                                .setItems(
+                                    arrayOf(
+                                        "Change image",
+                                        "Delete image",
+                                        "Cancel",
+                                    ),
+                                ) { _, which ->
+                                    when (which) {
+                                        0 -> showImagePicker(context, launcher, cameraLauncher)
+                                        1 -> {
+                                            imageUri = null
+                                            imageUrl = ""
+                                        }
+                                    }
+                                }.show()
+                        },
+            ) {
+                Image(
+                    painter =
+                        if (imageUrl.isNotEmpty()) {
+                            rememberAsyncImagePainter(imageUrl)
+                        } else {
+                            painterResource(defaultImageRes)
+                        },
+                    contentDescription = "Product Image",
+                    contentScale = ContentScale.Fit,
                     modifier =
-                        Modifier
-                            .padding(top = 8.dp, start = 16.dp)
-                            .defaultMinSize(minWidth = 150.dp, minHeight = 129.dp)
-                            .weight(1f)
-                            .heightIn(max = 129.dp),
-                ) {
-                    Image(
-                        painter = rememberAsyncImagePainter(imageUrl),
-                        contentDescription = "Product Image",
-                        contentScale = ContentScale.Fit,
-                        modifier =
-                            Modifier
-                                .fillMaxSize()
-                                .clip(RoundedCornerShape(10.dp))
-                                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
-                    )
-                }
+                        Modifier.fillMaxSize().then(
+                            if (imageUrl.isEmpty()) Modifier.padding(25.dp) else Modifier,
+                        ),
+                )
             }
         }
 

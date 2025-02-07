@@ -3,6 +3,7 @@ package com.freshkeeper.service
 import android.util.Log
 import com.freshkeeper.model.Activity
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.Household
 import com.freshkeeper.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -134,25 +135,37 @@ class ProductServiceImpl
                         document.reference
                             .update(updates)
                             .addOnSuccessListener {
-                                coroutineScope.launch {
-                                    coroutineScope.launch {
-                                        val activityType =
-                                            when {
-                                                isConsumedChecked -> "consumed"
-                                                isThrownAwayChecked -> "thrown_away"
-                                                else -> "edit"
+                                if (currentUser.householdId != null) {
+                                    firestore
+                                        .collection("households")
+                                        .document(currentUser.householdId)
+                                        .get()
+                                        .addOnSuccessListener { householdDoc ->
+                                            val household = householdDoc.toObject(Household::class.java)
+                                            if (household != null && household.type != "Single household") {
+                                                coroutineScope.launch {
+                                                    val activityType =
+                                                        when {
+                                                            isConsumedChecked -> "consumed"
+                                                            isThrownAwayChecked -> "thrown_away"
+                                                            else -> "edit"
+                                                        }
+                                                    logActivity(
+                                                        foodItem,
+                                                        productName,
+                                                        activityType,
+                                                        addedText,
+                                                    )
+                                                    onSuccess()
+                                                }
+                                            } else {
+                                                onSuccess()
                                             }
-                                        if (currentUser.householdId != null) {
-                                            logActivity(
-                                                foodItem,
-                                                productName,
-                                                activityType,
-                                                addedText,
-                                            )
+                                        }.addOnFailureListener { e ->
+                                            Log.e("Firestore", "Error retrieving household", e)
+                                            onSuccess()
                                         }
-                                        onSuccess()
-                                    }
-
+                                } else {
                                     onSuccess()
                                 }
                             }.addOnFailureListener { e ->
