@@ -136,7 +136,7 @@ fun SignInScreen(
                         modifier = Modifier.padding(horizontal = 16.dp),
                     ) {
                         Text(
-                            text = stringResource(R.string.sign_up_description),
+                            text = stringResource(R.string.sign_in_description),
                             fontSize = 14.sp,
                             textAlign = TextAlign.Center,
                             color = TextColor,

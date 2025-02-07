@@ -36,7 +36,7 @@ fun CurrentInventoriesSection(
     val countertopItems by viewModel.countertopItems.observeAsState(emptyList())
     val cellarItems by viewModel.cellarItems.observeAsState(emptyList())
     val bakeryItems by viewModel.bakeryItems.observeAsState(emptyList())
-    val spiceItems by viewModel.spicesItems.observeAsState(emptyList())
+    val spiceRackItems by viewModel.spiceRackItems.observeAsState(emptyList())
     val pantryItems by viewModel.pantryItems.observeAsState(emptyList())
     val fruitBasketItems by viewModel.fruitBasketItems.observeAsState(emptyList())
     val otherItems by viewModel.otherItems.observeAsState(emptyList())
@@ -49,7 +49,7 @@ fun CurrentInventoriesSection(
             Triple(stringResource(R.string.counter_top), R.drawable.counter_top, countertopItems),
             Triple(stringResource(R.string.cellar), R.drawable.cellar, cellarItems),
             Triple(stringResource(R.string.bread_box), R.drawable.bread_box, bakeryItems),
-            Triple(stringResource(R.string.spice_rack), R.drawable.spice_rack, spiceItems),
+            Triple(stringResource(R.string.spice_rack), R.drawable.spice_rack, spiceRackItems),
             Triple(stringResource(R.string.pantry), R.drawable.pantry, pantryItems),
             Triple(stringResource(R.string.fruit_basket), R.drawable.fruit_basket, fruitBasketItems),
             Triple(stringResource(R.string.other), R.drawable.other, otherItems),
@@ -76,9 +76,6 @@ fun CurrentInventoriesSection(
                     items = filteredItems,
                     editProductSheetState = editProductSheetState,
                     onItemClick = onItemClick,
-                    onItemMoved = { item, newLocation ->
-                        viewModel.moveItemToNewLocation(item, newLocation)
-                    },
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }

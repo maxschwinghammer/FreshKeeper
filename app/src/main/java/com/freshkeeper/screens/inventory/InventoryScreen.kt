@@ -20,6 +20,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
@@ -49,10 +51,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -64,12 +67,14 @@ import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
+import com.freshkeeper.service.categoryMap
+import com.freshkeeper.service.storageLocationMap
 import com.freshkeeper.sheets.AddEntrySheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
 import com.freshkeeper.sheets.EditProductSheet
 import com.freshkeeper.sheets.FilterSheet
 import com.freshkeeper.sheets.ManualInputSheet
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.sheets.ProductInfoSheet
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
@@ -77,6 +82,7 @@ import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -90,11 +96,14 @@ fun InventoryScreen(navController: NavHostController) {
     var expiryDate by remember { mutableLongStateOf(0L) }
 
     val coroutineScope = rememberCoroutineScope()
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val editProductSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val barcodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val filterSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val productInfoSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     var selectedCategories by remember { mutableStateOf(emptyList<String>()) }
     var selectedStorageLocations by remember { mutableStateOf(emptyList<String>()) }
@@ -117,38 +126,6 @@ fun InventoryScreen(navController: NavHostController) {
     }
 
     var searchQuery by remember { mutableStateOf("") }
-
-    val storageLocationMap =
-        mapOf(
-            "fridge" to R.string.fridge,
-            "cupboard" to R.string.cupboard,
-            "freezer" to R.string.freezer,
-            "counter_top" to R.string.counter_top,
-            "cellar" to R.string.cellar,
-            "bread_box" to R.string.bread_box,
-            "spice_rack" to R.string.spice_rack,
-            "pantry" to R.string.pantry,
-            "fruit_basket" to R.string.fruit_basket,
-            "other" to R.string.other,
-        )
-
-    val categoryMap =
-        mapOf(
-            "dairy_goods" to R.string.dairy_goods,
-            "vegetables" to R.string.vegetables,
-            "fruits" to R.string.fruits,
-            "meat" to R.string.meat,
-            "fish" to R.string.fish,
-            "frozen_goods" to R.string.frozen_goods,
-            "spices" to R.string.spices,
-            "bread" to R.string.bread,
-            "confectionery" to R.string.confectionery,
-            "drinks" to R.string.drinks,
-            "noodles" to R.string.noodles,
-            "canned_goods" to R.string.canned_goods,
-            "candy" to R.string.candy,
-            "other" to R.string.other,
-        )
 
     val labelMap = categoryMap + storageLocationMap
 
@@ -203,10 +180,25 @@ fun InventoryScreen(navController: NavHostController) {
                                     .weight(1f),
                             colors =
                                 OutlinedTextFieldDefaults.colors(
+                                    focusedContainerColor = ComponentBackgroundColor,
+                                    unfocusedContainerColor = ComponentBackgroundColor,
+                                    disabledContainerColor = ComponentBackgroundColor,
                                     unfocusedBorderColor = ComponentStrokeColor,
                                     focusedBorderColor = AccentTurquoiseColor,
                                     unfocusedLabelColor = TextColor,
                                     focusedLabelColor = AccentTurquoiseColor,
+                                ),
+                            keyboardOptions =
+                                KeyboardOptions.Default.copy(
+                                    imeAction =
+                                        ImeAction.Done,
+                                ),
+                            keyboardActions =
+                                KeyboardActions(
+                                    onDone = {
+                                        keyboardController?.hide()
+                                        // Handle search action
+                                    },
                                 ),
                             shape = RoundedCornerShape(10.dp),
                         )
@@ -217,7 +209,7 @@ fun InventoryScreen(navController: NavHostController) {
                                     .padding(top = 8.dp)
                                     .height(57.dp)
                                     .width(55.dp)
-                                    .background(Color.Transparent)
+                                    .background(ComponentBackgroundColor)
                                     .clip(RoundedCornerShape(10.dp))
                                     .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                                     .clickable { coroutineScope.launch { filterSheetState.show() } },
@@ -226,7 +218,7 @@ fun InventoryScreen(navController: NavHostController) {
                             Icon(
                                 painter = painterResource(id = R.drawable.filter),
                                 contentDescription = "Filter",
-                                tint = Color.White,
+                                tint = WhiteColor,
                                 modifier =
                                     Modifier
                                         .size(20.dp),
@@ -322,7 +314,10 @@ fun InventoryScreen(navController: NavHostController) {
                             Modifier
                                 .align(Alignment.CenterHorizontally)
                                 .padding(bottom = 10.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = ComponentBackgroundColor,
+                            ),
                         border = BorderStroke(1.dp, ComponentStrokeColor),
                         shape = RoundedCornerShape(25.dp),
                     ) {
@@ -333,7 +328,7 @@ fun InventoryScreen(navController: NavHostController) {
                                 onClick = { coroutineScope.launch { sheetState.show() } },
                                 modifier = Modifier.size(35.dp),
                                 shape = RoundedCornerShape(25.dp),
-                                containerColor = AccentGreenColor,
+                                containerColor = AccentTurquoiseColor,
                             ) {
                                 Icon(
                                     Icons.Default.Add,
@@ -344,7 +339,7 @@ fun InventoryScreen(navController: NavHostController) {
                             Text(
                                 text = stringResource(id = R.string.add_food),
                                 style = MaterialTheme.typography.titleMedium,
-                                color = AccentGreenColor,
+                                color = AccentTurquoiseColor,
                                 modifier = Modifier.padding(start = 10.dp),
                             )
                         }
@@ -394,7 +389,7 @@ fun InventoryScreen(navController: NavHostController) {
                     containerColor = ComponentBackgroundColor,
                 ) {
                     foodItem?.let { item ->
-                        EditProductSheet(editProductSheetState, item)
+                        EditProductSheet(editProductSheetState, productInfoSheetState, item)
                     }
                 }
             }
@@ -434,6 +429,18 @@ fun InventoryScreen(navController: NavHostController) {
                             selectedStorageLocations = locations
                         },
                     )
+                }
+            }
+
+            if (productInfoSheetState.isVisible) {
+                ModalBottomSheet(
+                    onDismissRequest = { coroutineScope.launch { productInfoSheetState.hide() } },
+                    sheetState = productInfoSheetState,
+                    containerColor = ComponentBackgroundColor,
+                ) {
+                    foodItem?.let { item ->
+                        ProductInfoSheet(productInfoSheetState, editProductSheetState, item)
+                    }
                 }
             }
         }

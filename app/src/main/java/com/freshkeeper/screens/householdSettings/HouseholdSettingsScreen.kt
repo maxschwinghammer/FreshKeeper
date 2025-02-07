@@ -125,9 +125,11 @@ fun HouseholdSettingsScreen(
                                     })
                                 }
                             } else {
-                                HouseholdNameCard(household.name) {
-                                    viewModel.onUpdateHouseholdNameClick(it)
-                                }
+                                HouseholdNameCard(
+                                    { viewModel.onUpdateHouseholdNameClick(it) },
+                                    household,
+                                    user,
+                                )
                                 SelectHouseholdTypeCard(
                                     selectedHouseholdType = selectedHouseholdType,
                                     onHouseholdTypeSelected = { type, user ->

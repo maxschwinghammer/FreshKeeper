@@ -19,7 +19,6 @@ interface HouseholdService {
     )
 
     suspend fun getMembers(
-        coroutineScope: CoroutineScope,
         onResult: (List<Member>?) -> Unit,
         onFailure: (Exception) -> Unit,
     )

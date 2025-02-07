@@ -107,7 +107,7 @@ fun ForgotPasswordScreen(
                         )
                         Spacer(Modifier.padding(8.dp))
                         Button(
-                            onClick = { navController.navigate("signIn") },
+                            onClick = { navController.navigate("emailSignIn") },
                             colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
                             modifier =
                                 modifier

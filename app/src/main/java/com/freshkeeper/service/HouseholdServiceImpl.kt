@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.time.Instant
@@ -74,27 +75,31 @@ class HouseholdServiceImpl
         }
 
         override suspend fun getMembers(
-            coroutineScope: CoroutineScope,
             onResult: (List<Member>?) -> Unit,
             onFailure: (Exception) -> Unit,
         ) {
-            Log.d("HouseholdServiceImpl", "Loading members for householdId: $householdId")
+            val coroutineScope = CoroutineScope(Dispatchers.Main)
 
-            firestore
-                .collection("households")
-                .document(householdId!!)
-                .get()
-                .addOnSuccessListener { document ->
-                    val household = document.toObject(Household::class.java)
-                    household?.users?.let { users ->
-                        coroutineScope.launch {
-                            loadUserDetails(users, coroutineScope, onResult, onFailure)
-                            Log.d("HouseholdServiceImpl", "Loaded ${users.size} members")
+            householdId?.let {
+                firestore
+                    .collection("households")
+                    .document(it)
+                    .get()
+                    .addOnSuccessListener { document ->
+                        val household = document.toObject(Household::class.java)
+                        household?.users?.let { users ->
+                            if (users.isNotEmpty()) {
+                                coroutineScope.launch {
+                                    loadUserDetails(users, coroutineScope, onResult, onFailure)
+                                }
+                            } else {
+                                onFailure(Exception("No users found in household"))
+                            }
                         }
+                    }.addOnFailureListener {
+                        Log.e("HouseholdServiceImpl", "Error loading members")
                     }
-                }.addOnFailureListener {
-                    Log.e("HouseholdServiceImpl", "Error loading members")
-                }
+            }
         }
 
         override suspend fun loadUserDetails(
@@ -117,7 +122,6 @@ class HouseholdServiceImpl
                         .await()
 
                 val membersList = mutableListOf<Member>()
-                val totalCount = documents.size()
 
                 documents.forEach { document ->
                     val user = document.toObject(User::class.java)
@@ -141,7 +145,6 @@ class HouseholdServiceImpl
                 }
 
                 onResult(membersList)
-                Log.d("HouseholdServiceImpl", "Loaded $totalCount members")
             } catch (exception: Exception) {
                 onFailure(exception)
             }

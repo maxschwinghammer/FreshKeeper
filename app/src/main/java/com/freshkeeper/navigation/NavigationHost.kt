@@ -12,6 +12,8 @@ import com.freshkeeper.screens.authentication.signIn.EmailSignInScreen
 import com.freshkeeper.screens.authentication.signIn.ForgotPasswordScreen
 import com.freshkeeper.screens.authentication.signIn.SignInScreen
 import com.freshkeeper.screens.authentication.signUp.EmailSignUpScreen
+import com.freshkeeper.screens.authentication.signUp.NameInputScreen
+import com.freshkeeper.screens.authentication.signUp.SelectProfilePictureScreen
 import com.freshkeeper.screens.authentication.signUp.SignUpScreen
 import com.freshkeeper.screens.contact.ContactScreen
 import com.freshkeeper.screens.help.HelpScreen
@@ -58,8 +60,17 @@ fun NavigationHost(
         composable(Screen.EmailSignUp.route) {
             EmailSignUpScreen(navController = navController)
         }
+        composable(Screen.EmailSignUp.route) {
+            EmailSignUpScreen(navController = navController)
+        }
         composable(Screen.EmailSignIn.route) {
             EmailSignInScreen(navController = navController)
+        }
+        composable(Screen.NameInput.route) {
+            NameInputScreen(navController = navController)
+        }
+        composable(Screen.SelectProfilePicture.route) {
+            SelectProfilePictureScreen(navController = navController)
         }
         composable(
             route = "forgotPassword/{email}",

@@ -6,9 +6,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +15,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -28,16 +24,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.freshkeeper.model.FoodItem
@@ -46,7 +37,6 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
@@ -57,7 +47,6 @@ fun StorageLocation(
     items: List<FoodItem>,
     editProductSheetState: SheetState,
     onItemClick: (FoodItem) -> Unit,
-    onItemMoved: (FoodItem, String) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -96,9 +85,6 @@ fun StorageLocation(
         ) {
             items.forEach { item ->
 
-                var offsetX by remember { mutableFloatStateOf(0f) }
-                var offsetY by remember { mutableFloatStateOf(0f) }
-
                 Box(
                     modifier =
                         Modifier
@@ -109,22 +95,7 @@ fun StorageLocation(
                                     editProductSheetState.show()
                                 }
                             }.border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
-                            .draggable(
-                                state =
-                                    rememberDraggableState { delta ->
-                                        offsetX += delta
-                                        offsetY += delta
-                                    },
-                                onDragStarted = {
-                                },
-                                orientation = Orientation.Horizontal,
-                                onDragStopped = {
-                                    onItemMoved(item, title)
-                                    offsetX = 0f
-                                    offsetY = 0f
-                                },
-                            ).offset { IntOffset(offsetX.roundToInt(), offsetY.roundToInt()) },
+                            .padding(horizontal = 8.dp, vertical = 4.dp),
                 ) {
                     Text(
                         text = item.name,

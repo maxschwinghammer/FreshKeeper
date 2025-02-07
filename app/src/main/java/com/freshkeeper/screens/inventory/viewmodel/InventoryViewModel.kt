@@ -38,8 +38,8 @@ class InventoryViewModel
         private val _bakeryItems = MutableLiveData<List<FoodItem>>()
         val bakeryItems: LiveData<List<FoodItem>> = _bakeryItems
 
-        private val _spicesItems = MutableLiveData<List<FoodItem>>()
-        val spicesItems: LiveData<List<FoodItem>> = _spicesItems
+        private val _spiceRackItems = MutableLiveData<List<FoodItem>>()
+        val spiceRackItems: LiveData<List<FoodItem>> = _spiceRackItems
 
         private val _pantryItems = MutableLiveData<List<FoodItem>>()
         val pantryItems: LiveData<List<FoodItem>> = _pantryItems
@@ -61,7 +61,7 @@ class InventoryViewModel
             loadStorageLocationItems("counter_top", _countertopItems)
             loadStorageLocationItems("cellar", _cellarItems)
             loadStorageLocationItems("bread_box", _bakeryItems)
-            loadStorageLocationItems("spices", _spicesItems)
+            loadStorageLocationItems("spice_rack", _spiceRackItems)
             loadStorageLocationItems("pantry", _pantryItems)
             loadStorageLocationItems("fruit_basket", _fruitBasketItems)
             loadStorageLocationItems("other", _otherItems)
@@ -141,21 +141,6 @@ class InventoryViewModel
                         "Error loading category items for storage location: $storageLocation",
                         it,
                     )
-                }
-        }
-
-        fun moveItemToNewLocation(
-            item: FoodItem,
-            newLocation: String,
-        ) {
-            firestore
-                .collection("foodItems")
-                .document(item.id.toString())
-                .update("storageLocation", newLocation)
-                .addOnSuccessListener {
-                    Log.d("InventoryViewModel", "Item moved successfully.")
-                }.addOnFailureListener { e ->
-                    Log.e("InventoryViewModel", "Error moving item: ", e)
                 }
         }
     }

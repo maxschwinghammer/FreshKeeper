@@ -49,6 +49,20 @@ class ProfileViewModel
             }
         }
 
+        fun saveName(
+            userId: String,
+            name: String,
+        ) {
+            _user.value = _user.value?.copy(displayName = name)
+            launchCatching {
+                firestore
+                    .collection("users")
+                    .document(userId)
+                    .update("displayName", name)
+                    .await()
+            }
+        }
+
         private fun calculateDaysSince(createdAt: Long): Long {
             val creationDate = Instant.ofEpochMilli(createdAt).atZone(ZoneId.systemDefault()).toLocalDate()
             val currentDate = LocalDate.now()

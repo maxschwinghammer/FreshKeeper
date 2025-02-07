@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.freshkeeper.R
 import com.freshkeeper.model.Membership
+import com.freshkeeper.model.NotificationSettings
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.screens.authentication.isValidEmail
@@ -24,6 +25,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
+import java.time.LocalTime
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -115,11 +117,12 @@ class SignUpViewModel
 
             val membership =
                 Membership(
-                    id = firestore.collection("membership").document().id,
+                    userId = userId,
+                    id = firestore.collection("memberships").document().id,
                 )
 
             firestore
-                .collection("membership")
+                .collection("memberships")
                 .document(membership.id)
                 .set(membership)
                 .addOnSuccessListener {
@@ -136,13 +139,35 @@ class SignUpViewModel
                         .collection("users")
                         .document(userId)
                         .set(user)
-                        .addOnSuccessListener {
-                            Log.d("SignUp", "User erfolgreich mit Membership gespeichert.")
-                        }.addOnFailureListener { e ->
-                            Log.e("SignUp", "Fehler beim Speichern des Users: ${e.message}", e)
+                        .addOnFailureListener { e ->
+                            Log.e("SignUp", "Error when saving the user: ${e.message}", e)
+                        }
+
+                    val notificationSettings =
+                        NotificationSettings(
+                            userId = userId,
+                            dailyNotificationTime = LocalTime.of(12, 0).toString(),
+                            timeBeforeExpiration = 2,
+                            dailyReminders = false,
+                            foodAdded = false,
+                            householdChanges = false,
+                            foodExpiring = false,
+                            tips = false,
+                            statistics = false,
+                        )
+
+                    firestore
+                        .collection("notificationSettings")
+                        .add(notificationSettings)
+                        .addOnFailureListener { e ->
+                            Log.e(
+                                "NotificationSettings",
+                                "Error saving notification settings: ${e.message}",
+                                e,
+                            )
                         }
                 }.addOnFailureListener { e ->
-                    Log.e("SignUp", "Fehler beim Erstellen der Membership: ${e.message}", e)
+                    Log.e("SignUp", "Error when creating the membership: ${e.message}", e)
                 }
         }
 
@@ -151,7 +176,7 @@ class SignUpViewModel
             context: Context,
             activity: FragmentActivity,
         ) {
-            while (!accountService.getUserObject().isEmailVerified) {
+            while (!accountService.getUserProfile().isEmailVerified) {
                 try {
                     Firebase.auth.currentUser
                         ?.reload()
@@ -161,7 +186,7 @@ class SignUpViewModel
                 }
                 kotlinx.coroutines.delay(3000)
             }
-            navController.navigate("home") { launchSingleTop = true }
+            navController.navigate("nameInput") { launchSingleTop = true }
             val enableBiometric = askForBiometricActivation(context)
             saveBiometricPreference(context, enableBiometric)
             if (enableBiometric) {
@@ -190,10 +215,10 @@ class SignUpViewModel
             suspendCancellableCoroutine { continuation ->
                 AlertDialog
                     .Builder(context)
-                    .setTitle("Biometrische Authentifizierung")
-                    .setMessage("Möchten Sie die biometrische Authentifizierung aktivieren?")
-                    .setPositiveButton("Ja") { _, _ -> continuation.resume(true) }
-                    .setNegativeButton("Nein") { _, _ -> continuation.resume(false) }
+                    .setTitle("Biometric authentication")
+                    .setMessage("Would you like to activate biometric authentication?")
+                    .setPositiveButton("Yes") { _, _ -> continuation.resume(true) }
+                    .setNegativeButton("No") { _, _ -> continuation.resume(false) }
                     .setOnCancelListener { continuation.resume(false) }
                     .show()
             }
@@ -232,9 +257,9 @@ class SignUpViewModel
                 val promptInfo =
                     BiometricPrompt.PromptInfo
                         .Builder()
-                        .setTitle("Biometrische Authentifizierung")
-                        .setSubtitle("Bitte authentifizieren Sie sich, um fortzufahren")
-                        .setNegativeButtonText("Abbrechen")
+                        .setTitle("Biometric authentication")
+                        .setSubtitle("Please authenticate yourself to continue")
+                        .setNegativeButtonText("Cancel")
                         .build()
 
                 biometricPrompt.authenticate(promptInfo)

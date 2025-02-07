@@ -84,7 +84,7 @@ fun EmailSignUpScreen(
                 ) {
                     Image(
                         painter = painterResource(id = R.drawable.logo_transparent),
-                        contentDescription = "Auth image",
+                        contentDescription = "Logo",
                         modifier =
                             modifier
                                 .fillMaxWidth()
@@ -92,7 +92,7 @@ fun EmailSignUpScreen(
                     )
 
                     Text(
-                        text = stringResource(R.string.sign_up_header),
+                        text = stringResource(R.string.sign_up_step1),
                         fontSize = 28.sp,
                         fontWeight = FontWeight.Bold,
                         color = TextColor,
@@ -201,7 +201,7 @@ fun EmailSignUpScreen(
                                 .padding(16.dp, 0.dp),
                     ) {
                         Text(
-                            text = stringResource(R.string.sign_up),
+                            text = stringResource(R.string.continue_text),
                             fontSize = 16.sp,
                             color = ComponentBackgroundColor,
                             modifier = modifier.padding(0.dp, 6.dp),
@@ -215,7 +215,7 @@ fun EmailSignUpScreen(
                         modifier = Modifier.padding(horizontal = 16.dp),
                     ) {
                         Text(
-                            text = stringResource(R.string.sign_in_description),
+                            text = stringResource(R.string.sign_up_description),
                             fontSize = 14.sp,
                             textAlign = TextAlign.Center,
                             color = TextColor,

@@ -30,8 +30,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
+import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
-import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -129,22 +129,22 @@ fun DatePickerModal(
                 Text(stringResource(R.string.cancel), color = AccentTurquoiseColor)
             }
         },
-        colors = DatePickerDefaults.colors(containerColor = GreyColor),
+        colors = DatePickerDefaults.colors(containerColor = ComponentBackgroundColor),
     ) {
         DatePicker(
             state = datePickerState,
             modifier = Modifier.size(400.dp, 500.dp),
             colors =
                 DatePickerDefaults.colors(
-                    containerColor = GreyColor,
+                    containerColor = ComponentBackgroundColor,
                     currentYearContentColor = AccentTurquoiseColor,
                     dividerColor = ComponentStrokeColor,
                     headlineContentColor = TextColor,
                     navigationContentColor = TextColor,
                     selectedDayContainerColor = AccentTurquoiseColor,
-                    selectedDayContentColor = GreyColor,
+                    selectedDayContentColor = ComponentBackgroundColor,
                     selectedYearContainerColor = AccentTurquoiseColor,
-                    selectedYearContentColor = GreyColor,
+                    selectedYearContentColor = ComponentBackgroundColor,
                     subheadContentColor = TextColor,
                     titleContentColor = TextColor,
                     todayContentColor = AccentTurquoiseColor,

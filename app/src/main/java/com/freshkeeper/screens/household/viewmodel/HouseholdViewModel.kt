@@ -68,7 +68,6 @@ class HouseholdViewModel
         private fun loadHouseholdData() {
             viewModelScope.launch {
                 householdService.getMembers(
-                    coroutineScope = this,
                     onResult = { _members.value = it },
                     onFailure = { Log.e("HouseholdViewModel", "Error loading members") },
                 )

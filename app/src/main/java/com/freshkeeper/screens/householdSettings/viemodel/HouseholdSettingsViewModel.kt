@@ -75,7 +75,6 @@ class HouseholdSettingsViewModel
                         users = listOf(user.id),
                         name = name,
                         createdAt = System.currentTimeMillis(),
-                        invites = emptyList(),
                         ownerId = user.id,
                     )
 

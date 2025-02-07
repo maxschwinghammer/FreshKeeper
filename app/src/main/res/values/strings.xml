@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">FreshKeeper</string>
     <string name="asset_statements" translatable="false">
         [{
@@ -26,20 +26,23 @@
     <string name="sign_in">Sign in</string>
     <string name="sign_in_with_google">Sign in with Google</string>
     <string name="no_accounts_error">No Google accounts found on this device</string>
-    <string name="login_header">Log in to your account</string>
+    <string name="login_header">Sign in to your account</string>
     <string name="sign_up_header">Create an account</string>
+    <string name="sign_up_step1" tools:ignore="TypographyFractions">Create an account (1/3)</string>
+    <string name="sign_up_step2">Create an account (2/3)</string>
+    <string name="sign_up_step3">Create an account (3/3)</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_up_with_google">Sign up with Google</string>
     <string name="sign_up_with_email">Sign up with e-mail</string>
     <string name="sign_in_with_email">Sign in with e-mail</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="reset_password_email_sent">We have sent you a link to reset your password. For
-        security reasons, you will need to log in again.</string>
+        security reasons, you will need to sign in again.</string>
     <string name="verify_email">Verify e-mail</string>
     <string name="email_verification_failed">E-mail verification failed</string>
     <string name="verify_email_prompt">Verify your e-mail to continue</string>
-    <string name="sign_up_description">Don\'t have an account? Click here to sign up!</string>
-    <string name="sign_in_description">Already have an account? Click here to sign in!</string>
+    <string name="sign_up_description">Already have an account? Click here to sign in!</string>
+    <string name="sign_in_description">Don\'t have an account? Click here to sign up!</string>
     <string name="sign_out">Sign out</string>
     <string name="sign_out_title">Sign out?</string>
     <string name="sign_out_description">You will have to sign in again.</string>
@@ -174,13 +177,13 @@
     <string name="reset_password">Reset password</string>
     <string name="reset_password_title">Reset password?</string>
     <string name="reset_password_description">We will send you a link to reset your password.
-        For security reasons, you will then be logged out and have to log in again.</string>
+        For security reasons, you will then be logged out and have to sign in again.</string>
     <string name="forgot_password_description">We will send you a link to reset your password. You
-        can then log in with the new password.</string>
+        can then sign in with the new password.</string>
     <string name="change_email">Change e-mail</string>
     <string name="change_email_title">Change e-mail?</string>
     <string name="change_email_description">Enter your new e-mail address. For security reasons,
-        you will then be logged out and have to log in again.</string>
+        you will then be logged out and have to sign in again.</string>
     <string name="enter_new_email">Enter new e-mail</string>
     <string name="sign_up_info_1">If you continue, you accept the</string>
     <string name="terms_of_service">terms of service</string>
@@ -297,4 +300,55 @@
     <string name="tip_desc_honey">Warm crystallized honey in warm water to make it liquid again</string>
     <string name="tip_title_fish">Keep fish fresh</string>
     <string name="tip_desc_fish">Store fresh fish on ice in the fridge to maintain its freshness</string>
+    <string name="groats">Groats</string>
+    <string name="sauces">Sauces</string>
+    <string name="pet_food">Pet food</string>
+    <string name="child_food">Child food</string>
+    <string name="rate_us">Rate the app in the Play Store</string>
+    <string name="back">Back</string>
+    <string name="product_details">Product details</string>
+    <string name="brand">Brand: %1$s</string>
+    <string name="nutri_score_desc">Nutri-Score %1$s</string>
+    <string name="ingredients_heading">Ingredients:</string>
+    <string name="labels_desc">Labels: %1$s</string>
+    <string name="vegan">Vegan</string>
+    <string name="vegetarian">Vegetarian</string>
+    <string name="organic_desc">Organic: %1$s</string>
+    <string name="nutrition_heading">Nutritional values:</string>
+    <string name="energy">Energy: %1$s kcal</string>
+    <string name="fat">Fat: %1$s g</string>
+    <string name="saturated_fat">of which saturated fat: %1$s g</string>
+    <string name="carbohydrates">Carbohydrates: %1$s g</string>
+    <string name="sugars">Sugars: %1$s g</string>
+    <string name="fiber">Fiber: %1$s g</string>
+    <string name="proteins">Protein: %1$s g</string>
+    <string name="salt">Salt: %1$s g</string>
+    <string name="no_product_details">No product details found</string>
+    <string name="delete_account_error">Please sign in again to delete your account</string>
+    <string name="grant_notification_permissions">Grant permissions</string>
+    <string name="revoke_notification_permissions">Revoke permissions</string>
+    <string name="family">Family</string>
+    <string name="shared_apartment">Shared apartment</string>
+    <string name="single_household">Single household</string>
+    <string name="pair">Pair</string>
+    <string name="skip">Skip</string>
+    <string name="continue_text">Continue</string>
+    <string name="error_empty_name">Name cannot be empty.</string>
+    <string name="error_name_too_short">Name must be at least 2 characters long.</string>
+    <string name="error_name_invalid_characters">Name can only contain letters and spaces.</string>
+    <string name="enter_name">Enter your name</string>
+    <string name="select_profile_picture">Select profile picture</string>
+    <string name="select_picture">Select picture</string>
+    <string name="change_picture">Change picture</string>">
+    <string name="select_picture_error">Please select a profile picture</string>
+    <string name="type_change_error">Only the owner of the household can change the type</string>
+    <string name="name_change_error">Only the owner of the household can change the name</string>
+    <string name="storage_locations">Storage locations</string>
+    <string name="categories">Categories</string>
+    <string name="select_daily_notification_time">Select daily notification time</string>
+    <string name="daily_reminders">Daily Reminders</string>
+    <string name="food_added">Food Added</string>
+    <string name="household_changes">Household Changes</string>
+    <string name="food_expiring">Food Expiring</string>
+    <string name="select_time_before_expiration">Select time before expiration</string>
 </resources>

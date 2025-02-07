@@ -57,7 +57,8 @@ import com.freshkeeper.sheets.AddEntrySheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
 import com.freshkeeper.sheets.EditProductSheet
 import com.freshkeeper.sheets.ManualInputSheet
-import com.freshkeeper.ui.theme.AccentGreenColor
+import com.freshkeeper.sheets.ProductInfoSheet
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -76,10 +77,13 @@ fun HomeScreen(navController: NavHostController) {
     var expiryDate by remember { mutableLongStateOf(0L) }
 
     val coroutineScope = rememberCoroutineScope()
+
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val editProductSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val barcodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val productInfoSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
     val expiringSoonItems by viewModel.expiringSoonItems.observeAsState(emptyList())
     val expiredItems by viewModel.expiredItems.observeAsState(emptyList())
 
@@ -221,7 +225,7 @@ fun HomeScreen(navController: NavHostController) {
                                 onClick = { coroutineScope.launch { sheetState.show() } },
                                 modifier = Modifier.size(35.dp),
                                 shape = RoundedCornerShape(25.dp),
-                                containerColor = AccentGreenColor,
+                                containerColor = AccentTurquoiseColor,
                             ) {
                                 Icon(
                                     Icons.Default.Add,
@@ -232,7 +236,7 @@ fun HomeScreen(navController: NavHostController) {
                             Text(
                                 text = stringResource(id = R.string.add_food),
                                 style = MaterialTheme.typography.titleMedium,
-                                color = AccentGreenColor,
+                                color = AccentTurquoiseColor,
                                 modifier = Modifier.padding(start = 10.dp),
                             )
                         }
@@ -286,7 +290,19 @@ fun HomeScreen(navController: NavHostController) {
                     containerColor = ComponentBackgroundColor,
                 ) {
                     foodItem?.let { item ->
-                        EditProductSheet(editProductSheetState, item)
+                        EditProductSheet(editProductSheetState, productInfoSheetState, item)
+                    }
+                }
+            }
+
+            if (productInfoSheetState.isVisible) {
+                ModalBottomSheet(
+                    onDismissRequest = { coroutineScope.launch { productInfoSheetState.hide() } },
+                    sheetState = productInfoSheetState,
+                    containerColor = ComponentBackgroundColor,
+                ) {
+                    foodItem?.let { item ->
+                        ProductInfoSheet(productInfoSheetState, editProductSheetState, item)
                     }
                 }
             }

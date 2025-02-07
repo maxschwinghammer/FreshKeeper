@@ -76,9 +76,9 @@ fun MembersSection(
     val isInHousehold by viewModel.isInHousehold.observeAsState(false)
     val household by viewModel.household.observeAsState()
 
-    var householdId = remember { household?.id ?: "" }
-    var householdName = remember { household?.name ?: "" }
-    var householdType = remember { household?.type ?: "" }
+    val householdId = remember { mutableStateOf(household?.id ?: "") }
+    var householdName by remember { mutableStateOf(household?.name ?: "") }
+    val householdType = remember { mutableStateOf(household?.type ?: "") }
 
     val showJoinHouseholdDialog = remember { mutableStateOf(false) }
     var showCreateHouseholdDialog by remember { mutableStateOf(false) }
@@ -145,12 +145,16 @@ fun MembersSection(
                                             Image(
                                                 bitmap = decodedImage.asImageBitmap(),
                                                 contentDescription = "Profile Picture",
-                                                modifier = Modifier.size(55.dp).clip(RoundedCornerShape(50)),
+                                                modifier =
+                                                    Modifier
+                                                        .size(55.dp)
+                                                        .clip(RoundedCornerShape(50)),
                                             )
                                         } else {
                                             Log.e("MembersSection", "Base64 decoding failed")
                                         }
                                     }
+
                                     "url" -> {
                                         Image(
                                             painter =
@@ -159,7 +163,10 @@ fun MembersSection(
                                                     imageLoader = imageLoader,
                                                 ),
                                             contentDescription = "Profile Picture",
-                                            modifier = Modifier.size(55.dp).clip(RoundedCornerShape(50)),
+                                            modifier =
+                                                Modifier
+                                                    .size(55.dp)
+                                                    .clip(RoundedCornerShape(50)),
                                         )
                                     }
 
@@ -179,8 +186,8 @@ fun MembersSection(
 
                 if (isInHousehold) {
                     if (household != null &&
-                        householdType != "Single household" &&
-                        (householdType != "Pair" || household!!.users.size < 2)
+                        householdType.value != "Single household" &&
+                        (householdType.value != "Pair" || household!!.users.size < 2)
                     ) {
                         Box(
                             modifier =
@@ -289,7 +296,7 @@ fun MembersSection(
                 text = {
                     Column {
                         TextField(
-                            value = householdId,
+                            value = householdId.value,
                             colors =
                                 TextFieldDefaults.colors(
                                     focusedTextColor = TextColor,
@@ -299,7 +306,7 @@ fun MembersSection(
                                     focusedIndicatorColor = AccentTurquoiseColor,
                                     unfocusedIndicatorColor = Color.Transparent,
                                 ),
-                            onValueChange = { id -> householdId = id },
+                            onValueChange = { householdId.value = it },
                             placeholder = { Text(text = stringResource(R.string.household_id)) },
                         )
                     }
@@ -321,7 +328,7 @@ fun MembersSection(
                 confirmButton = {
                     Button(
                         onClick = {
-                            onJoinHouseholdClick(householdId)
+                            onJoinHouseholdClick(householdId.value)
                             showJoinHouseholdDialog.value = false
                         },
                         colors =
@@ -329,7 +336,7 @@ fun MembersSection(
                                 containerColor = AccentTurquoiseColor,
                                 contentColor = TextColor,
                             ),
-                        enabled = householdId.length == 20,
+                        enabled = householdId.value.length == 20,
                         shape = RoundedCornerShape(20.dp),
                         border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
@@ -414,13 +421,13 @@ fun MembersSection(
                         listOf("Family", "Shared apartment", "Single household", "Pair")
                             .forEach { type ->
                                 val borderColor =
-                                    if (householdType == type) {
+                                    if (householdType.value == type) {
                                         AccentTurquoiseColor
                                     } else {
                                         Color.Transparent
                                     }
                                 Button(
-                                    onClick = { householdType = type },
+                                    onClick = { householdType.value = type },
                                     colors =
                                         ButtonDefaults.buttonColors(
                                             containerColor = GreyColor,
@@ -455,7 +462,7 @@ fun MembersSection(
                 confirmButton = {
                     Button(
                         onClick = {
-                            onCreateHouseholdClick(householdName, householdType)
+                            onCreateHouseholdClick(householdName, householdType.value)
                             showHouseholdTypeDialog = false
                         },
                         colors =

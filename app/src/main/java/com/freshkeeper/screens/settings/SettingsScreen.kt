@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -43,6 +42,7 @@ import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.screens.settings.viewmodel.SettingsViewModel
 import com.freshkeeper.sheets.ManagePremiumSheet
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
+import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
@@ -130,13 +130,9 @@ fun SettingsScreen(
                                 selectedLanguage = languageCode
                                 onLocaleChange(languageCode)
                             },
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 16.dp),
                         )
                     }
-                    item { BuyACoffeeButton() }
+                    item { RateUsOnPlayStoreButton() }
                     item {
                         UpgradeToPremiumVersionButton(
                             membership = membership,
@@ -150,6 +146,7 @@ fun SettingsScreen(
                             modifier =
                                 Modifier
                                     .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+                                    .background(ComponentBackgroundColor)
                                     .clip(RoundedCornerShape(10.dp))
                                     .padding(16.dp),
                             verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -179,9 +176,8 @@ fun SettingsScreen(
                             navController.navigate("help")
                         }
                     }
-                    item {
-                        Spacer(modifier = Modifier.height(10.dp))
-                    }
+                    item { BuyACoffeeButton() }
+                    item { Spacer(modifier = Modifier.height(10.dp)) }
                 }
                 if (showTransition) {
                     UpperTransition()

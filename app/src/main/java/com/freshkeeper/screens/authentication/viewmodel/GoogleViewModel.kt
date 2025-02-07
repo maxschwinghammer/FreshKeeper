@@ -12,6 +12,7 @@ import com.freshkeeper.ERROR_TAG
 import com.freshkeeper.R
 import com.freshkeeper.UNEXPECTED_CREDENTIAL
 import com.freshkeeper.model.Membership
+import com.freshkeeper.model.NotificationSettings
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
@@ -26,6 +27,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
+import java.time.LocalTime
 import javax.inject.Inject
 import kotlin.coroutines.resume
 
@@ -177,7 +179,8 @@ class GoogleViewModel
         ) {
             val membership =
                 Membership(
-                    id = firestore.collection("membership").document().id,
+                    userId = userId,
+                    id = firestore.collection("memberships").document().id,
                 )
 
             firestore
@@ -185,14 +188,18 @@ class GoogleViewModel
                 .add(membership)
                 .addOnSuccessListener { membershipReference ->
                     val membershipId = membershipReference.id
-
                     firestore
                         .collection("memberships")
                         .document(membershipId)
                         .update("id", membershipId)
                         .addOnSuccessListener {
                             if (profilePictureUrl != null) {
-                                val profilePictureData = ProfilePicture(image = profilePictureUrl, type = "url")
+                                val profilePictureData =
+                                    ProfilePicture(
+                                        image =
+                                        profilePictureUrl,
+                                        type = "url",
+                                    )
 
                                 firestore
                                     .collection("profilePictures")
@@ -200,7 +207,13 @@ class GoogleViewModel
                                     .addOnSuccessListener { documentReference ->
                                         val profilePictureId = documentReference.id
 
-                                        saveUserDocument(userId, email, displayName, profilePictureId, membershipId)
+                                        saveUserDocument(
+                                            userId,
+                                            email,
+                                            displayName,
+                                            profilePictureId,
+                                            membershipId,
+                                        )
                                     }.addOnFailureListener { e ->
                                         Log.e(
                                             "ProfilePicture",
@@ -209,7 +222,13 @@ class GoogleViewModel
                                         )
                                     }
                             } else {
-                                saveUserDocument(userId, email, displayName, null, membershipId)
+                                saveUserDocument(
+                                    userId,
+                                    email,
+                                    displayName,
+                                    null,
+                                    membershipId,
+                                )
                             }
                         }
                 }.addOnFailureListener { e ->
@@ -253,6 +272,30 @@ class GoogleViewModel
                                 Log.e(
                                     "SignUp",
                                     "Error saving user to Firestore: ${e.message}",
+                                    e,
+                                )
+                            }
+
+                        val notificationSettings =
+                            NotificationSettings(
+                                userId = userId,
+                                dailyNotificationTime = LocalTime.of(12, 0).toString(),
+                                timeBeforeExpiration = 2,
+                                dailyReminders = false,
+                                foodAdded = false,
+                                householdChanges = false,
+                                foodExpiring = false,
+                                tips = false,
+                                statistics = false,
+                            )
+
+                        firestore
+                            .collection("notificationSettings")
+                            .add(notificationSettings)
+                            .addOnFailureListener { e ->
+                                Log.e(
+                                    "NotificationSettings",
+                                    "Error saving notification settings: ${e.message}",
                                     e,
                                 )
                             }

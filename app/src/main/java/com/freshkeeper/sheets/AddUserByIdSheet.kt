@@ -51,7 +51,7 @@ fun AddUserByIdSheet(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(16.dp),
+                    .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
@@ -86,7 +86,7 @@ fun AddUserByIdSheet(
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = AccentTurquoiseColor),
             ) {
-                Text(stringResource(R.string.add_user))
+                Text(text = stringResource(R.string.add_user), color = ComponentBackgroundColor)
             }
         }
     }

@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
 import com.google.firebase.auth.EmailAuthProvider
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
@@ -166,8 +167,6 @@ class AccountServiceImpl
         override suspend fun deleteAccount() {
             try {
                 val currentUser = auth.currentUser
-                currentUser?.delete()?.await()
-
                 val user = getUserObject()
 
                 if (user.id.isNotEmpty()) {
@@ -197,7 +196,10 @@ class AccountServiceImpl
                         .await()
 
                     auth.signOut()
+                    currentUser?.delete()?.await()
                 }
+            } catch (e: FirebaseAuthRecentLoginRequiredException) {
+                Log.e("AccountServiceImpl", "User needs to reauthenticate", e)
             } catch (e: Exception) {
                 Log.e("AccountServiceImpl", "Error deleting account", e)
                 throw e
@@ -220,7 +222,13 @@ class AccountServiceImpl
                     .await()
             }
 
-            val collections = listOf("foodItems", "activities")
+            val collections =
+                listOf(
+                    "foodItems",
+                    "activities",
+                    "notificationSettings",
+                    "memberships",
+                )
             collections.forEach { collection ->
                 val documents =
                     firestore
