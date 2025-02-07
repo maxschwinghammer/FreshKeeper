@@ -16,6 +16,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -151,6 +152,18 @@ fun DatePickerModal(
                     todayDateBorderColor = AccentTurquoiseColor,
                     weekdayContentColor = TextColor,
                     yearContentColor = TextColor,
+                    dateTextFieldColors =
+                        TextFieldDefaults.colors(
+                            focusedLabelColor = TextColor,
+                            unfocusedLabelColor = TextColor,
+                            errorLabelColor = TextColor,
+                            focusedTextColor = TextColor,
+                            unfocusedTextColor = TextColor,
+                            focusedContainerColor = ComponentBackgroundColor,
+                            unfocusedContainerColor = ComponentBackgroundColor,
+                            focusedIndicatorColor = AccentTurquoiseColor,
+                            unfocusedIndicatorColor = ComponentStrokeColor,
+                        ),
                 ),
         )
     }

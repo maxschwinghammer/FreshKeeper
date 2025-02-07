@@ -82,17 +82,15 @@ fun SignUpScreen(
                                 .fillMaxWidth()
                                 .padding(16.dp, 4.dp),
                     )
-
+                    Spacer(Modifier.padding(12.dp))
                     Text(
                         text = stringResource(R.string.sign_up_header),
-                        fontSize = 28.sp,
+                        fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
                         color = TextColor,
                         textAlign = TextAlign.Center,
                     )
-
                     Spacer(Modifier.padding(12.dp))
-
                     Button(
                         onClick = { navController.navigate("emailSignUp") },
                         colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
@@ -114,17 +112,13 @@ fun SignUpScreen(
                             modifier = Modifier.padding(0.dp, 6.dp),
                         )
                     }
-
                     Spacer(Modifier.padding(4.dp))
-
                     Text(
                         text = stringResource(R.string.or),
                         fontSize = 16.sp,
                         color = TextColor,
                     )
-
                     Spacer(Modifier.padding(4.dp))
-
                     AuthenticationButton(R.string.sign_up_with_google) { credential ->
                         googleViewModel.onSignInWithGoogle(
                             credential,
@@ -133,13 +127,9 @@ fun SignUpScreen(
                             activity,
                         )
                     }
-
                     Spacer(Modifier.padding(8.dp))
-
                     SignUpInfo()
-
                     Spacer(Modifier.padding(8.dp))
-
                     TextButton(
                         onClick = { navController.navigate("signIn") },
                         modifier = Modifier.padding(horizontal = 16.dp),

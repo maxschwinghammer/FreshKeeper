@@ -90,17 +90,15 @@ fun EmailSignUpScreen(
                                 .fillMaxWidth()
                                 .padding(16.dp, 4.dp),
                     )
-
+                    Spacer(Modifier.padding(12.dp))
                     Text(
                         text = stringResource(R.string.sign_up_step1),
-                        fontSize = 28.sp,
+                        fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
                         color = TextColor,
                         textAlign = TextAlign.Center,
                     )
-
                     Spacer(Modifier.padding(12.dp))
-
                     OutlinedTextField(
                         singleLine = true,
                         modifier =
@@ -124,7 +122,6 @@ fun EmailSignUpScreen(
                                     KeyboardType.Email,
                             ),
                     )
-
                     OutlinedTextField(
                         singleLine = true,
                         modifier =
@@ -149,7 +146,6 @@ fun EmailSignUpScreen(
                                     KeyboardType.Password,
                             ),
                     )
-
                     OutlinedTextField(
                         singleLine = true,
                         modifier =
@@ -174,7 +170,6 @@ fun EmailSignUpScreen(
                                     KeyboardType.Password,
                             ),
                     )
-
                     errorMessage.value?.let { resId ->
                         Text(
                             text = stringResource(id = resId),
@@ -184,9 +179,7 @@ fun EmailSignUpScreen(
                             textAlign = TextAlign.Center,
                         )
                     }
-
                     Spacer(Modifier.padding(8.dp))
-
                     Button(
                         onClick = {
                             viewModel.onSignUpClick(navController, context, activity)
@@ -207,9 +200,7 @@ fun EmailSignUpScreen(
                             modifier = modifier.padding(0.dp, 6.dp),
                         )
                     }
-
                     Spacer(Modifier.padding(8.dp))
-
                     TextButton(
                         onClick = { navController.navigate("signIn") },
                         modifier = Modifier.padding(horizontal = 16.dp),

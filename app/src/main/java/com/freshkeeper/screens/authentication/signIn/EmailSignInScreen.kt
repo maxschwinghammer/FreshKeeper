@@ -102,17 +102,15 @@ fun EmailSignInScreen(
                                 .fillMaxWidth()
                                 .padding(16.dp, 4.dp),
                     )
-
+                    Spacer(Modifier.padding(12.dp))
                     Text(
                         text = stringResource(R.string.login_header),
-                        fontSize = 28.sp,
+                        fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
                         color = TextColor,
                         textAlign = TextAlign.Center,
                     )
-
                     Spacer(Modifier.padding(12.dp))
-
                     OutlinedTextField(
                         singleLine = true,
                         modifier =
@@ -136,7 +134,6 @@ fun EmailSignInScreen(
                                     KeyboardType.Email,
                             ),
                     )
-
                     OutlinedTextField(
                         singleLine = true,
                         modifier =
@@ -161,7 +158,6 @@ fun EmailSignInScreen(
                                     KeyboardType.Password,
                             ),
                     )
-
                     errorMessage.value?.let { resId ->
                         Text(
                             text = stringResource(id = resId),
@@ -171,7 +167,6 @@ fun EmailSignInScreen(
                             textAlign = TextAlign.Center,
                         )
                     }
-
                     TextButton(
                         onClick = { navController.navigate("forgotPassword/${email.value}") },
                         modifier = Modifier.padding(horizontal = 16.dp),
@@ -183,9 +178,7 @@ fun EmailSignInScreen(
                             color = TextColor,
                         )
                     }
-
                     Spacer(Modifier.padding(2.dp))
-
                     Button(
                         onClick = { viewModel.onSignInClick(navController, context, activity) },
                         colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
@@ -201,9 +194,7 @@ fun EmailSignInScreen(
                             modifier = modifier.padding(0.dp, 6.dp),
                         )
                     }
-
                     Spacer(Modifier.padding(8.dp))
-
                     TextButton(
                         onClick = { navController.navigate("signIn") },
                         modifier = Modifier.padding(horizontal = 16.dp),
