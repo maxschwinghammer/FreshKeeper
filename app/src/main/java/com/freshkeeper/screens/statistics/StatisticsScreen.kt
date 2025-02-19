@@ -51,6 +51,8 @@ fun StatisticsScreen(navController: NavHostController) {
     val averageFoodWastePerDay by householdViewModel.averageFoodWastePerDay.observeAsState(0f)
     val daysWithNoWaste by householdViewModel.daysWithNoWaste.observeAsState(0)
     val mostWastedItems by householdViewModel.mostWastedItems.observeAsState(emptyList())
+    val wasteReduction by householdViewModel.wasteReduction.observeAsState(0)
+    val usedItemsPercentage by householdViewModel.usedItemsPercentage.observeAsState(0)
 
     FreshKeeperTheme {
         Scaffold(
@@ -117,66 +119,79 @@ fun StatisticsScreen(navController: NavHostController) {
                                 fontSize = 14.sp,
                             )
                             Spacer(modifier = Modifier.height(4.dp))
+
+                            if (mostWastedItems.isNotEmpty()) {
+                                Text(
+                                    text = stringResource(R.string.most_wasted_food_items) + ":",
+                                    color = TextColor,
+                                    fontSize = 14.sp,
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+
+                                mostWastedItems.forEach { (item, count) ->
+                                    Row(
+                                        modifier =
+                                            Modifier
+                                                .padding(bottom = 8.dp)
+                                                .fillMaxWidth(),
+                                        horizontalArrangement = Arrangement.SpaceBetween,
+                                    ) {
+                                        Box(
+                                            modifier =
+                                                Modifier
+                                                    .clip(
+                                                        RoundedCornerShape(
+                                                            topStart = 10.dp,
+                                                            bottomStart = 10.dp,
+                                                        ),
+                                                    ).weight(1f)
+                                                    .background(WhiteColor)
+                                                    .padding(horizontal = 10.dp, vertical = 2.dp),
+                                        ) {
+                                            Text(
+                                                text = item,
+                                                style = MaterialTheme.typography.labelLarge,
+                                                color = ComponentBackgroundColor,
+                                                maxLines = 1,
+                                            )
+                                        }
+
+                                        Box(
+                                            modifier =
+                                                Modifier
+                                                    .clip(
+                                                        RoundedCornerShape(
+                                                            topEnd = 10.dp,
+                                                            bottomEnd = 10.dp,
+                                                        ),
+                                                    ).weight(1f)
+                                                    .background(GreyColor)
+                                                    .padding(horizontal = 10.dp, vertical = 2.dp),
+                                            contentAlignment = Alignment.Center,
+                                        ) {
+                                            Text(
+                                                text = count,
+                                                style = MaterialTheme.typography.labelLarge,
+                                                color = TextColor,
+                                                maxLines = 1,
+                                            )
+                                        }
+                                    }
+                                }
+                                Spacer(modifier = Modifier.height(4.dp))
+                            }
                             Text(
-                                text = stringResource(R.string.most_wasted_food_items) + ":",
+                                text =
+                                    stringResource(R.string.waste_reduction) +
+                                        ": " + wasteReduction + "%",
                                 color = TextColor,
                                 fontSize = 14.sp,
                             )
                             Spacer(modifier = Modifier.height(4.dp))
-
-                            mostWastedItems.forEach { (item, count) ->
-                                Row(
-                                    modifier =
-                                        Modifier
-                                            .padding(bottom = 8.dp)
-                                            .fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween,
-                                ) {
-                                    Box(
-                                        modifier =
-                                            Modifier
-                                                .clip(
-                                                    RoundedCornerShape(
-                                                        topStart = 10.dp,
-                                                        bottomStart = 10.dp,
-                                                    ),
-                                                ).weight(1f)
-                                                .background(WhiteColor)
-                                                .padding(horizontal = 10.dp, vertical = 2.dp),
-                                    ) {
-                                        Text(
-                                            text = item,
-                                            style = MaterialTheme.typography.labelLarge,
-                                            color = ComponentBackgroundColor,
-                                            maxLines = 1,
-                                        )
-                                    }
-
-                                    Box(
-                                        modifier =
-                                            Modifier
-                                                .clip(
-                                                    RoundedCornerShape(
-                                                        topEnd = 10.dp,
-                                                        bottomEnd = 10.dp,
-                                                    ),
-                                                ).weight(1f)
-                                                .background(GreyColor)
-                                                .padding(horizontal = 10.dp, vertical = 2.dp),
-                                        contentAlignment = Alignment.Center,
-                                    ) {
-                                        Text(
-                                            text = count,
-                                            style = MaterialTheme.typography.labelLarge,
-                                            color = TextColor,
-                                            maxLines = 1,
-                                        )
-                                    }
-                                }
-                            }
-                            Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = stringResource(R.string.waste_reduction) + ": 20%",
+                                text =
+                                    stringResource(R.string.used_items_percentage) +
+                                        " " + usedItemsPercentage + "%",
                                 color = TextColor,
                                 fontSize = 14.sp,
                             )

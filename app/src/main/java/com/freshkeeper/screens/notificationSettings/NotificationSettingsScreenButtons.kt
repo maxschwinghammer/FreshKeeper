@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
 import com.freshkeeper.model.NotificationSettings
 import com.freshkeeper.screens.notificationSettings.viewmodel.NotificationSettingsViewModel
-import com.freshkeeper.screens.profileSettings.card
+import com.freshkeeper.screens.profileSettings.cards.card
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor

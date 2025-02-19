@@ -39,8 +39,9 @@ import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.User
-import com.freshkeeper.screens.profileSettings.AccountCenterCard
-import com.freshkeeper.screens.profileSettings.card
+import com.freshkeeper.screens.profileSettings.cards.AccountCenterCard
+import com.freshkeeper.screens.profileSettings.cards.card
+import com.freshkeeper.service.reverseHouseholdTypeMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -316,10 +317,13 @@ fun SelectHouseholdTypeCard(
             stringResource(R.string.single_household) to "Single household",
             stringResource(R.string.pair) to "Pair",
         )
+
     val typeChangeError = stringResource(R.string.type_change_error)
 
     AccountCenterCard(
-        title = stringResource(R.string.household_type) + ": " + household.type,
+        title =
+            stringResource(R.string.household_type) + ": " +
+                reverseHouseholdTypeMap[household.type]?.let { stringResource(it) },
         icon = if (isUserOwner) Icons.Filled.Edit else null,
         modifier =
             Modifier
@@ -409,7 +413,7 @@ fun SelectHouseholdTypeCard(
                     colors =
                         ButtonDefaults.buttonColors(
                             containerColor = AccentTurquoiseColor,
-                            contentColor = TextColor,
+                            contentColor = GreyColor,
                         ),
                     shape = RoundedCornerShape(20.dp),
                     border = BorderStroke(1.dp, ComponentStrokeColor),

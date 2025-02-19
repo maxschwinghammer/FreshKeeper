@@ -46,10 +46,13 @@ import com.freshkeeper.ui.theme.WhiteColor
 @Composable
 fun StatisticsSection(navController: NavController) {
     val viewModel: HouseholdViewModel = hiltViewModel()
+
     val totalFoodWaste by viewModel.totalFoodWaste.observeAsState(0)
     val averageFoodWastePerDay by viewModel.averageFoodWastePerDay.observeAsState(0f)
     val daysWithNoWaste by viewModel.daysWithNoWaste.observeAsState(0)
     val mostWastedItems by viewModel.mostWastedItems.observeAsState(emptyList())
+    val wasteReduction by viewModel.wasteReduction.observeAsState(0)
+    val usedItemsPercentage by viewModel.usedItemsPercentage.observeAsState(0)
 
     Card(
         modifier =
@@ -168,7 +171,17 @@ fun StatisticsSection(navController: NavController) {
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(R.string.waste_reduction) + ": 20%",
+                text =
+                    stringResource(R.string.waste_reduction) +
+                        ": " + wasteReduction + "%",
+                color = TextColor,
+                fontSize = 14.sp,
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text =
+                    stringResource(R.string.used_items_percentage) +
+                        " " + usedItemsPercentage + "%",
                 color = TextColor,
                 fontSize = 14.sp,
             )

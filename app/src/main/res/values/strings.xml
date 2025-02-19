@@ -192,7 +192,7 @@
     <string name="skip_introduction">Skip introduction</string>
     <string name="biometric_auth_title">Biometric authentication</string>
     <string name="biometric_auth_failed">Biometric authentication failed</string>
-    <string name="biometric_auth_subtitle">Authenticate to continue</string>
+    <string name="biometric_auth_subtitle">Authenticate yourself to continue</string>
     <string name="biometric_auth_text">Would you like to activate biometric authentication?
     </string>
     <string name="yes">Yes</string>
@@ -351,4 +351,5 @@
     <string name="household_changes">Household Changes</string>
     <string name="food_expiring">Food Expiring</string>
     <string name="select_time_before_expiration">Select time before expiration</string>
+    <string name="used_items_percentage">Share of food utilised:</string>
 </resources>

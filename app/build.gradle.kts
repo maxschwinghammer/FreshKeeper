@@ -68,6 +68,8 @@ dependencies {
     implementation(libs.androidx.runner)
     implementation(libs.androidx.espresso.core)
     implementation(libs.appauth)
+    implementation(libs.app.update)
+    implementation(libs.app.update.ktx)
     implementation(libs.barcode.scanning)
     implementation(libs.barcode.scanning.common)
     implementation(libs.billing.ktx)

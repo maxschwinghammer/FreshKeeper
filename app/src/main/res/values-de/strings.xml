@@ -358,4 +358,5 @@
     <string name="household_changes">Haushaltsänderungen</string>
     <string name="food_expiring">Ablaufende Produkte</string>
     <string name="select_time_before_expiration">Zeit vor dem Ablauf wählen</string>
+    <string name="used_items_percentage">Anteil der verwerteten Lebensmittel:</string>
 </resources>

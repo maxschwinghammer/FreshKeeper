@@ -6,4 +6,5 @@ data class Statistics(
     val daysWithoutWaste: Int,
     val mostWastedItems: List<FoodItem>,
     val wasteReduction: Int,
+    val usedItemsPercentage: Int,
 )

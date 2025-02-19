@@ -123,7 +123,11 @@ class HouseholdSettingsViewModel
 
                 if (newType == "Single household") {
                     try {
-                        val usersToRemove = _household.value.users.filter { it != ownerId && it != selectedUser }
+                        val usersToRemove =
+                            _household.value.users.filter {
+                                it != ownerId &&
+                                    it != selectedUser
+                            }
 
                         val batch = firestore.batch()
 
@@ -152,9 +156,25 @@ class HouseholdSettingsViewModel
                     } catch (e: Exception) {
                         Log.e("UpdateHouseholdType", "Error when updating users", e)
                     }
+
+                    val activitiesSnapshot =
+                        firestore
+                            .collection("activities")
+                            .whereEqualTo("householdId", householdId)
+                            .get()
+                            .await()
+                    val batchDelete = firestore.batch()
+                    activitiesSnapshot.documents.forEach { document ->
+                        batchDelete.delete(document.reference)
+                    }
+                    batchDelete.commit().await()
                 } else if (newType == "Pair" && selectedUser != null) {
                     try {
-                        val usersToRemove = _household.value.users.filter { it != ownerId && it != selectedUser }
+                        val usersToRemove =
+                            _household.value.users.filter {
+                                it != ownerId &&
+                                    it != selectedUser
+                            }
 
                         val batch = firestore.batch()
 
@@ -341,7 +361,11 @@ class HouseholdSettingsViewModel
                     val joinedHousehold = householdSnapshot.toObject(Household::class.java)
                     _household.value = joinedHousehold ?: Household()
                 } catch (e: Exception) {
-                    Log.e("JoinHousehold", "Error joining household with ID: $householdId", e)
+                    Log.e(
+                        "JoinHousehold",
+                        "Error joining household with ID: $householdId",
+                        e,
+                    )
                     Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show()
                 }
             }

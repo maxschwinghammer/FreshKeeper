@@ -37,6 +37,17 @@ import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
+import com.freshkeeper.screens.profileSettings.cards.AccountCenterCard
+import com.freshkeeper.screens.profileSettings.cards.BiometricSwitchCard
+import com.freshkeeper.screens.profileSettings.cards.DisplayNameCard
+import com.freshkeeper.screens.profileSettings.cards.DownloadDataCard
+import com.freshkeeper.screens.profileSettings.cards.EmailCard
+import com.freshkeeper.screens.profileSettings.cards.ProfilePictureCard
+import com.freshkeeper.screens.profileSettings.cards.RemoveAccountCard
+import com.freshkeeper.screens.profileSettings.cards.ResetPasswordCard
+import com.freshkeeper.screens.profileSettings.cards.SignOutCard
+import com.freshkeeper.screens.profileSettings.cards.UserIdCard
+import com.freshkeeper.screens.profileSettings.cards.card
 import com.freshkeeper.screens.profileSettings.viewmodel.ProfileSettingsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -137,8 +148,8 @@ fun ProfileSettingsScreen(
                                 )
                                 UserIdCard(user.id)
                                 ResetPasswordCard(viewModel, navController)
-                                BiometricSwitch()
-                                DownloadDataButton(user.id, viewModel)
+                                BiometricSwitchCard()
+                                DownloadDataCard(user.id, viewModel)
                                 SignOutCard {
                                     viewModel.onSignOutClick {
                                         navController.navigate("signIn") {

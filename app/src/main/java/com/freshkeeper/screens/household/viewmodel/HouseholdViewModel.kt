@@ -37,6 +37,12 @@ class HouseholdViewModel
         private val _mostWastedItems = MutableLiveData<List<Pair<String, String>>>()
         val mostWastedItems: LiveData<List<Pair<String, String>>> = _mostWastedItems
 
+        private val _wasteReduction = MutableLiveData<Int>()
+        val wasteReduction: LiveData<Int> = _wasteReduction
+
+        private val _usedItemsPercentage = MutableLiveData<Int>()
+        val usedItemsPercentage: LiveData<Int> = _usedItemsPercentage
+
         private val _isInHousehold = MutableLiveData(false)
         val isInHousehold: LiveData<Boolean> = _isInHousehold
 
@@ -71,12 +77,10 @@ class HouseholdViewModel
                     onResult = { _members.value = it },
                     onFailure = { Log.e("HouseholdViewModel", "Error loading members") },
                 )
-
                 householdService.getActivities(
                     onResult = { _activities.value = it },
                     onFailure = { Log.e("HouseholdViewModel", "Error loading activities") },
                 )
-
                 householdService.getFoodWasteData(
                     onResult = { _totalFoodWaste.value = it.size },
                     onFailure = { Log.e("HouseholdViewModel", "Error loading food waste data") },

@@ -8,14 +8,21 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.freshkeeper.navigation.NavigationHost
 import com.freshkeeper.service.AccountServiceImpl
+import com.google.android.play.core.appupdate.AppUpdateManager
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.google.android.play.core.appupdate.AppUpdateOptions
+import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.UpdateAvailability
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -23,6 +30,13 @@ import java.util.Locale
 class MainActivity : FragmentActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private val cameraPermissionRequestCode = 101
+    private var navController: NavHostController? = null
+
+    private lateinit var appUpdateManager: AppUpdateManager
+    private val updateResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartIntentSenderForResult()) { result ->
+            if (result.resultCode != RESULT_OK) Unit
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,12 +51,30 @@ class MainActivity : FragmentActivity() {
 
         requestPermissions()
 
+        appUpdateManager = AppUpdateManagerFactory.create(this)
+
         handleDeepLink(intent)
 
         setContent {
+            navController = rememberNavController()
             FreshKeeperApp { languageCode ->
                 saveLanguageToPreferences(languageCode)
                 updateLocale(languageCode)
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+            ) {
+                appUpdateManager.startUpdateFlowForResult(
+                    appUpdateInfo,
+                    updateResultLauncher,
+                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
+                )
             }
         }
     }
@@ -106,15 +138,15 @@ class MainActivity : FragmentActivity() {
     private fun handleDeepLink(intent: Intent) {
         intent.data?.let { uri ->
             if (uri.host == "freshkeeper.de" && uri.pathSegments.contains("invite")) {
-                val householdId = uri.getQueryParameter("householdId")
-                if (householdId != null) {
-                    // openHousehold(householdId)
+                uri.getQueryParameter("householdId")?.let { householdId ->
+                    openHousehold(householdId)
                 }
             }
         }
     }
 
     private fun openHousehold(householdId: String) {
+        navController?.navigate("household/$householdId")
     }
 }
 
