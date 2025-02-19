@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.settings
+package com.freshkeeper.screens.settings.buttons
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
