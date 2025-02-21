@@ -168,30 +168,32 @@ class AccountServiceImpl
             try {
                 val currentUser = auth.currentUser
                 val user = getUserObject()
+                val userId = user.id
 
-                if (user.id.isNotEmpty()) {
-                    val userDoc =
-                        firestore
-                            .collection("users")
-                            .document(user.id)
-                            .get()
-                            .await()
+                if (userId.isNotEmpty()) {
+                    firestore
+                        .collection("profilePictures")
+                        .document(userId)
+                        .delete()
+                        .await()
 
-                    val profilePictureId = userDoc.getString("profilePicture")
+                    firestore
+                        .collection("notificationSettings")
+                        .document(userId)
+                        .delete()
+                        .await()
 
-                    profilePictureId?.let { id ->
-                        firestore
-                            .collection("profilePictures")
-                            .document(id)
-                            .delete()
-                            .await()
-                    }
+                    firestore
+                        .collection("memberships")
+                        .document(userId)
+                        .delete()
+                        .await()
 
-                    deleteLinkedDocuments(user.id)
+                    deleteLinkedDocuments(userId)
 
                     firestore
                         .collection("users")
-                        .document(user.id)
+                        .document(userId)
                         .delete()
                         .await()
 
@@ -226,8 +228,6 @@ class AccountServiceImpl
                 listOf(
                     "foodItems",
                     "activities",
-                    "notificationSettings",
-                    "memberships",
                 )
             collections.forEach { collection ->
                 val documents =
@@ -256,7 +256,6 @@ class AccountServiceImpl
                     email = this.email ?: "",
                     provider = this.providerId,
                     displayName = this.displayName ?: "",
-                    profilePicture = null,
                     isAnonymous = this.isAnonymous,
                     isEmailVerified = this.isEmailVerified,
                     isBiometricEnabled = false,
@@ -315,50 +314,37 @@ class AccountServiceImpl
             val userId = auth.currentUser?.uid ?: throw Exception("User is not logged in")
 
             try {
-                val userRef = firestore.collection("users").document(userId)
-                val userDoc = userRef.get().await()
-                val oldProfilePictureId = userDoc.getString("profilePicture")
+                val profilePictureRef =
+                    firestore
+                        .collection("profilePictures")
+                        .document(userId)
 
-                if (!oldProfilePictureId.isNullOrEmpty()) {
-                    val oldProfilePictureRef =
-                        firestore
-                            .collection("profilePictures")
-                            .document(oldProfilePictureId)
-                    oldProfilePictureRef.delete().await()
-                }
-
-                val profilePictureRef = firestore.collection("profilePictures").document()
-                profilePictureRef.set(ProfilePicture(base64Image, "base64")).await()
-
-                val profilePictureId = profilePictureRef.id
-
-                userRef.update("profilePicture", profilePictureId).await()
+                profilePictureRef
+                    .set(ProfilePicture(base64Image, "base64"))
+                    .await()
             } catch (e: Exception) {
                 Log.e("AccountServiceImpl", "Error updating profile picture", e)
                 throw e
             }
         }
 
-        override suspend fun getProfilePicture(userId: String): ProfilePicture? {
-            val userRef = firestore.collection("users").document(userId)
-            return try {
-                val userSnapshot = userRef.get().await()
+        override suspend fun getProfilePicture(userId: String): ProfilePicture? =
+            try {
+                val pictureRef =
+                    firestore
+                        .collection("profilePictures")
+                        .document(userId)
+                val pictureSnapshot = pictureRef.get().await()
 
-                val profilePictureId = userSnapshot.getString("profilePicture")
-
-                if (profilePictureId != null) {
-                    val pictureRef = firestore.collection("profilePictures").document(profilePictureId)
-                    val pictureSnapshot = pictureRef.get().await()
-
-                    pictureSnapshot.toObject(ProfilePicture::class.java)
-                } else {
-                    null
-                }
+                pictureSnapshot.toObject(ProfilePicture::class.java)
             } catch (e: Exception) {
-                Log.e("AccountService", "Error retrieving profile picture for userId: $userId", e)
+                Log.e(
+                    "AccountService",
+                    "Error retrieving profile picture for userId: $userId",
+                    e,
+                )
                 null
             }
-        }
 
         override suspend fun downloadUserData(
             userId: String,
@@ -388,47 +374,61 @@ class AccountServiceImpl
 
                             val householdTask =
                                 user.householdId?.let { householdId ->
-                                    firestore.collection("households").document(householdId).get()
+                                    firestore
+                                        .collection("households")
+                                        .document(householdId)
+                                        .get()
                                 }
 
-                            Tasks.whenAllComplete(activitiesTask, foodItemsTask, householdTask).addOnCompleteListener {
-                                val activities = activitiesTask.result?.toObjects(Activity::class.java) ?: emptyList()
-                                val foodItems = foodItemsTask.result?.toObjects(FoodItem::class.java) ?: emptyList()
-                                val household = householdTask?.result?.toObject(Household::class.java)
+                            Tasks
+                                .whenAllComplete(activitiesTask, foodItemsTask, householdTask)
+                                .addOnCompleteListener {
+                                    val activities =
+                                        activitiesTask.result?.toObjects(
+                                            Activity::class.java,
+                                        ) ?: emptyList()
+                                    val foodItems =
+                                        foodItemsTask.result?.toObjects(
+                                            FoodItem::class.java,
+                                        ) ?: emptyList()
+                                    val household =
+                                        householdTask?.result?.toObject(
+                                            Household::class.java,
+                                        )
 
-                                val downloadableData =
-                                    DownloadableUserData(
-                                        user,
-                                        activities,
-                                        foodItems,
-                                        household,
+                                    val downloadableData =
+                                        DownloadableUserData(
+                                            user,
+                                            activities,
+                                            foodItems,
+                                            household,
+                                        )
+
+                                    val jsonString = Gson().toJson(downloadableData)
+
+                                    val file = File(context.cacheDir, fileName)
+                                    file.writeText(jsonString)
+
+                                    val uri =
+                                        FileProvider.getUriForFile(
+                                            context,
+                                            "${context.packageName}.provider",
+                                            file,
+                                        )
+
+                                    val intent =
+                                        Intent(Intent.ACTION_SEND).apply {
+                                            type = "application/json"
+                                            putExtra(Intent.EXTRA_STREAM, uri)
+                                            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                        }
+                                    context.startActivity(
+                                        Intent.createChooser(
+                                            intent,
+                                            context.getString(R.string.download_data_title),
+                                        ),
                                     )
-
-                                val jsonString = Gson().toJson(downloadableData)
-
-                                val file = File(context.cacheDir, fileName)
-                                file.writeText(jsonString)
-
-                                val uri =
-                                    FileProvider.getUriForFile(
-                                        context,
-                                        "${context.packageName}.provider",
-                                        file,
-                                    )
-
-                                val intent =
-                                    Intent(Intent.ACTION_SEND).apply {
-                                        type = "application/json"
-                                        putExtra(Intent.EXTRA_STREAM, uri)
-                                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                                    }
-                                context.startActivity(
-                                    Intent.createChooser(
-                                        intent,
-                                        context.getString(R.string.download_data_title),
-                                    ),
-                                )
-                            }
+                                }
                         }
                     }
                 }.addOnFailureListener {

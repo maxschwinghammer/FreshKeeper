@@ -218,7 +218,7 @@
     <string name="delete_household_description">Der Haushalt wird endgültig gelöscht und kann nicht
         wiederhergestellt werden.</string>
     <string name="leave_household">Haushalt verlassenq</string>
-    <string name="leave_household_description">Sie werden aus dem Haushalt entfernt und verlieren
+    <string name="leave_household_description">Du wirst aus dem Haushalt entfernt und verlierst
         alle aktuellen Bestände.</string>
     <string name="add_user_by_id">Benutzer über ID hinzufügen</string>
     <string name="add_user">Benutzer hinzufügen</string>
@@ -233,12 +233,12 @@
     <string name="user_id">Benutzer-ID</string>
     <string name="upgrade_to_premium">Upgrade auf Premium</string>
     <string name="single_household_warning">Durch den Wechsel zu einem Single-Haushalt werden alle
-        anderen Mitglieder aus diesem Haushalt entfernt. Möchten Sie fortfahren?</string>
+        anderen Mitglieder aus diesem Haushalt entfernt. Möchtest du fortfahren?</string>
     <string name="warning">Warnung</string>
     <string name="confirm">Bestätigen</string>
-    <string name="pair_household_warning">Bitte wählen Sie einen Benutzer aus, der im Haushalt
+    <string name="pair_household_warning">Bitte wähle einen Benutzer aus, der im Haushalt
         verbleiben soll. Andere Benutzer werden entfernt.</string>
-    <string name="pair_selection_info">Wählen Sie den Partner, der im Haushalt bleiben soll:</string>
+    <string name="pair_selection_info">Wähle den Partner, der im Haushalt bleiben soll:</string>
     <string name="search">Suchen</string>
     <string name="download_data_title">Datenexport</string>
     <string name="download_data_text">Möchtest du die zu deinem Account assoziierten Daten als
@@ -256,15 +256,15 @@
     <string name="manage_premium_membership">Premium-Mitgliedschaft verwalten</string>
     <string name="activate_premium_membership">Auf Premium upgraden</string>
     <string name="test_premium_membership">Premium kostenlos testen</string>
-    <string name="contact_us">Kontaktieren Sie uns</string>
+    <string name="contact_us">Kontaktiere uns</string>
     <string name="subject">Betreff</string>
     <string name="your_message">Deine Nachricht</string>
     <string name="enter_subject">Gib den Betreff ein</string>
     <string name="enter_message">Gib deine Nachricht ein</string>
     <string name="send_message">Nachricht senden</string>
     <string name="faq">Häufige Fragen</string>
-    <string name="answer_not_found">Hast du keine Antwort auf deine Frage gefunden?</string>
-    <string name="send_us_message">Senden Sie uns eine Nachricht</string>
+    <string name="answer_not_found">Keine Antwort auf deine Frage gefunden?</string>
+    <string name="send_us_message">Sende uns eine Nachricht</string>
     <string name="help_and_contact">Hilfe und Kontakt</string>
     <string name="tips">Tipps</string>
     <string name="tip_title_herbs">Frische Kräuter länger aufbewahren</string>
@@ -343,7 +343,8 @@
     <string name="continue_text">Fortfahren</string>
     <string name="error_empty_name">Der Name darf nicht leer sein.</string>
     <string name="error_name_too_short">Der Name muss mindestens 2 Zeichen lang sein.</string>
-    <string name="error_name_invalid_characters">Der Name darf nur Buchstaben und Leerzeichen enthalten.</string>
+    <string name="error_name_invalid_characters">Der Name darf nur Buchstaben und Leerzeichen
+        enthalten.</string>
     <string name="select_profile_picture">Wähle ein Profilbild aus</string>
     <string name="select_picture">Bild auswählen</string>
     <string name="change_picture">Bild ändern</string>
@@ -357,6 +358,22 @@
     <string name="food_added">Produkt hinzugefügt</string>
     <string name="household_changes">Haushaltsänderungen</string>
     <string name="food_expiring">Ablaufende Produkte</string>
-    <string name="select_time_before_expiration">Zeit vor dem Ablauf wählen</string>
+    <string name="select_time_before_expiration">Benachrichtigungszeit vor dem Ablauf wählen</string>
     <string name="used_items_percentage">Anteil der verwerteten Lebensmittel:</string>
+    <string name="faq_question_1">Was ist der Zweck dieser App?</string>
+    <string name="faq_answer_1">Die App hilft, Lebensmittelverschwendung zu reduzieren, indem sie
+        Bestände und Ablaufdaten verfolgt.</string>
+    <string name="faq_question_2">Wie kann ich ein neues Produkt hinzufügen?</string>
+    <string name="faq_answer_2">Du kannst ein neues Produkt hinzufügen, indem du auf den Button
+        Produkt hinzufügen im Home-Bereich klickst.</string>
+    <string name="faq_question_3">Wie werde ich benachrichtigt?</string>
+    <string name="faq_answer_3">Benachrichtigungen erinnern dich an ablaufende Produkte und geben
+        Tipps zur Vermeidung von Verschwendung.</string>
+    <string name="add_products_inventory">Füge Produkte über den Button hinzu, um sie im
+        Inventar anzuzeigen</string>
+    <string name="add_products_home">Füge Produkte über den Button hinzu, um sie hier
+        anzuzeigen</string>
+    <string name="no_products_expiring_soon">Perfekt! Keine deiner Produkte laufen innerhalb des
+        nächsten Monats ab.</string>
+    <string name="no_products_expired">Super! Keine deiner Produkte sind abgelaufen.</string>
 </resources>

@@ -163,9 +163,9 @@ class GoogleViewModel
                 val promptInfo =
                     BiometricPrompt.PromptInfo
                         .Builder()
-                        .setTitle("Biometrische Authentifizierung")
-                        .setSubtitle("Bitte authentifizieren Sie sich, um fortzufahren")
-                        .setNegativeButtonText("Abbrechen")
+                        .setTitle("Biometric authentication")
+                        .setSubtitle("Please authenticate yourself to continue")
+                        .setNegativeButtonText("Cancel")
                         .build()
 
                 biometricPrompt.authenticate(promptInfo)
@@ -177,60 +177,70 @@ class GoogleViewModel
             displayName: String,
             profilePictureUrl: String?,
         ) {
-            val membership =
-                Membership(
-                    userId = userId,
-                    id = firestore.collection("memberships").document().id,
-                )
+            val firestore = FirebaseFirestore.getInstance()
+
+            val membership = Membership()
 
             firestore
                 .collection("memberships")
-                .add(membership)
-                .addOnSuccessListener { membershipReference ->
-                    val membershipId = membershipReference.id
-                    firestore
-                        .collection("memberships")
-                        .document(membershipId)
-                        .update("id", membershipId)
-                        .addOnSuccessListener {
-                            if (profilePictureUrl != null) {
-                                val profilePictureData =
-                                    ProfilePicture(
-                                        image =
-                                        profilePictureUrl,
-                                        type = "url",
-                                    )
+                .document(userId)
+                .set(membership)
+                .addOnSuccessListener {
+                    if (profilePictureUrl != null) {
+                        val profilePictureData =
+                            ProfilePicture(
+                                image = profilePictureUrl,
+                                type = "url",
+                            )
 
-                                firestore
-                                    .collection("profilePictures")
-                                    .add(profilePictureData)
-                                    .addOnSuccessListener { documentReference ->
-                                        val profilePictureId = documentReference.id
-
-                                        saveUserDocument(
-                                            userId,
-                                            email,
-                                            displayName,
-                                            profilePictureId,
-                                            membershipId,
-                                        )
-                                    }.addOnFailureListener { e ->
-                                        Log.e(
-                                            "ProfilePicture",
-                                            "Error saving profile picture: ${e.message}",
-                                            e,
-                                        )
-                                    }
-                            } else {
+                        firestore
+                            .collection("profilePictures")
+                            .document(userId)
+                            .set(profilePictureData)
+                            .addOnSuccessListener {
                                 saveUserDocument(
                                     userId,
                                     email,
                                     displayName,
-                                    null,
-                                    membershipId,
+                                )
+                            }.addOnFailureListener { e ->
+                                Log.e(
+                                    "ProfilePicture",
+                                    "Error saving profile picture: ${e.message}",
+                                    e,
                                 )
                             }
-                        }
+
+                        val notificationSettings =
+                            NotificationSettings(
+                                dailyNotificationTime = LocalTime.of(12, 0).toString(),
+                                timeBeforeExpiration = 2,
+                                dailyReminders = false,
+                                foodAdded = false,
+                                householdChanges = false,
+                                foodExpiring = false,
+                                tips = false,
+                                statistics = false,
+                            )
+
+                        firestore
+                            .collection("notificationSettings")
+                            .document(userId)
+                            .set(notificationSettings)
+                            .addOnFailureListener { e ->
+                                Log.e(
+                                    "NotificationSettings",
+                                    "Error saving notification settings: ${e.message}",
+                                    e,
+                                )
+                            }
+                    } else {
+                        saveUserDocument(
+                            userId,
+                            email,
+                            displayName,
+                        )
+                    }
                 }.addOnFailureListener { e ->
                     Log.e(
                         "Membership",
@@ -244,8 +254,6 @@ class GoogleViewModel
             userId: String,
             email: String,
             displayName: String,
-            profilePictureId: String?,
-            membershipId: String,
         ) {
             firestore
                 .collection("users")
@@ -258,10 +266,8 @@ class GoogleViewModel
                                 id = userId,
                                 email = email,
                                 displayName = displayName,
-                                profilePicture = profilePictureId,
                                 createdAt = System.currentTimeMillis(),
                                 provider = "google",
-                                membershipId = membershipId,
                             )
 
                         firestore
@@ -272,30 +278,6 @@ class GoogleViewModel
                                 Log.e(
                                     "SignUp",
                                     "Error saving user to Firestore: ${e.message}",
-                                    e,
-                                )
-                            }
-
-                        val notificationSettings =
-                            NotificationSettings(
-                                userId = userId,
-                                dailyNotificationTime = LocalTime.of(12, 0).toString(),
-                                timeBeforeExpiration = 2,
-                                dailyReminders = false,
-                                foodAdded = false,
-                                householdChanges = false,
-                                foodExpiring = false,
-                                tips = false,
-                                statistics = false,
-                            )
-
-                        firestore
-                            .collection("notificationSettings")
-                            .add(notificationSettings)
-                            .addOnFailureListener { e ->
-                                Log.e(
-                                    "NotificationSettings",
-                                    "Error saving notification settings: ${e.message}",
                                     e,
                                 )
                             }

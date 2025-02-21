@@ -2,6 +2,7 @@ package com.freshkeeper.screens.home
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -75,6 +76,8 @@ fun HomeScreen(navController: NavHostController) {
 
     var scannedBarcode by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
+    var foodItem by remember { mutableStateOf<FoodItem?>(null) }
+    val allFoodItems by viewModel.allFoodItems.observeAsState(emptyList())
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -86,8 +89,6 @@ fun HomeScreen(navController: NavHostController) {
 
     val expiringSoonItems by viewModel.expiringSoonItems.observeAsState(emptyList())
     val expiredItems by viewModel.expiredItems.observeAsState(emptyList())
-
-    var foodItem by remember { mutableStateOf<FoodItem?>(null) }
 
     val listState = rememberLazyListState()
     val showTransition by remember {
@@ -109,12 +110,7 @@ fun HomeScreen(navController: NavHostController) {
                 }
             },
         ) { it ->
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(it),
-            ) {
+            Box(modifier = Modifier.fillMaxSize().padding(it)) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = stringResource(R.string.overview),
@@ -164,7 +160,24 @@ fun HomeScreen(navController: NavHostController) {
                                         },
                                     )
                                 }
+                            } else {
+                                item {
+                                    if (allFoodItems.isNotEmpty()) {
+                                        NoProductsText(
+                                            R.string.expiring_soon,
+                                            R.drawable.expiring_soon,
+                                            R.string.no_products_expiring_soon,
+                                        )
+                                    } else {
+                                        NoProductsText(
+                                            R.string.expiring_soon,
+                                            R.drawable.expiring_soon,
+                                            R.string.add_products_home,
+                                        )
+                                    }
+                                }
                             }
+                            item {}
                             if (expiredItems.isNotEmpty()) {
                                 item {
                                     FoodList(
@@ -195,6 +208,22 @@ fun HomeScreen(navController: NavHostController) {
                                             coroutineScope.launch { editProductSheetState.show() }
                                         },
                                     )
+                                }
+                            } else {
+                                item {
+                                    if (allFoodItems.isNotEmpty()) {
+                                        NoProductsText(
+                                            R.string.expired,
+                                            R.drawable.warning,
+                                            R.string.no_products_expired,
+                                        )
+                                    } else {
+                                        NoProductsText(
+                                            R.string.expired,
+                                            R.drawable.warning,
+                                            R.string.add_products_home,
+                                        )
+                                    }
                                 }
                             }
                             item {

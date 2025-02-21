@@ -40,9 +40,9 @@ import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.screens.settings.buttons.BuyACoffeeButton
+import com.freshkeeper.screens.settings.buttons.ChangeLanguageCard
 import com.freshkeeper.screens.settings.buttons.ExternalLinkButton
-import com.freshkeeper.screens.settings.buttons.LanguageDropdownMenu
-import com.freshkeeper.screens.settings.buttons.RateUsOnPlayStoreButton
+import com.freshkeeper.screens.settings.buttons.ReviewAppButton
 import com.freshkeeper.screens.settings.buttons.SettingsButton
 import com.freshkeeper.screens.settings.buttons.UpgradeToPremiumVersionButton
 import com.freshkeeper.screens.settings.viewmodel.SettingsViewModel
@@ -130,7 +130,7 @@ fun SettingsScreen(
                         }
                     }
                     item {
-                        LanguageDropdownMenu(
+                        ChangeLanguageCard(
                             currentLanguage = selectedLanguage,
                             onLanguageSelected = { languageCode ->
                                 selectedLanguage = languageCode
@@ -138,7 +138,7 @@ fun SettingsScreen(
                             },
                         )
                     }
-                    item { RateUsOnPlayStoreButton() }
+                    item { ReviewAppButton() }
                     item {
                         UpgradeToPremiumVersionButton(
                             membership = membership,

@@ -64,7 +64,8 @@ fun ProfileScreen(
                 val years = days / 365
                 val remainingMonths = (days % 365) / 30
                 if (remainingMonths > 0) {
-                    "Member since $years ${if (years == 1L) "year" else "years"} and $remainingMonths ${if (remainingMonths == 1L) "month" else "months"}"
+                    "Member since $years ${if (years == 1L) "year" else "years"} and" +
+                        " $remainingMonths ${if (remainingMonths == 1L) "month" else "months"}"
                 } else {
                     "Member since $years ${if (years == 1L) "year" else "years"}"
                 }
@@ -124,7 +125,10 @@ fun ProfileScreen(
                                 ProfileCard(
                                     name = it.displayName,
                                     memberSince = formatMemberSince(memberSinceDays),
-                                    profilePicture = profileViewModel.profilePicture.collectAsState().value,
+                                    profilePicture =
+                                        profileViewModel.profilePicture
+                                            .collectAsState()
+                                            .value,
                                 )
                             }
                         }
@@ -167,7 +171,10 @@ fun ProfileCard(
                     profilePicture?.let {
                         when (it.type) {
                             "base64" -> {
-                                val decodedImage = it.image?.let { it1 -> convertBase64ToBitmap(it1) }
+                                val decodedImage =
+                                    it.image?.let { it1 ->
+                                        convertBase64ToBitmap(it1)
+                                    }
                                 if (decodedImage != null) {
                                     Image(
                                         bitmap = decodedImage.asImageBitmap(),

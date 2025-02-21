@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,7 +38,7 @@ import java.util.Locale
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun LanguageDropdownMenu(
+fun ChangeLanguageCard(
     currentLanguage: String,
     onLanguageSelected: (String) -> Unit,
 ) {
@@ -71,7 +72,7 @@ fun LanguageDropdownMenu(
                     Image(
                         painter = painterResource(id = it),
                         contentDescription = null,
-                        modifier = Modifier.size(25.dp),
+                        modifier = Modifier.padding(start = 20.dp, end = 10.dp).size(25.dp),
                     )
                 }
             },

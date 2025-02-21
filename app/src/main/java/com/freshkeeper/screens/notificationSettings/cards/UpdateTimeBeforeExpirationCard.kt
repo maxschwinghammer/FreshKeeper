@@ -74,7 +74,6 @@ fun UpdateTimeBeforeExpirationCard(
     if (showDialog) {
         AlertDialog(
             containerColor = ComponentBackgroundColor,
-            onDismissRequest = { showDialog = false },
             title = { Text(text = stringResource(R.string.select_time_before_expiration)) },
             text = {
                 LazyColumn(
@@ -89,7 +88,7 @@ fun UpdateTimeBeforeExpirationCard(
                                 ComponentStrokeColor
                             }
                         Text(
-                            text = "$time Tage",
+                            text = "$time " + stringResource(R.string.days),
                             modifier =
                                 Modifier
                                     .fillMaxWidth()
@@ -106,10 +105,14 @@ fun UpdateTimeBeforeExpirationCard(
                 }
             },
             confirmButton = {
-                TextButton(onClick = { showDialog = false }) {
-                    Text(stringResource(R.string.cancel))
+                TextButton(onClick = {
+                    onTimeSelected(timeBeforeExpiration)
+                    showDialog = false
+                }) {
+                    Text(text = stringResource(R.string.cancel), color = AccentTurquoiseColor)
                 }
             },
+            onDismissRequest = { showDialog = false },
         )
     }
 }

@@ -17,6 +17,8 @@ cameraCamera2 = "1.4.1"
 cameraLifecycle = "1.4.1"
 cameraView = "1.4.1"
 coilCompose = "2.7.0"
+comGoogleAndroidPlayReview = "2.0.2"
+comGoogleAndroidPlayReviewKtx = "2.0.2"
 composeBom = "2025.02.00"
 coreKtx = "1.15.0"
 espressoCore = "3.6.1"
@@ -66,6 +68,8 @@ app-update-ktx = { module = "com.google.android.play:app-update-ktx", version.re
 app-update = { module = "com.google.android.play:app-update", version.ref = "appUpdate" }
 billing-ktx = { module = "com.android.billingclient:billing-ktx", version.ref = "billingKtx" }
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coilCompose" }
+com-google-android-play-review-ktx2 = { module = "com.google.android.play:review-ktx", version.ref = "comGoogleAndroidPlayReviewKtx" }
+com-google-android-play-review2 = { module = "com.google.android.play:review", version.ref = "comGoogleAndroidPlayReview" }
 com-journeyapps-zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "journeyappsZxingAndroidEmbedded" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore", version.ref = "firebaseFirestore" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging", version.ref = "firebaseMessaging" }

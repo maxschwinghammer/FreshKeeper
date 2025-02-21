@@ -256,7 +256,7 @@
     <string name="enter_message">Enter your message</string>
     <string name="send_message">Send message</string>
     <string name="faq">FAQs</string>
-    <string name="answer_not_found">You didn’t find an answer to your question?</string>
+    <string name="answer_not_found">Didn’t find an answer to your question?</string>
     <string name="send_us_message">Send us a message</string>
     <string name="help_and_contact">Help and contact</string>
     <string name="tips">Tips</string>
@@ -350,6 +350,21 @@
     <string name="food_added">Food Added</string>
     <string name="household_changes">Household Changes</string>
     <string name="food_expiring">Food Expiring</string>
-    <string name="select_time_before_expiration">Select time before expiration</string>
+    <string name="select_time_before_expiration">Select notification time before expiration</string>
     <string name="used_items_percentage">Share of food utilised:</string>
+    <string name="faq_question_1">What is the purpose of this app?</string>
+    <string name="faq_answer_1">The app helps reduce food waste by tracking food inventory and
+        expiry dates.</string>
+    <string name="faq_question_2">How can I add a new item?</string>
+    <string name="faq_answer_2">You can add a new item by clicking on the Add Food button in the
+        Home section.</string>
+    <string name="faq_question_3">How do I get notified?</string>
+    <string name="faq_answer_3">Notifications will remind you of expiring items and suggest
+        waste-reducing tips.</string>
+    <string name="add_products_inventory">Add products using the button to display them in
+        the inventory</string>
+    <string name="add_products_home">Add products using the button to display them here</string>
+    <string name="no_products_expiring_soon">Perfect! None of your products expire within the
+        next month.</string>
+    <string name="no_products_expired">Super! None of your products have expired.</string>
 </resources>

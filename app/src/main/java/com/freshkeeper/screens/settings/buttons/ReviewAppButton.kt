@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.settings.buttons
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
@@ -26,18 +27,36 @@ import com.freshkeeper.R
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
+import com.google.android.play.core.review.ReviewInfo
+import com.google.android.play.core.review.ReviewManagerFactory
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun RateUsOnPlayStoreButton() {
+fun ReviewAppButton() {
     val context = LocalContext.current
     val packageName = context.packageName
     val url = "https://play.google.com/store/apps/details?id=$packageName"
 
+    val activity = context as? Activity
+    var reviewInfo: ReviewInfo? = null
+
+    val manager = ReviewManagerFactory.create(context)
+    val request = manager.requestReviewFlow()
+    request.addOnCompleteListener { task ->
+        if (task.isSuccessful) {
+            reviewInfo = task.result
+        }
+    }
+
     Button(
         onClick = {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-            context.startActivity(intent)
+            if (activity != null && reviewInfo != null) {
+                val flow = manager.launchReviewFlow(activity, reviewInfo!!)
+                flow.addOnCompleteListener { _ -> }
+            } else {
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                context.startActivity(intent)
+            }
         },
         colors =
             ButtonDefaults.buttonColors(

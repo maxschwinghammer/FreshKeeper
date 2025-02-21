@@ -189,10 +189,7 @@ fun InventoryScreen(navController: NavHostController) {
                                     focusedLabelColor = AccentTurquoiseColor,
                                 ),
                             keyboardOptions =
-                                KeyboardOptions.Default.copy(
-                                    imeAction =
-                                        ImeAction.Done,
-                                ),
+                                KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
                             keyboardActions =
                                 KeyboardActions(
                                     onDone = {
@@ -212,7 +209,11 @@ fun InventoryScreen(navController: NavHostController) {
                                     .background(ComponentBackgroundColor)
                                     .clip(RoundedCornerShape(10.dp))
                                     .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
-                                    .clickable { coroutineScope.launch { filterSheetState.show() } },
+                                    .clickable {
+                                        coroutineScope.launch {
+                                            filterSheetState.show()
+                                        }
+                                    },
                             contentAlignment = Alignment.Center,
                         ) {
                             Icon(
@@ -240,12 +241,17 @@ fun InventoryScreen(navController: NavHostController) {
                                         Modifier
                                             .clip(RoundedCornerShape(20.dp))
                                             .background(GreyColor)
-                                            .border(1.dp, ComponentStrokeColor, RoundedCornerShape(20.dp))
-                                            .clickable {
+                                            .border(
+                                                1.dp,
+                                                ComponentStrokeColor,
+                                                RoundedCornerShape(20.dp),
+                                            ).clickable {
                                                 if (selectedCategories.contains(filter)) {
-                                                    selectedCategories = selectedCategories - filter
+                                                    selectedCategories =
+                                                        selectedCategories - filter
                                                 } else {
-                                                    selectedStorageLocations = selectedStorageLocations - filter
+                                                    selectedStorageLocations =
+                                                        selectedStorageLocations - filter
                                                 }
                                             }.padding(horizontal = 12.dp, vertical = 6.dp),
                                     contentAlignment = Alignment.Center,
@@ -254,7 +260,12 @@ fun InventoryScreen(navController: NavHostController) {
                                         val labelId = getLabel(filter)
 
                                         Text(
-                                            text = if (labelId != null) stringResource(id = labelId) else "",
+                                            text =
+                                                if (labelId != null) {
+                                                    stringResource(id = labelId)
+                                                } else {
+                                                    ""
+                                                },
                                             fontSize = 12.sp,
                                             color = TextColor,
                                         )

@@ -78,11 +78,19 @@ fun MembersSection(
 
     val householdId = remember { mutableStateOf(household?.id ?: "") }
     var householdName by remember { mutableStateOf(household?.name ?: "") }
-    val householdType = remember { mutableStateOf(household?.type ?: "") }
+    var householdType by remember { mutableStateOf(household?.type ?: "") }
 
     val showJoinHouseholdDialog = remember { mutableStateOf(false) }
     var showCreateHouseholdDialog by remember { mutableStateOf(false) }
     var showHouseholdTypeDialog by remember { mutableStateOf(false) }
+
+    val householdTypeMap =
+        mapOf(
+            stringResource(R.string.family) to "Family",
+            stringResource(R.string.shared_apartment) to "Shared apartment",
+            stringResource(R.string.single_household) to "Single household",
+            stringResource(R.string.pair) to "Pair",
+        )
 
     val imageLoader =
         ImageLoader
@@ -186,8 +194,8 @@ fun MembersSection(
 
                 if (isInHousehold) {
                     if (household != null &&
-                        householdType.value != "Single household" &&
-                        (householdType.value != "Pair" || household!!.users.size < 2)
+                        householdType != "Single household" &&
+                        (householdType != "Pair" || household!!.users.size < 2)
                     ) {
                         Box(
                             modifier =
@@ -334,7 +342,7 @@ fun MembersSection(
                         colors =
                             ButtonDefaults.buttonColors(
                                 containerColor = AccentTurquoiseColor,
-                                contentColor = TextColor,
+                                contentColor = GreyColor,
                             ),
                         enabled = householdId.value.length == 20,
                         shape = RoundedCornerShape(20.dp),
@@ -392,7 +400,7 @@ fun MembersSection(
                         colors =
                             ButtonDefaults.buttonColors(
                                 containerColor = AccentTurquoiseColor,
-                                contentColor = TextColor,
+                                contentColor = GreyColor,
                             ),
                         enabled =
                             householdName.isNotEmpty() &&
@@ -418,31 +426,30 @@ fun MembersSection(
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        listOf("Family", "Shared apartment", "Single household", "Pair")
-                            .forEach { type ->
-                                val borderColor =
-                                    if (householdType.value == type) {
-                                        AccentTurquoiseColor
-                                    } else {
-                                        Color.Transparent
-                                    }
-                                Button(
-                                    onClick = { householdType.value = type },
-                                    colors =
-                                        ButtonDefaults.buttonColors(
-                                            containerColor = GreyColor,
-                                            contentColor = TextColor,
-                                        ),
-                                    shape = RoundedCornerShape(20.dp),
-                                    border = BorderStroke(1.dp, borderColor),
-                                    modifier =
-                                        Modifier
-                                            .padding(vertical = 2.dp)
-                                            .align(Alignment.CenterHorizontally),
-                                ) {
-                                    Text(text = type)
+                        householdTypeMap.forEach { (localName, englishType) ->
+                            val borderColor =
+                                if (householdType == englishType) {
+                                    AccentTurquoiseColor
+                                } else {
+                                    Color.Transparent
                                 }
+                            Button(
+                                onClick = { householdType = englishType },
+                                colors =
+                                    ButtonDefaults.buttonColors(
+                                        containerColor = GreyColor,
+                                        contentColor = TextColor,
+                                    ),
+                                shape = RoundedCornerShape(20.dp),
+                                border = BorderStroke(1.dp, borderColor),
+                                modifier =
+                                    Modifier.padding(vertical = 2.dp).align(
+                                        Alignment.CenterHorizontally,
+                                    ),
+                            ) {
+                                Text(text = localName)
                             }
+                        }
                     }
                 },
                 dismissButton = {
@@ -462,18 +469,18 @@ fun MembersSection(
                 confirmButton = {
                     Button(
                         onClick = {
-                            onCreateHouseholdClick(householdName, householdType.value)
+                            onCreateHouseholdClick(householdName, householdType)
                             showHouseholdTypeDialog = false
                         },
                         colors =
                             ButtonDefaults.buttonColors(
                                 containerColor = AccentTurquoiseColor,
-                                contentColor = TextColor,
+                                contentColor = GreyColor,
                             ),
                         shape = RoundedCornerShape(20.dp),
                         border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
-                        Text(text = stringResource(R.string.update))
+                        Text(text = stringResource(R.string.confirm))
                     }
                 },
                 onDismissRequest = { showHouseholdTypeDialog = false },

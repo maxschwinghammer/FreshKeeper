@@ -27,7 +27,6 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
-                @Suppress("UnstableApiUsage")
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
@@ -40,7 +39,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.5"
     }
@@ -77,6 +75,8 @@ dependencies {
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
     implementation(libs.com.journeyapps.zxing.android.embedded)
+    implementation(libs.com.google.android.play.review2)
+    implementation(libs.com.google.android.play.review.ktx2)
     implementation(libs.coil.compose)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.analytics)

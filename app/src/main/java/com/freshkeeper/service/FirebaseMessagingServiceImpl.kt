@@ -10,7 +10,7 @@ import com.freshkeeper.R
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-class FirebaseMessagingService : FirebaseMessagingService() {
+class FirebaseMessagingServiceImpl : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         remoteMessage.data.isNotEmpty().let {
             val title = remoteMessage.data["title"]
@@ -25,7 +25,13 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         message: String?,
     ) {
         val intent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val pendingIntent =
+            PendingIntent.getActivity(
+                this,
+                0,
+                intent,
+                PendingIntent.FLAG_UPDATE_CURRENT,
+            )
 
         val notificationBuilder =
             NotificationCompat
@@ -36,11 +42,13 @@ class FirebaseMessagingService : FirebaseMessagingService() {
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE)
+                as NotificationManager
         notificationManager.notify(0, notificationBuilder.build())
     }
 
     override fun onNewToken(token: String) {
-        println("Neue Firebase-Token: $token")
+        println("New Firebase tokens: $token")
     }
 }
