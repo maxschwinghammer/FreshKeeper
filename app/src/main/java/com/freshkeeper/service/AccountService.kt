@@ -16,6 +16,8 @@ interface AccountService {
 
     fun getEmailForCurrentUser(): String
 
+    suspend fun getBiometricEnabled(): Boolean
+
     suspend fun createAnonymousAccount()
 
     suspend fun updateDisplayName(newDisplayName: String)

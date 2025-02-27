@@ -132,9 +132,9 @@ class SignInViewModel
                 val promptInfo =
                     BiometricPrompt.PromptInfo
                         .Builder()
-                        .setTitle("Biometrische Authentifizierung")
-                        .setSubtitle("Bitte authentifizieren Sie sich, um fortzufahren")
-                        .setNegativeButtonText("Abbrechen")
+                        .setTitle("Biometric authentication")
+                        .setSubtitle("Please authenticate yourself to continue")
+                        .setNegativeButtonText("Cancel")
                         .build()
 
                 biometricPrompt.authenticate(promptInfo)

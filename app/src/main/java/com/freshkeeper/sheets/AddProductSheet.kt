@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 @Suppress("ktlint:standard:function-naming")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEntrySheet(
+fun AddProductSheet(
     sheetState: SheetState,
     barcodeSheetState: SheetState,
     manualInputSheetState: SheetState,
@@ -62,7 +62,7 @@ fun AddEntrySheet(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = stringResource(R.string.add_an_entry),
+                text = stringResource(R.string.add_product),
                 fontSize = 18.sp,
                 style = MaterialTheme.typography.titleMedium,
             )

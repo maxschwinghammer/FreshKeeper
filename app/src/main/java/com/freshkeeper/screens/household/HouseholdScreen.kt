@@ -31,7 +31,7 @@ import com.freshkeeper.model.Household
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
-import com.freshkeeper.screens.householdSettings.viemodel.HouseholdSettingsViewModel
+import com.freshkeeper.screens.householdSettings.viewmodel.HouseholdSettingsViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.sheets.AddUserByIdSheet
 import com.freshkeeper.sheets.InviteSheet
@@ -105,15 +105,19 @@ fun HouseholdScreen(navController: NavHostController) {
                                     navController,
                                     coroutineScope,
                                     inviteSheetState,
-                                    { name, type ->
+                                    onCreateHouseholdClick = { name, type ->
                                         householdSettingsViewModel.createHousehold(name, type)
                                     },
-                                    { householdId ->
+                                    onJoinHouseholdClick = { householdId ->
                                         householdSettingsViewModel.joinHouseholdById(
                                             householdId,
                                             context,
                                             householdErrorText,
                                         )
+                                    },
+                                    onAddProducts = { householdSettingsViewModel.onAddProducts() },
+                                    onDeleteProducts = {
+                                        householdSettingsViewModel.onDeleteProducts()
                                     },
                                 )
                             }

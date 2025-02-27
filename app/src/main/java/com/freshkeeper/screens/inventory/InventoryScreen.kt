@@ -31,9 +31,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
@@ -69,12 +67,12 @@ import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.service.categoryMap
 import com.freshkeeper.service.storageLocationMap
-import com.freshkeeper.sheets.AddEntrySheet
+import com.freshkeeper.sheets.AddProductSheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
 import com.freshkeeper.sheets.EditProductSheet
 import com.freshkeeper.sheets.FilterSheet
 import com.freshkeeper.sheets.ManualInputSheet
-import com.freshkeeper.sheets.ProductInfoSheet
+import com.freshkeeper.sheets.productDetails.ProductDetailsSheet
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
@@ -171,22 +169,19 @@ fun InventoryScreen(navController: NavHostController) {
                             onValueChange = { searchQuery = it },
                             label = { Text(stringResource(R.string.search), color = TextColor) },
                             trailingIcon = {
-                                IconButton(onClick = { /* Handle search action */ }) {
-                                    Icon(Icons.Filled.Search, contentDescription = "Search")
-                                }
+                                Icon(Icons.Filled.Search, contentDescription = "Search")
                             },
-                            modifier =
-                                Modifier
-                                    .weight(1f),
+                            modifier = Modifier.weight(1f),
                             colors =
                                 OutlinedTextFieldDefaults.colors(
                                     focusedContainerColor = ComponentBackgroundColor,
                                     unfocusedContainerColor = ComponentBackgroundColor,
                                     disabledContainerColor = ComponentBackgroundColor,
                                     unfocusedBorderColor = ComponentStrokeColor,
-                                    focusedBorderColor = AccentTurquoiseColor,
+                                    focusedBorderColor = ComponentStrokeColor,
                                     unfocusedLabelColor = TextColor,
                                     focusedLabelColor = AccentTurquoiseColor,
+                                    cursorColor = AccentTurquoiseColor,
                                 ),
                             keyboardOptions =
                                 KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
@@ -194,7 +189,6 @@ fun InventoryScreen(navController: NavHostController) {
                                 KeyboardActions(
                                     onDone = {
                                         keyboardController?.hide()
-                                        // Handle search action
                                     },
                                 ),
                             shape = RoundedCornerShape(10.dp),
@@ -295,14 +289,11 @@ fun InventoryScreen(navController: NavHostController) {
                             item {
                                 CurrentInventoriesSection(
                                     editProductSheetState = editProductSheetState,
-                                    onItemClick = { item ->
-                                        foodItem = item
-                                    },
+                                    onItemClick = { item -> foodItem = item },
                                     selectedStorageLocations = selectedStorageLocations,
                                     selectedCategories = selectedCategories,
-                                    onItemsUpdated = { items ->
-                                        foodItems = items
-                                    },
+                                    searchQuery = searchQuery,
+                                    onItemsUpdated = { items -> foodItems = items },
                                 )
                             }
                             item {
@@ -359,99 +350,69 @@ fun InventoryScreen(navController: NavHostController) {
             }
 
             if (sheetState.isVisible) {
-                AddEntrySheet(sheetState, barcodeSheetState, manualInputSheetState)
+                AddProductSheet(sheetState, barcodeSheetState, manualInputSheetState)
             }
 
             if (barcodeSheetState.isVisible) {
-                ModalBottomSheet(
-                    onDismissRequest = { coroutineScope.launch { barcodeSheetState.hide() } },
+                BarcodeScannerSheet(
                     sheetState = barcodeSheetState,
-                    containerColor = ComponentBackgroundColor,
-                ) {
-                    BarcodeScannerSheet(
-                        sheetState = barcodeSheetState,
-                        onBarcodeScanned = { barcode, date ->
-                            scannedBarcode = barcode
-                            expiryDate = date
-                            coroutineScope.launch { manualInputSheetState.show() }
-                        },
-                    )
-                }
+                    onBarcodeScanned = { barcode, date ->
+                        scannedBarcode = barcode
+                        expiryDate = date
+                        coroutineScope.launch { manualInputSheetState.show() }
+                    },
+                )
             }
 
             if (manualInputSheetState.isVisible) {
-                ModalBottomSheet(
-                    onDismissRequest = { coroutineScope.launch { manualInputSheetState.hide() } },
+                ManualInputSheet(
                     sheetState = manualInputSheetState,
-                    containerColor = ComponentBackgroundColor,
-                ) {
-                    ManualInputSheet(
-                        sheetState = manualInputSheetState,
-                        barcode = scannedBarcode,
-                        expiryTimestamp = expiryDate,
-                    )
-                }
+                    barcode = scannedBarcode,
+                    expiryTimestamp = expiryDate,
+                )
             }
 
             if (editProductSheetState.isVisible) {
-                ModalBottomSheet(
-                    onDismissRequest = { coroutineScope.launch { editProductSheetState.hide() } },
-                    sheetState = editProductSheetState,
-                    containerColor = ComponentBackgroundColor,
-                ) {
-                    foodItem?.let { item ->
-                        EditProductSheet(editProductSheetState, productInfoSheetState, item)
-                    }
+                foodItem?.let { item ->
+                    EditProductSheet(editProductSheetState, productInfoSheetState, item)
                 }
             }
 
             if (filterSheetState.isVisible) {
-                ModalBottomSheet(
-                    onDismissRequest = { coroutineScope.launch { filterSheetState.hide() } },
-                    sheetState = filterSheetState,
-                    containerColor = ComponentBackgroundColor,
-                ) {
-                    FilterSheet(
-                        filterSheetState = filterSheetState,
-                        foodItems = items,
-                        categories = categoryMap,
-                        storageLocations = storageLocationMap,
-                        selectedCategories = selectedCategories,
-                        selectedStorageLocations = selectedStorageLocations,
-                        onUpdateCategories = { updatedCategories ->
-                            selectedCategories = updatedCategories.toList()
-                        },
-                        onUpdateStorageLocations = { updatedLocations ->
-                            selectedStorageLocations = updatedLocations.toList()
-                        },
-                        onApplyFilter = { categories, locations ->
-                            foodItems =
-                                foodItems.filter {
+                FilterSheet(
+                    filterSheetState = filterSheetState,
+                    foodItems = items,
+                    categories = categoryMap,
+                    storageLocations = storageLocationMap,
+                    selectedCategories = selectedCategories,
+                    selectedStorageLocations = selectedStorageLocations,
+                    onUpdateCategories = { updatedCategories ->
+                        selectedCategories = updatedCategories.toList()
+                    },
+                    onUpdateStorageLocations = { updatedLocations ->
+                        selectedStorageLocations = updatedLocations.toList()
+                    },
+                    onApplyFilter = { categories, locations ->
+                        foodItems =
+                            foodItems.filter {
+                                (
+                                    categories.isEmpty() ||
+                                        categories.contains(it.category)
+                                ) &&
                                     (
-                                        categories.isEmpty() ||
-                                            categories.contains(it.category)
-                                    ) &&
-                                        (
-                                            locations.isEmpty() ||
-                                                locations.contains(it.storageLocation)
-                                        )
-                                }
-                            selectedCategories = categories
-                            selectedStorageLocations = locations
-                        },
-                    )
-                }
+                                        locations.isEmpty() ||
+                                            locations.contains(it.storageLocation)
+                                    )
+                            }
+                        selectedCategories = categories
+                        selectedStorageLocations = locations
+                    },
+                )
             }
 
             if (productInfoSheetState.isVisible) {
-                ModalBottomSheet(
-                    onDismissRequest = { coroutineScope.launch { productInfoSheetState.hide() } },
-                    sheetState = productInfoSheetState,
-                    containerColor = ComponentBackgroundColor,
-                ) {
-                    foodItem?.let { item ->
-                        ProductInfoSheet(productInfoSheetState, editProductSheetState, item)
-                    }
+                foodItem?.let { item ->
+                    ProductDetailsSheet(productInfoSheetState, editProductSheetState, item)
                 }
             }
         }

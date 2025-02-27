@@ -9,8 +9,7 @@
     <string name="bag">Tasche</string>
     <string name="biometric_auth_failed">Biometrische Authentifizierung fehlgeschlagen</string>
     <string name="biometric_auth_subtitle">Authentifiziere dich, um fortzufahren</string>
-    <string name="biometric_auth_text">Möchtest du die biometrische Authentifizierung aktivieren?
-    </string>
+    <string name="biometric_auth_text">Möchtest du die biometrische Authentifizierung aktivieren?</string>
     <string name="biometric_auth_title">Biometrische Authentifizierung</string>
     <string name="box">Karton</string>
     <string name="bread">Brot</string>
@@ -22,8 +21,7 @@
     <string name="category">Kategorie</string>
     <string name="cellar">Keller</string>
     <string name="change_email">E-Mail ändern</string>
-    <string name="change_email_description">Gib deine neue E-Mail-Adresse ein. Aus
-        Sicherheitsgründen wirst du dann abgemeldet und du musst dich erneut anmelden.</string>
+    <string name="change_email_description">Gib deine neue E-Mail-Adresse ein. Aus Sicherheitsgründen wirst du dann abgemeldet und du musst dich erneut anmelden.</string>
     <string name="change_email_title">E-Mail ändern?</string>
     <string name="change_language">Sprache ändern</string>
     <string name="check_expiring_items">Abgelaufene Artikel prüfen</string>
@@ -40,8 +38,7 @@
     <string name="days_without_waste">Tage ohne Abfall</string>
     <string name="dairy_goods">Milchprodukte</string>
     <string name="delete_account">Konto löschen</string>
-    <string name="delete_account_description">Dein Konto wird endgültig gelöscht und kann nicht
-        wiederhergestellt werden.</string>
+    <string name="delete_account_description">Dein Konto wird endgültig gelöscht und kann nicht wiederhergestellt werden.</string>
     <string name="delete_account_title">Konto löschen?</string>
     <string name="drinks">Getränke</string>
     <string name="edit_product">Produkt bearbeiten</string>
@@ -56,9 +53,7 @@
     <string name="fish">Fisch</string>
     <string name="food_recognition">Erkennen von Lebensmitteln</string>
     <string name="forgot_password">Passwort vergessen?</string>
-    <string name="forgot_password_description">Wir senden dir einen Link, über den du dein
-        Passwort zurücksetzen kannst. Du kannst dich dann mit dem neuen Passwort anmelden.
-    </string>
+    <string name="forgot_password_description">Wir senden dir einen Link, über den du dein Passwort zurücksetzen kannst. Du kannst dich dann mit dem neuen Passwort anmelden.</string>
     <string name="freezer">Gefrierschrank</string>
     <string name="fridge">Kühlschrank</string>
     <string name="fruit_basket">Obstkorb</string>
@@ -66,18 +61,14 @@
     <string name="frozen_goods">Tiefkühlprodukte</string>
     <string name="g">g</string>
     <string name="german">Deutsch</string>
+    <string name="spanish">Spanisch</string>
     <string name="household">Haushalt</string>
     <string name="in_days">In %1$d Tagen</string>
     <string name="invite">Einladen</string>
     <string name="invite_people">Personen einladen</string>
     <string name="invite_partner">Partner einladen</string>
     <string name="invite_text">Lade eine Person in deinen Haushalt ein</string>
-    <string name="invite_message">Hallo! Mit der App FreshKeeper behalte ich den Überblick
-        über meine Lebensmittel und minimiere Verschwendung 🥬🍎\n\nDie App erinnert mich
-        rechtzeitig an ablaufende Produkte und hilft mir, klüger zu konsumieren 📅\n\nProbier
-        es aus und werde Teil unseres Haushalts! Gebe zum Beitrete einfach folgende Haushalts-ID in
-        den Einstellungen ein:
-    </string>
+    <string name="invite_message">Hallo! Mit der App FreshKeeper behalte ich den Überblick über meine Lebensmittel und minimiere Verschwendung 🥬🍎\n\nDie App erinnert mich rechtzeitig an ablaufende Produkte und hilft mir, klüger zu konsumieren 📅\n\nProbier es aus und werde Teil unseres Haushalts! Gebe zum Beitrete einfach folgende Haushalts-ID in den Einstellungen ein:</string>
     <string name="item">Produkt</string>
     <string name="items">Produkte</string>
     <string name="items_per_day">Produkte pro Tag</string>
@@ -98,37 +89,25 @@
     <string name="no_email">Keine E-Mail-Adresse angegeben.</string>
     <string name="no_password">Kein Passwort angegeben.</string>
     <string name="noodles">Nudeln</string>
-    <string name="notification_added_items_to_inventory">%1$s hat neue Artikel zum Inventar
-        hinzugefügt</string>
-    <string name="notification_created_household_group">%1$s hat eine Haushaltsgruppe erstellt
-    </string>
-    <string name="notification_group_creation">Ihr könnt eure Lebensmittel jetzt gemeinsam
-        verwalten</string>
-    <string name="notification_inventory_attention_needed">Dein Inventar benötigt Aufmerksamkeit
-    </string>
-    <string name="notification_inventory_check">Es sind %1$d Tage vergangen, seitdem du dein
-        Inventar überprüft hast</string>
-    <string name="notification_joined_household_group">%1$s ist deiner Haushaltsgruppe
-        beigetreten</string>
+    <string name="notification_added_items_to_inventory">%1$s hat neue Artikel zum Inventar hinzugefügt</string>
+    <string name="notification_created_household_group">%1$s hat eine Haushaltsgruppe erstellt</string>
+    <string name="notification_group_creation">Ihr könnt eure Lebensmittel jetzt gemeinsam verwalten</string>
+    <string name="notification_inventory_attention_needed">Dein Inventar benötigt Aufmerksamkeit</string>
+    <string name="notification_inventory_check">Es sind %1$d Tage vergangen, seitdem du dein Inventar überprüft hast</string>
+    <string name="notification_joined_household_group">%1$s ist deiner Haushaltsgruppe beigetreten</string>
     <string name="notification_product_expires">Milch läuft in %1$d Tagen ab</string>
-    <string name="notification_product_expires_tomorrow">Verbraucht es schnell, um Abfall zu
-        vermeiden</string>
-    <string name="notification_savings_this_month">Du hast diesen Monat %1$d%% weniger
-        Lebensmittelabfall</string>
-    <string name="notification_tip_of_the_day">Lagere Obst und Gemüse separat, um sie länger
-        frisch zu halten</string>
-    <string name="notification_weekly_tip_organize_fridge">Platziere Lebensmittel, die
-        bald ablaufen, vorne, um sie zuerst zu verbrauchen</string>
-    <string name="notification_your_progress_this_week">Du hast diese Woche %1$d Lebensmittel
-        rechtzeitig verbraucht</string>
+    <string name="notification_product_expires_tomorrow">Verbraucht es schnell, um Abfall zu vermeiden</string>
+    <string name="notification_savings_this_month">Du hast diesen Monat %1$d%% weniger Lebensmittelabfall</string>
+    <string name="notification_tip_of_the_day">Lagere Obst und Gemüse separat, um sie länger frisch zu halten</string>
+    <string name="notification_weekly_tip_organize_fridge">Platziere Lebensmittel, die bald ablaufen, vorne, um sie zuerst zu verbrauchen</string>
+    <string name="notification_your_progress_this_week">Du hast diese Woche %1$d Lebensmittel rechtzeitig verbraucht</string>
     <string name="notifications">Benachrichtigungen</string>
     <string name="or">oder</string>
     <string name="other">Sonstiges</string>
     <string name="overview">Überblick</string>
     <string name="pantry">Vorratskammer</string>
     <string name="password">Passwort</string>
-    <string name="password_invalid">Das Passwort muss mindestens 12 Zeichen, einen Groß- und
-        Kleinbuchstaben sowie eine Zahl enthalten.</string>
+    <string name="password_invalid">Das Passwort muss mindestens 12 Zeichen, einen Groß- und Kleinbuchstaben sowie eine Zahl enthalten.</string>
     <string name="password_mismatch">Die Passwörter stimmen nicht überein.</string>
     <string name="pckg">Packung</string>
     <string name="pcs">Stück</string>
@@ -141,12 +120,8 @@
     <string name="quantity">Menge</string>
     <string name="reset">Zurücksetzen</string>
     <string name="reset_password">Passwort zurücksetzen</string>
-    <string name="reset_password_description">Wir senden dir einen Link zum Zurücksetzen
-        deines Passworts. Aus Sicherheitsgründen wirst du dann ausgeloggt und musst dich erneut
-        anmelden.</string>
-    <string name="reset_password_email_sent">Wir haben dir einen Link zum Zurücksetzen
-        deines Passworts geschickt. Aus Sicherheitsgründen musst du dich erneut anmelden.
-    </string>
+    <string name="reset_password_description">Wir senden dir einen Link zum Zurücksetzen deines Passworts. Aus Sicherheitsgründen wirst du dann ausgeloggt und musst dich erneut anmelden.</string>
+    <string name="reset_password_email_sent">Wir haben dir einen Link zum Zurücksetzen deines Passworts geschickt. Aus Sicherheitsgründen musst du dich erneut anmelden.</string>
     <string name="reset_password_title">Passwort zurücksetzen?</string>
     <string name="sachet">Tütchen</string>
     <string name="save_changes">Änderungen speichern</string>
@@ -160,16 +135,14 @@
     <string name="settings">Einstellungen</string>
     <string name="share">Haushalts-ID teilen</string>
     <string name="sign_in">Einloggen</string>
-    <string name="sign_in_description">Du hast noch kein Konto? Klicken hier, um dich zu
-        registrieren!</string>
+    <string name="sign_in_description">Du hast noch kein Konto? Klicken hier, um dich zu registrieren!</string>
     <string name="sign_in_with_email">Mit E-Mail einloggen</string>
     <string name="sign_in_with_google">Mit Google einloggen</string>
     <string name="sign_out">Ausloggen</string>
     <string name="sign_out_description">Du musst dich dann erneut anmelden.</string>
     <string name="sign_out_title">Ausloggen?</string>
     <string name="sign_up">Registrieren</string>
-    <string name="sign_up_description">Du hast bereits ein Konto? Klicke hier, um dich
-        anzumelden!</string>
+    <string name="sign_up_description">Du hast bereits ein Konto? Klicke hier, um dich anzumelden!</string>
     <string name="sign_up_error">Registrierung fehlgeschlagen. Bitte versuche es erneut.</string>
     <string name="sign_up_header">Konto erstellen</string>
     <string name="sign_up_step1" tools:ignore="TypographyFractions">Konto erstellen (1/3)</string>
@@ -215,11 +188,9 @@
     <string name="select_household_type">Haushaltstyp wählen</string>
     <string name="household_type">Haushaltstyp</string>
     <string name="delete_household">Haushalt löschen</string>
-    <string name="delete_household_description">Der Haushalt wird endgültig gelöscht und kann nicht
-        wiederhergestellt werden.</string>
+    <string name="delete_household_description">Der Haushalt wird endgültig gelöscht und kann nicht wiederhergestellt werden.</string>
     <string name="leave_household">Haushalt verlassenq</string>
-    <string name="leave_household_description">Du wirst aus dem Haushalt entfernt und verlierst
-        alle aktuellen Bestände.</string>
+    <string name="leave_household_description">Du wirst aus dem Haushalt entfernt und verlierst alle aktuellen Bestände.</string>
     <string name="add_user_by_id">Benutzer über ID hinzufügen</string>
     <string name="add_user">Benutzer hinzufügen</string>
     <string name="user_not_found">Benutzer nicht gefunden</string>
@@ -232,20 +203,16 @@
     <string name="buy_a_coffee">Kaufe einen Kaffee</string>
     <string name="user_id">Benutzer-ID</string>
     <string name="upgrade_to_premium">Upgrade auf Premium</string>
-    <string name="single_household_warning">Durch den Wechsel zu einem Single-Haushalt werden alle
-        anderen Mitglieder aus diesem Haushalt entfernt. Möchtest du fortfahren?</string>
+    <string name="single_household_warning">Durch den Wechsel zu einem Single-Haushalt werden alle anderen Mitglieder aus diesem Haushalt entfernt. Möchtest du fortfahren?</string>
     <string name="warning">Warnung</string>
     <string name="confirm">Bestätigen</string>
-    <string name="pair_household_warning">Bitte wähle einen Benutzer aus, der im Haushalt
-        verbleiben soll. Andere Benutzer werden entfernt.</string>
+    <string name="pair_household_warning">Bitte wähle einen Benutzer aus, der im Haushalt verbleiben soll. Andere Benutzer werden entfernt.</string>
     <string name="pair_selection_info">Wähle den Partner, der im Haushalt bleiben soll:</string>
     <string name="search">Suchen</string>
     <string name="download_data_title">Datenexport</string>
-    <string name="download_data_text">Möchtest du die zu deinem Account assoziierten Daten als
-        JSON-Datei exportieren?</string>
+    <string name="download_data_text">Möchtest du die zu deinem Account assoziierten Daten als JSON-Datei exportieren?</string>
     <string name="download_data_error">Daten konnten nicht heruntergeladen werden</string>
-    <string name="download_data_success">Daten erfolgreich in den „Downloads“-Ordner
-        heruntergeladen</string>
+    <string name="download_data_success">Daten erfolgreich in den „Downloads“-Ordner heruntergeladen</string>
     <string name="added_product">hat einen Artikel hinzugefügt</string>
     <string name="enter_product_name">Bitte einen Produktnamen eingeben</string>
     <string name="select_expiry_date">Bitte ein Haltbarkeitsdatum wählen</string>
@@ -321,7 +288,7 @@
     <string name="vegan">Vegan</string>
     <string name="vegetarian">Vegetarisch</string>
     <string name="organic_desc">Bio: %1$s</string>
-    <string name="nutrition_heading">Nährwerte:</string>
+    <string name="nutrition_heading">Nährwerte pro 100 g:</string>
     <string name="energy">Energie: %1$s kcal</string>
     <string name="fat">Fett: %1$s g</string>
     <string name="saturated_fat">davon gesättigte Fettsäuren: %1$s g</string>
@@ -343,8 +310,7 @@
     <string name="continue_text">Fortfahren</string>
     <string name="error_empty_name">Der Name darf nicht leer sein.</string>
     <string name="error_name_too_short">Der Name muss mindestens 2 Zeichen lang sein.</string>
-    <string name="error_name_invalid_characters">Der Name darf nur Buchstaben und Leerzeichen
-        enthalten.</string>
+    <string name="error_name_invalid_characters">Der Name darf nur Buchstaben und Leerzeichen enthalten.</string>
     <string name="select_profile_picture">Wähle ein Profilbild aus</string>
     <string name="select_picture">Bild auswählen</string>
     <string name="change_picture">Bild ändern</string>
@@ -361,19 +327,33 @@
     <string name="select_time_before_expiration">Benachrichtigungszeit vor dem Ablauf wählen</string>
     <string name="used_items_percentage">Anteil der verwerteten Lebensmittel:</string>
     <string name="faq_question_1">Was ist der Zweck dieser App?</string>
-    <string name="faq_answer_1">Die App hilft, Lebensmittelverschwendung zu reduzieren, indem sie
-        Bestände und Ablaufdaten verfolgt.</string>
+    <string name="faq_answer_1">Die App hilft, Lebensmittelverschwendung zu reduzieren, indem sie Bestände und Ablaufdaten verfolgt.</string>
     <string name="faq_question_2">Wie kann ich ein neues Produkt hinzufügen?</string>
-    <string name="faq_answer_2">Du kannst ein neues Produkt hinzufügen, indem du auf den Button
-        Produkt hinzufügen im Home-Bereich klickst.</string>
+    <string name="faq_answer_2">Du kannst ein neues Produkt hinzufügen, indem du auf den Button Produkt hinzufügen im Home-Bereich klickst.</string>
     <string name="faq_question_3">Wie werde ich benachrichtigt?</string>
-    <string name="faq_answer_3">Benachrichtigungen erinnern dich an ablaufende Produkte und geben
-        Tipps zur Vermeidung von Verschwendung.</string>
-    <string name="add_products_inventory">Füge Produkte über den Button hinzu, um sie im
-        Inventar anzuzeigen</string>
-    <string name="add_products_home">Füge Produkte über den Button hinzu, um sie hier
-        anzuzeigen</string>
-    <string name="no_products_expiring_soon">Perfekt! Keine deiner Produkte laufen innerhalb des
-        nächsten Monats ab.</string>
+    <string name="faq_answer_3">Benachrichtigungen erinnern dich an ablaufende Produkte und geben Tipps zur Vermeidung von Verschwendung.</string>
+    <string name="add_products_inventory">Füge Produkte über den Button hinzu, um sie im Inventar anzuzeigen</string>
+    <string name="add_products_home">Füge Produkte über den Button hinzu, um sie hier anzuzeigen</string>
+    <string name="no_products_expiring_soon">Perfekt! Keine deiner Produkte laufen innerhalb des nächsten Monats ab.</string>
     <string name="no_products_expired">Super! Keine deiner Produkte sind abgelaufen.</string>
+    <string name="freshkeeper_statistics">FreshKeeper Statistiken</string>
+    <string name="share_statistics_message">Hallo! Mit der App FreshKeeper behalte ich den Überblick über meine Lebensmittel und minimiere Verschwendung 🥬🍎\n\nDie App erinnert mich rechtzeitig an ablaufende Produkte und hilft mir, klüger zu konsumieren 📅\n\nHier meine aktuellen Statistiken :)</string>
+    <string name="product_image">Produktbild</string>
+    <string name="add_image">Bild hinzufügen</string>
+    <string name="change_image">Bild ändern</string>
+    <string name="delete_image">Bild löschen</string>
+    <string name="take_photo">Foto machen</string>
+    <string name="select_from_gallery">Aus Galerie auswählen</string>
+    <string name="add_products">Produkte hinzufügen</string>
+    <string name="add_products_warning">Möchtest du deine Produkte dem Haushalt hinzufügen? Wenn nicht, werden diese gelöscht und können nicht wiederhergestellt werden.</string>
+    <string name="french">Französisch</string>
+    <string name="italian">Italienisch</string>
+    <string name="portuguese">Portugiesisch</string>
+    <string name="nutri_score_heading">Nutri-Score:</string>
+    <string name="certificates_heading">Zertifikate:</string>
+    <string name="wasted_food_items">Verschwendete Lebensmittel</string>
+    <string name="most_wasted_category">Meist verschwendete Kategorie</string>
+    <string name="food_waste_summary">Zusammenfassung der Lebensmittelverschwendung</string>
+    <string name="nutri_score">Nutri-Score</string>
+    <string name="nutriments_statistics">Durchschnittliche Nährwerte</string>
 </resources>

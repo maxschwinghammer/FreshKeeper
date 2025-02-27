@@ -34,6 +34,7 @@ fun CurrentInventoriesSection(
     onItemClick: (FoodItem) -> Unit,
     selectedStorageLocations: List<String>,
     selectedCategories: List<String>,
+    searchQuery: String,
     onItemsUpdated: (List<FoodItem>) -> Unit,
 ) {
     val viewModel: InventoryViewModel = hiltViewModel()
@@ -98,6 +99,10 @@ fun CurrentInventoriesSection(
                             (
                                 selectedCategories.isEmpty() ||
                                     it.category in selectedCategories
+                            ) &&
+                            (
+                                searchQuery.isBlank() ||
+                                    it.name.contains(searchQuery, ignoreCase = true)
                             )
                     }
 

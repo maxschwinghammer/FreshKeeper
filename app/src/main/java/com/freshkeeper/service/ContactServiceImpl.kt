@@ -26,7 +26,10 @@ class ContactServiceImpl
                 throw IllegalStateException("User email is not available")
             }
 
-            Log.d("ContactServiceImpl", "Sending email with subject: $subject and message: $message")
+            Log.d(
+                "ContactServiceImpl",
+                "Sending email with subject: $subject and message: $message",
+            )
 
             withContext(Dispatchers.IO) {
                 try {
@@ -34,7 +37,7 @@ class ContactServiceImpl
                         Properties().apply {
                             put("mail.smtp.auth", "true")
                             put("mail.smtp.starttls.enable", "true")
-                            put("mail.smtp.host", "smtp.gmail.com")
+                            put("mail.smtp.host", "smtp.strato.de")
                             put("mail.smtp.port", "587")
                         }
 
@@ -44,22 +47,25 @@ class ContactServiceImpl
                             object : javax.mail.Authenticator() {
                                 override fun getPasswordAuthentication() =
                                     javax.mail.PasswordAuthentication(
-                                        "your-email@gmail.com",
-                                        "your-password-or-app-password",
+                                        "feedback@freshkeeper.de",
+                                        "4??!f_UG!H52yM@",
                                     )
                             },
                         )
 
                     val emailMessage =
                         MimeMessage(session).apply {
-                            setFrom(InternetAddress("your-email@gmail.com"))
-                            addRecipient(Message.RecipientType.TO, InternetAddress("info@freshkeeper.de"))
+                            setFrom(InternetAddress("feedback@freshkeeper.de"))
+                            addRecipient(
+                                Message.RecipientType.TO,
+                                InternetAddress("info@freshkeeper.de"),
+                            )
                             setSubject(subject)
                             setText("Message from: $userEmail\n\n$message")
                         }
 
                     Transport.send(emailMessage)
-                    println("Email sent successfully")
+                    Log.d("ContactServiceImpl", "Email sent successfully")
                 } catch (e: Exception) {
                     e.printStackTrace()
                     throw Exception("Failed to send email: ${e.message}")

@@ -72,6 +72,23 @@ class AccountServiceImpl
                 ?: throw IllegalStateException("Current user is not logged in or email is unavailable")
         }
 
+        override suspend fun getBiometricEnabled(): Boolean {
+            val currentUser = auth.currentUser
+            return if (currentUser != null) {
+                val userId = currentUser.uid
+                val userDocumentRef = firestore.collection("users").document(userId)
+                try {
+                    val userSnapshot = userDocumentRef.get().await()
+                    userSnapshot.getBoolean("isBiometricEnabled") ?: false
+                } catch (e: Exception) {
+                    Log.e("AccountServiceImpl", "Error fetching biometric status", e)
+                    false
+                }
+            } else {
+                false
+            }
+        }
+
         override suspend fun getUserObject(): User {
             val currentUser = auth.currentUser
             return if (currentUser != null) {

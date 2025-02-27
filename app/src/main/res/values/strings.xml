@@ -36,8 +36,7 @@
     <string name="sign_up_with_email">Sign up with e-mail</string>
     <string name="sign_in_with_email">Sign in with e-mail</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="reset_password_email_sent">We have sent you a link to reset your password. For
-        security reasons, you will need to sign in again.</string>
+    <string name="reset_password_email_sent">We have sent you a link to reset your password. For security reasons, you will need to sign in again.</string>
     <string name="verify_email">Verify e-mail</string>
     <string name="email_verification_failed">E-mail verification failed</string>
     <string name="verify_email_prompt">Verify your e-mail to continue</string>
@@ -48,8 +47,7 @@
     <string name="sign_out_description">You will have to sign in again.</string>
     <string name="delete_account">Delete account</string>
     <string name="delete_account_title">Delete account?</string>
-    <string name="delete_account_description">Your account will be deleted. This action is
-        irreversible.</string>
+    <string name="delete_account_description">Your account will be deleted. This action is irreversible.</string>
     <string name="cancel">Cancel</string>
     <string name="profile_name">Display name</string>
     <string name="profile_email">E-mail: %1$s</string>
@@ -111,11 +109,7 @@
     <string name="invite_partner">Invite partner</string>
     <string name="invite_text">Invite a person to your household</string>
     <string name="share">Share household id</string>
-    <string name="invite_message">
-        Hello! With the FreshKeeper app, I keep track of my food and minimize waste 🥬🍎\n\nThe app
-        reminds me of expiring products on time and helps me consume smarter 📅\n\nTry it out and
-        join our household! Simply enter the following household ID in the settings:
-    </string>
+    <string name="invite_message">Hello! With the FreshKeeper app, I keep track of my food and minimize waste 🥬🍎\n\nThe app reminds me of expiring products on time and helps me consume smarter 📅\n\nTry it out and join our household! Simply enter the following household ID in the settings:</string>
     <string name="see_expiring_food">See expiring food</string>
     <string name="view_household">View household</string>
     <string name="see_statistics">See statistics</string>
@@ -139,8 +133,7 @@
     <string name="bag">bag</string>
     <string name="food_recognition">Food recognition</string>
     <string name="scan_food_item">Scan food item</string>
-    <string name="password_invalid">The password must be at least 12 characters long and contain an
-        uppercase letter, a lowercase letter, and a number.</string>
+    <string name="password_invalid">The password must be at least 12 characters long and contain an uppercase letter, a lowercase letter, and a number.</string>
     <string name="email_invalid">Invalid e-mail format.</string>
     <string name="password_mismatch">Passwords do not match.</string>
     <string name="sign_up_error">Sign-up failed. Please try again.</string>
@@ -150,24 +143,20 @@
     <string name="notification_group_creation">You can now manage your food together</string>
     <string name="notification_product_expires_tomorrow">Consume it promptly to save waste</string>
     <string name="notification_created_household_group">%1$s created a household group</string>
-    <string name="notification_your_progress_this_week">You used %1$d foods in time this week
-    </string>
-    <string name="notification_tip_of_the_day">Store fruit and vegetables separately to keep them
-        fresh for longer</string>
-    <string name="notification_inventory_check">It\'s been %1$d days since you last checked your
-        inventory</string>
+    <string name="notification_your_progress_this_week">You used %1$d foods in time this week</string>
+    <string name="notification_tip_of_the_day">Store fruit and vegetables separately to keep them fresh for longer</string>
+    <string name="notification_inventory_check">It\'s been %1$d days since you last checked your inventory</string>
     <string name="notification_product_expires">%1$s expires in %1$d days</string>
     <string name="notification_joined_household_group">%1$s joined your household group</string>
-    <string name="notification_weekly_tip_organize_fridge">Place items nearing expiration in front
-        to consume first</string>
+    <string name="notification_weekly_tip_organize_fridge">Place items nearing expiration in front to consume first</string>
     <string name="notification_inventory_attention_needed">Your inventory needs attention</string>
     <string name="notification_added_items_to_inventory">%1$s added new items to inventory</string>
-    <string name="notification_savings_this_month">You reduced food waste by %1$d%% this month!
-    </string>
+    <string name="notification_savings_this_month">You reduced food waste by %1$d%% this month!</string>
     <string name="language">Language</string>
     <string name="change_language">Change language</string>
     <string name="german">German</string>
     <string name="english">English</string>
+    <string name="spanish">Spanish</string>
     <string name="in_days">In %1$d days</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
@@ -176,14 +165,11 @@
     <string name="reset">Reset</string>
     <string name="reset_password">Reset password</string>
     <string name="reset_password_title">Reset password?</string>
-    <string name="reset_password_description">We will send you a link to reset your password.
-        For security reasons, you will then be logged out and have to sign in again.</string>
-    <string name="forgot_password_description">We will send you a link to reset your password. You
-        can then sign in with the new password.</string>
+    <string name="reset_password_description">We will send you a link to reset your password. For security reasons, you will then be logged out and have to sign in again.</string>
+    <string name="forgot_password_description">We will send you a link to reset your password. You can then sign in with the new password.</string>
     <string name="change_email">Change e-mail</string>
     <string name="change_email_title">Change e-mail?</string>
-    <string name="change_email_description">Enter your new e-mail address. For security reasons,
-        you will then be logged out and have to sign in again.</string>
+    <string name="change_email_description">Enter your new e-mail address. For security reasons, you will then be logged out and have to sign in again.</string>
     <string name="enter_new_email">Enter new e-mail</string>
     <string name="sign_up_info_1">If you continue, you accept the</string>
     <string name="terms_of_service">terms of service</string>
@@ -193,8 +179,7 @@
     <string name="biometric_auth_title">Biometric authentication</string>
     <string name="biometric_auth_failed">Biometric authentication failed</string>
     <string name="biometric_auth_subtitle">Authenticate yourself to continue</string>
-    <string name="biometric_auth_text">Would you like to activate biometric authentication?
-    </string>
+    <string name="biometric_auth_text">Would you like to activate biometric authentication?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="notification_settings">Notification settings</string>
@@ -209,11 +194,9 @@
     <string name="select_household_type">Select household type</string>
     <string name="household_type">Household type</string>
     <string name="delete_household">Delete household</string>
-    <string name="delete_household_description">The household will be deleted. This action is
-        irreversible.</string>
+    <string name="delete_household_description">The household will be deleted. This action is irreversible.</string>
     <string name="leave_household">Leave household</string>
-    <string name="leave_household_description">You will be removed from the household and loose all
-        current inventories.</string>
+    <string name="leave_household_description">You will be removed from the household and loose all current inventories.</string>
     <string name="add_user_by_id">Add user by id</string>
     <string name="add_user">Add user</string>
     <string name="user_not_found">User not found</string>
@@ -226,17 +209,14 @@
     <string name="buy_a_coffee">Buy a coffee</string>
     <string name="user_id">User ID</string>
     <string name="upgrade_to_premium">Upgrade to premium</string>
-    <string name="single_household_warning">Changing to a single household will remove all other
-        members from this household. Do you want to continue?</string>
+    <string name="single_household_warning">Changing to a single household will remove all other members from this household. Do you want to continue?</string>
     <string name="warning">Warning</string>
     <string name="confirm">Confirm</string>
-    <string name="pair_household_warning">Please select one user to keep in the household.
-        Other users will be removed.</string>
+    <string name="pair_household_warning">Please select one user to keep in the household. Other users will be removed.</string>
     <string name="pair_selection_info">Select the partner who will remain in the household:</string>
     <string name="search">Search</string>
     <string name="download_data_title">Data export</string>
-    <string name="download_data_text">Would you like to export the data associated with your
-        account as a JSON file?</string>
+    <string name="download_data_text">Would you like to export the data associated with your account as a JSON file?</string>
     <string name="download_data_error">Data could not be downloaded</string>
     <string name="download_data_success">Data downloaded successfully to your "Downloads"-folder</string>
     <string name="added_product">added a product</string>
@@ -314,7 +294,7 @@
     <string name="vegan">Vegan</string>
     <string name="vegetarian">Vegetarian</string>
     <string name="organic_desc">Organic: %1$s</string>
-    <string name="nutrition_heading">Nutritional values:</string>
+    <string name="nutrition_heading">Nutrition per 100 g:</string>
     <string name="energy">Energy: %1$s kcal</string>
     <string name="fat">Fat: %1$s g</string>
     <string name="saturated_fat">of which saturated fat: %1$s g</string>
@@ -353,18 +333,33 @@
     <string name="select_time_before_expiration">Select notification time before expiration</string>
     <string name="used_items_percentage">Share of food utilised:</string>
     <string name="faq_question_1">What is the purpose of this app?</string>
-    <string name="faq_answer_1">The app helps reduce food waste by tracking food inventory and
-        expiry dates.</string>
+    <string name="faq_answer_1">The app helps reduce food waste by tracking food inventory and expiry dates.</string>
     <string name="faq_question_2">How can I add a new item?</string>
-    <string name="faq_answer_2">You can add a new item by clicking on the Add Food button in the
-        Home section.</string>
+    <string name="faq_answer_2">You can add a new item by clicking on the Add Food button in the Home section.</string>
     <string name="faq_question_3">How do I get notified?</string>
-    <string name="faq_answer_3">Notifications will remind you of expiring items and suggest
-        waste-reducing tips.</string>
-    <string name="add_products_inventory">Add products using the button to display them in
-        the inventory</string>
+    <string name="faq_answer_3">Notifications will remind you of expiring items and suggest waste-reducing tips.</string>
+    <string name="add_products_inventory">Add products using the button to display them in the inventory</string>
     <string name="add_products_home">Add products using the button to display them here</string>
-    <string name="no_products_expiring_soon">Perfect! None of your products expire within the
-        next month.</string>
+    <string name="no_products_expiring_soon">Perfect! None of your products expire within the next month.</string>
     <string name="no_products_expired">Super! None of your products have expired.</string>
+    <string name="freshkeeper_statistics">FreshKeeper Statistics</string>
+    <string name="share_statistics_message">Hello! With the FreshKeeper app, I keep track of my food and minimize waste 🥬🍎\n\nThe app reminds me of expiring products on time and helps me consume smarter 📅\n\nHere are my latest statistics :)</string>
+    <string name="product_image">Product image</string>
+    <string name="add_image">Add image</string>
+    <string name="change_image">Change image</string>
+    <string name="delete_image">Delete image</string>
+    <string name="take_photo">Take photo</string>
+    <string name="select_from_gallery">Select from gallery</string>
+    <string name="add_products">Add products</string>
+    <string name="add_products_warning">Would you like to add your products to the household? If not, they will be deleted and cannot be restored.</string>
+    <string name="french">French</string>
+    <string name="italian">Italian</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="nutri_score_heading">Nutri-Score:</string>
+    <string name="certificates_heading">Certificates:</string>
+    <string name="wasted_food_items">Wasted Food Items</string>
+    <string name="most_wasted_category">Most wasted category</string>
+    <string name="food_waste_summary">Food Waste Summary</string>
+    <string name="nutri_score">Nutri-Score</string>
+    <string name="nutriments_statistics">Average Nutrients</string>
 </resources>

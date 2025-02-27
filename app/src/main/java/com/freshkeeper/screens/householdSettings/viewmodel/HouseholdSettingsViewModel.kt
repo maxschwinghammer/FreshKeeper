@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.householdSettings.viemodel
+package com.freshkeeper.screens.householdSettings.viewmodel
 
 import android.content.Context
 import android.util.Log
@@ -47,6 +47,31 @@ class HouseholdSettingsViewModel
 
             val household = snapshot.documents.firstOrNull()?.toObject(Household::class.java)
             _household.value = household ?: Household()
+        }
+
+        fun onDeleteProducts() {
+            launchCatching {
+                val userId = _user.value.id
+
+                try {
+                    val foodItemsQuerySnapshot =
+                        firestore
+                            .collection("foodItems")
+                            .whereEqualTo("userId", userId)
+                            .get()
+                            .await()
+
+                    val batch = firestore.batch()
+
+                    foodItemsQuerySnapshot.documents.forEach { document ->
+                        batch.delete(document.reference)
+                    }
+
+                    batch.commit().await()
+                } catch (e: Exception) {
+                    Log.e("DeleteProducts", "Error when deleting food items", e)
+                }
+            }
         }
 
         fun onUpdateHouseholdNameClick(newName: String) {
@@ -108,7 +133,11 @@ class HouseholdSettingsViewModel
 
                     _household.value = newHousehold
                 } catch (e: Exception) {
-                    Log.e("CreateHousehold", "Error when creating the household or updating foodItems", e)
+                    Log.e(
+                        "CreateHousehold",
+                        "Error when creating the household or updating foodItems",
+                        e,
+                    )
                 }
             }
         }
@@ -237,10 +266,43 @@ class HouseholdSettingsViewModel
                             .get()
                             .await()
 
+                    val foodItemsQuerySnapshot =
+                        firestore
+                            .collection("foodItems")
+                            .whereEqualTo("householdId", householdId)
+                            .get()
+                            .await()
+
+                    val activitiesQuerySnapshot =
+                        firestore
+                            .collection("activities")
+                            .whereEqualTo("householdId", householdId)
+                            .get()
+                            .await()
+
                     val batch = firestore.batch()
 
                     usersQuerySnapshot.documents.forEach { document ->
                         batch.update(document.reference, "householdId", null)
+                    }
+
+                    val imageIds = mutableListOf<String>()
+
+                    foodItemsQuerySnapshot.documents.forEach { document ->
+                        document.getString("imageId")?.let { imageIds.add(it) }
+                        batch.delete(document.reference)
+                    }
+
+                    imageIds.forEach { imageId ->
+                        batch.delete(
+                            firestore
+                                .collection("foodItemPictures")
+                                .document(imageId),
+                        )
+                    }
+
+                    activitiesQuerySnapshot.documents.forEach { document ->
+                        batch.delete(document.reference)
                     }
 
                     batch.commit().await()
@@ -249,9 +311,36 @@ class HouseholdSettingsViewModel
                 } catch (e: Exception) {
                     Log.e(
                         "DeleteHousehold",
-                        "Error when deleting the household or updating the users",
+                        "Error when deleting the household, updating users, " +
+                            "deleting food items, or deleting food item pictures",
                         e,
                     )
+                }
+            }
+        }
+
+        fun onAddProducts() {
+            launchCatching {
+                val userId = _user.value.id
+                val householdId = _household.value.id
+
+                try {
+                    val foodItemsQuerySnapshot =
+                        firestore
+                            .collection("foodItems")
+                            .whereEqualTo("userId", userId)
+                            .get()
+                            .await()
+
+                    val batch = firestore.batch()
+
+                    foodItemsQuerySnapshot.documents.forEach { document ->
+                        batch.update(document.reference, "householdId", householdId)
+                    }
+
+                    batch.commit().await()
+                } catch (e: Exception) {
+                    Log.e("AddProducts", "Error when adding products to household", e)
                 }
             }
         }

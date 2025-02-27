@@ -52,6 +52,7 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
 import com.freshkeeper.R
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
+import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.screens.profileSettings.convertBase64ToBitmap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
@@ -70,8 +71,13 @@ fun MembersSection(
     inviteSheetState: SheetState,
     onCreateHouseholdClick: (String, String) -> Unit,
     onJoinHouseholdClick: (String) -> Unit,
+    onAddProducts: () -> Unit,
+    onDeleteProducts: () -> Unit,
 ) {
     val viewModel: HouseholdViewModel = hiltViewModel()
+    val inventoryViewModel: InventoryViewModel = hiltViewModel()
+
+    val items by inventoryViewModel.foodItems.observeAsState(emptyList())
     val members by viewModel.members.observeAsState(emptyList())
     val isInHousehold by viewModel.isInHousehold.observeAsState(false)
     val household by viewModel.household.observeAsState()
@@ -83,6 +89,7 @@ fun MembersSection(
     val showJoinHouseholdDialog = remember { mutableStateOf(false) }
     var showCreateHouseholdDialog by remember { mutableStateOf(false) }
     var showHouseholdTypeDialog by remember { mutableStateOf(false) }
+    var showAddProductsDialog by remember { mutableStateOf(false) }
 
     val householdTypeMap =
         mapOf(
@@ -471,6 +478,9 @@ fun MembersSection(
                         onClick = {
                             onCreateHouseholdClick(householdName, householdType)
                             showHouseholdTypeDialog = false
+                            if (items.isNotEmpty()) {
+                                showAddProductsDialog = true
+                            }
                         },
                         colors =
                             ButtonDefaults.buttonColors(
@@ -484,6 +494,50 @@ fun MembersSection(
                     }
                 },
                 onDismissRequest = { showHouseholdTypeDialog = false },
+            )
+        }
+        if (showAddProductsDialog) {
+            AlertDialog(
+                containerColor = ComponentBackgroundColor,
+                title = { Text(stringResource(R.string.add_products)) },
+                text = {
+                    Text(text = stringResource(R.string.add_products_warning))
+                },
+                dismissButton = {
+                    Button(
+                        onClick = {
+                            onDeleteProducts()
+                            showAddProductsDialog = false
+                        },
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = GreyColor,
+                                contentColor = TextColor,
+                            ),
+                        shape = RoundedCornerShape(20.dp),
+                        border = BorderStroke(1.dp, ComponentStrokeColor),
+                    ) {
+                        Text(text = stringResource(R.string.no))
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            onAddProducts()
+                            showAddProductsDialog = false
+                        },
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = AccentTurquoiseColor,
+                                contentColor = GreyColor,
+                            ),
+                        shape = RoundedCornerShape(20.dp),
+                        border = BorderStroke(1.dp, ComponentStrokeColor),
+                    ) {
+                        Text(text = stringResource(R.string.yes))
+                    }
+                },
+                onDismissRequest = { showAddProductsDialog = false },
             )
         }
     }

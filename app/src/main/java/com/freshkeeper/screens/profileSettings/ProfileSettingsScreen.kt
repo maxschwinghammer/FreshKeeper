@@ -72,7 +72,7 @@ fun ProfileSettingsScreen(
     }
     val showLowerTransition by remember {
         derivedStateOf {
-            listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0
+            listState.layoutInfo.visibleItemsInfo.size < 9
         }
     }
 
@@ -170,7 +170,9 @@ fun ProfileSettingsScreen(
                     UpperTransition()
                 }
                 if (showLowerTransition) {
-                    LowerTransition(modifier = Modifier.align(Alignment.BottomCenter))
+                    LowerTransition(
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                    )
                 }
             }
         }

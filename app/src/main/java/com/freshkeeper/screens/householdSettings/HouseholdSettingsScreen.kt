@@ -16,6 +16,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,7 +41,8 @@ import com.freshkeeper.screens.householdSettings.cards.InviteCard
 import com.freshkeeper.screens.householdSettings.cards.JoinHouseholdCard
 import com.freshkeeper.screens.householdSettings.cards.LeaveHouseholdCard
 import com.freshkeeper.screens.householdSettings.cards.SelectHouseholdTypeCard
-import com.freshkeeper.screens.householdSettings.viemodel.HouseholdSettingsViewModel
+import com.freshkeeper.screens.householdSettings.viewmodel.HouseholdSettingsViewModel
+import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.sheets.AddUserByIdSheet
 import com.freshkeeper.sheets.InviteSheet
@@ -58,10 +60,12 @@ fun HouseholdSettingsScreen(
 ) {
     val viewModel: HouseholdSettingsViewModel = hiltViewModel()
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
+    val inventoryViewModel: InventoryViewModel = hiltViewModel()
 
     val user by viewModel.user.collectAsState(initial = User())
     val household by viewModel.household.collectAsState(initial = Household())
     var selectedHouseholdType by remember { mutableStateOf("Family") }
+    val items by inventoryViewModel.foodItems.observeAsState(emptyList())
 
     val qrCodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val inviteSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -123,6 +127,9 @@ fun HouseholdSettingsScreen(
                                         onCreateHouseholdClick = { name, type ->
                                             viewModel.createHousehold(name, type)
                                         },
+                                        onAddProducts = { viewModel.onAddProducts() },
+                                        onDeleteProducts = { viewModel.onDeleteProducts() },
+                                        items,
                                     )
                                     JoinHouseholdCard(onJoinHouseholdClick = { householdId ->
                                         viewModel.joinHouseholdById(
@@ -144,12 +151,17 @@ fun HouseholdSettingsScreen(
                                         selectedHouseholdType = type
                                         viewModel.onUpdateHouseholdTypeClick(type, user)
                                     },
+                                    onDeleteProducts = { viewModel.onDeleteProducts() },
+                                    onAddProducts = { viewModel.onAddProducts() },
                                     household,
                                     user,
+                                    items,
                                 )
                                 HouseholdIdCard(household.id)
                                 if (household.ownerId == user.id) {
-                                    if (household.type != "Single household" && (household.type != "Pair" || household.users.size < 2)) {
+                                    if (household.type != "Single household" &&
+                                        (household.type != "Pair" || household.users.size < 2)
+                                    ) {
                                         InviteCard(inviteSheetState, household)
                                     }
                                     DeleteHouseholdCard {
@@ -177,7 +189,12 @@ fun HouseholdSettingsScreen(
                 }
             }
             if (inviteSheetState.isVisible) {
-                InviteSheet(qrCodeSheetState, inviteSheetState, addUserByIdSheetState, household.id)
+                InviteSheet(
+                    qrCodeSheetState,
+                    inviteSheetState,
+                    addUserByIdSheetState,
+                    household.id,
+                )
             }
             if (qrCodeSheetState.isVisible) {
                 QRCodeSheet(qrCodeSheetState)

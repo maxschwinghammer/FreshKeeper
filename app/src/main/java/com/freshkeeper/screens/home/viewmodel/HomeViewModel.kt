@@ -42,7 +42,12 @@ class HomeViewModel
                         onResult = { householdId ->
                             _householdId.value = householdId
                         },
-                        onFailure = { Log.e("HouseholdViewModel", "Error loading householdId") },
+                        onFailure = {
+                            Log.e(
+                                "HouseholdViewModel",
+                                "Error loading householdId",
+                            )
+                        },
                     )
                     loadFoodItemsFromService()
                 } catch (e: Exception) {

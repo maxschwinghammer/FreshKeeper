@@ -84,7 +84,6 @@ fun StorageLocation(
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             items.forEach { item ->
-
                 Box(
                     modifier =
                         Modifier

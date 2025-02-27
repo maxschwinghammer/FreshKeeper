@@ -1,13 +1,13 @@
 package com.freshkeeper.model
 
 data class ProductDetails(
-    val productName: String?,
-    val brand: String?,
-    val nutriScore: String?,
-    val ingredients: String?,
-    val labels: List<String>?,
-    val isVegan: Boolean?,
-    val isVegetarian: Boolean?,
-    val isOrganic: Boolean?,
-    val nutriments: Nutriments?,
+    val productName: String? = null,
+    val brand: String? = null,
+    val nutriScore: String? = null,
+    val ingredients: String? = null,
+    val labels: List<String>? = null,
+    val vegan: Boolean? = null,
+    val vegetarian: Boolean? = null,
+    val organic: Boolean? = null,
+    val nutriments: Nutriments? = null,
 )

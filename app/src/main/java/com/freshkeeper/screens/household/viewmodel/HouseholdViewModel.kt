@@ -6,8 +6,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.freshkeeper.model.Activity
+import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.Member
+import com.freshkeeper.model.Nutriments
 import com.freshkeeper.service.HouseholdService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -25,23 +27,35 @@ class HouseholdViewModel
         private val _activities = MutableLiveData<List<Activity>?>()
         val activities: LiveData<List<Activity>?> = _activities
 
-        private val _totalFoodWaste = MutableLiveData<Int>()
-        val totalFoodWaste: LiveData<Int> = _totalFoodWaste
+        private val _totalWaste = MutableLiveData<Int>()
+        val totalWaste: LiveData<Int> = _totalWaste
 
-        private val _averageFoodWastePerDay = MutableLiveData<Float>()
-        val averageFoodWastePerDay: LiveData<Float> = _averageFoodWastePerDay
+        private val _averageWaste = MutableLiveData<Float>()
+        val averageWaste: LiveData<Float> = _averageWaste
 
-        private val _daysWithNoWaste = MutableLiveData<Int>()
-        val daysWithNoWaste: LiveData<Int> = _daysWithNoWaste
+        private val _daysWithoutWaste = MutableLiveData<Int>()
+        val daysWithoutWaste: LiveData<Int> = _daysWithoutWaste
 
-        private val _mostWastedItems = MutableLiveData<List<Pair<String, String>>>()
-        val mostWastedItems: LiveData<List<Pair<String, String>>> = _mostWastedItems
+        private val _mostWastedItems = MutableLiveData<List<FoodItem>>()
+        val mostWastedItems: LiveData<List<FoodItem>> = _mostWastedItems
 
         private val _wasteReduction = MutableLiveData<Int>()
         val wasteReduction: LiveData<Int> = _wasteReduction
 
         private val _usedItemsPercentage = MutableLiveData<Int>()
         val usedItemsPercentage: LiveData<Int> = _usedItemsPercentage
+
+        private val _mostWastedCategory = MutableLiveData<String>()
+        val mostWastedCategory: LiveData<String> = _mostWastedCategory
+
+        private val _expiredDates = MutableLiveData<List<Long>>()
+        val expiredDates: LiveData<List<Long>> = _expiredDates
+
+        private val _averageNutriments = MutableLiveData<Nutriments>()
+        val averageNutriments: LiveData<Nutriments> = _averageNutriments
+
+        private val _averageNutriScore = MutableLiveData<String>()
+        val averageNutriScore: LiveData<String> = _averageNutriScore
 
         private val _isInHousehold = MutableLiveData(false)
         val isInHousehold: LiveData<Boolean> = _isInHousehold
@@ -51,6 +65,35 @@ class HouseholdViewModel
 
         init {
             loadHousehold()
+            _expiredDates.value =
+                listOf(
+                    System.currentTimeMillis() - 2 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 2 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 5 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 5 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 5 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 6 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 10 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 10 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 10 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 17 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 17 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 19 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 20 * 24 * 60 * 60 * 1000,
+                    System.currentTimeMillis() - 21 * 24 * 60 * 60 * 1000,
+                )
+            _averageNutriments.value =
+                Nutriments(
+                    energyKcal = 250.0,
+                    fat = 10.5,
+                    carbohydrates = 30.0,
+                    sugars = 15.0,
+                    fiber = 4.5,
+                    proteins = 8.0,
+                    salt = 0.5,
+                )
+            _averageNutriScore.value = "C"
         }
 
         private fun loadHousehold() {
@@ -65,7 +108,8 @@ class HouseholdViewModel
                     onFailure = {
                         _household.value = Household()
                         _isInHousehold.value = false
-                        Log.d("HouseholdViewModel", "User is not in a household")
+                        _members.value = emptyList()
+                        _activities.value = emptyList()
                     },
                 )
             }
@@ -82,8 +126,13 @@ class HouseholdViewModel
                     onFailure = { Log.e("HouseholdViewModel", "Error loading activities") },
                 )
                 householdService.getFoodWasteData(
-                    onResult = { _totalFoodWaste.value = it.size },
-                    onFailure = { Log.e("HouseholdViewModel", "Error loading food waste data") },
+                    onResult = { _totalWaste.value = it.size },
+                    onFailure = {
+                        Log.e(
+                            "HouseholdViewModel",
+                            "Error loading food waste data",
+                        )
+                    },
                 )
             }
         }

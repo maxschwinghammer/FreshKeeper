@@ -49,12 +49,20 @@ fun ChangeLanguageCard(
         listOf(
             "de" to R.drawable.flag_germany,
             "en" to R.drawable.flag_usa,
+            "es" to R.drawable.flag_spain,
+            "fr" to R.drawable.flag_france,
+            "it" to R.drawable.flag_italy,
+            "pt" to R.drawable.flag_portugal,
         )
 
     val languageDisplayName =
         mapOf(
             "de" to stringResource(R.string.german),
             "en" to stringResource(R.string.english),
+            "es" to stringResource(R.string.spanish),
+            "fr" to stringResource(R.string.french),
+            "it" to stringResource(R.string.italian),
+            "pt" to stringResource(R.string.portuguese),
         )
     val selectedFlagRes = languages.find { it.first == selectedLanguage }?.second
     val selectedLanguageDisplay = languageDisplayName[currentLanguage] ?: currentLanguage

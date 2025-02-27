@@ -25,6 +25,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
+import com.freshkeeper.model.FoodItem
 import com.freshkeeper.screens.profileSettings.cards.AccountCenterCard
 import com.freshkeeper.screens.profileSettings.cards.card
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -35,10 +36,17 @@ import com.freshkeeper.ui.theme.TextColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun CreateHouseholdCard(onCreateHouseholdClick: (String, String) -> Unit) {
+fun CreateHouseholdCard(
+    onCreateHouseholdClick: (String, String) -> Unit,
+    onAddProducts: () -> Unit,
+    onDeleteProducts: () -> Unit,
+    items: List<FoodItem>,
+) {
     var showCreateHouseholdDialog by remember { mutableStateOf(false) }
-    var householdName by remember { mutableStateOf("") }
     var showHouseholdTypeDialog by remember { mutableStateOf(false) }
+    var showAddProductsDialog by remember { mutableStateOf(false) }
+
+    var householdName by remember { mutableStateOf("") }
     var householdType by remember { mutableStateOf("") }
 
     val householdTypeMap =
@@ -175,6 +183,9 @@ fun CreateHouseholdCard(onCreateHouseholdClick: (String, String) -> Unit) {
                     onClick = {
                         onCreateHouseholdClick(householdName, householdType)
                         showHouseholdTypeDialog = false
+                        if (items.isNotEmpty()) {
+                            showAddProductsDialog = true
+                        }
                     },
                     colors =
                         ButtonDefaults.buttonColors(
@@ -188,6 +199,51 @@ fun CreateHouseholdCard(onCreateHouseholdClick: (String, String) -> Unit) {
                 }
             },
             onDismissRequest = { showHouseholdTypeDialog = false },
+        )
+    }
+
+    if (showAddProductsDialog) {
+        AlertDialog(
+            containerColor = ComponentBackgroundColor,
+            title = { Text(stringResource(R.string.add_products)) },
+            text = {
+                Text(text = stringResource(R.string.add_products_warning))
+            },
+            dismissButton = {
+                Button(
+                    onClick = {
+                        onDeleteProducts()
+                        showAddProductsDialog = false
+                    },
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = GreyColor,
+                            contentColor = TextColor,
+                        ),
+                    shape = RoundedCornerShape(20.dp),
+                    border = BorderStroke(1.dp, ComponentStrokeColor),
+                ) {
+                    Text(text = stringResource(R.string.no))
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        onAddProducts()
+                        showAddProductsDialog = false
+                    },
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = AccentTurquoiseColor,
+                            contentColor = GreyColor,
+                        ),
+                    shape = RoundedCornerShape(20.dp),
+                    border = BorderStroke(1.dp, ComponentStrokeColor),
+                ) {
+                    Text(text = stringResource(R.string.yes))
+                }
+            },
+            onDismissRequest = { showAddProductsDialog = false },
         )
     }
 }

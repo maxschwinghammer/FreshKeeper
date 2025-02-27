@@ -1,11 +1,11 @@
 package com.freshkeeper.model
 
 data class Nutriments(
-    val energyKcal: Double?,
-    val fat: Double?,
-    val carbohydrates: Double?,
-    val sugars: Double?,
-    val fiber: Double?,
-    val proteins: Double?,
-    val salt: Double?,
+    val energyKcal: Double? = null,
+    val fat: Double? = null,
+    val carbohydrates: Double? = null,
+    val sugars: Double? = null,
+    val fiber: Double? = null,
+    val proteins: Double? = null,
+    val salt: Double? = null,
 )
