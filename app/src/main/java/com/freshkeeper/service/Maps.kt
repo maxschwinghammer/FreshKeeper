@@ -73,3 +73,11 @@ val categoryReverseMap =
         R.string.child_food to "child_food",
         R.string.other to "other",
     )
+
+val reverseHouseholdTypeMap =
+    mapOf(
+        "Family" to R.string.family,
+        "Shared apartment" to R.string.shared_apartment,
+        "Single household" to R.string.single_household,
+        "Pair" to R.string.pair,
+    )

@@ -23,7 +23,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -53,14 +52,13 @@ import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.home.viewmodel.HomeViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
-import com.freshkeeper.sheets.AddEntrySheet
+import com.freshkeeper.sheets.AddProductSheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
 import com.freshkeeper.sheets.EditProductSheet
 import com.freshkeeper.sheets.ManualInputSheet
-import com.freshkeeper.sheets.ProductInfoSheet
+import com.freshkeeper.sheets.productDetails.ProductDetailsSheet
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
-import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
@@ -75,6 +73,8 @@ fun HomeScreen(navController: NavHostController) {
 
     var scannedBarcode by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
+    var foodItem by remember { mutableStateOf<FoodItem?>(null) }
+    val allFoodItems by viewModel.allFoodItems.observeAsState(emptyList())
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -86,8 +86,6 @@ fun HomeScreen(navController: NavHostController) {
 
     val expiringSoonItems by viewModel.expiringSoonItems.observeAsState(emptyList())
     val expiredItems by viewModel.expiredItems.observeAsState(emptyList())
-
-    var foodItem by remember { mutableStateOf<FoodItem?>(null) }
 
     val listState = rememberLazyListState()
     val showTransition by remember {
@@ -109,12 +107,7 @@ fun HomeScreen(navController: NavHostController) {
                 }
             },
         ) { it ->
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(it),
-            ) {
+            Box(modifier = Modifier.fillMaxSize().padding(it)) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = stringResource(R.string.overview),
@@ -164,7 +157,24 @@ fun HomeScreen(navController: NavHostController) {
                                         },
                                     )
                                 }
+                            } else {
+                                item {
+                                    if (allFoodItems.isNotEmpty()) {
+                                        NoProductsText(
+                                            R.string.expiring_soon,
+                                            R.drawable.expiring_soon,
+                                            R.string.no_products_expiring_soon,
+                                        )
+                                    } else {
+                                        NoProductsText(
+                                            R.string.expiring_soon,
+                                            R.drawable.expiring_soon,
+                                            R.string.add_products_home,
+                                        )
+                                    }
+                                }
                             }
+                            item {}
                             if (expiredItems.isNotEmpty()) {
                                 item {
                                     FoodList(
@@ -195,6 +205,22 @@ fun HomeScreen(navController: NavHostController) {
                                             coroutineScope.launch { editProductSheetState.show() }
                                         },
                                     )
+                                }
+                            } else {
+                                item {
+                                    if (allFoodItems.isNotEmpty()) {
+                                        NoProductsText(
+                                            R.string.expired,
+                                            R.drawable.warning,
+                                            R.string.no_products_expired,
+                                        )
+                                    } else {
+                                        NoProductsText(
+                                            R.string.expired,
+                                            R.drawable.warning,
+                                            R.string.add_products_home,
+                                        )
+                                    }
                                 }
                             }
                             item {
@@ -245,7 +271,7 @@ fun HomeScreen(navController: NavHostController) {
             }
 
             if (sheetState.isVisible) {
-                AddEntrySheet(
+                AddProductSheet(
                     sheetState,
                     barcodeSheetState,
                     manualInputSheetState,
@@ -253,57 +279,33 @@ fun HomeScreen(navController: NavHostController) {
             }
 
             if (barcodeSheetState.isVisible) {
-                ModalBottomSheet(
-                    onDismissRequest = { coroutineScope.launch { barcodeSheetState.hide() } },
+                BarcodeScannerSheet(
                     sheetState = barcodeSheetState,
-                    containerColor = ComponentBackgroundColor,
-                ) {
-                    BarcodeScannerSheet(
-                        sheetState = barcodeSheetState,
-                        onBarcodeScanned = { barcode, date ->
-                            scannedBarcode = barcode
-                            expiryDate = date
-                            coroutineScope.launch { manualInputSheetState.show() }
-                        },
-                    )
-                }
+                    onBarcodeScanned = { barcode, date ->
+                        scannedBarcode = barcode
+                        expiryDate = date
+                        coroutineScope.launch { manualInputSheetState.show() }
+                    },
+                )
             }
 
             if (manualInputSheetState.isVisible) {
-                ModalBottomSheet(
-                    onDismissRequest = { coroutineScope.launch { manualInputSheetState.hide() } },
+                ManualInputSheet(
                     sheetState = manualInputSheetState,
-                    containerColor = ComponentBackgroundColor,
-                ) {
-                    ManualInputSheet(
-                        sheetState = manualInputSheetState,
-                        barcode = scannedBarcode,
-                        expiryTimestamp = expiryDate,
-                    )
-                }
+                    barcode = scannedBarcode,
+                    expiryTimestamp = expiryDate,
+                )
             }
 
             if (editProductSheetState.isVisible) {
-                ModalBottomSheet(
-                    onDismissRequest = { coroutineScope.launch { editProductSheetState.hide() } },
-                    sheetState = editProductSheetState,
-                    containerColor = ComponentBackgroundColor,
-                ) {
-                    foodItem?.let { item ->
-                        EditProductSheet(editProductSheetState, productInfoSheetState, item)
-                    }
+                foodItem?.let { item ->
+                    EditProductSheet(editProductSheetState, productInfoSheetState, item)
                 }
             }
 
             if (productInfoSheetState.isVisible) {
-                ModalBottomSheet(
-                    onDismissRequest = { coroutineScope.launch { productInfoSheetState.hide() } },
-                    sheetState = productInfoSheetState,
-                    containerColor = ComponentBackgroundColor,
-                ) {
-                    foodItem?.let { item ->
-                        ProductInfoSheet(productInfoSheetState, editProductSheetState, item)
-                    }
+                foodItem?.let { item ->
+                    ProductDetailsSheet(productInfoSheetState, editProductSheetState, item)
                 }
             }
         }

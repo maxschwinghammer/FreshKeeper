@@ -3,6 +3,7 @@ package com.freshkeeper.service
 import android.util.Log
 import com.freshkeeper.model.Activity
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.FoodItemPicture
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.User
 import com.google.firebase.auth.FirebaseAuth
@@ -35,12 +36,14 @@ class ProductServiceImpl
 
         override suspend fun addProduct(
             productName: String,
+            barcode: String,
             expiryTimestamp: Long,
             quantity: Int,
             unit: String,
             storageLocation: String,
             category: String,
-            imageUrl: String,
+            image: String?,
+            imageUrl: String?,
             householdId: String,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
@@ -48,27 +51,115 @@ class ProductServiceImpl
             addedText: String,
         ) {
             val currentUser = _user.value ?: return
-            val foodItem =
-                FoodItem(
-                    userId = currentUser.id,
-                    householdId = householdId,
-                    name = productName,
-                    expiryTimestamp = expiryTimestamp,
-                    quantity = quantity,
-                    unit = unit,
-                    storageLocation = storageLocation,
-                    category = category,
-                    consumed = false,
-                    thrownAway = false,
-                    imageUrl = imageUrl,
-                )
-
-            try {
+            if (!image.isNullOrEmpty()) {
+                val foodItemPicture = FoodItemPicture(image = image, type = "base64")
+                firestore
+                    .collection("foodItemPictures")
+                    .add(foodItemPicture)
+                    .addOnSuccessListener { pictureRef ->
+                        val pictureId = pictureRef.id
+                        val foodItem =
+                            FoodItem(
+                                barcode = barcode,
+                                userId = currentUser.id,
+                                householdId = householdId,
+                                name = productName,
+                                expiryTimestamp = expiryTimestamp,
+                                quantity = quantity,
+                                unit = unit,
+                                storageLocation = storageLocation,
+                                category = category,
+                                consumed = false,
+                                thrownAway = false,
+                                imageId = pictureId,
+                            )
+                        firestore
+                            .collection("foodItems")
+                            .add(foodItem)
+                            .addOnSuccessListener { documentReference ->
+                                firestore
+                                    .collection("foodItems")
+                                    .document(documentReference.id)
+                                    .update("id", documentReference.id)
+                                    .addOnSuccessListener {
+                                        coroutineScope.launch {
+                                            if (currentUser.householdId != null) {
+                                                logActivity(
+                                                    foodItem.copy(id = documentReference.id),
+                                                    productName,
+                                                    "product_added",
+                                                    addedText,
+                                                )
+                                            }
+                                            onSuccess()
+                                        }
+                                    }.addOnFailureListener { e -> onFailure(e) }
+                            }.addOnFailureListener { e -> onFailure(e) }
+                    }.addOnFailureListener { e -> onFailure(e) }
+            } else if (!imageUrl.isNullOrEmpty()) {
+                val foodItemPicture = FoodItemPicture(image = imageUrl, type = "url")
+                firestore
+                    .collection("foodItemPictures")
+                    .add(foodItemPicture)
+                    .addOnSuccessListener { pictureRef ->
+                        val pictureId = pictureRef.id
+                        val foodItem =
+                            FoodItem(
+                                barcode = barcode,
+                                userId = currentUser.id,
+                                householdId = householdId,
+                                name = productName,
+                                expiryTimestamp = expiryTimestamp,
+                                quantity = quantity,
+                                unit = unit,
+                                storageLocation = storageLocation,
+                                category = category,
+                                consumed = false,
+                                thrownAway = false,
+                                imageId = pictureId,
+                            )
+                        firestore
+                            .collection("foodItems")
+                            .add(foodItem)
+                            .addOnSuccessListener { documentReference ->
+                                firestore
+                                    .collection("foodItems")
+                                    .document(documentReference.id)
+                                    .update("id", documentReference.id)
+                                    .addOnSuccessListener {
+                                        coroutineScope.launch {
+                                            if (currentUser.householdId != null) {
+                                                logActivity(
+                                                    foodItem.copy(id = documentReference.id),
+                                                    productName,
+                                                    "product_added",
+                                                    addedText,
+                                                )
+                                            }
+                                            onSuccess()
+                                        }
+                                    }.addOnFailureListener { e -> onFailure(e) }
+                            }.addOnFailureListener { e -> onFailure(e) }
+                    }.addOnFailureListener { e -> onFailure(e) }
+            } else {
+                val foodItem =
+                    FoodItem(
+                        barcode = barcode,
+                        userId = currentUser.id,
+                        householdId = householdId,
+                        name = productName,
+                        expiryTimestamp = expiryTimestamp,
+                        quantity = quantity,
+                        unit = unit,
+                        storageLocation = storageLocation,
+                        category = category,
+                        consumed = false,
+                        thrownAway = false,
+                    )
                 firestore
                     .collection("foodItems")
                     .add(foodItem)
                     .addOnSuccessListener { documentReference ->
-                        val updatedFoodItem = foodItem.copy(id = documentReference.id)
                         firestore
                             .collection("foodItems")
                             .document(documentReference.id)
@@ -77,7 +168,7 @@ class ProductServiceImpl
                                 coroutineScope.launch {
                                     if (currentUser.householdId != null) {
                                         logActivity(
-                                            updatedFoodItem,
+                                            foodItem.copy(id = documentReference.id),
                                             productName,
                                             "product_added",
                                             addedText,
@@ -85,15 +176,34 @@ class ProductServiceImpl
                                     }
                                     onSuccess()
                                 }
-                            }.addOnFailureListener { e ->
-                                onFailure(e)
-                            }
-                    }.addOnFailureListener { e ->
-                        onFailure(e)
-                    }
-            } catch (e: Exception) {
-                onFailure(e)
+                            }.addOnFailureListener { e -> onFailure(e) }
+                    }.addOnFailureListener { e -> onFailure(e) }
             }
+        }
+
+        override fun getFoodItemPicture(
+            imageId: String,
+            onSuccess: (FoodItemPicture) -> Unit,
+            onFailure: (Exception) -> Unit,
+        ) {
+            firestore
+                .collection("foodItemPictures")
+                .document(imageId)
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.exists()) {
+                        val foodItemPicture = documentSnapshot.toObject(FoodItemPicture::class.java)
+                        if (foodItemPicture != null) {
+                            onSuccess(foodItemPicture)
+                        } else {
+                            onFailure(Exception("FoodItemPicture not found"))
+                        }
+                    } else {
+                        onFailure(Exception("No document found with the given imageId"))
+                    }
+                }.addOnFailureListener { e ->
+                    onFailure(e)
+                }
         }
 
         override fun updateProduct(

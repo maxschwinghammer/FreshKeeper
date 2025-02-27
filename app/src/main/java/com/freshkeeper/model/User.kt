@@ -7,7 +7,6 @@ data class User(
     val email: String = "",
     val provider: String = "",
     val displayName: String? = null,
-    val profilePicture: String? = null,
     @get:PropertyName("isAnonymous")
     val isAnonymous: Boolean = false,
     @get:PropertyName("isEmailVerified")
@@ -16,5 +15,4 @@ data class User(
     val isBiometricEnabled: Boolean = false,
     val createdAt: Long = 0,
     val householdId: String? = null,
-    val membershipId: String? = null,
 )

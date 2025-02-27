@@ -88,7 +88,7 @@ fun FoodList(
         items.forEach { (id, item, date) ->
             val safeId = id ?: ""
 
-            val isMultiLine = item.length > 28
+            val isMultiLine = item.length > 20
             val dynamicHeight = if (isMultiLine) 40.dp else Dp.Unspecified
 
             Row(

@@ -91,6 +91,7 @@ fun NameInputScreen(
                         contentDescription = "Logo",
                         modifier = modifier.fillMaxWidth(),
                     )
+                    Spacer(Modifier.padding(12.dp))
                     Text(
                         text = stringResource(R.string.sign_up_step2),
                         fontSize = 26.sp,
@@ -106,9 +107,7 @@ fun NameInputScreen(
                         color = TextColor,
                         textAlign = TextAlign.Center,
                     )
-
                     Spacer(Modifier.padding(12.dp))
-
                     TextField(
                         value = name,
                         onValueChange = { newName ->
@@ -134,7 +133,6 @@ fun NameInputScreen(
                                 end = 16.dp,
                             ),
                     )
-
                     if (errorMessage.isEmpty()) {
                         Spacer(Modifier.padding(16.dp))
                     }
@@ -149,7 +147,6 @@ fun NameInputScreen(
                         )
                         Spacer(Modifier.padding(8.dp))
                     }
-
                     Button(
                         onClick = {
                             skipName = true
@@ -169,9 +166,7 @@ fun NameInputScreen(
                             color = ComponentBackgroundColor,
                         )
                     }
-
                     Spacer(Modifier.padding(6.dp))
-
                     Button(
                         onClick = {
                             showError = true

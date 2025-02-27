@@ -82,15 +82,12 @@ fun InviteSheet(
                     text = stringResource(R.string.share),
                     iconId = R.drawable.share,
                     onClick = {
-//                        val inviteLink = "https://freshkeeper.de/invite?householdId=$householdId"
                         val message = context.getString(R.string.invite_message) + " " + householdId
-
                         val shareIntent =
                             Intent(Intent.ACTION_SEND).apply {
                                 type = "text/plain"
                                 putExtra(Intent.EXTRA_TEXT, message)
                             }
-
                         context.startActivity(
                             Intent.createChooser(shareIntent, context.getString(R.string.share)),
                         )

@@ -27,7 +27,6 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
-                @Suppress("UnstableApiUsage")
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
@@ -40,7 +39,6 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.5"
     }
@@ -68,6 +66,8 @@ dependencies {
     implementation(libs.androidx.runner)
     implementation(libs.androidx.espresso.core)
     implementation(libs.appauth)
+    implementation(libs.app.update)
+    implementation(libs.app.update.ktx)
     implementation(libs.barcode.scanning)
     implementation(libs.barcode.scanning.common)
     implementation(libs.billing.ktx)
@@ -75,6 +75,8 @@ dependencies {
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
     implementation(libs.com.journeyapps.zxing.android.embedded)
+    implementation(libs.com.google.android.play.review2)
+    implementation(libs.com.google.android.play.review.ktx2)
     implementation(libs.coil.compose)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.analytics)
@@ -90,6 +92,7 @@ dependencies {
     implementation(libs.hilt.navigation.compose)
     implementation(libs.firebase.messaging)
     implementation(libs.json)
+    implementation(libs.javax.mail)
     implementation(libs.junit)
     implementation(libs.material)
     implementation(libs.mlkit.image.labeling)
@@ -107,7 +110,6 @@ dependencies {
     implementation(libs.firebase.common.ktx)
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.image.labeling.common)
-    implementation(libs.javax.mail)
     implementation(libs.firebase.messaging.ktx)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)

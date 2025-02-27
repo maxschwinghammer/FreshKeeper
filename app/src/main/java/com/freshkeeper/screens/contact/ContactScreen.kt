@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -112,8 +111,6 @@ fun ContactScreen(navController: NavHostController) {
                             placeholder = { Text(text = stringResource(R.string.enter_subject)) },
                         )
 
-                        Spacer(modifier = Modifier.height(8.dp))
-
                         Text(
                             text = stringResource(R.string.your_message),
                             color = TextColor,
@@ -137,8 +134,6 @@ fun ContactScreen(navController: NavHostController) {
                                     .height(150.dp),
                             placeholder = { Text(text = stringResource(R.string.enter_message)) },
                         )
-
-                        Spacer(modifier = Modifier.height(8.dp))
 
                         Button(
                             onClick = {

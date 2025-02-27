@@ -15,6 +15,8 @@ import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.json.JSONObject
+import java.math.BigDecimal
+import java.math.RoundingMode
 import java.net.SocketTimeoutException
 import javax.inject.Inject
 
@@ -26,125 +28,166 @@ class ProductDetailsServiceImpl
         private val gson = Gson()
 
         override suspend fun fetchProductDetails(barcode: String): ProductDetails? {
-            val docRef = firestore.collection("productDetails").document(barcode)
-            val snapshot = docRef.get().await()
-            if (snapshot.exists()) {
-                Log.d(
-                    "ProductDetailsService",
-                    "Firestore document found for barcode: $barcode",
-                )
-                return snapshot.toObject(ProductDetails::class.java)
-            } else {
-                Log.d(
-                    "ProductDetailsService",
-                    "No Firestore document for barcode: $barcode. Fetching from API...",
-                )
-                val url = "https://world.openfoodfacts.org/api/v3/product/$barcode.json"
-                val request = Request.Builder().url(url).build()
-                try {
-                    Log.d("API", "Try block starts executing")
-                    client.newCall(request).execute().use { response ->
-                        Log.d("API", response.toString())
-                        if (!response.isSuccessful) {
-                            Log.e(
-                                "ProductDetailsService",
-                                "API response unsuccessful for barcode: $barcode. " +
-                                    "Code: ${response.code}",
-                            )
-                            return null
-                        }
-                        val body = response.body.string()
-                        Log.d("Body", body)
-                        val apiResponse = gson.fromJson(body, OpenFoodFactsResponse::class.java)
-                        Log.d("Api", apiResponse.toString())
-                        if (apiResponse.status != 1) {
-                            Log.d(
-                                "ProductDetailsService",
-                                "API response status not OK for barcode: $barcode. " +
-                                    "Status: ${apiResponse.status}",
-                            )
-                            return null
-                        }
-                        val product = apiResponse.product
-                        val nutriments =
-                            product.nutriments?.let {
-                                Nutriments(
-                                    energyKcal = it.energyKcal,
-                                    fat = it.fat,
-                                    carbohydrates = it.carbohydrates,
-                                    sugars = it.sugars,
-                                    fiber = it.fiber,
-                                    proteins = it.proteins,
-                                    salt = it.salt,
+            return withContext(Dispatchers.IO) {
+                val docRef = firestore.collection("productDetails").document(barcode)
+                val snapshot = docRef.get().await()
+                if (snapshot.exists()) {
+                    return@withContext snapshot.toObject(ProductDetails::class.java)
+                } else {
+                    val url = "https://world.openfoodfacts.org/api/v3/product/$barcode.json"
+                    val request = Request.Builder().url(url).build()
+                    try {
+                        client.newCall(request).execute().use { response ->
+                            if (!response.isSuccessful) {
+                                Log.e(
+                                    "ProductDetailsService",
+                                    "API response unsuccessful for barcode: $barcode. " +
+                                        "Code: ${response.code}",
                                 )
+                                return@withContext null
                             }
-                        val productDetails =
-                            ProductDetails(
-                                productName = product.productName,
-                                brand = product.brands,
-                                nutriScore = product.nutriscoreGrade,
-                                ingredients = product.ingredientsText,
-                                labels = product.labelsTags,
-                                isVegan = product.labelsTags?.contains("en:vegan"),
-                                isVegetarian = product.labelsTags?.contains("en:vegetarian"),
-                                isOrganic = product.labelsTags?.contains("en:organic"),
-                                nutriments = nutriments,
-                            )
-                        docRef.set(productDetails).await()
-                        Log.d(
+                            val body = response.body.string()
+                            val apiResponse = gson.fromJson(body, OpenFoodFactsResponse::class.java)
+
+                            val product = apiResponse.product
+                            val nutriments =
+                                product.nutriments?.let {
+                                    Nutriments(
+                                        energyKcal =
+                                            it.energyKcal?.let { value ->
+                                                BigDecimal(value)
+                                                    .setScale(
+                                                        2,
+                                                        RoundingMode.DOWN,
+                                                    ).toDouble()
+                                            },
+                                        fat =
+                                            it.fat?.let { value ->
+                                                BigDecimal(value)
+                                                    .setScale(
+                                                        2,
+                                                        RoundingMode.DOWN,
+                                                    ).toDouble()
+                                            },
+                                        carbohydrates =
+                                            it.carbohydrates?.let { value ->
+                                                BigDecimal(value)
+                                                    .setScale(
+                                                        2,
+                                                        RoundingMode.DOWN,
+                                                    ).toDouble()
+                                            },
+                                        sugars =
+                                            it.sugars?.let { value ->
+                                                BigDecimal(value)
+                                                    .setScale(
+                                                        2,
+                                                        RoundingMode.DOWN,
+                                                    ).toDouble()
+                                            },
+                                        fiber =
+                                            it.fiber?.let { value ->
+                                                BigDecimal(value)
+                                                    .setScale(
+                                                        2,
+                                                        RoundingMode.DOWN,
+                                                    ).toDouble()
+                                            },
+                                        proteins =
+                                            it.proteins?.let { value ->
+                                                BigDecimal(value)
+                                                    .setScale(
+                                                        2,
+                                                        RoundingMode.DOWN,
+                                                    ).toDouble()
+                                            },
+                                        salt =
+                                            it.salt?.let { value ->
+                                                BigDecimal(value)
+                                                    .setScale(
+                                                        2,
+                                                        RoundingMode.DOWN,
+                                                    ).toDouble()
+                                            },
+                                    )
+                                }
+                            val productDetails =
+                                ProductDetails(
+                                    productName = product.productName,
+                                    brand = product.brands,
+                                    nutriScore = product.nutriscoreGrade,
+                                    ingredients = product.ingredientsText,
+                                    labels = product.labelsTags,
+                                    vegan = product.labelsTags?.contains("en:vegan"),
+                                    vegetarian = product.labelsTags?.contains("en:vegetarian"),
+                                    organic = product.labelsTags?.contains("en:organic"),
+                                    nutriments = nutriments,
+                                )
+                            docRef.set(productDetails).await()
+                            return@withContext productDetails
+                        }
+                    } catch (e: Exception) {
+                        Log.e(
                             "ProductDetailsService",
-                            "Product details fetched and saved for barcode: $barcode",
+                            "Exception fetching product details for barcode: $barcode. " +
+                                "Error: ${e.message}",
                         )
-                        return productDetails
+                        e.printStackTrace()
+                        return@withContext null
                     }
-                } catch (e: Exception) {
-                    Log.e(
-                        "ProductDetailsService",
-                        "Exception fetching product details for barcode: $barcode. " +
-                            "Error: ${e.message}",
-                    )
-                    return null
                 }
             }
         }
 
         override suspend fun fetchAndSaveProductDetails(barcode: String) {
-            val docRef = firestore.collection("productDetails").document(barcode)
-            if (docRef.get().await().exists()) return
-            val url = "https://world.openfoodfacts.org/api/v3/product/$barcode.json"
-            val request = Request.Builder().url(url).build()
-            val response = client.newCall(request).execute()
-            if (!response.isSuccessful) return
-            val body = response.body.string()
-            val apiResponse = gson.fromJson(body, OpenFoodFactsResponse::class.java)
-            Log.d("API", apiResponse.toString())
-            if (apiResponse.status != 1) return
-            val product = apiResponse.product
-            val nutriments =
-                product.nutriments?.let {
-                    Nutriments(
-                        energyKcal = it.energyKcal,
-                        fat = it.fat,
-                        carbohydrates = it.carbohydrates,
-                        sugars = it.sugars,
-                        fiber = it.fiber,
-                        proteins = it.proteins,
-                        salt = it.salt,
+            return withContext(Dispatchers.IO) {
+                val docRef = firestore.collection("productDetails").document(barcode)
+                if (docRef.get().await().exists()) return@withContext
+                val url = "https://world.openfoodfacts.org/api/v3/product/$barcode.json"
+                val request = Request.Builder().url(url).build()
+                val response = client.newCall(request).execute()
+                if (!response.isSuccessful) return@withContext
+                val body = response.body.string()
+
+                val apiResponse = gson.fromJson(body, OpenFoodFactsResponse::class.java)
+
+                val product = apiResponse.product
+                val nutriments =
+                    product.nutriments?.let { it ->
+                        Nutriments(
+                            energyKcal = it.energyKcal?.takeIf { it.isFinite() } ?: 0.0,
+                            fat = it.fat?.takeIf { it.isFinite() } ?: 0.0,
+                            carbohydrates = it.carbohydrates?.takeIf { it.isFinite() } ?: 0.0,
+                            sugars = it.sugars?.takeIf { it.isFinite() } ?: 0.0,
+                            fiber = it.fiber?.takeIf { it.isFinite() } ?: 0.0,
+                            proteins = it.proteins?.takeIf { it.isFinite() } ?: 0.0,
+                            salt = it.salt?.takeIf { it.isFinite() } ?: 0.0,
+                        )
+                    } ?: Nutriments(
+                        energyKcal = null,
+                        fat = null,
+                        carbohydrates = null,
+                        sugars = null,
+                        fiber = null,
+                        proteins = null,
+                        salt = null,
                     )
-                }
-            val productDetails =
-                ProductDetails(
-                    productName = product.productName,
-                    brand = product.brands,
-                    nutriScore = product.nutriscoreGrade,
-                    ingredients = product.ingredientsText,
-                    labels = product.labelsTags,
-                    isVegan = product.labelsTags?.contains("en:vegan"),
-                    isVegetarian = product.labelsTags?.contains("en:vegetarian"),
-                    isOrganic = product.labelsTags?.contains("en:organic"),
-                    nutriments = nutriments,
-                )
-            docRef.set(productDetails).await()
+
+                val productDetails =
+                    ProductDetails(
+                        productName = product.productName,
+                        brand = product.brands,
+                        nutriScore = product.nutriscoreGrade,
+                        ingredients = product.ingredientsText,
+                        labels = product.labelsTags,
+                        vegan = product.labelsTags?.contains("en:vegan"),
+                        vegetarian = product.labelsTags?.contains("en:vegetarian"),
+                        organic = product.labelsTags?.contains("en:organic"),
+                        nutriments = nutriments,
+                    )
+
+                docRef.set(productDetails).await()
+            }
         }
 
         override suspend fun fetchProductDataFromBarcode(
@@ -217,7 +260,7 @@ class ProductDetailsServiceImpl
     }
 
 data class OpenFoodFactsResponse(
-    val status: Int,
+    val status: String,
     val product: Product,
 )
 

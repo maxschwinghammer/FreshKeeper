@@ -135,6 +135,7 @@ fun SelectProfilePictureScreen(navController: NavHostController) {
                         contentDescription = "Logo",
                         modifier = Modifier.fillMaxWidth(),
                     )
+                    Spacer(Modifier.padding(12.dp))
                     Text(
                         text = stringResource(R.string.sign_up_step3),
                         fontSize = 26.sp,

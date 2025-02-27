@@ -46,10 +46,13 @@ import com.freshkeeper.ui.theme.WhiteColor
 @Composable
 fun StatisticsSection(navController: NavController) {
     val viewModel: HouseholdViewModel = hiltViewModel()
-    val totalFoodWaste by viewModel.totalFoodWaste.observeAsState(0)
-    val averageFoodWastePerDay by viewModel.averageFoodWastePerDay.observeAsState(0f)
-    val daysWithNoWaste by viewModel.daysWithNoWaste.observeAsState(0)
+
+    val totalWaste by viewModel.totalWaste.observeAsState(0)
+    val averageWaste by viewModel.averageWaste.observeAsState(0f)
+    val daysWithoutWaste by viewModel.daysWithoutWaste.observeAsState(0)
     val mostWastedItems by viewModel.mostWastedItems.observeAsState(emptyList())
+    val wasteReduction by viewModel.wasteReduction.observeAsState(0)
+    val usedItemsPercentage by viewModel.usedItemsPercentage.observeAsState(0)
 
     Card(
         modifier =
@@ -94,7 +97,7 @@ fun StatisticsSection(navController: NavController) {
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text =
-                    stringResource(R.string.total_food_waste) + ": $totalFoodWaste " +
+                    stringResource(R.string.total_food_waste) + ": $totalWaste " +
                         stringResource(R.string.items),
                 color = TextColor,
                 fontSize = 14.sp,
@@ -103,7 +106,7 @@ fun StatisticsSection(navController: NavController) {
             Text(
                 text =
                     stringResource(R.string.average_food_waste) +
-                        ": ${"%.2f".format(averageFoodWastePerDay)} " +
+                        ": ${"%.2f".format(averageWaste)} " +
                         stringResource(R.string.items),
                 color = TextColor,
                 fontSize = 14.sp,
@@ -111,7 +114,7 @@ fun StatisticsSection(navController: NavController) {
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text =
-                    stringResource(R.string.days_without_waste) + ": $daysWithNoWaste " +
+                    stringResource(R.string.days_without_waste) + ": $daysWithoutWaste " +
                         stringResource(R.string.days),
                 color = TextColor,
                 fontSize = 14.sp,
@@ -140,12 +143,14 @@ fun StatisticsSection(navController: NavController) {
                                 .background(WhiteColor)
                                 .padding(horizontal = 10.dp, vertical = 2.dp),
                     ) {
-                        Text(
-                            text = item,
-                            style = MaterialTheme.typography.labelLarge,
-                            color = ComponentBackgroundColor,
-                            maxLines = 1,
-                        )
+                        if (item != null) {
+                            Text(
+                                text = item,
+                                style = MaterialTheme.typography.labelLarge,
+                                color = ComponentBackgroundColor,
+                                maxLines = 1,
+                            )
+                        }
                     }
 
                     Box(
@@ -157,18 +162,30 @@ fun StatisticsSection(navController: NavController) {
                                 .padding(horizontal = 10.dp, vertical = 2.dp),
                         contentAlignment = Alignment.Center,
                     ) {
-                        Text(
-                            text = count,
-                            style = MaterialTheme.typography.labelLarge,
-                            color = TextColor,
-                            maxLines = 1,
-                        )
+                        if (count != null) {
+                            Text(
+                                text = count,
+                                style = MaterialTheme.typography.labelLarge,
+                                color = TextColor,
+                                maxLines = 1,
+                            )
+                        }
                     }
                 }
             }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
-                text = stringResource(R.string.waste_reduction) + ": 20%",
+                text =
+                    stringResource(R.string.waste_reduction) +
+                        ": " + wasteReduction + "%",
+                color = TextColor,
+                fontSize = 14.sp,
+            )
+            Spacer(modifier = Modifier.height(4.dp))
+            Text(
+                text =
+                    stringResource(R.string.used_items_percentage) +
+                        " " + usedItemsPercentage + "%",
                 color = TextColor,
                 fontSize = 14.sp,
             )

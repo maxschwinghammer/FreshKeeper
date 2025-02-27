@@ -3,7 +3,6 @@ package com.freshkeeper.model
 import java.time.LocalTime
 
 data class NotificationSettings(
-    val userId: String = "",
     val dailyNotificationTime: String = LocalTime.of(12, 0).toString(),
     val timeBeforeExpiration: Int = 2,
     val dailyReminders: Boolean = false,

@@ -52,16 +52,11 @@ fun HelpScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
 
     val faqList =
-        remember {
-            listOf(
-                "What is the purpose of this app?" to
-                    "The app helps reduce food waste by tracking food inventory and expiry dates.",
-                "How can I add a new item?" to
-                    "You can add a new item by clicking on the 'Add Food' button in the Home section.",
-                "How do I get notified?" to
-                    "Notifications will remind you of expiring items and suggest waste-reducing tips.",
-            )
-        }
+        listOf(
+            stringResource(R.string.faq_question_1) to stringResource(R.string.faq_answer_1),
+            stringResource(R.string.faq_question_2) to stringResource(R.string.faq_answer_2),
+            stringResource(R.string.faq_question_3) to stringResource(R.string.faq_answer_3),
+        )
 
     FreshKeeperTheme {
         Scaffold(

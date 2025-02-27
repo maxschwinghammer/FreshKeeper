@@ -87,15 +87,14 @@ fun ForgotPasswordScreen(
                                 .fillMaxWidth()
                                 .padding(16.dp, 4.dp),
                     )
-
+                    Spacer(Modifier.padding(12.dp))
                     Text(
                         text = stringResource(R.string.forgot_password),
-                        fontSize = 28.sp,
+                        fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
                         color = TextColor,
                         textAlign = TextAlign.Center,
                     )
-
                     if (emailSent.value) {
                         Spacer(Modifier.padding(6.dp))
                         Text(

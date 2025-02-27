@@ -1,5 +1,6 @@
 package com.freshkeeper.sheets
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -85,6 +86,7 @@ fun AddUserByIdSheet(
                 },
                 modifier = Modifier.fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(containerColor = AccentTurquoiseColor),
+                border = BorderStroke(1.dp, ComponentStrokeColor),
             ) {
                 Text(text = stringResource(R.string.add_user), color = ComponentBackgroundColor)
             }

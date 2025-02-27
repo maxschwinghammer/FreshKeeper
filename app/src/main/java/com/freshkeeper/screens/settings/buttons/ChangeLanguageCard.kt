@@ -1,10 +1,11 @@
-package com.freshkeeper.screens.settings
+package com.freshkeeper.screens.settings.buttons
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,7 +38,7 @@ import java.util.Locale
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun LanguageDropdownMenu(
+fun ChangeLanguageCard(
     currentLanguage: String,
     onLanguageSelected: (String) -> Unit,
 ) {
@@ -48,12 +49,20 @@ fun LanguageDropdownMenu(
         listOf(
             "de" to R.drawable.flag_germany,
             "en" to R.drawable.flag_usa,
+            "es" to R.drawable.flag_spain,
+            "fr" to R.drawable.flag_france,
+            "it" to R.drawable.flag_italy,
+            "pt" to R.drawable.flag_portugal,
         )
 
     val languageDisplayName =
         mapOf(
             "de" to stringResource(R.string.german),
             "en" to stringResource(R.string.english),
+            "es" to stringResource(R.string.spanish),
+            "fr" to stringResource(R.string.french),
+            "it" to stringResource(R.string.italian),
+            "pt" to stringResource(R.string.portuguese),
         )
     val selectedFlagRes = languages.find { it.first == selectedLanguage }?.second
     val selectedLanguageDisplay = languageDisplayName[currentLanguage] ?: currentLanguage
@@ -71,7 +80,7 @@ fun LanguageDropdownMenu(
                     Image(
                         painter = painterResource(id = it),
                         contentDescription = null,
-                        modifier = Modifier.size(25.dp),
+                        modifier = Modifier.padding(start = 20.dp, end = 10.dp).size(25.dp),
                     )
                 }
             },

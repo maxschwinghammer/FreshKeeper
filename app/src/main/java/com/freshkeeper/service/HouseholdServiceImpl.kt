@@ -125,11 +125,10 @@ class HouseholdServiceImpl
 
                 documents.forEach { document ->
                     val user = document.toObject(User::class.java)
-                    val profilePictureId = user.profilePicture
 
                     val profilePicture =
-                        if (!profilePictureId.isNullOrEmpty()) {
-                            getProfilePicture(profilePictureId)
+                        if (!userId.isNullOrEmpty()) {
+                            getProfilePicture(userId)
                         } else {
                             null
                         }

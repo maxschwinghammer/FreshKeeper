@@ -13,7 +13,6 @@ data class FoodItem(
     val category: String,
     val consumed: Boolean,
     val thrownAway: Boolean,
-    val imageUrl: String,
     val imageId: String? = null,
     var daysDifference: Int = 0,
 ) {
@@ -30,7 +29,6 @@ data class FoodItem(
         "",
         false,
         false,
-        "",
         "",
         0,
     )

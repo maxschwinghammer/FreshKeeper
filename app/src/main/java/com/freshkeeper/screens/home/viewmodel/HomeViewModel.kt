@@ -19,6 +19,9 @@ class HomeViewModel
     constructor(
         private val householdService: HouseholdService,
     ) : ViewModel() {
+        private val _allFoodItems = MutableLiveData<List<FoodItem>>()
+        val allFoodItems: LiveData<List<FoodItem>> = _allFoodItems
+
         private val _expiringSoonItems = MutableLiveData<List<FoodItem>>()
         val expiringSoonItems: LiveData<List<FoodItem>> = _expiringSoonItems
 
@@ -39,7 +42,12 @@ class HomeViewModel
                         onResult = { householdId ->
                             _householdId.value = householdId
                         },
-                        onFailure = { Log.e("HouseholdViewModel", "Error loading householdId") },
+                        onFailure = {
+                            Log.e(
+                                "HouseholdViewModel",
+                                "Error loading householdId",
+                            )
+                        },
                     )
                     loadFoodItemsFromService()
                 } catch (e: Exception) {
@@ -52,6 +60,7 @@ class HomeViewModel
             try {
                 val foodItems = householdService.getFoodItems(householdId.value)
                 withContext(Dispatchers.Main) {
+                    _allFoodItems.value = foodItems
                     _expiringSoonItems.value =
                         foodItems
                             .filter { it.daysDifference in 0..30 }

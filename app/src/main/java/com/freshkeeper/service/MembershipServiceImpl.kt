@@ -1,7 +1,6 @@
 package com.freshkeeper.service
 
 import com.freshkeeper.model.Membership
-import com.freshkeeper.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -15,20 +14,11 @@ class MembershipServiceImpl
 
         override suspend fun getMembershipStatus(): Membership {
             return try {
-                if (userId == null) return Membership()
-                val userDoc =
-                    firestore
-                        .collection("users")
-                        .document(userId)
-                        .get()
-                        .await()
-                val user = userDoc.toObject(User::class.java)
-                val membershipId = user?.membershipId
-                if (membershipId.isNullOrEmpty()) return Membership()
+                if (userId.isNullOrEmpty()) return Membership()
                 val membershipDoc =
                     firestore
                         .collection("memberships")
-                        .document(membershipId)
+                        .document(userId)
                         .get()
                         .await()
                 membershipDoc.toObject(Membership::class.java) ?: Membership()
@@ -43,22 +33,12 @@ class MembershipServiceImpl
         ) {
             try {
                 if (userId == null) return
-                val userDocRef = firestore.collection("users").document(userId)
-                val userDoc = userDocRef.get().await()
-                val user = userDoc.toObject(User::class.java) ?: return
 
-                val membershipId =
-                    user.membershipId ?: firestore
-                        .collection("memberships")
-                        .document()
-                        .id
                 val startDate = System.currentTimeMillis()
                 val endDate = startDate + durationInDays * 24 * 60 * 60 * 1000L
 
                 val updatedMembership =
                     Membership(
-                        userId = userId,
-                        id = membershipId,
                         hasPremium = true,
                         hasTested = true,
                         paymentCycle = paymentCycle,
@@ -68,10 +48,9 @@ class MembershipServiceImpl
 
                 firestore
                     .collection("memberships")
-                    .document(membershipId)
+                    .document(userId)
                     .set(updatedMembership)
                     .await()
-                userDocRef.update("membershipId", membershipId).await()
             } catch (e: Exception) {
                 // Fehlerhandling, z. B. Logging
             }

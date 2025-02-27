@@ -34,6 +34,9 @@ import com.freshkeeper.R
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
+import com.freshkeeper.screens.notificationSettings.cards.NotificationPermissionCard
+import com.freshkeeper.screens.notificationSettings.cards.SelectDailyNotificationTimeCard
+import com.freshkeeper.screens.notificationSettings.cards.UpdateTimeBeforeExpirationCard
 import com.freshkeeper.screens.notificationSettings.viewmodel.NotificationSettingsViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
@@ -110,8 +113,8 @@ fun NotificationSettingsScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(15.dp),
                         ) {
-                            NotificationPermissionButton(context, isNotificationEnabled)
-                            SelectDailyNotificationTime(
+                            NotificationPermissionCard(context, isNotificationEnabled)
+                            SelectDailyNotificationTimeCard(
                                 LocalTime.parse(
                                     notificationSettings?.dailyNotificationTime
                                         ?: LocalTime.of(12, 0).toString(),
@@ -121,7 +124,7 @@ fun NotificationSettingsScreen(
                                 },
                             )
                             notificationSettings?.let { settings ->
-                                UpdateTimeBeforeExpiration(
+                                UpdateTimeBeforeExpirationCard(
                                     settings.timeBeforeExpiration,
                                     onTimeSelected = { time ->
                                         viewModel.updateTimeBeforeExpiration(time)

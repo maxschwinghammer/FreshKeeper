@@ -115,15 +115,11 @@ class SignUpViewModel
         ) {
             val firestore = FirebaseFirestore.getInstance()
 
-            val membership =
-                Membership(
-                    userId = userId,
-                    id = firestore.collection("memberships").document().id,
-                )
+            val membership = Membership()
 
             firestore
                 .collection("memberships")
-                .document(membership.id)
+                .document(userId)
                 .set(membership)
                 .addOnSuccessListener {
                     val user =
@@ -132,7 +128,6 @@ class SignUpViewModel
                             email = email,
                             createdAt = System.currentTimeMillis(),
                             provider = "email",
-                            membershipId = membership.id,
                         )
 
                     firestore
@@ -145,7 +140,6 @@ class SignUpViewModel
 
                     val notificationSettings =
                         NotificationSettings(
-                            userId = userId,
                             dailyNotificationTime = LocalTime.of(12, 0).toString(),
                             timeBeforeExpiration = 2,
                             dailyReminders = false,
@@ -158,7 +152,8 @@ class SignUpViewModel
 
                     firestore
                         .collection("notificationSettings")
-                        .add(notificationSettings)
+                        .document(userId)
+                        .set(notificationSettings)
                         .addOnFailureListener { e ->
                             Log.e(
                                 "NotificationSettings",
