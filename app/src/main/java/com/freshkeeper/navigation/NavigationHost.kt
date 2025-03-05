@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.freshkeeper.model.Screen
+import com.freshkeeper.screens.ai.ChatScreen
 import com.freshkeeper.screens.authentication.signIn.EmailSignInScreen
 import com.freshkeeper.screens.authentication.signIn.ForgotPasswordScreen
 import com.freshkeeper.screens.authentication.signIn.SignInScreen
@@ -52,81 +53,81 @@ fun NavigationHost(
         modifier = modifier,
     ) {
         composable(Screen.SignUp.route) {
-            SignUpScreen(navController = navController)
+            SignUpScreen(navController)
         }
         composable(Screen.SignIn.route) {
-            SignInScreen(navController = navController)
+            SignInScreen(navController)
         }
         composable(Screen.EmailSignUp.route) {
-            EmailSignUpScreen(navController = navController)
+            EmailSignUpScreen(navController)
         }
         composable(Screen.EmailSignUp.route) {
-            EmailSignUpScreen(navController = navController)
+            EmailSignUpScreen(navController)
         }
         composable(Screen.EmailSignIn.route) {
-            EmailSignInScreen(navController = navController)
+            EmailSignInScreen(navController)
         }
         composable(Screen.NameInput.route) {
-            NameInputScreen(navController = navController)
+            NameInputScreen(navController)
         }
         composable(Screen.SelectProfilePicture.route) {
-            SelectProfilePictureScreen(navController = navController)
+            SelectProfilePictureScreen(navController)
         }
         composable(
             route = "forgotPassword/{email}",
             arguments = listOf(navArgument("email") { type = NavType.StringType }),
         ) { backStackEntry ->
             val email = backStackEntry.arguments?.getString("email") ?: ""
-            ForgotPasswordScreen(navController = navController, email = email)
+            ForgotPasswordScreen(navController, email = email)
         }
         composable(Screen.Home.route) {
-            HomeScreen(navController = navController)
+            HomeScreen(navController)
+        }
+        composable(Screen.Chat.route) {
+            ChatScreen(navController)
         }
         composable(Screen.Household.route) {
-            HouseholdScreen(navController = navController)
+            HouseholdScreen(navController)
         }
         composable(Screen.Inventory.route) {
-            InventoryScreen(navController = navController)
+            InventoryScreen(navController)
         }
         composable(Screen.Settings.route) {
-            SettingsScreen(
-                navController = navController,
-                onLocaleChange = onLocaleChange,
-            )
+            SettingsScreen(navController, onLocaleChange)
         }
         composable(Screen.Notifications.route) {
-            NotificationsScreen(navController = navController)
+            NotificationsScreen(navController)
         }
         composable(Screen.ProfileSettings.route) {
-            ProfileSettingsScreen(navController = navController)
+            ProfileSettingsScreen(navController)
         }
         composable(Screen.NotificationSettings.route) {
-            NotificationSettingsScreen(navController = navController)
+            NotificationSettingsScreen(navController)
         }
         composable(Screen.HouseholdSettings.route) {
-            HouseholdSettingsScreen(navController = navController)
+            HouseholdSettingsScreen(navController)
         }
         composable(
             route = "profile/{userId}",
             arguments = listOf(navArgument("userId") { type = NavType.StringType }),
         ) { backStackEntry ->
             val userId = backStackEntry.arguments?.getString("userId") ?: ""
-            ProfileScreen(navController = navController, userId = userId)
+            ProfileScreen(navController, userId)
         }
         composable(Screen.Statistics.route) {
-            StatisticsScreen(navController = navController)
+            StatisticsScreen(navController)
         }
         composable(Screen.LandingPage.route) {
-            LandingPageScreen(navController = navController)
+            LandingPageScreen(navController)
         }
         composable(Screen.Tips.route) {
-            TipsScreen(navController = navController)
+            TipsScreen(navController)
         }
         composable(Screen.Contact.route) {
-            ContactScreen(navController = navController)
+            ContactScreen(navController)
         }
         composable(Screen.Help.route) {
-            HelpScreen(navController = navController)
+            HelpScreen(navController)
         }
     }
 }

@@ -16,7 +16,6 @@ import javax.inject.Inject
 class GoogleViewModel
     @Inject
     constructor(
-        private val accountService: AccountService,
         private val googleAccountService: GoogleAccountService,
     ) : AppViewModel() {
         @Suppress("ktlint:standard:backing-property-naming")

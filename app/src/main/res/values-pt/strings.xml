@@ -356,4 +356,7 @@
     <string name="food_waste_summary">Resumo do desperdício de alimentos</string>
     <string name="nutri_score">Nutri-Score</string>
     <string name="nutriments_statistics">Valores médios dos nutrientes</string>
+    <string name="chat_label">Mensagem</string>
+    <string name="action_send">Enviar</string>
+    <string name="ai_chat">Chat de IA</string>
 </resources>

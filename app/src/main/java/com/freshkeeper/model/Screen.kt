@@ -17,6 +17,8 @@ sealed class Screen(
 
     data object Home : Screen("home")
 
+    data object Chat : Screen("chat")
+
     data object Inventory : Screen("inventory")
 
     data object Household : Screen("household")

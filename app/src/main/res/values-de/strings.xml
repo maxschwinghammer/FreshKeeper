@@ -356,4 +356,7 @@
     <string name="food_waste_summary">Zusammenfassung der Lebensmittelverschwendung</string>
     <string name="nutri_score">Nutri-Score</string>
     <string name="nutriments_statistics">Durchschnittliche Nährwerte</string>
+    <string name="chat_label">Nachricht</string>
+    <string name="action_send">Senden</string>
+    <string name="ai_chat">KI-Chat</string>
 </resources>

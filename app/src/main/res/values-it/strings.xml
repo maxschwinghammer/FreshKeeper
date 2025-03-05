@@ -356,4 +356,7 @@
     <string name="food_waste_summary">Riepilogo dello spreco alimentare</string>
     <string name="nutri_score">Nutri-Score</string>
     <string name="nutriments_statistics">Valori medi dei nutrienti</string>
+    <string name="chat_label">Messaggio</string>
+    <string name="action_send">Invia</string>
+    <string name="ai_chat">Chat IA</string>
 </resources>
