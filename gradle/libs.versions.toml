@@ -1,8 +1,8 @@
 [versions]
 accompanistFlowlayout = "0.36.0"
 accompanistPagerVersion = "0.31.2-alpha"
-activityCompose = "1.10.0"
-agp = "8.8.1"
+activityCompose = "1.10.1"
+agp = "8.8.2"
 androidImageCropper = "4.6.0"
 androidxCredentials = "1.5.0-rc01"
 androidxJunit = "1.1.5"
@@ -24,6 +24,7 @@ coreKtx = "1.15.0"
 espressoCore = "3.6.1"
 firebaseFirestore = "25.1.2"
 firebaseMessaging = "24.1.0"
+generativeai = "0.9.0"
 googleCore = "3.4.1"
 googleServicesVersion = "4.4.2"
 gson = "2.10.1"
@@ -35,8 +36,8 @@ junit = "4.13.2"
 kotlin = "2.0.0"
 lifecycleRuntimeKtx = "2.8.7"
 material = "1.12.0"
-navigationCompose = "2.8.7"
-navigationRuntimeKtx = "2.8.7"
+navigationCompose = "2.8.8"
+navigationRuntimeKtx = "2.8.8"
 okhttp = "5.0.0-alpha.14"
 playServicesBase = "18.5.0"
 playServicesIdentity = "18.1.0"
@@ -50,10 +51,10 @@ runner = "1.6.2"
 playServicesAuth = "21.3.0"
 firebaseCommonKtx = "21.0.0"
 firebaseAuthKtx = "23.2.0"
-firebaseBom = "33.9.0"
+firebaseBom = "33.10.0"
 firebaseAuth = "23.2.0"
 firebaseUiAuth = "8.0.0"
-firebaseAnalytics = "22.2.0"
+firebaseAnalytics = "22.3.0"
 firebaseFirestoreKtx = "25.1.2"
 hilt = "2.52"
 hilt-navigation-compose = "1.2.0"
@@ -73,6 +74,7 @@ com-google-android-play-review2 = { module = "com.google.android.play:review", v
 com-journeyapps-zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "journeyappsZxingAndroidEmbedded" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore", version.ref = "firebaseFirestore" }
 firebase-messaging = { module = "com.google.firebase:firebase-messaging", version.ref = "firebaseMessaging" }
+generativeai = { module = "com.google.ai.client.generativeai:generativeai", version.ref = "generativeai" }
 gms-google-services = { module = "com.google.gms:google-services", version.ref = "googleServicesVersion" }
 gms-play-services-mlkit-image-labeling = { module = "com.google.android.gms:play-services-mlkit-image-labeling", version.ref = "playServicesMlkitImageLabelingVersion" }
 google-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPagerVersion" }

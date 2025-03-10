@@ -1,7 +1,9 @@
 package com.freshkeeper.screens.home
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -109,13 +111,28 @@ fun HomeScreen(navController: NavHostController) {
         ) { it ->
             Box(modifier = Modifier.fillMaxSize().padding(it)) {
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = stringResource(R.string.overview),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = TextColor,
-                        modifier = Modifier.padding(16.dp),
-                    )
+                    Row(
+                        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.overview),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextColor,
+                            modifier = Modifier.weight(1f),
+                        )
+                        Image(
+                            painter = painterResource(R.drawable.ai_chat),
+                            contentDescription = "AI Chat",
+                            modifier =
+                                Modifier
+                                    .size(25.dp)
+                                    .clickable {
+                                        navController.navigate("chat")
+                                    },
+                        )
+                    }
                     Box(modifier = Modifier.weight(1f)) {
                         LazyColumn(
                             state = listState,

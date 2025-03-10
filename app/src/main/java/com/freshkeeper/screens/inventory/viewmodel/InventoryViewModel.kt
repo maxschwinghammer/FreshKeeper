@@ -20,6 +20,9 @@ class InventoryViewModel
         private val _foodItems = MutableLiveData<List<FoodItem>>()
         val foodItems: LiveData<List<FoodItem>> = _foodItems
 
+        private val _itemList = MutableLiveData<String>()
+        val itemList: LiveData<String> = _itemList
+
         private val _fridgeItems = MutableLiveData<List<FoodItem>>()
         val fridgeItems: LiveData<List<FoodItem>> = _fridgeItems
 
@@ -89,10 +92,15 @@ class InventoryViewModel
                 .addOnSuccessListener { documents ->
                     val items = documents.documents.mapNotNull { it.toObject<FoodItem>() }
                     _foodItems.value = items
+                    updateItemList(items)
                 }.addOnFailureListener {
                     _foodItems.value = emptyList()
                     Log.e("InventoryViewModel", "Error loading all food items", it)
                 }
+        }
+
+        private fun updateItemList(foodItems: List<FoodItem>) {
+            _itemList.value = foodItems.joinToString(separator = ", ") { it.name }
         }
 
         private fun loadHouseholdId() {

@@ -362,4 +362,7 @@
     <string name="food_waste_summary">Food Waste Summary</string>
     <string name="nutri_score">Nutri-Score</string>
     <string name="nutriments_statistics">Average Nutrients</string>
+    <string name="chat_label">Message</string>
+    <string name="action_send">Send</string>
+    <string name="ai_chat">AI chat</string>
 </resources>
