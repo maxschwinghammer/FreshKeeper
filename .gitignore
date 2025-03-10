@@ -17,4 +17,5 @@ local.properties
 keys.properties
 /gradle.properties
 app/google-services.json
+app/keys.properties
 google-services.json
