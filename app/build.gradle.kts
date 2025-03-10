@@ -59,7 +59,7 @@ android {
 }
 
 dependencies {
-    implementation("com.google.ai.client.generativeai:generativeai:0.9.0")
+    implementation(libs.generativeai)
     implementation(libs.android.image.cropper)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.activity.compose)

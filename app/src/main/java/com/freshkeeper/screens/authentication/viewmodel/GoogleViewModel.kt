@@ -6,7 +6,6 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.freshkeeper.R
 import com.freshkeeper.screens.AppViewModel
-import com.freshkeeper.service.AccountService
 import com.freshkeeper.service.GoogleAccountService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

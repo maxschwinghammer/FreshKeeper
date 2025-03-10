@@ -1,5 +1,6 @@
 gradle.properties
 keys.properties
+/keys.properties
 /build
 app/google-services.json
 google-services.json
