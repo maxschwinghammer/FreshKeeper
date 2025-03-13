@@ -1,6 +1,5 @@
 package com.freshkeeper.screens.settings.buttons
 
-import android.app.Activity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -24,7 +23,6 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
-import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.ConsumeParams
 import com.android.billingclient.api.PendingPurchasesParams
@@ -79,6 +77,26 @@ fun UpgradeToPremiumVersionButton(
                 }
             }.build()
 
+    val productList =
+        listOf(
+            QueryProductDetailsParams.Product
+                .newBuilder()
+                .setProductId("premium_monthly")
+                .setProductType(BillingClient.ProductType.SUBS)
+                .build(),
+            QueryProductDetailsParams.Product
+                .newBuilder()
+                .setProductId("premium_yearly")
+                .setProductType(BillingClient.ProductType.SUBS)
+                .build(),
+        )
+
+    val params =
+        QueryProductDetailsParams
+            .newBuilder()
+            .setProductList(productList)
+            .build()
+
     fun queryPendingPurchases() {
         billingClient.queryPurchasesAsync(
             QueryPurchasesParams
@@ -127,27 +145,11 @@ fun UpgradeToPremiumVersionButton(
             if (membership.hasPremium) {
                 onManagePremiumClick()
             } else {
-                val productList =
-                    listOf(
-                        QueryProductDetailsParams.Product
-                            .newBuilder()
-                            .setProductId("premium_monthly")
-                            .setProductType(BillingClient.ProductType.SUBS)
-                            .build(),
-                        QueryProductDetailsParams.Product
-                            .newBuilder()
-                            .setProductId("premium_yearly")
-                            .setProductType(BillingClient.ProductType.SUBS)
-                            .build(),
-                    )
-
-                val params =
-                    QueryProductDetailsParams
-                        .newBuilder()
-                        .setProductList(productList)
-                        .build()
-
-                billingClient.queryProductDetailsAsync(params) { billingResult, productDetailsList ->
+                viewModel.activatePremiumMembership(
+                    "monthly",
+                    30,
+                )
+                /*billingClient.queryProductDetailsAsync(params) { billingResult, productDetailsList ->
                     if (billingResult.responseCode == BillingClient.BillingResponseCode.OK &&
                         productDetailsList.isNotEmpty()
                     ) {
@@ -167,7 +169,7 @@ fun UpgradeToPremiumVersionButton(
 
                         billingClient.launchBillingFlow(context as Activity, flowParams)
                     }
-                }
+                }*/
             }
         },
         colors =

@@ -19,7 +19,7 @@ android {
         applicationId = "com.freshkeeper"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
+        versionCode = 5
         versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -29,11 +29,11 @@ android {
         val properties = Properties()
         properties.load(keystoreFile.inputStream())
         val apiKey = properties.getProperty("API_KEY") ?: ""
-
         buildConfigField("String", "API_KEY", apiKey)
     }
 
-    buildFeatures {
+    @Suppress("UnstableApiUsage")
+    buildFeatures.apply {
         buildConfig = true
     }
 
@@ -41,6 +41,7 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
+                @Suppress("UnstableApiUsage")
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
@@ -53,6 +54,7 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.5"
     }

@@ -25,7 +25,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +37,7 @@ import com.freshkeeper.R
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
+import com.freshkeeper.ui.theme.ExpiredColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
@@ -76,7 +76,7 @@ fun FoodList(
                 fontWeight = FontWeight.Bold,
                 color =
                     if (title == stringResource(id = R.string.expired)) {
-                        Color(0xFFEE3E4B)
+                        ExpiredColor
                     } else {
                         AccentTurquoiseColor
                     },

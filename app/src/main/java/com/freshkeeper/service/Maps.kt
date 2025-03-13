@@ -38,6 +38,24 @@ val categoryMap =
         "other" to R.string.other,
     )
 
+val categoryTips =
+    mapOf(
+        "spices" to R.string.spice_tip,
+        "noodles" to R.string.noodles_tip,
+        "canned_goods" to R.string.canned_goods_tip,
+        "groats" to R.string.groats_tip,
+        "sauces" to R.string.sauces_tip,
+        "drinks" to R.string.drinks_tip,
+        "dairy_goods" to R.string.fresh_food_warning,
+        "meat" to R.string.fresh_food_warning,
+        "fish" to R.string.fresh_food_warning,
+        "vegetables" to R.string.fresh_food_warning,
+        "fruits" to R.string.fresh_food_warning,
+        "bread" to R.string.fresh_food_warning,
+        "candy" to R.string.sweets_tip,
+        "confectionery" to R.string.sweets_tip,
+    )
+
 val storageLocationReverseMap =
     mapOf(
         R.string.fridge to "fridge",

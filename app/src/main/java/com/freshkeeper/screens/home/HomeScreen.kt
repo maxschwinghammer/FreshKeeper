@@ -122,16 +122,18 @@ fun HomeScreen(navController: NavHostController) {
                             color = TextColor,
                             modifier = Modifier.weight(1f),
                         )
-                        Image(
-                            painter = painterResource(R.drawable.ai_chat),
-                            contentDescription = "AI Chat",
-                            modifier =
-                                Modifier
-                                    .size(25.dp)
-                                    .clickable {
-                                        navController.navigate("chat")
-                                    },
-                        )
+                        if (viewModel.isMember.value == true) {
+                            Image(
+                                painter = painterResource(R.drawable.ai_chat),
+                                contentDescription = "AI Chat",
+                                modifier =
+                                    Modifier
+                                        .size(25.dp)
+                                        .clickable {
+                                            navController.navigate("chat")
+                                        },
+                            )
+                        }
                     }
                     Box(modifier = Modifier.weight(1f)) {
                         LazyColumn(

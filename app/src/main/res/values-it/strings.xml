@@ -359,4 +359,21 @@
     <string name="chat_label">Messaggio</string>
     <string name="action_send">Invia</string>
     <string name="ai_chat">Chat IA</string>
+    <string name="expired_since">Scaduto da %s</string>
+    <string name="month">mese</string>
+    <string name="months">mesi</string>
+    <string name="week">settimana</string>
+    <string name="weeks">settimane</string>
+    <string name="spice_tip">Consiglio: Le spezie si conservano a lungo. Se asciutte e profumate, usale.</string>
+    <string name="noodles_tip">Consiglio: La pasta secca dura a lungo. Se è asciutta e senza muffa, usala!</string>
+    <string name="canned_goods_tip">Consiglio: I cibi in scatola durano anni. Se la lattina è integra e l\'odore è normale, è sicura.</string>
+    <string name="groats_tip">Consiglio: Riso e avena durano a lungo. Se sono asciutti e senza parassiti, sono commestibili.</string>
+    <string name="sauces_tip">Consiglio: Molte salse durano a lungo. Se chiuse e inalterate, sono solitamente buone.</string>
+    <string name="drinks_tip">Consiglio: Molte bevande sono buone oltre la data. Controlla odore e sapore.</string>
+    <string name="fresh_food_warning">Consiglio: Gli alimenti freschi scadono in fretta. Controlla odore, aspetto e consistenza.</string>
+    <string name="sweets_tip">Consiglio: I dolci durano spesso a lungo. Controlla sapore e consistenza.</string>
+    <string name="suggestion_create_recipe">Creare una ricetta</string>
+    <string name="suggestion_storage_tips">Dare consigli di conservazione</string>
+    <string name="suggestion_get_tips">Ottenere consigli</string>
+
 </resources>

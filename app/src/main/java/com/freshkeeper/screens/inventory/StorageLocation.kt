@@ -35,6 +35,7 @@ import com.freshkeeper.model.FoodItem
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
+import com.freshkeeper.ui.theme.ExpiredColor
 import com.freshkeeper.ui.theme.TextColor
 import kotlinx.coroutines.launch
 
@@ -83,7 +84,13 @@ fun StorageLocation(
             horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            items.forEach { item ->
+            items.sortedByDescending { it.name.length }.forEach { item ->
+                val borderColor =
+                    if (item.expiryTimestamp < System.currentTimeMillis()) {
+                        ExpiredColor
+                    } else {
+                        ComponentStrokeColor
+                    }
                 Box(
                     modifier =
                         Modifier
@@ -93,7 +100,7 @@ fun StorageLocation(
                                     onItemClick(item)
                                     editProductSheetState.show()
                                 }
-                            }.border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+                            }.border(1.dp, borderColor, RoundedCornerShape(10.dp))
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                 ) {
                     Text(

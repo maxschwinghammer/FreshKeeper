@@ -60,12 +60,14 @@ import com.freshkeeper.service.AccountServiceImpl
 import com.freshkeeper.service.ProductServiceImpl
 import com.freshkeeper.service.categoryMap
 import com.freshkeeper.service.categoryReverseMap
+import com.freshkeeper.service.categoryTips
 import com.freshkeeper.service.storageLocationMap
 import com.freshkeeper.service.storageLocationReverseMap
 import com.freshkeeper.ui.theme.AccentGreenColor
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
+import com.freshkeeper.ui.theme.ExpiredColor
 import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
@@ -159,6 +161,76 @@ fun EditProductSheet(
                     style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Center,
                 )
+            }
+
+            if (foodItem.expiryTimestamp < System.currentTimeMillis()) {
+                Spacer(modifier = Modifier.height(16.dp))
+                val expiryTime = foodItem.expiryTimestamp
+                val currentTime = System.currentTimeMillis()
+                val timeDiff = currentTime - expiryTime
+                val days = (timeDiff / (1000 * 60 * 60 * 24)).toInt()
+
+                val timeText =
+                    when {
+                        days < 7 ->
+                            stringResource(
+                                R.string.expired_since,
+                                "$days " +
+                                    stringResource(
+                                        if (days == 1) {
+                                            R.string.day
+                                        } else {
+                                            R.string.days
+                                        },
+                                    ),
+                            )
+                        days < 30 -> {
+                            val weeks = days / 7
+                            stringResource(
+                                R.string.expired_since,
+                                "$weeks " +
+                                    stringResource(
+                                        if (weeks ==
+                                            1
+                                        ) {
+                                            R.string.week
+                                        } else {
+                                            R.string.weeks
+                                        },
+                                    ),
+                            )
+                        }
+                        else -> {
+                            val months = days / 30
+                            stringResource(
+                                R.string.expired_since,
+                                "$months " +
+                                    stringResource(
+                                        if (months == 1) {
+                                            R.string.month
+                                        } else {
+                                            R.string.months
+                                        },
+                                    ),
+                            )
+                        }
+                    }
+                Text(
+                    text = timeText,
+                    color = ExpiredColor,
+                    fontSize = 14.sp,
+                    style = MaterialTheme.typography.titleMedium,
+                    textAlign = TextAlign.Center,
+                )
+                categoryTips[foodItem.category]?.let { tipResId ->
+                    Text(
+                        text = stringResource(tipResId),
+                        color = AccentTurquoiseColor,
+                        fontSize = 14.sp,
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center,
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -313,7 +385,6 @@ fun EditProductSheet(
                 Text(
                     stringResource(R.string.mark_as_consumed),
                     color = TextColor,
-                    modifier = Modifier.padding(start = 8.dp),
                 )
             }
 
@@ -334,7 +405,6 @@ fun EditProductSheet(
                 Text(
                     stringResource(R.string.mark_as_thrown_away),
                     color = TextColor,
-                    modifier = Modifier.padding(start = 8.dp),
                 )
             }
 

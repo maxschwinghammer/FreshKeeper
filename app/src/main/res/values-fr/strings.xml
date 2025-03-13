@@ -359,4 +359,21 @@
     <string name="chat_label">Message</string>
     <string name="action_send">Envoyer</string>
     <string name="ai_chat">Chat IA</string>
+    <string name="expired_since">Expiré depuis %s</string>
+    <string name="month">mois</string>
+    <string name="months">mois</string>
+    <string name="week">semaine</string>
+    <string name="weeks">semaines</string>
+    <string name="spice_tip">Astuce : Les épices se conservent bien. Si elles sont sèches et odorantes, utilisez-les.</string>
+    <string name="noodles_tip">Astuce : Les pâtes sèches durent longtemps. Si elles sont sèches et sans moisissure, utilisez-les !</string>
+    <string name="canned_goods_tip">Astuce : Les conserves durent des années. Si la boîte est intacte et sent bon, elle est sûre.</string>
+    <string name="groats_tip">Astuce : Le riz et l’avoine durent longtemps. S\'ils sont secs et sans parasites, ils sont comestibles.</string>
+    <string name="sauces_tip">Astuce : De nombreuses sauces durent longtemps. Si elles sont fermées et inchangées, elles sont souvent bonnes.</string>
+    <string name="drinks_tip">Astuce : De nombreuses boissons restent bonnes après la date. Vérifiez odeur et goût.</string>
+    <string name="fresh_food_warning">Astuce : Les aliments frais périssent vite. Vérifiez odeur, apparence et texture.</string>
+    <string name="sweets_tip">Astuce : Les sucreries se conservent souvent longtemps. Vérifiez goût et texture.</string>
+    <string name="suggestion_create_recipe">Créer une recette</string>
+    <string name="suggestion_storage_tips">Donner des conseils de stockage</string>
+    <string name="suggestion_get_tips">Obtenir des conseils</string>
+
 </resources>

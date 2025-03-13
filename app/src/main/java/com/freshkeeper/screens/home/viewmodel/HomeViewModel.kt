@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.service.HouseholdService
+import com.freshkeeper.service.MembershipService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +19,7 @@ class HomeViewModel
     @Inject
     constructor(
         private val householdService: HouseholdService,
+        private val membershipService: MembershipService,
     ) : ViewModel() {
         private val _allFoodItems = MutableLiveData<List<FoodItem>>()
         val allFoodItems: LiveData<List<FoodItem>> = _allFoodItems
@@ -31,8 +33,21 @@ class HomeViewModel
         private val _householdId = MutableLiveData<String?>()
         val householdId: LiveData<String?> = _householdId
 
+        private val _isMember = MutableLiveData<Boolean>()
+        val isMember: LiveData<Boolean> = _isMember
+
         init {
             loadHouseholdId()
+            checkMembershipStatus()
+        }
+
+        private fun checkMembershipStatus() {
+            CoroutineScope(Dispatchers.IO).launch {
+                val status = membershipService.isMember()
+                withContext(Dispatchers.Main) {
+                    _isMember.value = status
+                }
+            }
         }
 
         private fun loadHouseholdId() {

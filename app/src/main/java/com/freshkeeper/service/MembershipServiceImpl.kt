@@ -1,5 +1,6 @@
 package com.freshkeeper.service
 
+import android.util.Log
 import com.freshkeeper.model.Membership
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -27,6 +28,14 @@ class MembershipServiceImpl
             }
         }
 
+        override suspend fun isMember(): Boolean =
+            try {
+                val membership = getMembershipStatus()
+                membership.hasPremium && (membership.endDate ?: 0) > System.currentTimeMillis()
+            } catch (e: Exception) {
+                false
+            }
+
         override suspend fun activateMembership(
             paymentCycle: String,
             durationInDays: Int,
@@ -52,7 +61,7 @@ class MembershipServiceImpl
                     .set(updatedMembership)
                     .await()
             } catch (e: Exception) {
-                // Fehlerhandling, z. B. Logging
+                Log.e("MembershipService", "Error activating membership", e)
             }
         }
     }
