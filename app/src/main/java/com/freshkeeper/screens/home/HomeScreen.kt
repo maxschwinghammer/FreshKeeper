@@ -57,6 +57,7 @@ import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.sheets.AddProductSheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
 import com.freshkeeper.sheets.EditProductSheet
+import com.freshkeeper.sheets.FoodRecognitionSheet
 import com.freshkeeper.sheets.ManualInputSheet
 import com.freshkeeper.sheets.productDetails.ProductDetailsSheet
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -84,6 +85,7 @@ fun HomeScreen(navController: NavHostController) {
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val editProductSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val barcodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val foodRecognitionSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val productInfoSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val expiringSoonItems by viewModel.expiringSoonItems.observeAsState(emptyList())
@@ -122,6 +124,7 @@ fun HomeScreen(navController: NavHostController) {
                             color = TextColor,
                             modifier = Modifier.weight(1f),
                         )
+
                         if (viewModel.isMember.value == true) {
                             Image(
                                 painter = painterResource(R.drawable.ai_chat),
@@ -293,6 +296,7 @@ fun HomeScreen(navController: NavHostController) {
                 AddProductSheet(
                     sheetState,
                     barcodeSheetState,
+                    foodRecognitionSheetState,
                     manualInputSheetState,
                 )
             }
@@ -303,6 +307,16 @@ fun HomeScreen(navController: NavHostController) {
                     onBarcodeScanned = { barcode, date ->
                         scannedBarcode = barcode
                         expiryDate = date
+                        coroutineScope.launch { manualInputSheetState.show() }
+                    },
+                )
+            }
+
+            if (foodRecognitionSheetState.isVisible) {
+                FoodRecognitionSheet(
+                    sheetState = foodRecognitionSheetState,
+                    onFoodRecognized = { recognizedFood ->
+                        println("Recognised food: $recognizedFood")
                         coroutineScope.launch { manualInputSheetState.show() }
                     },
                 )

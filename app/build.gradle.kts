@@ -9,6 +9,8 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("kotlin-kapt")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
 }
 
 android {
@@ -61,6 +63,11 @@ android {
 }
 
 dependencies {
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.google.firebase.analytics)
+    implementation(libs.firebase.perf)
+    implementation(libs.tensorflow.lite)
     implementation(libs.generativeai)
     implementation(libs.android.image.cropper)
     implementation(libs.accompanist.flowlayout)
@@ -128,6 +135,7 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.image.labeling.common)
     implementation(libs.firebase.messaging.ktx)
+    implementation(libs.litert.support.api)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
