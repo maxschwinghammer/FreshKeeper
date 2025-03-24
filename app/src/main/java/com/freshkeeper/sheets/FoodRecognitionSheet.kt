@@ -1,6 +1,5 @@
 package com.freshkeeper.sheets
 
-import android.util.Size
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
@@ -109,7 +108,6 @@ fun FoodRecognitionSheet(
                             val imageAnalysis =
                                 ImageAnalysis
                                     .Builder()
-                                    .setTargetResolution(Size(224, 224))
                                     .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                                     .build()
 
