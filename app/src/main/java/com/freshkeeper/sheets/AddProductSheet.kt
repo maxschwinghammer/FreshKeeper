@@ -39,6 +39,7 @@ import kotlinx.coroutines.launch
 fun AddProductSheet(
     sheetState: SheetState,
     barcodeSheetState: SheetState,
+    foodRecognitionSheetState: SheetState,
     manualInputSheetState: SheetState,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -74,6 +75,17 @@ fun AddProductSheet(
                 onClick = {
                     coroutineScope.launch {
                         barcodeSheetState.show()
+                        sheetState.hide()
+                    }
+                },
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            AddEntryButton(
+                text = stringResource(R.string.food_recognition),
+                iconId = R.drawable.recognition,
+                onClick = {
+                    coroutineScope.launch {
+                        foodRecognitionSheetState.show()
                         sheetState.hide()
                     }
                 },

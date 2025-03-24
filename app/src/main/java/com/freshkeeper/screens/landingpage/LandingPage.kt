@@ -42,6 +42,7 @@ import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
+import com.freshkeeper.ui.theme.WhiteColor
 import kotlin.math.max
 import kotlin.math.min
 
@@ -121,7 +122,7 @@ fun Story(onComplete: () -> Unit) {
             stepCount = stepCount,
             stepDuration = 5_000,
             unSelectedColor = Color.LightGray,
-            selectedColor = Color.White,
+            selectedColor = WhiteColor,
             currentStep = currentStep.intValue,
             onStepChanged = { currentStep.intValue = it },
             isPaused = isPaused.value,
@@ -209,7 +210,7 @@ fun ProgressIndicator(
                 )
                 if (currentStepState.intValue + 1 <= stepCount - 1) {
                     progress.snapTo(0f)
-                    currentStepState.value += 1
+                    currentStepState.intValue += 1
                     onStepChanged(currentStepState.intValue)
                 } else {
                     onComplete()

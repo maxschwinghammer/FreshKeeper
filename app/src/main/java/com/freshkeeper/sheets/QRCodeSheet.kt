@@ -21,6 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.createBitmap
+import androidx.core.graphics.set
+import androidx.core.graphics.toColorInt
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.WriterException
@@ -74,19 +77,16 @@ fun generateQRCode(content: String): Bitmap? =
 
         val width = bitMatrix.width
         val height = bitMatrix.height
-        val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565)
+        val bitmap = createBitmap(width, height, Bitmap.Config.RGB_565)
 
         for (x in 0 until width) {
             for (y in 0 until height) {
-                bitmap.setPixel(
-                    x,
-                    y,
+                bitmap[x, y] =
                     if (bitMatrix[x, y]) {
                         android.graphics.Color.WHITE
                     } else {
-                        android.graphics.Color.parseColor("#1B1B1B")
-                    },
-                )
+                        "#1B1B1B".toColorInt()
+                    }
             }
         }
         bitmap

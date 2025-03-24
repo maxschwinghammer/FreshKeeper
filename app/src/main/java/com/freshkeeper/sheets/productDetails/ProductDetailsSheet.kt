@@ -1,5 +1,6 @@
 package com.freshkeeper.sheets.productDetails
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -96,16 +97,16 @@ fun ProductDetailsSheet(
                 }
             } else {
                 productDetails.value?.let { details ->
-                    Column(
-                        modifier =
-                            Modifier
-                                .fillMaxWidth()
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(GreyColor)
-                                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
-                                .padding(10.dp),
-                    ) {
-                        details.brand?.let {
+                    details.brand?.let {
+                        Column(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(GreyColor)
+                                    .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+                                    .padding(10.dp),
+                        ) {
                             Text(
                                 stringResource(R.string.brand, it),
                                 color = TextColor,
@@ -114,10 +115,11 @@ fun ProductDetailsSheet(
                         }
                     }
                     Spacer(modifier = Modifier.height(10.dp))
-                    if (details.ingredients != null) {
+                    if (!details.ingredients.isNullOrEmpty()) {
                         Column(
                             modifier =
                                 Modifier
+                                    .fillMaxWidth()
                                     .clip(RoundedCornerShape(10.dp))
                                     .background(GreyColor)
                                     .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
@@ -136,46 +138,68 @@ fun ProductDetailsSheet(
                         }
                         Spacer(modifier = Modifier.height(10.dp))
                     }
+                    Log.d("ProductDetails", "Product details: $details")
+                    Log.d("ProductDetails", "Nutriments: ${details.nutriments}")
+
                     details.nutriments?.let { nutriments ->
                         val certificatesAvailable =
                             details.vegan == true ||
                                 details.vegetarian == true ||
                                 details.organic == true
-                        val nutriScoreAvailable = !details.nutriScore.isNullOrEmpty()
+                        val nutriScoreAvailable =
+                            !details.nutriScore.isNullOrEmpty() &&
+                                details.nutriScore != "unknown" &&
+                                details.nutriScore != "not-applicable"
+                        val nutrimentsAvailable = !nutriments.isEmpty()
+
                         when {
-                            certificatesAvailable && nutriScoreAvailable -> {
-                                Row(modifier = Modifier.fillMaxWidth().height(120.dp)) {
-                                    CertificatesSection(
-                                        details,
-                                        modifier = Modifier.weight(1f),
-                                    )
+                            certificatesAvailable && nutriScoreAvailable && nutrimentsAvailable -> {
+                                Row(
+                                    modifier =
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .height(120.dp)
+                                            .padding(bottom = 10.dp),
+                                ) {
+                                    CertificatesSection(details, modifier = Modifier.weight(1f))
                                     Spacer(modifier = Modifier.width(10.dp))
                                     NutriScoreSection(
                                         score = details.nutriScore!!,
-                                        modifier = Modifier.weight(1f).fillMaxHeight(),
+                                        modifier = Modifier.fillMaxHeight().weight(1f),
                                     )
                                 }
-                                Spacer(modifier = Modifier.height(10.dp))
                                 NutrimentsSection(nutriments)
                             }
-                            certificatesAvailable || nutriScoreAvailable -> {
-                                if (nutriScoreAvailable) {
-                                    Row(modifier = Modifier.fillMaxWidth()) {
-                                        NutrimentsSection(nutriments, modifier = Modifier.weight(1f))
-                                        Spacer(modifier = Modifier.width(10.dp))
-                                        details.nutriScore?.let { score ->
-                                            NutriScoreSection(score, modifier = Modifier.weight(1f))
-                                        }
+                            (certificatesAvailable || nutriScoreAvailable) &&
+                                nutrimentsAvailable -> {
+                                Row(modifier = Modifier.fillMaxWidth().height(120.dp)) {
+                                    if (certificatesAvailable) {
+                                        CertificatesSection(
+                                            details,
+                                            modifier = Modifier.weight(1f).padding(bottom = 10.dp),
+                                        )
                                     }
-                                } else {
-                                    Row(modifier = Modifier.fillMaxWidth()) {
-                                        NutrimentsSection(nutriments, modifier = Modifier.weight(1f))
-                                        Spacer(modifier = Modifier.width(10.dp))
-                                        CertificatesSection(details, modifier = Modifier.weight(1f))
+
+                                    if (nutriScoreAvailable) {
+                                        NutriScoreSection(
+                                            score = details.nutriScore!!,
+                                            modifier = Modifier.weight(1f),
+                                        )
                                     }
                                 }
+                                NutrimentsSection(nutriments)
                             }
-                            else -> {
+                            certificatesAvailable -> {
+                                Row(modifier = Modifier.fillMaxWidth()) {
+                                    CertificatesSection(details, modifier = Modifier.weight(1f))
+                                }
+                            }
+                            nutriScoreAvailable -> {
+                                Row(modifier = Modifier.fillMaxWidth()) {
+                                    CertificatesSection(details, modifier = Modifier.weight(1f))
+                                }
+                            }
+                            nutrimentsAvailable -> {
                                 NutrimentsSection(nutriments)
                             }
                         }

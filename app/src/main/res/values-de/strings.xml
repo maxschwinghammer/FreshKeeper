@@ -359,4 +359,21 @@
     <string name="chat_label">Nachricht</string>
     <string name="action_send">Senden</string>
     <string name="ai_chat">KI-Chat</string>
+    <string name="expired_since">Abgelaufen seit %s</string>
+    <string name="month">Monat</string>
+    <string name="months">Monaten</string>
+    <string name="week">Woche</string>
+    <string name="weeks">Wochen</string>
+    <string name="spice_tip">Tipp: Gewürze verderben kaum. Trocken gelagert und wohlriechend, sind sie lange nutzbar!</string>
+    <string name="noodles_tip">Tipp: Trockene Nudeln sind lange haltbar. Solange sie trocken und schimmelfrei sind, kannst du sie nutzen!</string>
+    <string name="canned_goods_tip">Tipp: Konserven halten oft Jahre. Ist die Dose unbeschädigt und riecht der Inhalt normal, kannst du ihn essen.</string>
+    <string name="groats_tip">Tipp: Reis und Haferflocken halten lange. Trocken und frei von Schädlingen sind sie genießbar.</string>
+    <string name="sauces_tip">Tipp: Viele Saucen halten lange. Ungeöffnet und unverändert sind sie meist noch nutzbar.</string>
+    <string name="drinks_tip">Tipp: Viele Getränke sind über das MHD hinaus genießbar. Achte auf Geruch und Geschmack.</string>
+    <string name="fresh_food_warning">Tipp: Frische Lebensmittel verderben schnell. Prüfe Geruch, Aussehen und Konsistenz.</string>
+    <string name="sweets_tip">Tipp: Süßwaren sind oft lange genießbar. Prüfe Geschmack und Konsistenz.</string>
+    <string name="suggestion_create_recipe">Rezept erstellen</string>
+    <string name="suggestion_storage_tips">Lagerungshinweise geben</string>
+    <string name="suggestion_get_tips">Tipps erhalten</string>
+
 </resources>

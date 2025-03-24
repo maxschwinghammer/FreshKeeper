@@ -365,4 +365,21 @@
     <string name="chat_label">Message</string>
     <string name="action_send">Send</string>
     <string name="ai_chat">AI chat</string>
+    <string name="expired_since">Expired since %s</string>
+    <string name="month">month</string>
+    <string name="months">months</string>
+    <string name="week">week</string>
+    <string name="weeks">weeks</string>
+    <string name="spice_tip">Tip: Spices rarely spoil. If dry and fragrant, they remain usable for years!</string>
+    <string name="noodles_tip">Tip: Dry pasta lasts long. If dry and mold-free, you can use it!</string>
+    <string name="canned_goods_tip">Tip: Canned food lasts years. If the can is intact and smells fine, it\'s safe to eat.</string>
+    <string name="groats_tip">Tip: Rice and oats last long. If dry and pest-free, they are edible.</string>
+    <string name="sauces_tip">Tip: Many sauces last long. If unopened and unchanged, they are usually fine.</string>
+    <string name="drinks_tip">Tip: Many drinks remain good past the expiration date. Check smell and taste.</string>
+    <string name="fresh_food_warning">Tip: Fresh foods spoil quickly. Check smell, appearance, and texture.</string>
+    <string name="sweets_tip">Tip: Sweets often remain good for a long time. Check taste and texture.</string>
+    <string name="suggestion_create_recipe">Create recipe</string>
+    <string name="suggestion_storage_tips">Give storage tips</string>
+    <string name="suggestion_get_tips">Get tips</string>
+
 </resources>

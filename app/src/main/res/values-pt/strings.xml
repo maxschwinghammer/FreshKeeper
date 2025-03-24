@@ -359,4 +359,21 @@
     <string name="chat_label">Mensagem</string>
     <string name="action_send">Enviar</string>
     <string name="ai_chat">Chat de IA</string>
+    <string name="expired_since">Expirado há %s</string>
+    <string name="month">mês</string>
+    <string name="months">meses</string>
+    <string name="week">semana</string>
+    <string name="weeks">semanas</string>
+    <string name="spice_tip">Dica: As especiarias duram muito. Se secas e cheirosas, ainda são boas.</string>
+    <string name="noodles_tip">Dica: Massas secas duram muito. Se estiverem secas e sem mofo, pode usá-las!</string>
+    <string name="canned_goods_tip">Dica: Enlatados duram anos. Se a lata estiver intacta e cheirar bem, é segura.</string>
+    <string name="groats_tip">Dica: Arroz e aveia duram muito. Se secos e sem pragas, são comestíveis.</string>
+    <string name="sauces_tip">Dica: Muitos molhos duram muito. Se fechados e sem alterações, costumam estar bons.</string>
+    <string name="drinks_tip">Dica: Muitas bebidas ainda estão boas após a data. Verifique cheiro e sabor.</string>
+    <string name="fresh_food_warning">Dica: Os alimentos frescos estragam rápido. Verifique cheiro, aparência e textura.</string>
+    <string name="sweets_tip">Dica: Os doces geralmente duram muito. Verifique sabor e textura.</string>
+    <string name="suggestion_create_recipe">Criar receita</string>
+    <string name="suggestion_storage_tips">Dar dicas de armazenamento</string>
+    <string name="suggestion_get_tips">Obter dicas</string>
+
 </resources>

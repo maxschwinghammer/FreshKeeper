@@ -9,6 +9,8 @@ plugins {
     id("dagger.hilt.android.plugin")
     id("kotlin-kapt")
     id("com.google.android.libraries.mapsplatform.secrets-gradle-plugin")
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
 }
 
 android {
@@ -19,7 +21,7 @@ android {
         applicationId = "com.freshkeeper"
         minSdk = 26
         targetSdk = 35
-        versionCode = 2
+        versionCode = 5
         versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -29,11 +31,11 @@ android {
         val properties = Properties()
         properties.load(keystoreFile.inputStream())
         val apiKey = properties.getProperty("API_KEY") ?: ""
-
         buildConfigField("String", "API_KEY", apiKey)
     }
 
-    buildFeatures {
+    @Suppress("UnstableApiUsage")
+    buildFeatures.apply {
         buildConfig = true
     }
 
@@ -41,6 +43,7 @@ android {
         getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
+                @Suppress("UnstableApiUsage")
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
@@ -53,12 +56,18 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.5"
     }
 }
 
 dependencies {
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.google.firebase.analytics)
+    implementation(libs.firebase.perf)
+    implementation(libs.tensorflow.lite)
     implementation(libs.generativeai)
     implementation(libs.android.image.cropper)
     implementation(libs.accompanist.flowlayout)
@@ -126,6 +135,7 @@ dependencies {
     implementation(libs.firebase.firestore.ktx)
     implementation(libs.image.labeling.common)
     implementation(libs.firebase.messaging.ktx)
+    implementation(libs.litert.support.api)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))

@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.freshkeeper.ui.theme.TransitionColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -23,7 +24,7 @@ fun UpperTransition() {
                         Brush.verticalGradient(
                             colors =
                                 listOf(
-                                    Color(0xFF121316),
+                                    TransitionColor,
                                     Color.Transparent,
                                 ),
                         ),
@@ -45,7 +46,7 @@ fun LowerTransition(modifier: Modifier = Modifier) {
                             colors =
                                 listOf(
                                     Color.Transparent,
-                                    Color(0xFF121316),
+                                    TransitionColor,
                                 ),
                         ),
                 ),

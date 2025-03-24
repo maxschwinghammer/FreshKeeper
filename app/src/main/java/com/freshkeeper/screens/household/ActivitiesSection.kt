@@ -61,7 +61,6 @@ fun ActivitiesSection() {
         mapOf(
             "user_joined" to R.drawable.user_joined,
             "add_product" to R.drawable.plus,
-            "add_location" to R.drawable.plus,
             "edit" to R.drawable.edit,
             "remove" to R.drawable.remove,
             "update" to R.drawable.update,

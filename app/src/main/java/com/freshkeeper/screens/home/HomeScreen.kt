@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -57,6 +58,7 @@ import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.sheets.AddProductSheet
 import com.freshkeeper.sheets.BarcodeScannerSheet
 import com.freshkeeper.sheets.EditProductSheet
+import com.freshkeeper.sheets.FoodRecognitionSheet
 import com.freshkeeper.sheets.ManualInputSheet
 import com.freshkeeper.sheets.productDetails.ProductDetailsSheet
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -74,6 +76,7 @@ fun HomeScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
 
     var scannedBarcode by remember { mutableStateOf("") }
+    var recognizedFoodName by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
     var foodItem by remember { mutableStateOf<FoodItem?>(null) }
     val allFoodItems by viewModel.allFoodItems.observeAsState(emptyList())
@@ -84,6 +87,7 @@ fun HomeScreen(navController: NavHostController) {
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val editProductSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val barcodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val foodRecognitionSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val productInfoSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val expiringSoonItems by viewModel.expiringSoonItems.observeAsState(emptyList())
@@ -122,16 +126,19 @@ fun HomeScreen(navController: NavHostController) {
                             color = TextColor,
                             modifier = Modifier.weight(1f),
                         )
-                        Image(
-                            painter = painterResource(R.drawable.ai_chat),
-                            contentDescription = "AI Chat",
-                            modifier =
-                                Modifier
-                                    .size(25.dp)
-                                    .clickable {
-                                        navController.navigate("chat")
-                                    },
-                        )
+
+                        if (viewModel.isMember.value == true) {
+                            Image(
+                                painter = painterResource(R.drawable.ai_chat),
+                                contentDescription = "AI Chat",
+                                modifier =
+                                    Modifier
+                                        .size(25.dp)
+                                        .clickable {
+                                            navController.navigate("chat")
+                                        },
+                            )
+                        }
                     }
                     Box(modifier = Modifier.weight(1f)) {
                         LazyColumn(
@@ -291,6 +298,7 @@ fun HomeScreen(navController: NavHostController) {
                 AddProductSheet(
                     sheetState,
                     barcodeSheetState,
+                    foodRecognitionSheetState,
                     manualInputSheetState,
                 )
             }
@@ -306,11 +314,23 @@ fun HomeScreen(navController: NavHostController) {
                 )
             }
 
+            if (foodRecognitionSheetState.isVisible) {
+                FoodRecognitionSheet(
+                    sheetState = foodRecognitionSheetState,
+                    onFoodRecognized = { recognizedFood ->
+                        Log.d("FoodRecognitionSheet:", "Recognised food: $recognizedFood")
+                        recognizedFoodName = recognizedFood
+                        coroutineScope.launch { manualInputSheetState.show() }
+                    },
+                )
+            }
+
             if (manualInputSheetState.isVisible) {
                 ManualInputSheet(
                     sheetState = manualInputSheetState,
                     barcode = scannedBarcode,
                     expiryTimestamp = expiryDate,
+                    recognizedFoodName = recognizedFoodName,
                 )
             }
 

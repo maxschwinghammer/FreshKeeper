@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -40,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
@@ -194,7 +196,8 @@ fun ChatBubbleItem(chatMessage: ChatMessage) {
                 ) {
                     Text(
                         text = chatMessage.text,
-                        modifier = Modifier.padding(16.dp),
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(12.dp),
                     )
                 }
             }
@@ -209,23 +212,52 @@ fun MessageInput(
     resetScroll: () -> Unit = {},
 ) {
     var userMessage by rememberSaveable { mutableStateOf("") }
+    val suggestions =
+        listOf(
+            stringResource(R.string.suggestion_create_recipe),
+            stringResource(R.string.suggestion_storage_tips),
+            stringResource(R.string.suggestion_get_tips),
+        )
+
+    Spacer(modifier = Modifier.height(8.dp))
+    LazyRow(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)) {
+        items(suggestions) { suggestion ->
+            ElevatedCard(
+                onClick = {
+                    onSendMessage(suggestion)
+                    resetScroll()
+                },
+                colors = CardDefaults.cardColors(containerColor = GreyColor),
+                shape = RoundedCornerShape(20.dp),
+                modifier = Modifier.padding(end = 8.dp),
+            ) {
+                Text(
+                    text = suggestion,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                    fontSize = 14.sp,
+                    color = TextColor,
+                )
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(8.dp))
 
     ElevatedCard(
         modifier =
             Modifier
                 .padding(horizontal = 10.dp)
                 .fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = BottomNavBackgroundColor),
+        colors = CardDefaults.cardColors(containerColor = GreyColor),
     ) {
         Row(
             modifier =
                 Modifier
-                    .padding(16.dp)
+                    .padding(vertical = 12.dp, horizontal = 12.dp)
                     .fillMaxWidth(),
         ) {
             OutlinedTextField(
                 value = userMessage,
-                label = { Text(stringResource(R.string.chat_label)) },
+                label = null,
                 onValueChange = { userMessage = it },
                 keyboardOptions =
                     KeyboardOptions(
@@ -238,13 +270,13 @@ fun MessageInput(
                         unfocusedLabelColor = TextColor,
                         focusedLabelColor = AccentTurquoiseColor,
                     ),
+                textStyle = TextStyle(fontSize = 16.sp),
                 modifier =
                     Modifier
                         .align(Alignment.CenterVertically)
                         .fillMaxWidth()
-                        .weight(0.85f)
-                        .imePadding()
-                        .padding(bottom = 4.dp),
+                        .weight(1f)
+                        .imePadding(),
             )
             IconButton(
                 onClick = {
@@ -256,7 +288,7 @@ fun MessageInput(
                 },
                 modifier =
                     Modifier
-                        .padding(start = 16.dp)
+                        .padding(start = 8.dp)
                         .align(Alignment.CenterVertically)
                         .fillMaxWidth()
                         .weight(0.15f),
