@@ -1,5 +1,7 @@
 # Datenschutzerklärung
 
+Zuletzt aktualisiert: 24.03.2025
+
 Wir nehmen den Schutz Ihrer persönlichen Daten außerordentlich ernst. Im Folgenden erläutern wir Ihnen ausführlich, wie wir Ihre Daten verarbeiten, sobald Sie unsere Services in Anspruch nehmen – und welche Rechte Ihnen dabei gesetzlich zustehen.
 
 ## 1. Verantwortliche Stelle
