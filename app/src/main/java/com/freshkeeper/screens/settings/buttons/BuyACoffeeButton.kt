@@ -1,7 +1,6 @@
 package com.freshkeeper.screens.settings.buttons
 
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import com.freshkeeper.R
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -31,10 +31,10 @@ import com.freshkeeper.ui.theme.TextColor
 @Composable
 fun BuyACoffeeButton() {
     val context = LocalContext.current
-    val url = "https://www.paypal.com/paypalme/maxschwingh"
+    val url = "https://www.paypal.com/paypalme/maxschwingh/3"
     Button(
         onClick = {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            val intent = Intent(Intent.ACTION_VIEW, url.toUri())
             context.startActivity(intent)
         },
         colors =

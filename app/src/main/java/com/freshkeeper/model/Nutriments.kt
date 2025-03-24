@@ -8,4 +8,13 @@ data class Nutriments(
     val fiber: Double? = null,
     val proteins: Double? = null,
     val salt: Double? = null,
-)
+) {
+    fun isEmpty(): Boolean =
+        energyKcal == null &&
+            fat == null &&
+            carbohydrates == null &&
+            sugars == null &&
+            fiber == null &&
+            proteins == null &&
+            salt == null
+}

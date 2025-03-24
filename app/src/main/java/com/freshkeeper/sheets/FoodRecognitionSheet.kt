@@ -39,6 +39,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.freshkeeper.R
+import com.freshkeeper.service.FoodClassifier
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
@@ -57,7 +58,7 @@ fun FoodRecognitionSheet(
     var recognizedFood by remember { mutableStateOf("") }
     val coroutineScope = rememberCoroutineScope()
 
-    val foodClassifier = remember { com.freshkeeper.ml.FoodClassifier(context) }
+    val foodClassifier = remember { FoodClassifier(context) }
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -115,11 +116,15 @@ fun FoodRecognitionSheet(
                             imageAnalysis.setAnalyzer(
                                 ContextCompat.getMainExecutor(ctx),
                             ) { imageProxy ->
-                                val result = foodClassifier.classify(imageProxy)
+                                val (result, confidence) = foodClassifier.classifyWithConfidence(imageProxy)
                                 imageProxy.close()
-                                if (result != recognizedFood) {
+
+                                if (confidence > 0.15f && result != recognizedFood) {
                                     recognizedFood = result
-                                    onFoodRecognized(result)
+                                    coroutineScope.launch {
+                                        sheetState.hide()
+                                        onFoodRecognized(result)
+                                    }
                                 }
                             }
 

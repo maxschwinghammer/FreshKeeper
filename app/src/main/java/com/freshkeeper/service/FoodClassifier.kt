@@ -1,4 +1,4 @@
-package com.freshkeeper.ml
+package com.freshkeeper.service
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -28,17 +28,21 @@ class FoodClassifier(
         interpreter = Interpreter(model)
     }
 
-    fun classify(imageProxy: ImageProxy): String {
+    fun classifyWithConfidence(imageProxy: ImageProxy): Pair<String, Float> {
         val bitmap = imageProxy.toBitmap()
         val resizedBitmap = bitmap.scale(inputImageWidth, inputImageHeight, false)
         val inputBuffer = convertBitmapToFloatBuffer(resizedBitmap)
+
         val outputArray = Array(1) { FloatArray(labels.size.takeIf { it > 0 } ?: 101) }
         interpreter.run(inputBuffer, outputArray)
+
         val maxIdx = outputArray[0].indices.maxByOrNull { outputArray[0][it] } ?: -1
+        val confidence = if (maxIdx >= 0) outputArray[0][maxIdx] else 0f
+
         return if (labels.isNotEmpty() && maxIdx in labels.indices) {
-            labels[maxIdx]
+            Pair(labels[maxIdx], confidence)
         } else {
-            "Klasse $maxIdx"
+            Pair("Klasse $maxIdx", confidence)
         }
     }
 

@@ -92,6 +92,7 @@ fun InventoryScreen(navController: NavHostController) {
     val inventoryViewModel: InventoryViewModel = hiltViewModel()
 
     var scannedBarcode by remember { mutableStateOf("") }
+    var recognizedFoodName by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
 
     val coroutineScope = rememberCoroutineScope()
@@ -376,6 +377,7 @@ fun InventoryScreen(navController: NavHostController) {
                     sheetState = foodRecognitionSheetState,
                     onFoodRecognized = { recognizedFood ->
                         println("Recognised food: $recognizedFood")
+                        recognizedFoodName = recognizedFood
                         coroutineScope.launch { manualInputSheetState.show() }
                     },
                 )
@@ -386,6 +388,7 @@ fun InventoryScreen(navController: NavHostController) {
                     sheetState = manualInputSheetState,
                     barcode = scannedBarcode,
                     expiryTimestamp = expiryDate,
+                    recognizedFoodName = recognizedFoodName,
                 )
             }
 

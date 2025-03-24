@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -75,6 +76,7 @@ fun HomeScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
 
     var scannedBarcode by remember { mutableStateOf("") }
+    var recognizedFoodName by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
     var foodItem by remember { mutableStateOf<FoodItem?>(null) }
     val allFoodItems by viewModel.allFoodItems.observeAsState(emptyList())
@@ -316,7 +318,8 @@ fun HomeScreen(navController: NavHostController) {
                 FoodRecognitionSheet(
                     sheetState = foodRecognitionSheetState,
                     onFoodRecognized = { recognizedFood ->
-                        println("Recognised food: $recognizedFood")
+                        Log.d("FoodRecognitionSheet:", "Recognised food: $recognizedFood")
+                        recognizedFoodName = recognizedFood
                         coroutineScope.launch { manualInputSheetState.show() }
                     },
                 )
@@ -327,6 +330,7 @@ fun HomeScreen(navController: NavHostController) {
                     sheetState = manualInputSheetState,
                     barcode = scannedBarcode,
                     expiryTimestamp = expiryDate,
+                    recognizedFoodName = recognizedFoodName,
                 )
             }
 

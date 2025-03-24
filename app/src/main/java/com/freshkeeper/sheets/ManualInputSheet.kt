@@ -55,6 +55,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.R
 import com.freshkeeper.screens.home.DropdownMenu
@@ -84,6 +85,7 @@ fun ManualInputSheet(
     sheetState: SheetState,
     barcode: String,
     expiryTimestamp: Long,
+    recognizedFoodName: String,
 ) {
     val accountService = remember { AccountServiceImpl() }
     val productDetailsService = remember { ProductDetailsServiceImpl() }
@@ -102,10 +104,17 @@ fun ManualInputSheet(
     var showAddImageButton by remember { mutableStateOf(true) }
     var showImageComposable by remember { mutableStateOf(false) }
 
-    LaunchedEffect(barcode) {
+    LaunchedEffect(barcode, recognizedFoodName) {
         if (barcode.isNotEmpty()) {
+            val productData = productDetailsService.fetchProductDataFromBarcode(context, barcode)
+            productName = productData?.name ?: ""
+            quantity = productData?.quantity ?: ""
+            unit.value = productData?.unit ?: ""
+            imageUrl = productData?.imageUrl ?: ""
             showImageComposable = true
             showAddImageButton = false
+        } else if (recognizedFoodName.isNotBlank()) {
+            productName = recognizedFoodName
         }
     }
 
@@ -129,7 +138,7 @@ fun ManualInputSheet(
                         "Product Image",
                         null,
                     )
-                imageUri = Uri.parse(path)
+                imageUri = path.toUri()
                 imageUrl = imageUri.toString()
             }
         }
@@ -148,14 +157,6 @@ fun ManualInputSheet(
     val changeImage = stringResource(R.string.change_image)
     val deleteImage = stringResource(R.string.delete_image)
     val cancel = stringResource(R.string.cancel)
-
-    LaunchedEffect(barcode) {
-        val productData = productDetailsService.fetchProductDataFromBarcode(context, barcode)
-        productName = productData?.name ?: barcode
-        quantity = productData?.quantity ?: ""
-        unit.value = productData?.unit ?: ""
-        imageUrl = productData?.imageUrl ?: ""
-    }
 
     fun showImagePicker(
         context: Context,
@@ -276,7 +277,12 @@ fun ManualInputSheet(
                                         .setTitle(productImage)
                                         .setItems(options) { _, which ->
                                             when (which) {
-                                                0 -> showImagePicker(context, launcher, cameraLauncher)
+                                                0 ->
+                                                    showImagePicker(
+                                                        context,
+                                                        launcher,
+                                                        cameraLauncher,
+                                                    )
                                                 1 -> {
                                                     if (imageUrl.isEmpty()) {
                                                         showImageComposable = false
