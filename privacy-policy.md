@@ -2,8 +2,6 @@
 
 Zuletzt aktualisiert: 24.03.2025
 
-Wir nehmen den Schutz Ihrer persönlichen Daten außerordentlich ernst. Im Folgenden erläutern wir Ihnen ausführlich, wie wir Ihre Daten verarbeiten, sobald Sie unsere Services in Anspruch nehmen – und welche Rechte Ihnen dabei gesetzlich zustehen.
-
 ## 1. Verantwortliche Stelle
 
 Verantwortliche Stelle im Sinne des Datenschutzrechts ist:
@@ -19,7 +17,7 @@ gesetzlich vertreten durch Max Schwinghammer (nachfolgend „wir“ genannt).
 
 ## 2. Allgemeine Hinweise
 
-Diese Datenschutzerklärung informiert Sie darüber, welche personenbezogenen Daten (also Informationen, die zur Identifikation Ihrer Person beitragen) wir im Rahmen der Nutzung unserer App verarbeiten, zu welchen Zwecken dies geschieht und auf welcher Rechtsgrundlage die Datenverarbeitung erfolgt.
+Wir nehmen den Schutz Ihrer persönlichen Daten außerordentlich ernst. Diese Datenschutzerklärung informiert Sie darüber, welche personenbezogenen Daten (also Informationen, die zur Identifikation Ihrer Person beitragen) wir im Rahmen der Nutzung unserer App verarbeiten, zu welchen Zwecken dies geschieht und auf welcher Rechtsgrundlage die Datenverarbeitung erfolgt.
 
 ## 3. Erhebung und Verarbeitung personenbezogener Daten
 
