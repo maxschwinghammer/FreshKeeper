@@ -1,4 +1,4 @@
-# TERMS OF SERVICE
+# Nutzungsbedingungen
 
 Zuletzt aktualisiert: 24.03.2025
 
