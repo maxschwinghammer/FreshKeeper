@@ -1,9 +1,11 @@
 package com.freshkeeper.sheets
 
 import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
@@ -55,7 +57,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.R
 import com.freshkeeper.screens.home.DropdownMenu
@@ -76,7 +77,6 @@ import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
 import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 
 @Suppress("ktlint:standard:function-naming")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -127,19 +127,33 @@ fun ManualInputSheet(
         }
 
     val cameraLauncher =
-        rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap ->
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.TakePicturePreview(),
+        ) { bitmap ->
             if (bitmap != null) {
-                val bytes = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes)
-                val path =
-                    MediaStore.Images.Media.insertImage(
-                        context.contentResolver,
-                        bitmap,
-                        "Product Image",
-                        null,
+                val contentValues =
+                    ContentValues().apply {
+                        put(
+                            MediaStore.MediaColumns.DISPLAY_NAME,
+                            "" + "Product_Image_${System.currentTimeMillis()}.png",
+                        )
+                        put(MediaStore.MediaColumns.MIME_TYPE, "image/png")
+                        put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                    }
+
+                val uri =
+                    context.contentResolver.insert(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        contentValues,
                     )
-                imageUri = path.toUri()
-                imageUrl = imageUri.toString()
+
+                uri?.let {
+                    context.contentResolver.openOutputStream(it)?.use { outputStream ->
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+                    }
+                    imageUri = it
+                    imageUrl = it.toString()
+                }
             }
         }
 
