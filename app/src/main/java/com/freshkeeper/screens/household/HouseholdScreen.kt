@@ -115,9 +115,9 @@ fun HouseholdScreen(navController: NavHostController) {
                                             householdErrorText,
                                         )
                                     },
-                                    onAddProducts = { householdSettingsViewModel.onAddProducts() },
+                                    onAddProducts = { householdSettingsViewModel.addProducts() },
                                     onDeleteProducts = {
-                                        householdSettingsViewModel.onDeleteProducts()
+                                        householdSettingsViewModel.deleteProducts()
                                     },
                                 )
                             }

@@ -138,7 +138,7 @@ fun StatisticsScreen(navController: NavHostController) {
                                         fontSize = 16.sp,
                                         fontWeight = FontWeight.Bold,
                                         color = AccentTurquoiseColor,
-                                        modifier = Modifier.weight(1f),
+                                        modifier = Modifier.weight(1f).padding(bottom = 8.dp),
                                     )
                                     Image(
                                         painter = painterResource(R.drawable.share),
@@ -157,7 +157,8 @@ fun StatisticsScreen(navController: NavHostController) {
                                 Text(
                                     text =
                                         stringResource(R.string.total_food_waste) + ": " +
-                                            statistics.totalWaste + stringResource(R.string.items),
+                                            statistics.totalWaste + " " +
+                                            stringResource(R.string.items),
                                     color = TextColor,
                                     fontSize = 14.sp,
                                 )
@@ -173,7 +174,7 @@ fun StatisticsScreen(navController: NavHostController) {
                                 Text(
                                     text =
                                         stringResource(R.string.days_without_waste) + ": " +
-                                            statistics.daysWithoutWaste +
+                                            statistics.daysWithoutWaste + " " +
                                             stringResource(R.string.days),
                                     color = TextColor,
                                     fontSize = 14.sp,
@@ -253,7 +254,7 @@ fun StatisticsScreen(navController: NavHostController) {
                                 Text(
                                     text =
                                         stringResource(R.string.waste_reduction) +
-                                            ": " + statistics.wasteReduction + "%",
+                                            ": " + statistics.wasteReduction + " %",
                                     color = TextColor,
                                     fontSize = 14.sp,
                                 )
@@ -261,7 +262,7 @@ fun StatisticsScreen(navController: NavHostController) {
                                 Text(
                                     text =
                                         stringResource(R.string.used_items_percentage) +
-                                            " " + statistics.usedItemsPercentage + "%",
+                                            " " + statistics.usedItemsPercentage + " %",
                                     color = TextColor,
                                     fontSize = 14.sp,
                                 )

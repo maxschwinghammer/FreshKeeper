@@ -66,10 +66,7 @@ fun ContactScreen(navController: NavHostController) {
             },
         ) { it ->
             Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(it),
+                modifier = Modifier.fillMaxSize().padding(it),
             ) {
                 Column(
                     modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -128,10 +125,7 @@ fun ContactScreen(navController: NavHostController) {
                                     focusedIndicatorColor = AccentTurquoiseColor,
                                     unfocusedIndicatorColor = Color.Transparent,
                                 ),
-                            modifier =
-                                Modifier
-                                    .fillMaxWidth()
-                                    .height(150.dp),
+                            modifier = Modifier.fillMaxWidth().height(150.dp),
                             placeholder = { Text(text = stringResource(R.string.enter_message)) },
                         )
 

@@ -37,6 +37,7 @@ android {
     @Suppress("UnstableApiUsage")
     buildFeatures.apply {
         buildConfig = true
+        compose = true
     }
 
     buildTypes {
@@ -63,6 +64,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.commonmark.commonmark)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.google.firebase.analytics)
@@ -102,8 +104,12 @@ dependencies {
     implementation(libs.com.google.android.play.review2)
     implementation(libs.com.google.android.play.review.ktx2)
     implementation(libs.coil.compose)
-    implementation(libs.firebase.auth)
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.common.ktx)
+    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.messaging.ktx)
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.gms.google.services)
@@ -115,8 +121,8 @@ dependencies {
     implementation(libs.hilt)
     implementation(libs.hilt.navigation.compose)
     implementation(libs.firebase.messaging)
-    implementation(libs.json)
     implementation(libs.javax.mail)
+    implementation(libs.json)
     implementation(libs.junit)
     implementation(libs.material)
     implementation(libs.mlkit.image.labeling)
@@ -130,11 +136,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(platform(libs.firebase.bom))
     implementation(libs.googleid)
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.common.ktx)
-    implementation(libs.firebase.firestore.ktx)
     implementation(libs.image.labeling.common)
-    implementation(libs.firebase.messaging.ktx)
     implementation(libs.litert.support.api)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)

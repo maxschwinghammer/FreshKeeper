@@ -194,9 +194,8 @@ fun ChatBubbleItem(chatMessage: ChatMessage) {
                     shape = bubbleShape,
                     modifier = Modifier.widthIn(0.dp, maxWidth * 0.9f),
                 ) {
-                    Text(
-                        text = chatMessage.text,
-                        fontSize = 14.sp,
+                    MarkdownText(
+                        markdown = chatMessage.text,
                         modifier = Modifier.padding(12.dp),
                     )
                 }
