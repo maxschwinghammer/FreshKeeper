@@ -3,20 +3,20 @@ package com.freshkeeper.screens.inventory.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.freshkeeper.model.FoodItem
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
+import com.freshkeeper.screens.AppViewModel
+import com.freshkeeper.service.household.HouseholdService
+import com.freshkeeper.service.inventory.InventoryService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class InventoryViewModel
     @Inject
-    constructor() : ViewModel() {
-        private val firestore = FirebaseFirestore.getInstance()
-
+    constructor(
+        private val householdService: HouseholdService,
+        private val inventoryService: InventoryService,
+    ) : AppViewModel() {
         private val _foodItems = MutableLiveData<List<FoodItem>>()
         val foodItems: LiveData<List<FoodItem>> = _foodItems
 
@@ -53,102 +53,88 @@ class InventoryViewModel
         private val _otherItems = MutableLiveData<List<FoodItem>>()
         val otherItems: LiveData<List<FoodItem>> = _otherItems
 
-        private val userId = FirebaseAuth.getInstance().currentUser?.uid
-        private var householdId: String? = null
+        private val _householdId = MutableLiveData<String?>()
+        val householdId: LiveData<String?> = _householdId
 
         init {
-            loadHouseholdId()
-            loadStorageLocationItems("fridge", _fridgeItems)
-            loadStorageLocationItems("cupboard", _cupboardItems)
-            loadStorageLocationItems("freezer", _freezerItems)
-            loadStorageLocationItems("counter_top", _countertopItems)
-            loadStorageLocationItems("cellar", _cellarItems)
-            loadStorageLocationItems("bread_box", _bakeryItems)
-            loadStorageLocationItems("spice_rack", _spiceRackItems)
-            loadStorageLocationItems("pantry", _pantryItems)
-            loadStorageLocationItems("fruit_basket", _fruitBasketItems)
-            loadStorageLocationItems("other", _otherItems)
-            loadAllFoodItems()
+            getHouseholdId()
+            getStorageLocationItems("fridge", _fridgeItems)
+            getStorageLocationItems("cupboard", _cupboardItems)
+            getStorageLocationItems("freezer", _freezerItems)
+            getStorageLocationItems("counter_top", _countertopItems)
+            getStorageLocationItems("cellar", _cellarItems)
+            getStorageLocationItems("bread_box", _bakeryItems)
+            getStorageLocationItems("spice_rack", _spiceRackItems)
+            getStorageLocationItems("pantry", _pantryItems)
+            getStorageLocationItems("fruit_basket", _fruitBasketItems)
+            getStorageLocationItems("other", _otherItems)
+            getAllFoodItems()
         }
 
-        private fun loadAllFoodItems() {
-            if (userId == null) return
-
-            val query =
-                if (householdId != null) {
-                    firestore
-                        .collection("foodItems")
-                        .whereEqualTo("householdId", householdId)
-                } else {
-                    firestore
-                        .collection("foodItems")
-                        .whereEqualTo("userId", userId)
-                }
-
-            query
-                .whereEqualTo("consumed", false)
-                .whereEqualTo("thrownAway", false)
-                .get()
-                .addOnSuccessListener { documents ->
-                    val items = documents.documents.mapNotNull { it.toObject<FoodItem>() }
-                    _foodItems.value = items
-                    updateItemList(items)
-                }.addOnFailureListener {
-                    _foodItems.value = emptyList()
-                    Log.e("InventoryViewModel", "Error loading all food items", it)
-                }
+        private fun getAllFoodItems() {
+            launchCatching {
+                inventoryService.getAllFoodItems(
+                    onResult = { items ->
+                        _foodItems.value = items
+                        updateItemList(items)
+                    },
+                    onFailure = {
+                        Log.e("InventoryViewModel", "Error loading all food items")
+                    },
+                )
+            }
         }
 
         private fun updateItemList(foodItems: List<FoodItem>) {
             _itemList.value = foodItems.joinToString(separator = ", ") { it.name }
         }
 
-        private fun loadHouseholdId() {
-            if (userId == null) return
-
-            firestore
-                .collection("users")
-                .document(userId)
-                .get()
-                .addOnSuccessListener { document ->
-                    householdId = document.getString("householdId")
-                }.addOnFailureListener {
-                    Log.e("HomeViewModel", "Error loading householdId from Firestore")
+        private fun getHouseholdId() {
+            launchCatching {
+                try {
+                    householdService.getHouseholdId(
+                        onResult = { householdId ->
+                            _householdId.value = householdId
+                        },
+                        onFailure = {
+                            Log.e("HouseholdViewModel", "Error loading householdId")
+                        },
+                    )
+                } catch (e: Exception) {
+                    Log.e("HomeViewModel", "Error loading householdId from Firestore", e)
                 }
+            }
         }
 
-        private fun loadStorageLocationItems(
+        private fun getStorageLocationItems(
             storageLocation: String,
-            liveData: MutableLiveData<List<FoodItem>>,
+            foodItemList: MutableLiveData<List<FoodItem>>,
         ) {
-            if (userId == null) return
-
-            val query =
-                if (householdId != null) {
-                    firestore
-                        .collection("foodItems")
-                        .whereEqualTo("householdId", householdId)
-                } else {
-                    firestore
-                        .collection("foodItems")
-                        .whereEqualTo("userId", userId)
-                }
-
-            query
-                .whereEqualTo("storageLocation", storageLocation)
-                .whereEqualTo("consumed", false)
-                .whereEqualTo("thrownAway", false)
-                .get()
-                .addOnSuccessListener { documents ->
-                    val items = documents.documents.mapNotNull { it.toObject<FoodItem>() }
-                    liveData.value = items
-                }.addOnFailureListener {
-                    liveData.value = emptyList()
-                    Log.e(
-                        "InventoryViewModel",
-                        "Error loading category items for storage location: $storageLocation",
-                        it,
-                    )
-                }
+            launchCatching {
+                inventoryService.getStorageLocationItems(
+                    storageLocation,
+                    foodItemList,
+                    onResult = { items ->
+                        when (storageLocation) {
+                            "fridge" -> _fridgeItems.value = items
+                            "cupboard" -> _cupboardItems.value = items
+                            "freezer" -> _freezerItems.value = items
+                            "countertop" -> _countertopItems.value = items
+                            "cellar" -> _cellarItems.value = items
+                            "bakery" -> _bakeryItems.value = items
+                            "spiceRack" -> _spiceRackItems.value = items
+                            "pantry" -> _pantryItems.value = items
+                            "fruitBasket" -> _fruitBasketItems.value = items
+                            "other" -> _otherItems.value = items
+                        }
+                    },
+                    onFailure = {
+                        Log.e(
+                            "InventoryViewModel",
+                            "Error loading storage location items",
+                        )
+                    },
+                )
+            }
         }
     }

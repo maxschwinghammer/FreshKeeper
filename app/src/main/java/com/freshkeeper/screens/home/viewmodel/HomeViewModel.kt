@@ -3,15 +3,11 @@ package com.freshkeeper.screens.home.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.freshkeeper.model.FoodItem
-import com.freshkeeper.service.HouseholdService
-import com.freshkeeper.service.MembershipService
+import com.freshkeeper.screens.AppViewModel
+import com.freshkeeper.service.household.HouseholdService
+import com.freshkeeper.service.membership.MembershipService
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,7 +16,7 @@ class HomeViewModel
     constructor(
         private val householdService: HouseholdService,
         private val membershipService: MembershipService,
-    ) : ViewModel() {
+    ) : AppViewModel() {
         private val _allFoodItems = MutableLiveData<List<FoodItem>>()
         val allFoodItems: LiveData<List<FoodItem>> = _allFoodItems
 
@@ -37,54 +33,47 @@ class HomeViewModel
         val isMember: LiveData<Boolean> = _isMember
 
         init {
-            loadHouseholdId()
+            getHouseholdId()
             checkMembershipStatus()
         }
 
         private fun checkMembershipStatus() {
-            CoroutineScope(Dispatchers.IO).launch {
+            launchCatching {
                 val status = membershipService.isMember()
-                withContext(Dispatchers.Main) {
-                    _isMember.value = status
-                }
+                _isMember.value = status
             }
         }
 
-        private fun loadHouseholdId() {
-            CoroutineScope(Dispatchers.IO).launch {
+        private fun getHouseholdId() {
+            launchCatching {
                 try {
                     householdService.getHouseholdId(
                         onResult = { householdId ->
                             _householdId.value = householdId
                         },
                         onFailure = {
-                            Log.e(
-                                "HouseholdViewModel",
-                                "Error loading householdId",
-                            )
+                            Log.e("HouseholdViewModel", "Error loading householdId")
                         },
                     )
-                    loadFoodItemsFromService()
+                    getFoodItems()
                 } catch (e: Exception) {
                     Log.e("HomeViewModel", "Error loading householdId from Firestore", e)
                 }
             }
         }
 
-        private suspend fun loadFoodItemsFromService() {
+        private suspend fun getFoodItems() {
             try {
                 val foodItems = householdService.getFoodItems(householdId.value)
-                withContext(Dispatchers.Main) {
-                    _allFoodItems.value = foodItems
-                    _expiringSoonItems.value =
-                        foodItems
-                            .filter { it.daysDifference in 0..30 }
-                            .sortedBy { it.expiryTimestamp }
-                    _expiredItems.value =
-                        foodItems
-                            .filter { it.daysDifference < 0 }
-                            .sortedByDescending { it.expiryTimestamp }
-                }
+                _allFoodItems.value = foodItems
+                _expiringSoonItems.value =
+                    foodItems
+                        .filter { it.daysDifference in 0..30 }
+                        .sortedBy { it.expiryTimestamp }
+                _expiredItems.value =
+                    foodItems
+                        .filter { it.daysDifference < 0 }
+                        .sortedByDescending { it.expiryTimestamp }
             } catch (e: Exception) {
                 Log.e("HomeViewModel", "Error loading food items from Firestore", e)
             }

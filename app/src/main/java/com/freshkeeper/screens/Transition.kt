@@ -22,11 +22,7 @@ fun UpperTransition() {
                 .background(
                     brush =
                         Brush.verticalGradient(
-                            colors =
-                                listOf(
-                                    TransitionColor,
-                                    Color.Transparent,
-                                ),
+                            colors = listOf(TransitionColor, Color.Transparent),
                         ),
                 ),
     )
@@ -43,11 +39,7 @@ fun LowerTransition(modifier: Modifier = Modifier) {
                 .background(
                     brush =
                         Brush.verticalGradient(
-                            colors =
-                                listOf(
-                                    Color.Transparent,
-                                    TransitionColor,
-                                ),
+                            colors = listOf(Color.Transparent, TransitionColor),
                         ),
                 ),
     )

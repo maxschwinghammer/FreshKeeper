@@ -53,7 +53,7 @@ fun ProfileScreen(
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
     val profileViewModel: ProfileViewModel = hiltViewModel()
 
-    profileViewModel.loadUserProfile(userId)
+    profileViewModel.getUserProfile(userId)
 
     val user = profileViewModel.user.collectAsState().value
     val memberSinceDays = profileViewModel.memberSinceDays.collectAsState().value

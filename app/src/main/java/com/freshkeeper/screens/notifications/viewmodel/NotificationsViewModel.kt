@@ -1,9 +1,9 @@
 package com.freshkeeper.screens.notifications.viewmodel
 
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.freshkeeper.R
 import com.freshkeeper.model.Notification
+import com.freshkeeper.screens.AppViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NotificationsViewModel
     @Inject
-    constructor() : ViewModel() {
+    constructor() : AppViewModel() {
         private val _badgeCount = MutableStateFlow(0)
         val badgeCount: StateFlow<Int> = _badgeCount
 

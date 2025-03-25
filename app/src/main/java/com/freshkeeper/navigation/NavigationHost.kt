@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.freshkeeper.model.Screen
-import com.freshkeeper.screens.ai.ChatScreen
+import com.freshkeeper.screens.aiChat.ChatScreen
 import com.freshkeeper.screens.authentication.signIn.EmailSignInScreen
 import com.freshkeeper.screens.authentication.signIn.ForgotPasswordScreen
 import com.freshkeeper.screens.authentication.signIn.SignInScreen
@@ -30,7 +30,7 @@ import com.freshkeeper.screens.profile.ProfileScreen
 import com.freshkeeper.screens.profileSettings.ProfileSettingsScreen
 import com.freshkeeper.screens.settings.SettingsScreen
 import com.freshkeeper.screens.statistics.StatisticsScreen
-import com.freshkeeper.service.AccountService
+import com.freshkeeper.service.account.AccountService
 
 @Suppress("ktlint:standard:function-naming")
 @Composable

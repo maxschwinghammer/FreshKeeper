@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.ProductDetails
-import com.freshkeeper.service.ProductDetailsServiceImpl
+import com.freshkeeper.service.productDetails.ProductDetailsServiceImpl
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor

@@ -172,7 +172,7 @@ fun NameInputScreen(
                             showError = true
                             if (!skipName && isNameValid) {
                                 if (userId != null) {
-                                    profileViewModel.saveName(userId, name)
+                                    profileViewModel.updateDisplayName(name)
                                 }
                                 navController.navigate("selectProfilePicture") {
                                     launchSingleTop = true

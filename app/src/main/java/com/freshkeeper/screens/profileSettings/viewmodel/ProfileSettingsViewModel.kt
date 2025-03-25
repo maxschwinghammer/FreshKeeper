@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
-import com.freshkeeper.service.AccountService
+import com.freshkeeper.service.account.AccountService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

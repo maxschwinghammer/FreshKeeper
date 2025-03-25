@@ -64,11 +64,11 @@ import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
 import com.freshkeeper.screens.profileSettings.compressImage
 import com.freshkeeper.screens.profileSettings.convertBitmapToBase64
-import com.freshkeeper.service.AccountServiceImpl
-import com.freshkeeper.service.ProductDetailsServiceImpl
-import com.freshkeeper.service.ProductServiceImpl
+import com.freshkeeper.service.account.AccountServiceImpl
 import com.freshkeeper.service.categoryMap
 import com.freshkeeper.service.categoryReverseMap
+import com.freshkeeper.service.product.ProductServiceImpl
+import com.freshkeeper.service.productDetails.ProductDetailsServiceImpl
 import com.freshkeeper.service.storageLocationMap
 import com.freshkeeper.service.storageLocationReverseMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor

@@ -1,7 +1,7 @@
 package com.freshkeeper.screens.contact.viewmodel
 
 import com.freshkeeper.screens.AppViewModel
-import com.freshkeeper.service.ContactService
+import com.freshkeeper.service.contact.ContactService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

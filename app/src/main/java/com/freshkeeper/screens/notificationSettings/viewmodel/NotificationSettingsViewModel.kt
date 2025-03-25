@@ -4,7 +4,7 @@ import android.util.Log
 import com.freshkeeper.model.NotificationSettings
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
-import com.freshkeeper.service.AccountService
+import com.freshkeeper.service.account.AccountService
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

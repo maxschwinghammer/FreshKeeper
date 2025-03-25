@@ -3,16 +3,14 @@ package com.freshkeeper.screens.household.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.freshkeeper.model.Activity
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.Member
 import com.freshkeeper.model.Nutriments
-import com.freshkeeper.service.HouseholdService
+import com.freshkeeper.screens.AppViewModel
+import com.freshkeeper.service.household.HouseholdService
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,7 +18,7 @@ class HouseholdViewModel
     @Inject
     constructor(
         private val householdService: HouseholdService,
-    ) : ViewModel() {
+    ) : AppViewModel() {
         private val _members = MutableLiveData<List<Member>?>()
         val members: LiveData<List<Member>?> = _members
 
@@ -64,7 +62,7 @@ class HouseholdViewModel
         val household: MutableLiveData<Household?> = _household
 
         init {
-            loadHousehold()
+            getHousehold()
             _expiredDates.value =
                 listOf(
                     System.currentTimeMillis() - 2 * 24 * 60 * 60 * 1000,
@@ -96,14 +94,14 @@ class HouseholdViewModel
             _averageNutriScore.value = "C"
         }
 
-        private fun loadHousehold() {
-            viewModelScope.launch {
+        private fun getHousehold() {
+            launchCatching {
                 householdService.getHousehold(
                     onResult = { household ->
                         _household.value = household
                         _isInHousehold.value = true
 
-                        loadHouseholdData()
+                        getHouseholdData()
                     },
                     onFailure = {
                         _household.value = Household()
@@ -115,8 +113,8 @@ class HouseholdViewModel
             }
         }
 
-        private fun loadHouseholdData() {
-            viewModelScope.launch {
+        private fun getHouseholdData() {
+            launchCatching {
                 householdService.getMembers(
                     onResult = { _members.value = it },
                     onFailure = { Log.e("HouseholdViewModel", "Error loading members") },
