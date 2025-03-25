@@ -39,7 +39,7 @@ val GenerativeViewModelFactory =
                 modelClass.isAssignableFrom(ChatViewModel::class.java) -> {
                     val generativeModel =
                         GenerativeModel(
-                            modelName = "gemini-1.5-flash-latest",
+                            modelName = "gemini-2.0-flash",
                             apiKey = BuildConfig.API_KEY,
                             generationConfig = config,
                             safetySettings =

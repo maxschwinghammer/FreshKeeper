@@ -31,6 +31,7 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -40,6 +41,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -56,7 +58,6 @@ import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
-import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.LightGreyColor
@@ -66,7 +67,7 @@ import kotlinx.coroutines.launch
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-internal fun ChatScreen(navController: NavHostController) {
+fun ChatScreen(navController: NavHostController) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
@@ -74,6 +75,15 @@ internal fun ChatScreen(navController: NavHostController) {
     val itemList by inventoryViewModel.itemList.observeAsState("")
     val chatViewModel: ChatViewModel = viewModel(factory = GenerativeViewModelFactory)
     val chatUiState by chatViewModel.uiState.collectAsState()
+
+    val welcomeText = stringResource(R.string.welcome_text)
+    val roleText = stringResource(R.string.ai_memory_block)
+    val productsText = stringResource(R.string.current_food_items)
+    val languageText = stringResource(R.string.answer_in)
+
+    LaunchedEffect(Unit) {
+        chatViewModel.initializeTexts(welcomeText, roleText, productsText, languageText)
+    }
 
     FreshKeeperTheme {
         Scaffold(
@@ -216,6 +226,7 @@ fun MessageInput(
             stringResource(R.string.suggestion_create_recipe),
             stringResource(R.string.suggestion_storage_tips),
             stringResource(R.string.suggestion_get_tips),
+            stringResource(R.string.suggestion_meal_prep),
         )
 
     Spacer(modifier = Modifier.height(8.dp))
@@ -249,23 +260,22 @@ fun MessageInput(
         colors = CardDefaults.cardColors(containerColor = GreyColor),
     ) {
         Row(
-            modifier =
-                Modifier
-                    .padding(vertical = 12.dp, horizontal = 12.dp)
-                    .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
         ) {
             OutlinedTextField(
                 value = userMessage,
                 label = null,
                 onValueChange = { userMessage = it },
+                placeholder = { Text(stringResource(R.string.enter_message)) },
                 keyboardOptions =
                     KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences,
                     ),
                 colors =
                     OutlinedTextFieldDefaults.colors(
-                        unfocusedBorderColor = ComponentStrokeColor,
-                        focusedBorderColor = AccentTurquoiseColor,
+                        cursorColor = AccentTurquoiseColor,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedBorderColor = Color.Transparent,
                         unfocusedLabelColor = TextColor,
                         focusedLabelColor = AccentTurquoiseColor,
                     ),
@@ -287,7 +297,7 @@ fun MessageInput(
                 },
                 modifier =
                     Modifier
-                        .padding(start = 8.dp)
+                        .padding(horizontal = 8.dp)
                         .align(Alignment.CenterVertically)
                         .fillMaxWidth()
                         .weight(0.15f),
@@ -295,7 +305,7 @@ fun MessageInput(
                 Icon(
                     Icons.AutoMirrored.Filled.Send,
                     contentDescription = stringResource(R.string.action_send),
-                    modifier = Modifier,
+                    tint = AccentTurquoiseColor,
                 )
             }
         }
