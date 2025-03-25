@@ -127,8 +127,8 @@ fun HouseholdSettingsScreen(
                                         onCreateHouseholdClick = { name, type ->
                                             viewModel.createHousehold(name, type)
                                         },
-                                        onAddProducts = { viewModel.onAddProducts() },
-                                        onDeleteProducts = { viewModel.onDeleteProducts() },
+                                        onAddProducts = { viewModel.addProducts() },
+                                        onDeleteProducts = { viewModel.deleteProducts() },
                                         items,
                                     )
                                     JoinHouseholdCard(onJoinHouseholdClick = { householdId ->
@@ -141,7 +141,7 @@ fun HouseholdSettingsScreen(
                                 }
                             } else {
                                 HouseholdNameCard(
-                                    { viewModel.onUpdateHouseholdNameClick(it) },
+                                    { viewModel.updateHouseholdName(it) },
                                     household,
                                     user,
                                 )
@@ -149,10 +149,10 @@ fun HouseholdSettingsScreen(
                                     selectedHouseholdType = selectedHouseholdType,
                                     onHouseholdTypeSelected = { type, user ->
                                         selectedHouseholdType = type
-                                        viewModel.onUpdateHouseholdTypeClick(type, user)
+                                        viewModel.updateHouseholdType(type, user)
                                     },
-                                    onDeleteProducts = { viewModel.onDeleteProducts() },
-                                    onAddProducts = { viewModel.onAddProducts() },
+                                    onDeleteProducts = { viewModel.deleteProducts() },
+                                    onAddProducts = { viewModel.addProducts() },
                                     household,
                                     user,
                                     items,
@@ -165,11 +165,11 @@ fun HouseholdSettingsScreen(
                                         InviteCard(inviteSheetState, household)
                                     }
                                     DeleteHouseholdCard {
-                                        viewModel.onDeleteHousehold()
+                                        viewModel.deleteHousehold()
                                     }
                                 } else {
                                     LeaveHouseholdCard {
-                                        viewModel.onLeaveHousehold()
+                                        viewModel.leaveHousehold()
                                     }
                                 }
                             }

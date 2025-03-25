@@ -5,27 +5,23 @@ import android.content.Context
 import android.util.Log
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
 import com.freshkeeper.R
-import com.freshkeeper.model.Membership
-import com.freshkeeper.model.NotificationSettings
-import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.screens.authentication.isValidEmail
 import com.freshkeeper.screens.authentication.isValidPassword
-import com.freshkeeper.service.AccountService
+import com.freshkeeper.service.account.AccountService
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
-import java.time.LocalTime
 import java.util.Locale
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -113,57 +109,9 @@ class SignUpViewModel
             userId: String,
             email: String,
         ) {
-            val firestore = FirebaseFirestore.getInstance()
-
-            val membership = Membership()
-
-            firestore
-                .collection("memberships")
-                .document(userId)
-                .set(membership)
-                .addOnSuccessListener {
-                    val user =
-                        User(
-                            id = userId,
-                            email = email,
-                            createdAt = System.currentTimeMillis(),
-                            provider = "email",
-                        )
-
-                    firestore
-                        .collection("users")
-                        .document(userId)
-                        .set(user)
-                        .addOnFailureListener { e ->
-                            Log.e("SignUp", "Error when saving the user: ${e.message}", e)
-                        }
-
-                    val notificationSettings =
-                        NotificationSettings(
-                            dailyNotificationTime = LocalTime.of(12, 0).toString(),
-                            timeBeforeExpiration = 2,
-                            dailyReminders = false,
-                            foodAdded = false,
-                            householdChanges = false,
-                            foodExpiring = false,
-                            tips = false,
-                            statistics = false,
-                        )
-
-                    firestore
-                        .collection("notificationSettings")
-                        .document(userId)
-                        .set(notificationSettings)
-                        .addOnFailureListener { e ->
-                            Log.e(
-                                "NotificationSettings",
-                                "Error saving notification settings: ${e.message}",
-                                e,
-                            )
-                        }
-                }.addOnFailureListener { e ->
-                    Log.e("SignUp", "Error when creating the membership: ${e.message}", e)
-                }
+            launchCatching {
+                accountService.saveUserToFirestore(userId, email)
+            }
         }
 
         private suspend fun checkEmailVerification(
@@ -201,9 +149,9 @@ class SignUpViewModel
                     "user_preferences",
                     Context.MODE_PRIVATE,
                 )
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("biometric_enabled", enableBiometric)
-            editor.apply()
+            sharedPreferences.edit {
+                putBoolean("biometric_enabled", enableBiometric)
+            }
         }
 
         private suspend fun askForBiometricActivation(context: Context): Boolean =

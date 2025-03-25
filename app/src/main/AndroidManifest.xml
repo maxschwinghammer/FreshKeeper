@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" package="com.freshkeeper">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature
         android:name="android.hardware.camera"
@@ -86,7 +86,7 @@
         </provider>
 
         <receiver
-            android:name=".service.DailyReminderReceiver"
+            android:name=".service.notification.DailyReminderReceiver"
             android:enabled="true"
             android:exported="false">
         </receiver>

@@ -20,8 +20,8 @@ import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.freshkeeper.navigation.NavigationHost
-import com.freshkeeper.service.AccountServiceImpl
-import com.freshkeeper.service.scheduleDailyReminder
+import com.freshkeeper.service.account.AccountServiceImpl
+import com.freshkeeper.service.notification.scheduleDailyReminder
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions

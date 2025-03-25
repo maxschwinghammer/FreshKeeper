@@ -2,7 +2,7 @@ package com.freshkeeper.screens.settings.viewmodel
 
 import com.freshkeeper.model.Membership
 import com.freshkeeper.screens.AppViewModel
-import com.freshkeeper.service.MembershipService
+import com.freshkeeper.service.membership.MembershipService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

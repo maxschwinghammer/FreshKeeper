@@ -39,8 +39,8 @@ import com.freshkeeper.model.Statistics
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
-import com.freshkeeper.service.ShareService
-import com.freshkeeper.service.ShareServiceImpl
+import com.freshkeeper.service.share.ShareService
+import com.freshkeeper.service.share.ShareServiceImpl
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
@@ -59,27 +59,19 @@ fun StatisticsScreen(navController: NavHostController) {
 
     val context = LocalContext.current
 
-    val totalWaste by householdViewModel.totalWaste.observeAsState(0)
-    val averageWaste by householdViewModel.averageWaste.observeAsState(0f)
-    val daysWithoutWaste by householdViewModel.daysWithoutWaste.observeAsState(0)
-    val mostWastedItems by householdViewModel.mostWastedItems.observeAsState(emptyList())
-    val wasteReduction by householdViewModel.wasteReduction.observeAsState(0)
-    val usedItemsPercentage by householdViewModel.usedItemsPercentage.observeAsState(0)
-    val mostWastedCategory by householdViewModel.mostWastedCategory.observeAsState("N/A")
-    val expiredDates by householdViewModel.expiredDates.observeAsState(emptyList())
     val averageNutriments by householdViewModel.averageNutriments.observeAsState()
     val averageNutriScore by householdViewModel.averageNutriScore.observeAsState("N/A")
 
     val statistics =
         Statistics(
-            totalWaste,
-            averageWaste,
-            daysWithoutWaste,
-            mostWastedItems,
-            wasteReduction,
-            usedItemsPercentage,
-            mostWastedCategory,
-            expiredDates,
+            householdViewModel.totalWaste.observeAsState(0).value,
+            householdViewModel.averageWaste.observeAsState(0f).value,
+            householdViewModel.daysWithoutWaste.observeAsState(0).value,
+            householdViewModel.mostWastedItems.observeAsState(emptyList()).value,
+            householdViewModel.wasteReduction.observeAsState(0).value,
+            householdViewModel.usedItemsPercentage.observeAsState(0).value,
+            householdViewModel.mostWastedCategory.observeAsState("N/A").value,
+            householdViewModel.expiredDates.observeAsState(emptyList()).value,
         )
 
     FreshKeeperTheme {
@@ -131,8 +123,11 @@ fun StatisticsScreen(navController: NavHostController) {
                                         .fillMaxWidth()
                                         .wrapContentHeight()
                                         .clip(RoundedCornerShape(10.dp))
-                                        .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
-                                        .padding(16.dp),
+                                        .border(
+                                            1.dp,
+                                            ComponentStrokeColor,
+                                            RoundedCornerShape(10.dp),
+                                        ).padding(16.dp),
                             ) {
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
@@ -152,21 +147,24 @@ fun StatisticsScreen(navController: NavHostController) {
                                             Modifier
                                                 .size(20.dp)
                                                 .clickable {
-                                                    shareService.shareStatistics(context, statistics)
+                                                    shareService.shareStatistics(
+                                                        context,
+                                                        statistics,
+                                                    )
                                                 },
                                     )
                                 }
                                 Text(
                                     text =
                                         stringResource(R.string.total_food_waste) + ": " +
-                                            "$totalWaste " + stringResource(R.string.items),
+                                            statistics.totalWaste + stringResource(R.string.items),
                                     color = TextColor,
                                     fontSize = 14.sp,
                                 )
                                 Text(
                                     text =
                                         stringResource(R.string.average_food_waste) +
-                                            ": ${"%.2f".format(averageWaste)} " +
+                                            ": ${"%.2f".format(statistics.averageWaste)} " +
                                             stringResource(R.string.items),
                                     color = TextColor,
                                     fontSize = 14.sp,
@@ -175,13 +173,14 @@ fun StatisticsScreen(navController: NavHostController) {
                                 Text(
                                     text =
                                         stringResource(R.string.days_without_waste) + ": " +
-                                            "$daysWithoutWaste " + stringResource(R.string.days),
+                                            statistics.daysWithoutWaste +
+                                            stringResource(R.string.days),
                                     color = TextColor,
                                     fontSize = 14.sp,
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
 
-                                if (mostWastedItems.isNotEmpty()) {
+                                if (statistics.mostWastedItems.isNotEmpty()) {
                                     Text(
                                         text = stringResource(R.string.most_wasted_food_items) + ":",
                                         color = TextColor,
@@ -189,7 +188,7 @@ fun StatisticsScreen(navController: NavHostController) {
                                     )
                                     Spacer(modifier = Modifier.height(4.dp))
 
-                                    mostWastedItems.forEach { (item, count) ->
+                                    statistics.mostWastedItems.forEach { (item, count) ->
                                         Row(
                                             modifier =
                                                 Modifier
@@ -207,7 +206,10 @@ fun StatisticsScreen(navController: NavHostController) {
                                                             ),
                                                         ).weight(1f)
                                                         .background(WhiteColor)
-                                                        .padding(horizontal = 10.dp, vertical = 2.dp),
+                                                        .padding(
+                                                            horizontal = 10.dp,
+                                                            vertical = 2.dp,
+                                                        ),
                                             ) {
                                                 if (item != null) {
                                                     Text(
@@ -229,7 +231,10 @@ fun StatisticsScreen(navController: NavHostController) {
                                                             ),
                                                         ).weight(1f)
                                                         .background(GreyColor)
-                                                        .padding(horizontal = 10.dp, vertical = 2.dp),
+                                                        .padding(
+                                                            horizontal = 10.dp,
+                                                            vertical = 2.dp,
+                                                        ),
                                                 contentAlignment = Alignment.Center,
                                             ) {
                                                 if (count != null) {
@@ -248,7 +253,7 @@ fun StatisticsScreen(navController: NavHostController) {
                                 Text(
                                     text =
                                         stringResource(R.string.waste_reduction) +
-                                            ": " + wasteReduction + "%",
+                                            ": " + statistics.wasteReduction + "%",
                                     color = TextColor,
                                     fontSize = 14.sp,
                                 )
@@ -256,7 +261,7 @@ fun StatisticsScreen(navController: NavHostController) {
                                 Text(
                                     text =
                                         stringResource(R.string.used_items_percentage) +
-                                            " " + usedItemsPercentage + "%",
+                                            " " + statistics.usedItemsPercentage + "%",
                                     color = TextColor,
                                     fontSize = 14.sp,
                                 )
@@ -264,15 +269,15 @@ fun StatisticsScreen(navController: NavHostController) {
                                 Text(
                                     text =
                                         stringResource(R.string.most_wasted_category) + ": " +
-                                            mostWastedCategory,
+                                            statistics.mostWastedCategory,
                                     color = TextColor,
                                     fontSize = 14.sp,
                                 )
                             }
                         }
                         item {
-                            if (expiredDates.isNotEmpty()) {
-                                FoodWasteBarChart(expiredDates)
+                            if (statistics.expiredDates.isNotEmpty()) {
+                                FoodWasteBarChart(statistics.expiredDates)
                             }
                         }
                         item {

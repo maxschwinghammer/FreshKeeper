@@ -6,7 +6,7 @@ import android.widget.Toast
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
-import com.freshkeeper.service.AccountService
+import com.freshkeeper.service.account.AccountService
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,11 +32,11 @@ class HouseholdSettingsViewModel
         init {
             launchCatching {
                 _user.value = accountService.getUserObject()
-                loadHousehold()
+                getHousehold()
             }
         }
 
-        private suspend fun loadHousehold() {
+        private suspend fun getHousehold() {
             val user = _user.value
             val snapshot =
                 firestore
@@ -49,7 +49,7 @@ class HouseholdSettingsViewModel
             _household.value = household ?: Household()
         }
 
-        fun onDeleteProducts() {
+        fun deleteProducts() {
             launchCatching {
                 val userId = _user.value.id
 
@@ -74,7 +74,7 @@ class HouseholdSettingsViewModel
             }
         }
 
-        fun onUpdateHouseholdNameClick(newName: String) {
+        fun updateHouseholdName(newName: String) {
             launchCatching {
                 val householdId = _household.value.id
                 firestore
@@ -142,7 +142,7 @@ class HouseholdSettingsViewModel
             }
         }
 
-        fun onUpdateHouseholdTypeClick(
+        fun updateHouseholdType(
             newType: String,
             selectedUser: String?,
         ) {
@@ -248,7 +248,7 @@ class HouseholdSettingsViewModel
             }
         }
 
-        fun onDeleteHousehold() {
+        fun deleteHousehold() {
             launchCatching {
                 val householdId = _household.value.id
 
@@ -319,7 +319,7 @@ class HouseholdSettingsViewModel
             }
         }
 
-        fun onAddProducts() {
+        fun addProducts() {
             launchCatching {
                 val userId = _user.value.id
                 val householdId = _household.value.id
@@ -345,7 +345,7 @@ class HouseholdSettingsViewModel
             }
         }
 
-        fun onLeaveHousehold() {
+        fun leaveHousehold() {
             launchCatching {
                 val householdId = _household.value.id
                 val userId = _user.value.id
