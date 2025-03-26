@@ -100,14 +100,7 @@ class HouseholdViewModel
                     onResult = { household ->
                         _household.value = household
                         _isInHousehold.value = true
-
                         getHouseholdData()
-                    },
-                    onFailure = {
-                        _household.value = Household()
-                        _isInHousehold.value = false
-                        _members.value = emptyList()
-                        _activities.value = emptyList()
                     },
                 )
             }
