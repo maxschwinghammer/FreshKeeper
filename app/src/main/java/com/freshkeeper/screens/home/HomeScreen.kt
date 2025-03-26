@@ -1,6 +1,5 @@
 package com.freshkeeper.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -318,7 +317,6 @@ fun HomeScreen(navController: NavHostController) {
                 FoodRecognitionSheet(
                     sheetState = foodRecognitionSheetState,
                     onFoodRecognized = { recognizedFood ->
-                        Log.d("FoodRecognitionSheet:", "Recognised food: $recognizedFood")
                         recognizedFoodName = recognizedFood
                         coroutineScope.launch { manualInputSheetState.show() }
                     },

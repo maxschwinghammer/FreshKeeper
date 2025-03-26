@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -23,6 +24,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,15 +33,20 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -51,12 +58,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.navigation.BottomNavigationBar
+import com.freshkeeper.screens.LowerTransition
+import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.aiChat.viewmodel.ChatViewModel
 import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
-import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.LightGreyColor
@@ -66,7 +74,7 @@ import kotlinx.coroutines.launch
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-internal fun ChatScreen(navController: NavHostController) {
+fun ChatScreen(navController: NavHostController) {
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
@@ -74,6 +82,15 @@ internal fun ChatScreen(navController: NavHostController) {
     val itemList by inventoryViewModel.itemList.observeAsState("")
     val chatViewModel: ChatViewModel = viewModel(factory = GenerativeViewModelFactory)
     val chatUiState by chatViewModel.uiState.collectAsState()
+
+    val welcomeText = stringResource(R.string.welcome_text)
+    val roleText = stringResource(R.string.ai_memory_block)
+    val productsText = stringResource(R.string.current_food_items)
+    val languageText = stringResource(R.string.answer_in)
+
+    LaunchedEffect(Unit) {
+        chatViewModel.initializeTexts(welcomeText, roleText, productsText, languageText)
+    }
 
     FreshKeeperTheme {
         Scaffold(
@@ -90,6 +107,7 @@ internal fun ChatScreen(navController: NavHostController) {
                                 }
                             }
                         },
+                        chatMessages = chatUiState.messages,
                     )
                     Spacer(modifier = Modifier.height(10.dp))
                     Box(
@@ -114,7 +132,7 @@ internal fun ChatScreen(navController: NavHostController) {
                         .padding(paddingValues),
             ) {
                 Text(
-                    text = stringResource(R.string.ai_chat),
+                    text = stringResource(R.string.ai_chat) + " (Beta)",
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextColor,
@@ -142,12 +160,58 @@ fun ChatList(
     chatMessages: List<ChatMessage>,
     listState: LazyListState,
 ) {
-    LazyColumn(
-        reverseLayout = true,
-        state = listState,
-    ) {
-        items(chatMessages.reversed()) { message ->
-            ChatBubbleItem(message)
+    val showLowerTransition by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0
+        }
+    }
+    val showUpperTransition by remember {
+        derivedStateOf {
+            listState.layoutInfo.visibleItemsInfo.size < chatMessages.size ||
+                listState.firstVisibleItemIndex > 1
+        }
+    }
+
+    Box {
+        LazyColumn(
+            reverseLayout = true,
+            state = listState,
+        ) {
+            if (chatMessages.lastOrNull()?.participant == Participant.USER &&
+                chatMessages.lastOrNull()?.isPending == true
+            ) {
+                item {
+                    BoxWithConstraints {
+                        Card(
+                            colors = CardDefaults.cardColors(containerColor = GreyColor),
+                            shape = RoundedCornerShape(4.dp, 20.dp, 20.dp, 20.dp),
+                            modifier = Modifier.widthIn(0.dp, maxWidth * 0.9f),
+                        ) {
+                            Box(
+                                modifier = Modifier.padding(12.dp),
+                                contentAlignment = Alignment.Center,
+                            ) {
+                                CircularProgressIndicator(
+                                    modifier = Modifier.size(30.dp),
+                                    strokeWidth = 3.dp,
+                                    color = AccentTurquoiseColor,
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+            items(chatMessages.reversed()) { message ->
+                ChatBubbleItem(message)
+            }
+        }
+        if (showUpperTransition) {
+            UpperTransition()
+        }
+        if (showLowerTransition) {
+            LowerTransition(
+                modifier = Modifier.align(Alignment.BottomCenter),
+            )
         }
     }
 }
@@ -209,13 +273,17 @@ fun ChatBubbleItem(chatMessage: ChatMessage) {
 fun MessageInput(
     onSendMessage: (String) -> Unit,
     resetScroll: () -> Unit = {},
+    chatMessages: List<ChatMessage>,
 ) {
     var userMessage by rememberSaveable { mutableStateOf("") }
+    val isPending = chatMessages.lastOrNull()?.isPending == true
+
     val suggestions =
         listOf(
             stringResource(R.string.suggestion_create_recipe),
             stringResource(R.string.suggestion_storage_tips),
             stringResource(R.string.suggestion_get_tips),
+            stringResource(R.string.suggestion_meal_prep),
         )
 
     Spacer(modifier = Modifier.height(8.dp))
@@ -223,12 +291,14 @@ fun MessageInput(
         items(suggestions) { suggestion ->
             ElevatedCard(
                 onClick = {
-                    onSendMessage(suggestion)
-                    resetScroll()
+                    if (!isPending) {
+                        onSendMessage(suggestion)
+                        resetScroll()
+                    }
                 },
                 colors = CardDefaults.cardColors(containerColor = GreyColor),
                 shape = RoundedCornerShape(20.dp),
-                modifier = Modifier.padding(end = 8.dp),
+                modifier = Modifier.padding(end = 8.dp).alpha(if (isPending) 0.5f else 1f),
             ) {
                 Text(
                     text = suggestion,
@@ -249,23 +319,22 @@ fun MessageInput(
         colors = CardDefaults.cardColors(containerColor = GreyColor),
     ) {
         Row(
-            modifier =
-                Modifier
-                    .padding(vertical = 12.dp, horizontal = 12.dp)
-                    .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
         ) {
             OutlinedTextField(
                 value = userMessage,
                 label = null,
                 onValueChange = { userMessage = it },
+                placeholder = { Text(stringResource(R.string.enter_message)) },
                 keyboardOptions =
                     KeyboardOptions(
                         capitalization = KeyboardCapitalization.Sentences,
                     ),
                 colors =
                     OutlinedTextFieldDefaults.colors(
-                        unfocusedBorderColor = ComponentStrokeColor,
-                        focusedBorderColor = AccentTurquoiseColor,
+                        cursorColor = AccentTurquoiseColor,
+                        unfocusedBorderColor = Color.Transparent,
+                        focusedBorderColor = Color.Transparent,
                         unfocusedLabelColor = TextColor,
                         focusedLabelColor = AccentTurquoiseColor,
                     ),
@@ -287,15 +356,16 @@ fun MessageInput(
                 },
                 modifier =
                     Modifier
-                        .padding(start = 8.dp)
+                        .padding(horizontal = 8.dp)
                         .align(Alignment.CenterVertically)
                         .fillMaxWidth()
                         .weight(0.15f),
+                enabled = !isPending,
             ) {
                 Icon(
                     Icons.AutoMirrored.Filled.Send,
                     contentDescription = stringResource(R.string.action_send),
-                    modifier = Modifier,
+                    tint = AccentTurquoiseColor,
                 )
             }
         }

@@ -96,9 +96,6 @@ class InventoryViewModel
                         onResult = { householdId ->
                             _householdId.value = householdId
                         },
-                        onFailure = {
-                            Log.e("HouseholdViewModel", "Error loading householdId")
-                        },
                     )
                 } catch (e: Exception) {
                     Log.e("HomeViewModel", "Error loading householdId from Firestore", e)

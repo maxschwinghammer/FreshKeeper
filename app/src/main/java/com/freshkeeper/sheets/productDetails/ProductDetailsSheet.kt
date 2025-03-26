@@ -1,6 +1,5 @@
 package com.freshkeeper.sheets.productDetails
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -138,8 +137,6 @@ fun ProductDetailsSheet(
                         }
                         Spacer(modifier = Modifier.height(10.dp))
                     }
-                    Log.d("ProductDetails", "Product details: $details")
-                    Log.d("ProductDetails", "Nutriments: ${details.nutriments}")
 
                     details.nutriments?.let { nutriments ->
                         val certificatesAvailable =
