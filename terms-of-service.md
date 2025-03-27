@@ -1,6 +1,6 @@
 # Nutzungsbedingungen
 
-Zuletzt aktualisiert: 24.03.2025
+Zuletzt aktualisiert: 27.03.2025
 
 ## 1. Einleitung
 Diese Nutzungsbedingungen regeln den Zugriff und die Nutzung der FreshKeeper App ("App") durch Sie. Mit der Nutzung der App erklären Sie sich mit diesen Bedingungen einverstanden. Sollten Sie nicht einverstanden sein, nutzen Sie die App nicht.
@@ -35,7 +35,7 @@ FreshKeeper behält sich das Recht vor, diese Bedingungen jederzeit zu ändern. 
 FreshKeeper haftet nur für Schäden, die vorsätzlich oder grob fahrlässig verursacht wurden. Eine weitergehende Haftung ist ausgeschlossen.
 
 ## 10. Kündigung und Sperrung
-Bei Verstößen gegen diese Bedingungen behält sich FreshKeeper das Recht vor, Ihr Konto vorübergehend oder dauerhaft zu sperren oder zu kündigen.
+Bei Verstößen gegen diese Bedingungen behält sich FreshKeeper das Recht vor, Ihr Konto vorübergehend oder dauerhaft zu sperren und zu löschen.
 
 ## 11. Kontakt
 Bei Fragen oder Anliegen zu diesen Nutzungsbedingungen kontaktieren Sie FreshKeeper bitte per E-Mail unter info@freshkeeper.de.
