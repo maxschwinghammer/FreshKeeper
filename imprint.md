@@ -10,5 +10,4 @@ Königsberger Str. 19
 Deutschland
 
 ## Kontakt:
-Telefon: +491637804611  
 E-Mail: info@freshkeeper.de
