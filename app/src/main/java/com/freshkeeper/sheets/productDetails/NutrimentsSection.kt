@@ -47,49 +47,49 @@ fun NutrimentsSection(
         nutriments.energyKcal?.let {
             Text(
                 stringResource(R.string.energy, it.toString()),
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = TextColor,
             )
         }
         nutriments.fat?.let {
             Text(
                 stringResource(R.string.fat, it.toString()),
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = TextColor,
             )
         }
         nutriments.carbohydrates?.let {
             Text(
                 stringResource(R.string.carbohydrates, it.toString()),
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = TextColor,
             )
         }
         nutriments.sugars?.let {
             Text(
                 stringResource(R.string.sugars, it.toString()),
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = TextColor,
             )
         }
         nutriments.fiber?.let {
             Text(
                 stringResource(R.string.fiber, it.toString()),
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = TextColor,
             )
         }
         nutriments.proteins?.let {
             Text(
                 stringResource(R.string.proteins, it.toString()),
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = TextColor,
             )
         }
         nutriments.salt?.let {
             Text(
                 stringResource(R.string.salt, it.toString()),
-                fontSize = 14.sp,
+                fontSize = 12.sp,
                 color = TextColor,
             )
         }

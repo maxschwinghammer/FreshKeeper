@@ -1,7 +1,6 @@
 package com.freshkeeper.screens.home
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -78,6 +77,7 @@ fun HomeScreen(navController: NavHostController) {
     var recognizedFoodName by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
     var foodItem by remember { mutableStateOf<FoodItem?>(null) }
+    val isMember by viewModel.isMember.observeAsState()
     val allFoodItems by viewModel.allFoodItems.observeAsState(emptyList())
 
     val coroutineScope = rememberCoroutineScope()
@@ -126,9 +126,10 @@ fun HomeScreen(navController: NavHostController) {
                             modifier = Modifier.weight(1f),
                         )
 
-                        if (viewModel.isMember.value == true) {
-                            Image(
+                        if (isMember == true) {
+                            Icon(
                                 painter = painterResource(R.drawable.ai_chat),
+                                tint = AccentTurquoiseColor,
                                 contentDescription = "AI Chat",
                                 modifier =
                                     Modifier

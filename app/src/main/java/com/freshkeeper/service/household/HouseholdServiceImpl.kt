@@ -175,10 +175,7 @@ class HouseholdServiceImpl
                         householdId,
                     )
                 } else {
-                    firestore.collection("activities").whereEqualTo(
-                        "userId",
-                        userId,
-                    )
+                    return
                 }
 
             query

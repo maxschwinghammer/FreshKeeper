@@ -59,6 +59,7 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -348,12 +349,11 @@ fun MembersSection(
                         },
                         colors =
                             ButtonDefaults.buttonColors(
-                                containerColor = AccentTurquoiseColor,
+                                containerColor = WhiteColor,
                                 contentColor = GreyColor,
                             ),
                         enabled = householdId.value.length == 20,
                         shape = RoundedCornerShape(20.dp),
-                        border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
                         Text(text = stringResource(R.string.join))
                     }
@@ -406,7 +406,7 @@ fun MembersSection(
                         },
                         colors =
                             ButtonDefaults.buttonColors(
-                                containerColor = AccentTurquoiseColor,
+                                containerColor = WhiteColor,
                                 contentColor = GreyColor,
                             ),
                         enabled =
@@ -414,7 +414,6 @@ fun MembersSection(
                                 householdName.all
                                     { it.isLetter() || it.isWhitespace() },
                         shape = RoundedCornerShape(20.dp),
-                        border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
                         Text(text = stringResource(R.string.create))
                     }
@@ -484,11 +483,10 @@ fun MembersSection(
                         },
                         colors =
                             ButtonDefaults.buttonColors(
-                                containerColor = AccentTurquoiseColor,
+                                containerColor = WhiteColor,
                                 contentColor = GreyColor,
                             ),
                         shape = RoundedCornerShape(20.dp),
-                        border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
                         Text(text = stringResource(R.string.confirm))
                     }

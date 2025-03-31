@@ -27,6 +27,7 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -95,7 +96,7 @@ fun DisplayNameCard(
                     },
                     colors =
                         ButtonDefaults.buttonColors(
-                            containerColor = AccentTurquoiseColor,
+                            containerColor = WhiteColor,
                             contentColor = GreyColor,
                         ),
                     enabled =

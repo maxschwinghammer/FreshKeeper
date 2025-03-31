@@ -71,7 +71,7 @@ fun DeleteHouseholdCard(onDeleteHouseholdClick: () -> Unit) {
                         ),
                     shape = RoundedCornerShape(20.dp),
                 ) {
-                    Text(text = stringResource(R.string.delete_household))
+                    Text(text = stringResource(R.string.confirm))
                 }
             },
             onDismissRequest = { showDeleteHouseholdDialog = false },

@@ -74,7 +74,7 @@ fun RemoveAccountCard(onRemoveAccountClick: () -> Unit) {
                         ),
                     shape = RoundedCornerShape(20.dp),
                 ) {
-                    Text(text = stringResource(R.string.delete_account))
+                    Text(text = stringResource(R.string.confirm))
                 }
             },
             onDismissRequest = { showRemoveAccDialog = false },

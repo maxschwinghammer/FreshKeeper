@@ -36,6 +36,7 @@ import org.commonmark.parser.Parser
 fun MarkdownText(
     modifier: Modifier = Modifier,
     markdown: String,
+    textColor: Color,
 ) {
     val annotatedText =
         remember(markdown) {
@@ -44,6 +45,7 @@ fun MarkdownText(
     Text(
         text = annotatedText,
         fontSize = 14.sp,
+        color = textColor,
         modifier = modifier,
     )
 }

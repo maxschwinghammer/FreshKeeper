@@ -113,8 +113,8 @@ fun ProductDetailsSheet(
                             )
                         }
                     }
-                    Spacer(modifier = Modifier.height(10.dp))
                     if (!details.ingredients.isNullOrEmpty()) {
+                        Spacer(modifier = Modifier.height(10.dp))
                         Column(
                             modifier =
                                 Modifier
@@ -124,7 +124,6 @@ fun ProductDetailsSheet(
                                     .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                                     .padding(10.dp),
                         ) {
-                            val firstIngredient = details.ingredients.split(".").first()
                             Column {
                                 Text(
                                     stringResource(R.string.ingredients_heading),
@@ -132,7 +131,7 @@ fun ProductDetailsSheet(
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.Bold,
                                 )
-                                Text(firstIngredient, fontSize = 14.sp, color = TextColor)
+                                Text(details.ingredients, fontSize = 12.sp, color = TextColor)
                             }
                         }
                         Spacer(modifier = Modifier.height(10.dp))

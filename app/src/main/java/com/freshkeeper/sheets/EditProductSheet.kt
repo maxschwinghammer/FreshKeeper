@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -366,7 +367,7 @@ fun EditProductSheet(
                 stringResource(R.string.category),
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
@@ -376,17 +377,23 @@ fun EditProductSheet(
                         if (it) isThrownAwayChecked = false
                     },
                     enabled = !isThrownAwayChecked,
+                    modifier = Modifier.size(20.dp),
                     colors =
                         CheckboxDefaults.colors(
                             checkmarkColor = ComponentBackgroundColor,
                             checkedColor = AccentGreenColor,
                         ),
                 )
+                Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     stringResource(R.string.mark_as_consumed),
                     color = TextColor,
+                    fontSize = 16.sp,
+                    lineHeight = 16.sp,
                 )
             }
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
@@ -396,19 +403,23 @@ fun EditProductSheet(
                         if (it) isConsumedChecked = false
                     },
                     enabled = !isConsumedChecked,
+                    modifier = Modifier.size(20.dp),
                     colors =
                         CheckboxDefaults.colors(
                             checkmarkColor = ComponentBackgroundColor,
                             checkedColor = RedColor,
                         ),
                 )
+                Spacer(modifier = Modifier.width(10.dp))
                 Text(
                     stringResource(R.string.mark_as_thrown_away),
                     color = TextColor,
+                    fontSize = 16.sp,
+                    lineHeight = 16.sp,
                 )
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             Button(
                 onClick = {

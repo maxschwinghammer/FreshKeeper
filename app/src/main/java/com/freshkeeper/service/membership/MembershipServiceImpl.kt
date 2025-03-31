@@ -64,4 +64,8 @@ class MembershipServiceImpl
                 Log.e("MembershipService", "Error activating membership", e)
             }
         }
+
+        override suspend fun cancelMembership() {
+            Log.d("MembershipService", "Cancelling membership")
+        }
     }

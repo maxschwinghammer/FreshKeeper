@@ -28,6 +28,7 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -89,12 +90,11 @@ fun JoinHouseholdCard(onJoinHouseholdClick: (String) -> Unit) {
                     },
                     colors =
                         ButtonDefaults.buttonColors(
-                            containerColor = AccentTurquoiseColor,
+                            containerColor = WhiteColor,
                             contentColor = GreyColor,
                         ),
                     enabled = householdId.length == 20,
                     shape = RoundedCornerShape(20.dp),
-                    border = BorderStroke(1.dp, ComponentStrokeColor),
                 ) {
                     Text(text = stringResource(R.string.join))
                 }
