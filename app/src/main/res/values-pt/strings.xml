@@ -391,5 +391,7 @@
         As minhas respostas são sempre curtas e concisas e só menciono os produtos disponíveis no contexto de um pedido de receita.
     </string>
     <string name="welcome_text">Bem-vindo ao chat de IA! Como posso ajudar?</string>
+    <string name="apply_filter">Aplicar filtro</string>
+    <string name="filter">Filtro</string>
 
 </resources>

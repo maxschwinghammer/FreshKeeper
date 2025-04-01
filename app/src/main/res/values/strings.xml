@@ -397,5 +397,7 @@
         I always keep my answers short and concise and mention available products only in the context of a recipe request.
     </string>
     <string name="welcome_text">Welcome to the AI chat! How can I help you?</string>
+    <string name="apply_filter">Apply filter</string>
+    <string name="filter">Filter</string>
 
 </resources>

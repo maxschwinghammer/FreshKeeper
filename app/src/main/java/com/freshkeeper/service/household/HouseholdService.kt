@@ -44,7 +44,7 @@ interface HouseholdService {
         onFailure: (Exception) -> Unit,
     )
 
-    suspend fun getProfilePicture(profilePictureId: String): ProfilePicture?
+    suspend fun getProfilePicture(userId: String): ProfilePicture?
 
     suspend fun getFoodItems(householdId: String?): List<FoodItem>
 

@@ -391,5 +391,7 @@
         Mantengo sempre le mie risposte brevi e concise e menziono i prodotti disponibili solo nel contesto di una richiesta di ricetta.
     </string>
     <string name="welcome_text">Benvenuto nella chat AI! Come posso aiutarti?</string>
+    <string name="apply_filter">Applicare il filtro</string>
+    <string name="filter">Filtro</string>
 
 </resources>

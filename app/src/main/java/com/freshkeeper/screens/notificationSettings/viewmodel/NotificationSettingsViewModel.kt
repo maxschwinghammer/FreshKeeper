@@ -43,15 +43,12 @@ class NotificationSettingsViewModel
                 val snapshot =
                     firestore
                         .collection("notificationSettings")
-                        .whereEqualTo("userId", userId)
+                        .document(userId)
                         .get()
                         .await()
 
                 Log.d("NotificationSettingsViewModel", "Snapshot: $snapshot")
-                val settings =
-                    snapshot.documents
-                        .firstOrNull()
-                        ?.toObject(NotificationSettings::class.java)
+                val settings = snapshot?.toObject(NotificationSettings::class.java)
                 _notificationSettings.value = settings
                 Log.d("NotificationSettingsViewModel", "Settings: $settings")
             }
@@ -63,11 +60,9 @@ class NotificationSettingsViewModel
                 val docRef =
                     firestore
                         .collection("notificationSettings")
-                        .whereEqualTo("userId", userId)
+                        .document(userId)
                         .get()
                         .await()
-                        .documents
-                        .firstOrNull()
                         ?.reference
 
                 docRef?.update("dailyNotificationTime", time.toString())
@@ -82,11 +77,9 @@ class NotificationSettingsViewModel
                 val docRef =
                     firestore
                         .collection("notificationSettings")
-                        .whereEqualTo("userId", userId)
+                        .document(userId)
                         .get()
                         .await()
-                        .documents
-                        .firstOrNull()
                         ?.reference
 
                 docRef?.update("timeBeforeExpiration", value)
@@ -101,11 +94,9 @@ class NotificationSettingsViewModel
                 val docRef =
                     firestore
                         .collection("notificationSettings")
-                        .whereEqualTo("userId", userId)
+                        .document(userId)
                         .get()
                         .await()
-                        .documents
-                        .firstOrNull()
                         ?.reference
 
                 docRef?.update("dailyReminders", isChecked)
@@ -120,11 +111,9 @@ class NotificationSettingsViewModel
                 val docRef =
                     firestore
                         .collection("notificationSettings")
-                        .whereEqualTo("userId", userId)
+                        .document(userId)
                         .get()
                         .await()
-                        .documents
-                        .firstOrNull()
                         ?.reference
 
                 docRef?.update("foodAdded", isChecked)
@@ -139,11 +128,9 @@ class NotificationSettingsViewModel
                 val docRef =
                     firestore
                         .collection("notificationSettings")
-                        .whereEqualTo("userId", userId)
+                        .document(userId)
                         .get()
                         .await()
-                        .documents
-                        .firstOrNull()
                         ?.reference
 
                 docRef?.update("householdChanges", isChecked)
@@ -158,11 +145,9 @@ class NotificationSettingsViewModel
                 val docRef =
                     firestore
                         .collection("notificationSettings")
-                        .whereEqualTo("userId", userId)
+                        .document(userId)
                         .get()
                         .await()
-                        .documents
-                        .firstOrNull()
                         ?.reference
 
                 docRef?.update("foodExpiring", isChecked)
@@ -177,11 +162,9 @@ class NotificationSettingsViewModel
                 val docRef =
                     firestore
                         .collection("notificationSettings")
-                        .whereEqualTo("userId", userId)
+                        .document(userId)
                         .get()
                         .await()
-                        .documents
-                        .firstOrNull()
                         ?.reference
 
                 docRef?.update("tips", isChecked)
@@ -196,11 +179,9 @@ class NotificationSettingsViewModel
                 val docRef =
                     firestore
                         .collection("notificationSettings")
-                        .whereEqualTo("userId", userId)
+                        .document(userId)
                         .get()
                         .await()
-                        .documents
-                        .firstOrNull()
                         ?.reference
 
                 docRef?.update("statistics", isChecked)

@@ -391,5 +391,7 @@
         Ich halte meine Antworten stets kurz und prägnant und nenne verfügbare Produkte nur im Zusammenhang mit einer Rezeptanfrage.
     </string>
     <string name="welcome_text">Willkommen im KI-Chat! Wie kann ich helfen?</string>
+    <string name="apply_filter">Filter anwenden</string>
+    <string name="filter">Filter</string>
 
 </resources>

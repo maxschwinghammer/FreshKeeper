@@ -142,8 +142,8 @@ class HouseholdServiceImpl
                     val user = document.toObject(User::class.java)
 
                     val profilePicture =
-                        if (!userId.isNullOrEmpty()) {
-                            getProfilePicture(userId)
+                        if (user.id.isNotEmpty()) {
+                            getProfilePicture(user.id)
                         } else {
                             null
                         }
@@ -233,11 +233,11 @@ class HouseholdServiceImpl
                 ?.addOnFailureListener(onFailure)
         }
 
-        override suspend fun getProfilePicture(profilePictureId: String): ProfilePicture? {
+        override suspend fun getProfilePicture(userId: String): ProfilePicture? {
             val docSnapshot =
                 firestore
                     .collection("profilePictures")
-                    .document(profilePictureId)
+                    .document(userId)
                     .get()
                     .await()
 

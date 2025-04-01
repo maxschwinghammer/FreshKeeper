@@ -126,9 +126,7 @@ fun ProfileScreen(
                                     name = it.displayName,
                                     memberSince = formatMemberSince(memberSinceDays),
                                     profilePicture =
-                                        profileViewModel.profilePicture
-                                            .collectAsState()
-                                            .value,
+                                        profileViewModel.profilePicture.collectAsState().value,
                                 )
                             }
                         }
