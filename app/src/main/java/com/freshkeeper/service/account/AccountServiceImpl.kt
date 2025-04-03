@@ -24,6 +24,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.firestore
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
@@ -183,6 +184,11 @@ class AccountServiceImpl
 
         override suspend fun signOut() {
             auth.signOut()
+            FirebaseMessaging.getInstance().deleteToken()
+            firestore.disableNetwork().await()
+            // firestore.terminate().await()
+            firestore.clearPersistence().await()
+            firestore.enableNetwork().await()
         }
 
         override suspend fun changeEmail(newEmail: String) {
@@ -209,6 +215,8 @@ class AccountServiceImpl
                 val currentUser = auth.currentUser
                 val user = getUserObject()
                 val userId = user.id
+
+                firestore.clearPersistence()
 
                 if (userId.isNotEmpty()) {
                     firestore

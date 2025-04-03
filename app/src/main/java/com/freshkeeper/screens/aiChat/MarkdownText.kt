@@ -162,7 +162,7 @@ private fun processNodes(
                 }
             }
             is OrderedList -> {
-                var index = child.startNumber
+                var index = child.markerStartNumber
                 var listItem = child.firstChild
                 while (listItem != null) {
                     if (listItem is ListItem) {

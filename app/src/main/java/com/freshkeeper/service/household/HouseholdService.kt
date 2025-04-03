@@ -46,7 +46,7 @@ interface HouseholdService {
 
     suspend fun getProfilePicture(userId: String): ProfilePicture?
 
-    suspend fun getFoodItems(householdId: String?): List<FoodItem>
+    suspend fun getFoodItems(): List<FoodItem>
 
     suspend fun createHousehold(
         name: String,
@@ -54,20 +54,16 @@ interface HouseholdService {
         onSuccess: (Household) -> Unit,
     )
 
-    suspend fun leaveHousehold(householdId: String)
+    suspend fun leaveHousehold()
 
-    suspend fun deleteHousehold(
-        householdId: String,
-        onSuccess: () -> Unit,
-    )
+    suspend fun deleteHousehold(onSuccess: () -> Unit)
 
     suspend fun deleteProducts()
 
-    suspend fun addProducts(householdId: String)
+    suspend fun addProducts()
 
     suspend fun addUserById(
         userId: String,
-        householdId: String,
         context: Context,
         errorText: String,
         successText: String,
@@ -82,7 +78,6 @@ interface HouseholdService {
     )
 
     suspend fun updateHouseholdType(
-        householdId: String,
         ownerId: String,
         newType: String,
         selectedUser: String?,

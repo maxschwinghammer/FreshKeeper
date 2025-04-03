@@ -26,42 +26,24 @@ class HomeViewModel
         private val _expiredItems = MutableLiveData<List<FoodItem>>()
         val expiredItems: LiveData<List<FoodItem>> = _expiredItems
 
-        private val _householdId = MutableLiveData<String?>()
-        val householdId: LiveData<String?> = _householdId
-
         private val _isMember = MutableLiveData<Boolean>()
         val isMember: LiveData<Boolean> = _isMember
 
         init {
-            getHouseholdId()
-            checkMembershipStatus()
-        }
-
-        private fun checkMembershipStatus() {
             launchCatching {
-                val status = membershipService.isMember()
-                _isMember.value = status
+                getFoodItems()
+                checkMembershipStatus()
             }
         }
 
-        private fun getHouseholdId() {
-            launchCatching {
-                try {
-                    householdService.getHouseholdId(
-                        onResult = { householdId ->
-                            _householdId.value = householdId
-                        },
-                    )
-                    getFoodItems()
-                } catch (e: Exception) {
-                    Log.e("HomeViewModel", "Error loading householdId from Firestore", e)
-                }
-            }
+        private suspend fun checkMembershipStatus() {
+            val status = membershipService.isMember()
+            _isMember.value = status
         }
 
         private suspend fun getFoodItems() {
             try {
-                val foodItems = householdService.getFoodItems(householdId.value)
+                val foodItems = householdService.getFoodItems()
                 _allFoodItems.value = foodItems
                 _expiringSoonItems.value =
                     foodItems

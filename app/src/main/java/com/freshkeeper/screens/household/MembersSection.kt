@@ -89,12 +89,12 @@ fun MembersSection(
 
     val householdId = remember { mutableStateOf(household?.id ?: "") }
     var householdName by remember { mutableStateOf(household?.name ?: "") }
-    var householdType by remember { mutableStateOf(household?.type ?: "") }
 
     val showJoinHouseholdDialog = remember { mutableStateOf(false) }
     var showCreateHouseholdDialog by remember { mutableStateOf(false) }
     var showHouseholdTypeDialog by remember { mutableStateOf(false) }
     var showAddProductsDialog by remember { mutableStateOf(false) }
+    var householdType by remember { mutableStateOf("") }
 
     val householdTypeMap =
         mapOf(
@@ -150,6 +150,10 @@ fun MembersSection(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
+                Log.d("MembersSection", "items: $items")
+                Log.d("MembersSection", "isInHousehold: $isInHousehold")
+                Log.d("MembersSection", "household: $household")
+                Log.d("MembersSection", "Members: $members")
                 members?.forEach { member ->
                     Box(
                         modifier =
@@ -223,8 +227,8 @@ fun MembersSection(
 
                 if (isInHousehold) {
                     if (household != null &&
-                        householdType != "Single household" &&
-                        (householdType != "Pair" || household!!.users.size < 2)
+                        household!!.type != "Single household" &&
+                        (household!!.type != "Pair" || household!!.users.size < 2)
                     ) {
                         Box(
                             modifier =

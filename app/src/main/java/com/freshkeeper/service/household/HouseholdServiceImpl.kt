@@ -28,6 +28,26 @@ class HouseholdServiceImpl
         private val userId = FirebaseAuth.getInstance().currentUser?.uid
         private var householdId: String? = null
 
+        init {
+            fetchHouseholdId()
+        }
+
+        private fun fetchHouseholdId() {
+            Log.d("HouseholdServiceImpl", "Fetching household ID")
+            Log.d("HouseholdServiceImpl", "User ID: $userId")
+            if (userId == null) return
+
+            firestore
+                .collection("users")
+                .document(userId)
+                .get()
+                .addOnSuccessListener { document ->
+                    householdId = document.getString("householdId")
+                }.addOnFailureListener {
+                    Log.e("HouseholdServiceImpl", "Failed to fetch household ID")
+                }
+        }
+
         override suspend fun getHousehold(onResult: (Household) -> Unit) {
             if (userId == null) {
                 return
@@ -72,21 +92,17 @@ class HouseholdServiceImpl
         }
 
         override suspend fun updateHouseholdName(newName: String) {
-            getHouseholdId(
-                onResult = { id ->
-                    if (id != null) {
-                        CoroutineScope(Dispatchers.IO).launch {
-                            firestore
-                                .collection("households")
-                                .document(id)
-                                .update("name", newName)
-                                .await()
-                        }
-                    } else {
-                        Log.e("HouseholdServiceImpl", "Household ID is null")
-                    }
-                },
-            )
+            if (householdId != null) {
+                CoroutineScope(Dispatchers.IO).launch {
+                    firestore
+                        .collection("households")
+                        .document(householdId!!)
+                        .update("name", newName)
+                        .await()
+                }
+            } else {
+                Log.e("HouseholdServiceImpl", "Household ID is null")
+            }
         }
 
         override suspend fun getMembers(
@@ -248,7 +264,7 @@ class HouseholdServiceImpl
             }
         }
 
-        override suspend fun getFoodItems(householdId: String?): List<FoodItem> {
+        override suspend fun getFoodItems(): List<FoodItem> {
             val query =
                 if (householdId != null) {
                     firestore.collection("foodItems").whereEqualTo(
@@ -338,13 +354,15 @@ class HouseholdServiceImpl
             }
         }
 
-        override suspend fun leaveHousehold(householdId: String) {
+        override suspend fun leaveHousehold() {
             try {
-                firestore
-                    .collection("households")
-                    .document(householdId)
-                    .update("users", FieldValue.arrayRemove(userId))
-                    .await()
+                householdId?.let {
+                    firestore
+                        .collection("households")
+                        .document(it)
+                        .update("users", FieldValue.arrayRemove(userId))
+                        .await()
+                }
 
                 if (userId != null) {
                     firestore
@@ -358,16 +376,15 @@ class HouseholdServiceImpl
             }
         }
 
-        override suspend fun deleteHousehold(
-            householdId: String,
-            onSuccess: () -> Unit,
-        ) {
+        override suspend fun deleteHousehold(onSuccess: () -> Unit) {
             try {
-                firestore
-                    .collection("households")
-                    .document(householdId)
-                    .delete()
-                    .await()
+                householdId?.let {
+                    firestore
+                        .collection("households")
+                        .document(it)
+                        .delete()
+                        .await()
+                }
 
                 val usersQuerySnapshot =
                     firestore
@@ -420,8 +437,7 @@ class HouseholdServiceImpl
             } catch (e: Exception) {
                 Log.e(
                     "DeleteHousehold",
-                    "Error when deleting the household, updating users, " +
-                        "deleting food items, or deleting food item pictures",
+                    "Error when deleting the household",
                     e,
                 )
             }
@@ -448,7 +464,7 @@ class HouseholdServiceImpl
             }
         }
 
-        override suspend fun addProducts(householdId: String) {
+        override suspend fun addProducts() {
             try {
                 val foodItemsQuerySnapshot =
                     firestore
@@ -471,7 +487,6 @@ class HouseholdServiceImpl
 
         override suspend fun addUserById(
             userId: String,
-            householdId: String,
             context: Context,
             errorText: String,
             successText: String,
@@ -492,11 +507,13 @@ class HouseholdServiceImpl
             val user = userSnapshot.toObject(User::class.java)
 
             if (user != null) {
-                firestore
-                    .collection("households")
-                    .document(householdId)
-                    .update("users", FieldValue.arrayUnion(user.id))
-                    .await()
+                householdId?.let {
+                    firestore
+                        .collection("households")
+                        .document(it)
+                        .update("users", FieldValue.arrayUnion(user.id))
+                        .await()
+                }
             }
 
             firestore
@@ -560,7 +577,6 @@ class HouseholdServiceImpl
         }
 
         override suspend fun updateHouseholdType(
-            householdId: String,
             ownerId: String,
             newType: String,
             selectedUser: String?,
@@ -573,8 +589,9 @@ class HouseholdServiceImpl
                 when (newType) {
                     "Single household" -> {
                         val usersToRemove = users.filter { it != ownerId && it != selectedUser }
+                        val householdIdNonNull = householdId ?: throw IllegalStateException("Household ID is null")
                         batch.update(
-                            firestore.collection("households").document(householdId),
+                            firestore.collection("households").document(householdIdNonNull),
                             "users",
                             FieldValue.arrayRemove(*usersToRemove.toTypedArray()),
                         )
@@ -608,8 +625,10 @@ class HouseholdServiceImpl
                     "Pair" ->
                         if (selectedUser != null) {
                             val usersToRemove = users.filter { it != ownerId && it != selectedUser }
+                            val householdIdNonNull = householdId ?: throw IllegalStateException("Household ID is null")
+
                             batch.update(
-                                firestore.collection("households").document(householdId),
+                                firestore.collection("households").document(householdIdNonNull),
                                 "users",
                                 FieldValue.arrayRemove(*usersToRemove.toTypedArray()),
                             )
@@ -632,15 +651,17 @@ class HouseholdServiceImpl
                         }
                 }
 
-                firestore
-                    .collection("households")
-                    .document(householdId)
-                    .update("type", newType)
-                    .await()
+                householdId?.let {
+                    firestore
+                        .collection("households")
+                        .document(it)
+                        .update("type", newType)
+                        .await()
+                }
 
                 updatedUsers
             } catch (e: Exception) {
-                Log.e("HouseholdService", "Fehler beim Aktualisieren des Haushaltstyps", e)
+                Log.e("HouseholdService", "Error updating household type", e)
                 users
             }
     }

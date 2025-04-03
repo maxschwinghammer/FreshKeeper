@@ -25,8 +25,6 @@ class HouseholdSettingsViewModel
         private val _household = MutableStateFlow(Household())
         val household: StateFlow<Household> = _household.asStateFlow()
 
-        val householdId = _household.value.id
-
         init {
             launchCatching {
                 _user.value = accountService.getUserObject()
@@ -36,7 +34,7 @@ class HouseholdSettingsViewModel
 
         fun addProducts() {
             launchCatching {
-                householdService.addProducts(householdId)
+                householdService.addProducts()
             }
         }
 
@@ -49,7 +47,6 @@ class HouseholdSettingsViewModel
             launchCatching {
                 householdService.addUserById(
                     userId,
-                    householdId,
                     context,
                     errorText,
                     successText,
@@ -81,7 +78,6 @@ class HouseholdSettingsViewModel
         fun deleteHousehold() {
             launchCatching {
                 householdService.deleteHousehold(
-                    householdId,
                     onSuccess = { _household.value = Household() },
                 )
             }
@@ -122,7 +118,7 @@ class HouseholdSettingsViewModel
 
         fun leaveHousehold() {
             launchCatching {
-                householdService.leaveHousehold(householdId)
+                householdService.leaveHousehold()
             }
         }
 
@@ -143,7 +139,6 @@ class HouseholdSettingsViewModel
             launchCatching {
                 val updatedUsers =
                     householdService.updateHouseholdType(
-                        householdId,
                         ownerId,
                         newType,
                         selectedUser,

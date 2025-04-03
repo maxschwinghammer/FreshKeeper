@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.screens.AppViewModel
-import com.freshkeeper.service.household.HouseholdService
 import com.freshkeeper.service.inventory.InventoryService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,7 +13,6 @@ import javax.inject.Inject
 class InventoryViewModel
     @Inject
     constructor(
-        private val householdService: HouseholdService,
         private val inventoryService: InventoryService,
     ) : AppViewModel() {
         private val _foodItems = MutableLiveData<List<FoodItem>>()
@@ -53,11 +51,7 @@ class InventoryViewModel
         private val _otherItems = MutableLiveData<List<FoodItem>>()
         val otherItems: LiveData<List<FoodItem>> = _otherItems
 
-        private val _householdId = MutableLiveData<String?>()
-        val householdId: LiveData<String?> = _householdId
-
         init {
-            getHouseholdId()
             getStorageLocationItems("fridge", _fridgeItems)
             getStorageLocationItems("cupboard", _cupboardItems)
             getStorageLocationItems("freezer", _freezerItems)
@@ -87,20 +81,6 @@ class InventoryViewModel
 
         private fun updateItemList(foodItems: List<FoodItem>) {
             _itemList.value = foodItems.joinToString(separator = ", ") { it.name }
-        }
-
-        private fun getHouseholdId() {
-            launchCatching {
-                try {
-                    householdService.getHouseholdId(
-                        onResult = { householdId ->
-                            _householdId.value = householdId
-                        },
-                    )
-                } catch (e: Exception) {
-                    Log.e("HomeViewModel", "Error loading householdId from Firestore", e)
-                }
-            }
         }
 
         private fun getStorageLocationItems(
