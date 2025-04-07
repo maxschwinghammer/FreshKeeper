@@ -34,7 +34,7 @@ android {
         properties.load(keystoreFile.inputStream())
         val apiKey = properties.getProperty("API_KEY") ?: ""
         @Suppress("UnstableApiUsage")
-        buildConfigField("String", "API_KEY", apiKey)
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
     }
 
     @Suppress("UnstableApiUsage")
