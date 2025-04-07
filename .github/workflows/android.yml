@@ -20,6 +20,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Create keys.properties
+        run: echo "API_KEY=${{ secrets.API_KEY }}" > app/keys.properties
+
       - name: Load Google Service file
         env:
           DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
