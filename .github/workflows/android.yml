@@ -20,12 +20,11 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
+      - name: Create keys.properties
+        run: echo "API_KEY=${{ secrets.API_KEY }}" > app/keys.properties
+        
       - name: Create local.properties
         run: echo "sdk.dir=/usr/local/android-sdk" > local.properties
-
-      - name: Create keys.properties
-        run: |
-          echo "API_KEY=${{ secrets.API_KEY }}" > app/keys.properties
 
       - name: Load Google Service file
         env:

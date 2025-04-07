@@ -75,10 +75,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.canhub.cropper.CropImageActivity"
-            android:theme="@style/Theme.AppCompat"
-            android:configChanges="orientation|screenSize|keyboardHidden|keyboard|screenLayout|smallestScreenSize"
-            android:launchMode="singleTask" />
+            android:name=".service.cropImage.CropImageActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.DayNight"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

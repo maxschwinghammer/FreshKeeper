@@ -40,14 +40,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.canhub.cropper.CropImageContract
-import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.freshkeeper.R
 import com.freshkeeper.screens.profileSettings.compressImage
 import com.freshkeeper.screens.profileSettings.convertBitmapToBase64
 import com.freshkeeper.screens.profileSettings.viewmodel.ProfileSettingsViewModel
+import com.freshkeeper.service.cropImage.CropImageContract
+import com.freshkeeper.service.cropImage.CropImageContractOptions
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor

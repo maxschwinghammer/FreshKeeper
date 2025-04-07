@@ -411,4 +411,14 @@
     <string name="weekly_tip_title">Consiglio settimanale: %1$s</string>
     <string name="weekly_tip_description">Posiziona %1$s davanti per consumarli per primi</string>
     <string name="no_pending_notifications">Attualmente non hai notifiche in sospeso</string>
+    <string name="ic_rotate_left_24">Ruota in senso antiorario</string>
+    <string name="ic_rotate_right_24">Ruota</string>
+    <string name="crop_image_menu_crop">Ritaglia</string>
+    <string name="ic_flip_24">Capovolgi</string>
+    <string name="ic_flip_24_horizontally">Capovolgi orizzontalmente</string>
+    <string name="ic_flip_24_vertically">Capovolgi verticalmente</string>
+    <string name="pick_image_chooser_title">Seleziona origine</string>
+    <string name="pick_image_camera">Fotocamera</string>
+    <string name="pick_image_gallery">Galleria</string>
+
 </resources>

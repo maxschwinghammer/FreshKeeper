@@ -68,6 +68,14 @@ android {
     }
 }
 
+kapt {
+    arguments {
+        arg("dagger.hilt.android.internal.disableAndroidSuperclassValidation", "true")
+        arg("dagger.hilt.internal.useAggregatingRootProcessor", "true")
+        arg("dagger.fastInit", "ENABLED")
+    }
+}
+
 dependencies {
     implementation(libs.commonmark.commonmark)
     implementation(platform(libs.firebase.bom))
