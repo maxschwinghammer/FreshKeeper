@@ -393,5 +393,23 @@
     <string name="welcome_text">¡Bienvenido al chat de IA! ¿Cómo puedo ayudarte?</string>
     <string name="apply_filter">Aplicar filtro</string>
     <string name="filter">Filtro</string>
+    <string name="food_expires_title">%1$s vence %2$s</string>
+    <string name="food_expires_description">Usa %1$s pronto para evitar desperdicios</string>
+    <string name="statistics_progress_title">Tu progreso para %1$s</string>
+    <string name="statistics_progress_description">Usaste %1$s alimentos a tiempo</string>
+    <string name="tip_of_the_day">Consejo del día</string>
+    <string name="tip_description">Guarda %1$s y %2$s por separado para mantenerlos frescos</string>
+    <string name="inventory_check_title">Hora de revisar el inventario</string>
+    <string name="inventory_check_description">Han pasado %1$s días desde la última revisión de tu inventario</string>
+    <string name="inventory_attention_title">Tu inventario necesita atención</string>
+    <string name="inventory_attention_description">Tienes %1$s artículos que caducan pronto</string>
+    <string name="inventory_items_title">%1$s añadió nuevos artículos al inventario</string>
+    <string name="statistics_savings_title">Tus ahorros para %1$s</string>
+    <string name="statistics_savings_description">Has reducido el desperdicio de alimentos en %1$s</string>
+    <string name="household_title">%1$s se unió a tu grupo doméstico</string>
+    <string name="household_description">Administra alimentos junto con %1$s</string>
+    <string name="weekly_tip_title">Consejo semanal: %1$s</string>
+    <string name="weekly_tip_description">Coloca %1$s al frente para consumir primero</string>
+    <string name="no_pending_notifications">Actualmente no tienes notificaciones pendientes</string>
 
 </resources>

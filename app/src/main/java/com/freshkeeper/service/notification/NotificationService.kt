@@ -1,3 +1,9 @@
 package com.freshkeeper.service.notification
 
-interface NotificationService
+import com.freshkeeper.model.Notification
+
+interface NotificationService {
+    suspend fun getAllNotifications(): List<Notification>
+
+    suspend fun deleteNotificationById(notificationId: String): Boolean
+}

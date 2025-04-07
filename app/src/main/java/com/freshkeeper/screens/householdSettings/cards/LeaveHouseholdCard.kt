@@ -32,8 +32,8 @@ fun LeaveHouseholdCard(onLeaveHouseholdClick: () -> Unit) {
 
     AccountCenterCard(
         stringResource(R.string.leave_household),
-        painterResource(R.drawable.leave),
-        Modifier.card().border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+        icon = painterResource(R.drawable.leave),
+        modifier = Modifier.card().border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
         showLeaveHouseholdDialog = true
     }

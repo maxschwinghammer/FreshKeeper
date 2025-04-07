@@ -21,7 +21,7 @@ fun UserIdCard(userId: String) {
     val clipboardManager = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
 
     AccountCenterCard(
-        title = stringResource(R.string.user_id) + ":\n" + userId,
+        title = stringResource(R.string.user_id) + ": " + userId,
         icon = painterResource(R.drawable.copy),
         modifier =
             Modifier

@@ -33,8 +33,8 @@ fun DeleteHouseholdCard(onDeleteHouseholdClick: () -> Unit) {
 
     AccountCenterCard(
         stringResource(R.string.delete_household),
-        Icons.Filled.Delete,
-        Modifier.card().border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+        icon = Icons.Filled.Delete,
+        modifier = Modifier.card().border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
         showDeleteHouseholdDialog = true
     }

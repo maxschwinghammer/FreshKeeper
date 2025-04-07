@@ -52,9 +52,10 @@ fun HouseholdNameCard(
     AccountCenterCard(
         "Name: $cardTitle",
         icon = if (isUserOwner) Icons.Filled.Edit else null,
-        Modifier
-            .card()
-            .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+        modifier =
+            Modifier
+                .card()
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
         if (isUserOwner) {
             householdName = household.name

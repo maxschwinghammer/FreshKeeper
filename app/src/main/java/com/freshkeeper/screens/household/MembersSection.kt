@@ -150,10 +150,6 @@ fun MembersSection(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                Log.d("MembersSection", "items: $items")
-                Log.d("MembersSection", "isInHousehold: $isInHousehold")
-                Log.d("MembersSection", "household: $household")
-                Log.d("MembersSection", "Members: $members")
                 members?.forEach { member ->
                     Box(
                         modifier =

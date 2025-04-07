@@ -134,9 +134,14 @@ class AccountServiceImpl
                 userProfileChangeRequest {
                     displayName = newDisplayName
                 }
+            val user = auth.currentUser ?: return
 
-            auth.currentUser!!
-                .updateProfile(profileUpdates)
+            user.updateProfile(profileUpdates).await()
+
+            firestore
+                .collection("users")
+                .document(user.uid)
+                .update("displayName", newDisplayName)
                 .await()
         }
 
@@ -185,10 +190,6 @@ class AccountServiceImpl
         override suspend fun signOut() {
             auth.signOut()
             FirebaseMessaging.getInstance().deleteToken()
-            firestore.disableNetwork().await()
-            // firestore.terminate().await()
-            firestore.clearPersistence().await()
-            firestore.enableNetwork().await()
         }
 
         override suspend fun changeEmail(newEmail: String) {
@@ -215,8 +216,6 @@ class AccountServiceImpl
                 val currentUser = auth.currentUser
                 val user = getUserObject()
                 val userId = user.id
-
-                firestore.clearPersistence()
 
                 if (userId.isNotEmpty()) {
                     firestore

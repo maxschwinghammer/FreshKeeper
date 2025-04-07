@@ -36,7 +36,7 @@ fun ResetPasswordCard(
     AccountCenterCard(
         stringResource(R.string.reset_password),
         icon = painterResource(R.drawable.reset_password),
-        Modifier.card().border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+        modifier = Modifier.card().border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
         showResetPasswordDialog = true
     }

@@ -118,23 +118,22 @@ fun ProfileSettingsScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(15.dp),
                         ) {
-                            user.displayName?.let { user ->
-                                DisplayNameCard(user) {
-                                    viewModel.onUpdateDisplayNameClick(it)
-                                }
+                            DisplayNameCard(user.displayName) {
+                                viewModel.onUpdateDisplayNameClick(it)
                             }
 
                             if (user.isAnonymous) {
                                 AccountCenterCard(
                                     stringResource(R.string.authenticate),
-                                    Icons.Filled.AccountCircle,
-                                    Modifier
-                                        .card()
-                                        .border(
-                                            1.dp,
-                                            ComponentStrokeColor,
-                                            RoundedCornerShape(10.dp),
-                                        ),
+                                    icon = Icons.Filled.AccountCircle,
+                                    modifier =
+                                        Modifier
+                                            .card()
+                                            .border(
+                                                1.dp,
+                                                ComponentStrokeColor,
+                                                RoundedCornerShape(10.dp),
+                                            ),
                                 ) {
                                     navController.navigate("signIn")
                                 }

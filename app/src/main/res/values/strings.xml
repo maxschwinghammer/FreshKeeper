@@ -399,5 +399,23 @@
     <string name="welcome_text">Welcome to the AI chat! How can I help you?</string>
     <string name="apply_filter">Apply filter</string>
     <string name="filter">Filter</string>
+    <string name="food_expires_title">%1$s expires %2$s</string>
+    <string name="food_expires_description">Use %1$s promptly to avoid waste</string>
+    <string name="statistics_progress_title">Your progress for %1$s</string>
+    <string name="statistics_progress_description">You used %1$s foods in time</string>
+    <string name="tip_of_the_day">Tip of the day</string>
+    <string name="tip_description">Store %1$s and %2$s separately to keep them fresh longer</string>
+    <string name="inventory_check_title">Time for an inventory check</string>
+    <string name="inventory_check_description">It has been %1$s days since your last inventory check</string>
+    <string name="inventory_attention_title">Your inventory needs attention</string>
+    <string name="inventory_attention_description">You have %1$s items expiring soon</string>
+    <string name="inventory_items_title">%1$s added new items to inventory</string>
+    <string name="statistics_savings_title">Your savings for %1$s</string>
+    <string name="statistics_savings_description">You reduced food waste by %1$s</string>
+    <string name="household_title">%1$s joined your household group</string>
+    <string name="household_description">Manage food items together with %1$s</string>
+    <string name="weekly_tip_title">Weekly tip: %1$s</string>
+    <string name="weekly_tip_description">Place %1$s in front to consume first</string>
+    <string name="no_pending_notifications">You currently have no pending notifications</string>
 
 </resources>

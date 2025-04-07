@@ -1,7 +1,6 @@
 package com.freshkeeper.sheets
 
 import androidx.annotation.OptIn
-import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
 import androidx.camera.core.ImageAnalysis
@@ -9,18 +8,13 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -40,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -72,8 +65,8 @@ fun BarcodeScannerSheet(
     sheetState: SheetState,
     onBarcodeScanned: (String, Long) -> Unit,
 ) {
-    var isFlashOn by remember { mutableStateOf(false) }
-    var camera: Camera? by remember { mutableStateOf(null) }
+//    var isFlashOn by remember { mutableStateOf(false) }
+//    var camera: Camera? by remember { mutableStateOf(null) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     var isBarcodeScanned by remember { mutableStateOf(false) }
@@ -86,7 +79,7 @@ fun BarcodeScannerSheet(
     ModalBottomSheet(
         onDismissRequest = {
             coroutineScope.launch {
-                camera?.cameraControl?.enableTorch(!isFlashOn)
+//                camera?.cameraControl?.enableTorch(!isFlashOn)
                 sheetState.hide()
             }
         },
@@ -100,53 +93,53 @@ fun BarcodeScannerSheet(
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text =
-                        if (isBarcodeScanned) {
-                            stringResource(R.string.scan_expiry_date)
-                        } else {
-                            stringResource(R.string.scan_barcode)
-                        },
-                    color = TextColor,
-                    fontSize = 18.sp,
-                    style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.weight(1f).padding(start = 38.dp),
-                    textAlign = TextAlign.Center,
-                )
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically,
+//            ) {
+            Text(
+                text =
+                    if (isBarcodeScanned) {
+                        stringResource(R.string.scan_expiry_date)
+                    } else {
+                        stringResource(R.string.scan_barcode)
+                    },
+                color = TextColor,
+                fontSize = 18.sp,
+                style = MaterialTheme.typography.titleMedium,
+//                modifier = Modifier.weight(1f).padding(start = 38.dp),
+                textAlign = TextAlign.Center,
+            )
 
-                Box(
-                    modifier =
-                        Modifier
-                            .padding(end = 16.dp)
-                            .clip(RoundedCornerShape(10.dp))
-                            .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
-                            .clickable {
-                                isFlashOn = !isFlashOn
-                                camera?.cameraControl?.enableTorch(isFlashOn)
-                            },
-                ) {
-                    Image(
-                        painter =
-                            painterResource(
-                                if (isFlashOn) {
-                                    R.drawable.flash_on
-                                } else {
-                                    R.drawable.flash_off
-                                },
-                            ),
-                        contentDescription = "Toggle flash",
-                        modifier =
-                            Modifier
-                                .size(30.dp)
-                                .padding(8.dp),
-                    )
-                }
-            }
+//                Box(
+//                    modifier =
+//                        Modifier
+//                            .padding(end = 16.dp)
+//                            .clip(RoundedCornerShape(10.dp))
+//                            .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+//                            .clickable {
+//                                isFlashOn = !isFlashOn
+//                                camera?.cameraControl?.enableTorch(isFlashOn)
+//                            },
+//                ) {
+//                    Image(
+//                        painter =
+//                            painterResource(
+//                                if (isFlashOn) {
+//                                    R.drawable.flash_on
+//                                } else {
+//                                    R.drawable.flash_off
+//                                },
+//                            ),
+//                        contentDescription = "Toggle flash",
+//                        modifier =
+//                            Modifier
+//                                .size(30.dp)
+//                                .padding(8.dp),
+//                    )
+//                }
+//            }
 
             Box(
                 modifier =
@@ -190,18 +183,18 @@ fun BarcodeScannerSheet(
                                         Barcode.FORMAT_CODE_128,
                                     ).build()
 
-                            val cameraSelector =
-                                CameraSelector
-                                    .Builder()
-                                    .requireLensFacing(CameraSelector.LENS_FACING_BACK)
-                                    .build()
-
-                            camera =
-                                cameraProvider.bindToLifecycle(
-                                    lifecycleOwner,
-                                    cameraSelector,
-                                    preview,
-                                )
+//                            val cameraSelector =
+//                                CameraSelector
+//                                    .Builder()
+//                                    .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+//                                    .build()
+//
+//                            camera =
+//                                cameraProvider.bindToLifecycle(
+//                                    lifecycleOwner,
+//                                    cameraSelector,
+//                                    preview,
+//                                )
 
                             val barcodeImageAnalysis =
                                 ImageAnalysis.Builder().build().also { it ->

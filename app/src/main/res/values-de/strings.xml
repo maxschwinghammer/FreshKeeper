@@ -393,5 +393,23 @@
     <string name="welcome_text">Willkommen im KI-Chat! Wie kann ich helfen?</string>
     <string name="apply_filter">Filter anwenden</string>
     <string name="filter">Filter</string>
+    <string name="food_expires_title">%1$s läuft %2$s ab</string>
+    <string name="food_expires_description">Verwende %1$s rechtzeitig, um Verschwendung zu vermeiden</string>
+    <string name="statistics_progress_title">Dein Fortschritt für %1$s</string>
+    <string name="statistics_progress_description">Du hast %1$s Lebensmittel rechtzeitig genutzt</string>
+    <string name="tip_of_the_day">Tipp des Tages</string>
+    <string name="tip_description">Lagere %1$s und %2$s getrennt, um sie länger frisch zu halten</string>
+    <string name="inventory_check_title">Zeit für eine Bestandsaufnahme</string>
+    <string name="inventory_check_description">Es sind %1$s Tage vergangen, seit du dein Inventar zuletzt geprüft hast</string>
+    <string name="inventory_attention_title">Dein Inventar benötigt Aufmerksamkeit</string>
+    <string name="inventory_attention_description">Du hast %1$s Artikel, die bald ablaufen</string>
+    <string name="inventory_items_title">%1$s hat neue Artikel zum Inventar hinzugefügt</string>
+    <string name="statistics_savings_title">Deine Ersparnisse für %1$s</string>
+    <string name="statistics_savings_description">Du hast die Lebensmittelverschwendung um %1$s reduziert</string>
+    <string name="household_title">%1$s ist deiner Haushaltgruppe beigetreten</string>
+    <string name="household_description">Verwalte Lebensmittel zusammen mit %1$s</string>
+    <string name="weekly_tip_title">Wöchentlicher Tipp: %1$s</string>
+    <string name="weekly_tip_description">Platziere %1$s vorne, um sie zuerst zu verbrauchen</string>
+    <string name="no_pending_notifications">Du hast derzeit keine ausstehenden Benachrichtigungen</string>
 
 </resources>

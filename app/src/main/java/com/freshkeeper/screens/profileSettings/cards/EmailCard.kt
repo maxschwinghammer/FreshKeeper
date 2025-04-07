@@ -59,10 +59,11 @@ fun EmailCard(
 
     AccountCenterCard(
         cardTitle,
-        icon,
-        Modifier
-            .card()
-            .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+        icon = icon,
+        modifier =
+            Modifier
+                .card()
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
         if (user.provider != "google") {
             showChangeEmailDialog = true

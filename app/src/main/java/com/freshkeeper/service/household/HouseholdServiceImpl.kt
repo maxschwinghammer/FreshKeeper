@@ -71,7 +71,7 @@ class HouseholdServiceImpl
                                 }
                             }
                     } else {
-                        Log.e("HouseholdServiceImpl", "Household ID is null")
+                        Log.d("HouseholdServiceImpl", "Household ID is null")
                     }
                 }
         }

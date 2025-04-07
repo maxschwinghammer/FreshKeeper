@@ -58,7 +58,11 @@ fun NotificationCard(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
-                    text = notification.title,
+                    text =
+                        stringResource(
+                            id = notification.title.resId,
+                            *notification.title.params.toTypedArray(),
+                        ),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextColor,
@@ -73,7 +77,11 @@ fun NotificationCard(
             }
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = notification.description,
+                text =
+                    stringResource(
+                        id = notification.description.resId,
+                        *notification.description.params.toTypedArray(),
+                    ),
                 fontSize = 14.sp,
                 color = TextColor,
             )
@@ -83,7 +91,11 @@ fun NotificationCard(
                 colors = ButtonDefaults.buttonColors(containerColor = TextColor),
             ) {
                 Text(
-                    text = stringResource(id = notification.buttonTextId),
+                    text =
+                        stringResource(
+                            id = notification.buttonText.resId,
+                            *notification.buttonText.params.toTypedArray(),
+                        ),
                     color = ComponentBackgroundColor,
                 )
             }
