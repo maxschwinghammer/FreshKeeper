@@ -30,6 +30,12 @@ jobs:
         distribution: 'zulu'
         java-version: '17'
 
+    - name: Create keys.properties
+      run: echo "API_KEY=${{ secrets.API_KEY }}" > app/keys.properties
+        
+    - name: Create local.properties
+      run: echo "sdk.dir=/usr/local/android-sdk" > local.properties
+
     - name: Load Google Service file
       env:
         DATA: ${{ secrets.GOOGLE_SERVICES_JSON }}
