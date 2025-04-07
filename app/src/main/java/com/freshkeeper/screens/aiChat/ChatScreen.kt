@@ -64,10 +64,10 @@ import com.freshkeeper.screens.aiChat.viewmodel.ChatViewModel
 import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
+import com.freshkeeper.ui.theme.BackgroundColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.GreyColor
-import com.freshkeeper.ui.theme.LightGreyColor
 import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import kotlinx.coroutines.launch
@@ -183,7 +183,7 @@ fun ChatList(
                 item {
                     BoxWithConstraints {
                         Card(
-                            colors = CardDefaults.cardColors(containerColor = GreyColor),
+                            colors = CardDefaults.cardColors(containerColor = AccentTurquoiseColor),
                             shape = RoundedCornerShape(4.dp, 20.dp, 20.dp, 20.dp),
                             modifier = Modifier.widthIn(0.dp, maxWidth * 0.9f),
                         ) {
@@ -192,9 +192,9 @@ fun ChatList(
                                 contentAlignment = Alignment.Center,
                             ) {
                                 CircularProgressIndicator(
-                                    modifier = Modifier.size(30.dp),
-                                    strokeWidth = 3.dp,
-                                    color = AccentTurquoiseColor,
+                                    modifier = Modifier.size(28.dp).padding(4.dp),
+                                    strokeWidth = 2.dp,
+                                    color = BackgroundColor,
                                 )
                             }
                         }
@@ -225,8 +225,8 @@ fun ChatBubbleItem(chatMessage: ChatMessage) {
 
     val backgroundColor =
         when (chatMessage.participant) {
-            Participant.MODEL -> GreyColor
-            Participant.USER -> LightGreyColor
+            Participant.MODEL -> AccentTurquoiseColor
+            Participant.USER -> GreyColor
             Participant.ERROR -> RedColor
         }
 
@@ -261,6 +261,7 @@ fun ChatBubbleItem(chatMessage: ChatMessage) {
                     MarkdownText(
                         markdown = chatMessage.text,
                         modifier = Modifier.padding(12.dp),
+                        textColor = if (isModelMessage) BackgroundColor else TextColor,
                     )
                 }
             }

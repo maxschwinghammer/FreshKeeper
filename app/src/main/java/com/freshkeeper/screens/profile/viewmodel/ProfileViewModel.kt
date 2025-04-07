@@ -31,6 +31,7 @@ class ProfileViewModel
                 _memberSinceDays.value =
                     accountService
                         .calculateDaysSince(user.value?.createdAt ?: 0)
+                _profilePicture.value = accountService.getProfilePicture(user.value?.id ?: "")
             }
         }
 

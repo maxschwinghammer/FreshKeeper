@@ -13,9 +13,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -31,18 +29,17 @@ import kotlinx.coroutines.launch
 @Suppress("ktlint:standard:function-naming")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ManagePremiumSheet(
-    managePremiumSheetState: SheetState,
+fun ChangePlanSheet(
+    changePlanSheetState: SheetState,
     membership: Membership,
-    onCancelPremium: () -> Unit,
     onChangePlan: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
     FreshKeeperTheme {
         ModalBottomSheet(
-            onDismissRequest = { coroutineScope.launch { managePremiumSheetState.hide() } },
-            sheetState = managePremiumSheetState,
+            onDismissRequest = { coroutineScope.launch { changePlanSheetState.hide() } },
+            sheetState = changePlanSheetState,
             containerColor = ComponentBackgroundColor,
         ) {
             Column(
@@ -53,7 +50,7 @@ fun ManagePremiumSheet(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "Manage premium membership",
+                    text = "Change plan",
                     color = TextColor,
                     fontSize = 18.sp,
                     style = MaterialTheme.typography.titleMedium,
@@ -61,7 +58,7 @@ fun ManagePremiumSheet(
                 )
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
-                    onClick = onCancelPremium,
+                    onClick = {},
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
                 ) {

@@ -1,7 +1,6 @@
 package com.freshkeeper.screens.profileSettings.viewmodel
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
@@ -10,7 +9,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,6 +26,7 @@ class ProfileSettingsViewModel
         init {
             launchCatching {
                 _user.value = accountService.getUserObject()
+                getProfilePicture()
             }
         }
 
@@ -40,8 +39,8 @@ class ProfileSettingsViewModel
 
         fun onSignOutClick(navigateToSplash: () -> Unit) {
             launchCatching {
-                accountService.signOut()
                 navigateToSplash()
+                accountService.signOut()
             }
         }
 
@@ -71,13 +70,14 @@ class ProfileSettingsViewModel
             }
         }
 
-        fun getProfilePicture() {
-            viewModelScope.launch {
+        private fun getProfilePicture() {
+            launchCatching {
                 try {
                     val profilePicture = accountService.getProfilePicture(user.value.id)
                     _profilePicture.value = profilePicture
                 } catch (e: Exception) {
                     _profilePicture.value = null
+                    e.printStackTrace()
                 }
             }
         }

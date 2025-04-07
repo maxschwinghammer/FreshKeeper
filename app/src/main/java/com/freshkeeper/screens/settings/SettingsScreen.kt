@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.settings
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -12,6 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -46,11 +50,14 @@ import com.freshkeeper.screens.settings.buttons.ReviewAppButton
 import com.freshkeeper.screens.settings.buttons.SettingsButton
 import com.freshkeeper.screens.settings.buttons.UpgradeToPremiumVersionButton
 import com.freshkeeper.screens.settings.viewmodel.SettingsViewModel
+import com.freshkeeper.sheets.ChangePlanSheet
 import com.freshkeeper.sheets.ManagePremiumSheet
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
+import com.freshkeeper.ui.theme.GreyColor
+import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -72,7 +79,10 @@ fun SettingsScreen(
 
     val membership by settingsViewModel.membership.collectAsState(initial = Membership())
     val managePremiumSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val changePlanSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
+
+    var showCancelPremiumDialog by remember { mutableStateOf(false) }
 
     val listState = rememberLazyListState()
     val showUpperTransition by remember {
@@ -84,6 +94,10 @@ fun SettingsScreen(
         derivedStateOf {
             listState.layoutInfo.visibleItemsInfo.size < 10
         }
+    }
+
+    fun cancelPremium() {
+        settingsViewModel.cancelPremium()
     }
 
     FreshKeeperTheme {
@@ -203,10 +217,75 @@ fun SettingsScreen(
                 ManagePremiumSheet(
                     managePremiumSheetState,
                     membership,
-                    onCancelPremium = {},
-                    onChangePlan = {},
+                    onCancelPremium = {
+                        coroutineScope.launch {
+                            managePremiumSheetState.hide()
+                            showCancelPremiumDialog = true
+                        }
+                    },
+                    onChangePlan = {
+                        coroutineScope.launch {
+                            managePremiumSheetState.hide()
+                            changePlanSheetState.show()
+                        }
+                    },
                 )
             }
+            if (changePlanSheetState.isVisible) {
+                ChangePlanSheet(
+                    changePlanSheetState,
+                    membership,
+                    onChangePlan = {
+                        coroutineScope.launch {
+                            managePremiumSheetState.hide()
+                            changePlanSheetState.show()
+                        }
+                    },
+                )
+            }
+        }
+        if (showCancelPremiumDialog) {
+            AlertDialog(
+                containerColor = ComponentBackgroundColor,
+                title = { Text("Cancel membership") },
+                text = {
+                    Text(
+                        "Your membership will be canceled. You will loose all premium functions at the end of your current plan.",
+                        color = TextColor,
+                    )
+                },
+                dismissButton = {
+                    Button(
+                        onClick = { showCancelPremiumDialog = false },
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = GreyColor,
+                                contentColor = TextColor,
+                            ),
+                        shape = RoundedCornerShape(20.dp),
+                        border = BorderStroke(1.dp, ComponentStrokeColor),
+                    ) {
+                        Text(text = stringResource(R.string.cancel))
+                    }
+                },
+                confirmButton = {
+                    Button(
+                        onClick = {
+                            cancelPremium()
+                            showCancelPremiumDialog = false
+                        },
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = RedColor,
+                                contentColor = TextColor,
+                            ),
+                        shape = RoundedCornerShape(20.dp),
+                    ) {
+                        Text(text = stringResource(R.string.confirm))
+                    }
+                },
+                onDismissRequest = { showCancelPremiumDialog = false },
+            )
         }
     }
 }

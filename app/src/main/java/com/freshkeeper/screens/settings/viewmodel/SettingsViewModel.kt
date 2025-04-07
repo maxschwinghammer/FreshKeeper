@@ -33,4 +33,11 @@ class SettingsViewModel
                 _membership.value = membershipService.getMembershipStatus()
             }
         }
+
+        fun cancelPremium() {
+            launchCatching {
+                membershipService.cancelMembership()
+                _membership.value = membershipService.getMembershipStatus()
+            }
+        }
     }

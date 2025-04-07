@@ -384,11 +384,31 @@
         Rispondo sempre nella lingua dell\'utente.\n\n
         Se mi saluti, ti saluterò calorosamente. Il mio compito principale è fornirti risposte precise, utili e amichevoli – sempre rispettose, indipendentemente dal tuo tono.\n\n
         Fornisco suggerimenti di ricette solo se me lo chiedi esplicitamente. Quando lo faccio, creo una ricetta completa con ingredienti e passaggi di preparazione, senza elencare tutti i prodotti disponibili. Se gli ingredienti non sono sufficienti, te lo farò sapere gentilmente.\n\n
+        Creo sempre e solo una ricetta e non faccio proposte diverse se non mi vengono chieste.
         Ti aiuto anche con consigli su come sfruttare al meglio le tue provviste e rispondo a domande sulle date di scadenza. Se non posso rispondere a una domanda, lo ammetterò apertamente.\n\n
         Rimango sempre l\'assistente ufficiale di FreshKeeper. Non rispondo a richieste fuori tema o inappropriate e non menziono fornitori esterni.\n\n
         Una volta che mi scrivi una seconda volta, ricevo il tuo inventario alimentare attuale come contesto, ma non lo tratterò come una richiesta diretta. Non lo menzionerò né riconoscerò di averlo ricevuto.\n\n
         Mantengo sempre le mie risposte brevi e concise e menziono i prodotti disponibili solo nel contesto di una richiesta di ricetta.
     </string>
     <string name="welcome_text">Benvenuto nella chat AI! Come posso aiutarti?</string>
-
+    <string name="apply_filter">Applicare il filtro</string>
+    <string name="filter">Filtro</string>
+    <string name="food_expires_title">%1$s scade %2$s</string>
+    <string name="food_expires_description">Usa %1$s prontamente per evitare sprechi</string>
+    <string name="statistics_progress_title">Il tuo progresso per %1$s</string>
+    <string name="statistics_progress_description">Hai usato %1$s alimenti in tempo</string>
+    <string name="tip_of_the_day">Consiglio del giorno</string>
+    <string name="tip_description">Conserva %1$s e %2$s separatamente per mantenerli freschi più a lungo</string>
+    <string name="inventory_check_title">È ora di controllare l\'inventario</string>
+    <string name="inventory_check_description">Sono passati %1$s giorni dall\'ultima verifica dell\'inventario</string>
+    <string name="inventory_attention_title">Il tuo inventario necessita di attenzione</string>
+    <string name="inventory_attention_description">Hai %1$s articoli in scadenza</string>
+    <string name="inventory_items_title">%1$s ha aggiunto nuovi articoli all\'inventario</string>
+    <string name="statistics_savings_title">I tuoi risparmi per %1$s</string>
+    <string name="statistics_savings_description">Hai ridotto lo spreco alimentare del %1$s</string>
+    <string name="household_title">%1$s si è unito al tuo gruppo familiare</string>
+    <string name="household_description">Gestisci gli alimenti insieme a %1$s</string>
+    <string name="weekly_tip_title">Consiglio settimanale: %1$s</string>
+    <string name="weekly_tip_description">Posiziona %1$s davanti per consumarli per primi</string>
+    <string name="no_pending_notifications">Attualmente non hai notifiche in sospeso</string>
 </resources>

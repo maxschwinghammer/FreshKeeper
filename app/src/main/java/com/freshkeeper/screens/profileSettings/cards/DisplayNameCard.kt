@@ -27,23 +27,25 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun DisplayNameCard(
-    displayName: String,
+    displayName: String?,
     onUpdateDisplayNameClick: (String) -> Unit,
 ) {
     var showDisplayNameDialog by remember { mutableStateOf(false) }
     var newDisplayName by remember { mutableStateOf(displayName) }
-    val cardTitle = displayName.ifBlank { stringResource(R.string.profile_name) }
+    val cardTitle = displayName?.takeIf { it.isNotBlank() } ?: ""
 
     AccountCenterCard(
         "Name: $cardTitle",
-        Icons.Filled.Edit,
-        Modifier
-            .card()
-            .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+        icon = Icons.Filled.Edit,
+        modifier =
+            Modifier
+                .card()
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
         newDisplayName = displayName
         showDisplayNameDialog = true
@@ -56,7 +58,7 @@ fun DisplayNameCard(
             text = {
                 Column {
                     TextField(
-                        value = newDisplayName,
+                        value = newDisplayName ?: "",
                         colors =
                             TextFieldDefaults.colors(
                                 unfocusedLabelColor = AccentTurquoiseColor,
@@ -90,18 +92,18 @@ fun DisplayNameCard(
             confirmButton = {
                 Button(
                     onClick = {
-                        onUpdateDisplayNameClick(newDisplayName)
+                        newDisplayName?.let { onUpdateDisplayNameClick(it) }
                         showDisplayNameDialog = false
                     },
                     colors =
                         ButtonDefaults.buttonColors(
-                            containerColor = AccentTurquoiseColor,
+                            containerColor = WhiteColor,
                             contentColor = GreyColor,
                         ),
                     enabled =
-                        newDisplayName.isNotEmpty() &&
-                            newDisplayName.all
-                                { it.isLetter() || it.isWhitespace() },
+                        newDisplayName?.let {
+                            it.isNotBlank() && it.all { c -> c.isLetter() || c.isWhitespace() }
+                        } ?: false,
                     shape = RoundedCornerShape(20.dp),
                 ) {
                     Text(text = stringResource(R.string.update))

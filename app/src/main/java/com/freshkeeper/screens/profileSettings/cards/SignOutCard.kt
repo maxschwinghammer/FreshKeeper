@@ -31,8 +31,8 @@ fun SignOutCard(onSignOutClick: () -> Unit) {
 
     AccountCenterCard(
         stringResource(R.string.sign_out),
-        Icons.AutoMirrored.Filled.ExitToApp,
-        Modifier.card().border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+        icon = Icons.AutoMirrored.Filled.ExitToApp,
+        modifier = Modifier.card().border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
         showExitAppDialog = true
     }

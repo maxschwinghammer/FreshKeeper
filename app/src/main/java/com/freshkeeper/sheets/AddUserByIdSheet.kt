@@ -1,6 +1,5 @@
 package com.freshkeeper.sheets
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -31,6 +30,7 @@ import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 import kotlinx.coroutines.launch
 
 @Suppress("ktlint:standard:function-naming")
@@ -85,8 +85,7 @@ fun AddUserByIdSheet(
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = AccentTurquoiseColor),
-                border = BorderStroke(1.dp, ComponentStrokeColor),
+                colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
             ) {
                 Text(text = stringResource(R.string.add_user), color = ComponentBackgroundColor)
             }

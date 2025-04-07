@@ -19,11 +19,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
 import com.freshkeeper.screens.profileSettings.viewmodel.ProfileSettingsViewModel
-import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -61,7 +61,7 @@ fun DownloadDataCard(
                     },
                     colors =
                         ButtonDefaults.buttonColors(
-                            containerColor = AccentTurquoiseColor,
+                            containerColor = WhiteColor,
                             contentColor = GreyColor,
                         ),
                     shape = RoundedCornerShape(20.dp),

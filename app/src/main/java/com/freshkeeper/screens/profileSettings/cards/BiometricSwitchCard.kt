@@ -31,6 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.content.edit
 import androidx.fragment.app.FragmentActivity
 import com.freshkeeper.R
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -39,6 +40,7 @@ import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.LightGreyColor
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -199,16 +201,15 @@ fun BiometricSwitchCard() {
                     Button(
                         onClick = {
                             isBiometricEnabled = true
-                            sharedPreferences.edit().putBoolean("biometric_enabled", true).apply()
+                            sharedPreferences.edit { putBoolean("biometric_enabled", true) }
                             showBiometricDialog = false
                         },
                         colors =
                             ButtonDefaults.buttonColors(
-                                containerColor = AccentTurquoiseColor,
+                                containerColor = WhiteColor,
                                 contentColor = TextColor,
                             ),
                         shape = RoundedCornerShape(20.dp),
-                        border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
                         Text(text = stringResource(R.string.yes))
                     }

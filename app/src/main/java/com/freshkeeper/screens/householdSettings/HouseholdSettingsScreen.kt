@@ -64,7 +64,7 @@ fun HouseholdSettingsScreen(
 
     val user by viewModel.user.collectAsState(initial = User())
     val household by viewModel.household.collectAsState(initial = Household())
-    var selectedHouseholdType by remember { mutableStateOf("Family") }
+    var selectedHouseholdType by remember { mutableStateOf(household.type) }
     val items by inventoryViewModel.foodItems.observeAsState(emptyList())
 
     val qrCodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)

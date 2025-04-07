@@ -63,6 +63,7 @@ import com.freshkeeper.model.FoodItem
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
+import com.freshkeeper.screens.home.viewmodel.HomeViewModel
 import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.service.categoryMap
@@ -90,10 +91,12 @@ import kotlinx.coroutines.launch
 fun InventoryScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
     val inventoryViewModel: InventoryViewModel = hiltViewModel()
+    val homeViewModel: HomeViewModel = hiltViewModel()
 
     var scannedBarcode by remember { mutableStateOf("") }
     var recognizedFoodName by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
+    val isMember by homeViewModel.isMember.observeAsState()
 
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -152,18 +155,44 @@ fun InventoryScreen(navController: NavHostController) {
                         .padding(it),
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = stringResource(R.string.current_inventories),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = TextColor,
-                        modifier = Modifier.padding(top = 16.dp, end = 16.dp, start = 16.dp),
-                    )
+                    Row(
+                        modifier =
+                            Modifier
+                                .padding(
+                                    top = 16.dp,
+                                    bottom = 8.dp,
+                                    start = 16.dp,
+                                    end = 16.dp,
+                                ).fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.current_inventories),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextColor,
+                            modifier = Modifier.weight(1f),
+                        )
+
+                        if (isMember == true) {
+                            Icon(
+                                painter = painterResource(R.drawable.ai_chat),
+                                tint = AccentTurquoiseColor,
+                                contentDescription = "AI Chat",
+                                modifier =
+                                    Modifier
+                                        .size(25.dp)
+                                        .clickable {
+                                            navController.navigate("chat")
+                                        },
+                            )
+                        }
+                    }
                     Row(
                         modifier =
                             Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 16.dp, vertical = 8.dp),
+                                .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {

@@ -75,7 +75,7 @@ fun FilterSheet(
                         .padding(bottom = 16.dp, start = 16.dp, end = 16.dp),
             ) {
                 Text(
-                    text = "Filter (${displayedFoodItems.size})",
+                    text = stringResource(R.string.filter) + " (${displayedFoodItems.size})",
                     fontSize = 18.sp,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.padding(bottom = 16.dp),
@@ -190,7 +190,7 @@ fun FilterSheet(
                             .fillMaxWidth()
                             .padding(top = 16.dp),
                 ) {
-                    Text(text = "Apply Filter", color = ComponentBackgroundColor)
+                    Text(text = stringResource(R.string.apply_filter), color = ComponentBackgroundColor)
                 }
             }
         }

@@ -11,4 +11,6 @@ interface MembershipService {
         paymentCycle: String,
         durationInDays: Int,
     )
+
+    suspend fun cancelMembership()
 }

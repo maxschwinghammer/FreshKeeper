@@ -31,8 +31,8 @@ fun RemoveAccountCard(onRemoveAccountClick: () -> Unit) {
 
     AccountCenterCard(
         stringResource(R.string.delete_account),
-        Icons.Filled.Delete,
-        Modifier.card().border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+        icon = Icons.Filled.Delete,
+        modifier = Modifier.card().border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
         showRemoveAccDialog = true
     }
@@ -74,7 +74,7 @@ fun RemoveAccountCard(onRemoveAccountClick: () -> Unit) {
                         ),
                     shape = RoundedCornerShape(20.dp),
                 ) {
-                    Text(text = stringResource(R.string.delete_account))
+                    Text(text = stringResource(R.string.confirm))
                 }
             },
             onDismissRequest = { showRemoveAccDialog = false },

@@ -33,6 +33,7 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -58,10 +59,11 @@ fun EmailCard(
 
     AccountCenterCard(
         cardTitle,
-        icon,
-        Modifier
-            .card()
-            .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+        icon = icon,
+        modifier =
+            Modifier
+                .card()
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
         if (user.provider != "google") {
             showChangeEmailDialog = true
@@ -119,7 +121,7 @@ fun EmailCard(
                     },
                     colors =
                         ButtonDefaults.buttonColors(
-                            containerColor = AccentTurquoiseColor,
+                            containerColor = WhiteColor,
                             contentColor = GreyColor,
                         ),
                     shape = RoundedCornerShape(20.dp),

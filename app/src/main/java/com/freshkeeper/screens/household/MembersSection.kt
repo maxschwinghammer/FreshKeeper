@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,12 +19,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -59,6 +63,7 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -84,12 +89,12 @@ fun MembersSection(
 
     val householdId = remember { mutableStateOf(household?.id ?: "") }
     var householdName by remember { mutableStateOf(household?.name ?: "") }
-    var householdType by remember { mutableStateOf(household?.type ?: "") }
 
     val showJoinHouseholdDialog = remember { mutableStateOf(false) }
     var showCreateHouseholdDialog by remember { mutableStateOf(false) }
     var showHouseholdTypeDialog by remember { mutableStateOf(false) }
     var showAddProductsDialog by remember { mutableStateOf(false) }
+    var householdType by remember { mutableStateOf("") }
 
     val householdTypeMap =
         mapOf(
@@ -117,13 +122,30 @@ fun MembersSection(
         colors = CardDefaults.cardColors(containerColor = ComponentBackgroundColor),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = stringResource(id = R.string.members),
-                color = AccentTurquoiseColor,
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 8.dp),
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+            ) {
+                Text(
+                    text = stringResource(id = R.string.members),
+                    color = AccentTurquoiseColor,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(bottom = 8.dp).weight(1f),
+                )
+                Icon(
+                    imageVector = Icons.Outlined.Settings,
+                    contentDescription = null,
+                    modifier =
+                        Modifier
+                            .size(20.dp)
+                            .clickable {
+                                coroutineScope.launch {
+                                    navController.navigate("householdSettings")
+                                }
+                            },
+                )
+            }
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -201,8 +223,8 @@ fun MembersSection(
 
                 if (isInHousehold) {
                     if (household != null &&
-                        householdType != "Single household" &&
-                        (householdType != "Pair" || household!!.users.size < 2)
+                        household!!.type != "Single household" &&
+                        (household!!.type != "Pair" || household!!.users.size < 2)
                     ) {
                         Box(
                             modifier =
@@ -348,12 +370,11 @@ fun MembersSection(
                         },
                         colors =
                             ButtonDefaults.buttonColors(
-                                containerColor = AccentTurquoiseColor,
+                                containerColor = WhiteColor,
                                 contentColor = GreyColor,
                             ),
                         enabled = householdId.value.length == 20,
                         shape = RoundedCornerShape(20.dp),
-                        border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
                         Text(text = stringResource(R.string.join))
                     }
@@ -406,7 +427,7 @@ fun MembersSection(
                         },
                         colors =
                             ButtonDefaults.buttonColors(
-                                containerColor = AccentTurquoiseColor,
+                                containerColor = WhiteColor,
                                 contentColor = GreyColor,
                             ),
                         enabled =
@@ -414,7 +435,6 @@ fun MembersSection(
                                 householdName.all
                                     { it.isLetter() || it.isWhitespace() },
                         shape = RoundedCornerShape(20.dp),
-                        border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
                         Text(text = stringResource(R.string.create))
                     }
@@ -484,11 +504,10 @@ fun MembersSection(
                         },
                         colors =
                             ButtonDefaults.buttonColors(
-                                containerColor = AccentTurquoiseColor,
+                                containerColor = WhiteColor,
                                 contentColor = GreyColor,
                             ),
                         shape = RoundedCornerShape(20.dp),
-                        border = BorderStroke(1.dp, ComponentStrokeColor),
                     ) {
                         Text(text = stringResource(R.string.confirm))
                     }

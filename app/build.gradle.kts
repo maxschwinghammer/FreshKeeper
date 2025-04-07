@@ -20,17 +20,20 @@ android {
     defaultConfig {
         applicationId = "com.freshkeeper"
         minSdk = 26
+        //noinspection OldTargetApi
         targetSdk = 35
-        versionCode = 5
+        versionCode = 7
         versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        @Suppress("UnstableApiUsage")
         manifestPlaceholders["appAuthRedirectScheme"] = "com.freshkeeper"
 
         val keystoreFile = project.rootProject.file("app/keys.properties")
         val properties = Properties()
         properties.load(keystoreFile.inputStream())
         val apiKey = properties.getProperty("API_KEY") ?: ""
+        @Suppress("UnstableApiUsage")
         buildConfigField("String", "API_KEY", apiKey)
     }
 
@@ -42,7 +45,9 @@ android {
 
     buildTypes {
         getByName("release") {
+            @Suppress("UnstableApiUsage")
             isMinifyEnabled = false
+            @Suppress("UnstableApiUsage")
             proguardFiles(
                 @Suppress("UnstableApiUsage")
                 getDefaultProguardFile("proguard-android-optimize.txt"),

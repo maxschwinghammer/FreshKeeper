@@ -33,6 +33,7 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
+import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -51,9 +52,10 @@ fun HouseholdNameCard(
     AccountCenterCard(
         "Name: $cardTitle",
         icon = if (isUserOwner) Icons.Filled.Edit else null,
-        Modifier
-            .card()
-            .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+        modifier =
+            Modifier
+                .card()
+                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
     ) {
         if (isUserOwner) {
             householdName = household.name
@@ -106,11 +108,10 @@ fun HouseholdNameCard(
                     },
                     colors =
                         ButtonDefaults.buttonColors(
-                            containerColor = AccentTurquoiseColor,
+                            containerColor = WhiteColor,
                             contentColor = GreyColor,
                         ),
                     shape = RoundedCornerShape(20.dp),
-                    border = BorderStroke(1.dp, ComponentStrokeColor),
                 ) {
                     Text(text = stringResource(R.string.update))
                 }

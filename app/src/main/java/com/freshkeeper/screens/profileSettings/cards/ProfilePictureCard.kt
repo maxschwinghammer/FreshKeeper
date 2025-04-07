@@ -93,7 +93,7 @@ fun ProfilePictureCard(
 
     AccountCenterCard(
         title = "Profile picture",
-        icon = imagePainter,
+        image = imagePainter,
         modifier =
             Modifier
                 .card()

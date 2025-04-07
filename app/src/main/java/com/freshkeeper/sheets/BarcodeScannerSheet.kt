@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -64,6 +65,9 @@ fun BarcodeScannerSheet(
     sheetState: SheetState,
     onBarcodeScanned: (String, Long) -> Unit,
 ) {
+//    var isFlashOn by remember { mutableStateOf(false) }
+//    var camera: Camera? by remember { mutableStateOf(null) }
+
     val lifecycleOwner = LocalLifecycleOwner.current
     var isBarcodeScanned by remember { mutableStateOf(false) }
     val isExpiryDateScanned by remember { mutableStateOf(false) }
@@ -73,7 +77,12 @@ fun BarcodeScannerSheet(
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     ModalBottomSheet(
-        onDismissRequest = { coroutineScope.launch { sheetState.hide() } },
+        onDismissRequest = {
+            coroutineScope.launch {
+//                camera?.cameraControl?.enableTorch(!isFlashOn)
+                sheetState.hide()
+            }
+        },
         sheetState = sheetState,
         containerColor = ComponentBackgroundColor,
     ) {
@@ -84,6 +93,11 @@ fun BarcodeScannerSheet(
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween,
+//                verticalAlignment = Alignment.CenterVertically,
+//            ) {
             Text(
                 text =
                     if (isBarcodeScanned) {
@@ -91,10 +105,41 @@ fun BarcodeScannerSheet(
                     } else {
                         stringResource(R.string.scan_barcode)
                     },
-                fontSize = 18.sp,
                 color = TextColor,
+                fontSize = 18.sp,
                 style = MaterialTheme.typography.titleMedium,
+//                modifier = Modifier.weight(1f).padding(start = 38.dp),
+                textAlign = TextAlign.Center,
             )
+
+//                Box(
+//                    modifier =
+//                        Modifier
+//                            .padding(end = 16.dp)
+//                            .clip(RoundedCornerShape(10.dp))
+//                            .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+//                            .clickable {
+//                                isFlashOn = !isFlashOn
+//                                camera?.cameraControl?.enableTorch(isFlashOn)
+//                            },
+//                ) {
+//                    Image(
+//                        painter =
+//                            painterResource(
+//                                if (isFlashOn) {
+//                                    R.drawable.flash_on
+//                                } else {
+//                                    R.drawable.flash_off
+//                                },
+//                            ),
+//                        contentDescription = "Toggle flash",
+//                        modifier =
+//                            Modifier
+//                                .size(30.dp)
+//                                .padding(8.dp),
+//                    )
+//                }
+//            }
 
             Box(
                 modifier =
@@ -137,6 +182,19 @@ fun BarcodeScannerSheet(
                                         Barcode.FORMAT_CODE_39,
                                         Barcode.FORMAT_CODE_128,
                                     ).build()
+
+//                            val cameraSelector =
+//                                CameraSelector
+//                                    .Builder()
+//                                    .requireLensFacing(CameraSelector.LENS_FACING_BACK)
+//                                    .build()
+//
+//                            camera =
+//                                cameraProvider.bindToLifecycle(
+//                                    lifecycleOwner,
+//                                    cameraSelector,
+//                                    preview,
+//                                )
 
                             val barcodeImageAnalysis =
                                 ImageAnalysis.Builder().build().also { it ->
