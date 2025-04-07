@@ -22,6 +22,9 @@ jobs:
 
       - name: Create keys.properties
         run: echo "API_KEY=${{ secrets.API_KEY }}" > app/keys.properties
+        
+      - name: Create local.properties
+        run: echo "sdk.dir=/usr/local/android-sdk" > local.properties
 
       - name: Load Google Service file
         env:
@@ -37,7 +40,7 @@ jobs:
           key: gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             gradle-
-            
+
       - name: Make gradlew executable
         run: chmod +x ./gradlew
 
