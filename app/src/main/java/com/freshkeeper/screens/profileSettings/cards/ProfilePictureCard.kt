@@ -19,8 +19,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
-import com.canhub.cropper.CropImageContract
-import com.canhub.cropper.CropImageContractOptions
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.freshkeeper.R
@@ -28,6 +26,8 @@ import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.screens.profileSettings.compressImage
 import com.freshkeeper.screens.profileSettings.convertBase64ToBitmap
 import com.freshkeeper.screens.profileSettings.convertBitmapToBase64
+import com.freshkeeper.service.cropImage.CropImageContract
+import com.freshkeeper.service.cropImage.CropImageContractOptions
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import kotlinx.coroutines.flow.StateFlow
 

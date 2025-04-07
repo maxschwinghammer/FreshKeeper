@@ -65,8 +65,9 @@ class ProfileSettingsViewModel
 
         fun updateProfilePicture(profilePicture: String) {
             launchCatching {
-                accountService.updateProfilePicture(profilePicture)
+                _profilePicture.value = ProfilePicture(profilePicture, "base64")
                 _user.value = accountService.getUserObject()
+                accountService.updateProfilePicture(profilePicture)
             }
         }
 

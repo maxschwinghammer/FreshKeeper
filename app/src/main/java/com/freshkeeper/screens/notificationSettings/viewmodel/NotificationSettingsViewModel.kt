@@ -1,6 +1,5 @@
 package com.freshkeeper.screens.notificationSettings.viewmodel
 
-import android.util.Log
 import com.freshkeeper.model.NotificationSettings
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
@@ -39,7 +38,6 @@ class NotificationSettingsViewModel
         private fun getNotificationSettings() {
             launchCatching {
                 val userId = _user.value.id
-                Log.d("NotificationSettingsViewModel", "User ID: $userId")
                 val snapshot =
                     firestore
                         .collection("notificationSettings")
@@ -47,10 +45,8 @@ class NotificationSettingsViewModel
                         .get()
                         .await()
 
-                Log.d("NotificationSettingsViewModel", "Snapshot: $snapshot")
                 val settings = snapshot?.toObject(NotificationSettings::class.java)
                 _notificationSettings.value = settings
-                Log.d("NotificationSettingsViewModel", "Settings: $settings")
             }
         }
 

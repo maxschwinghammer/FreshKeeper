@@ -33,8 +33,6 @@ class HouseholdServiceImpl
         }
 
         private fun fetchHouseholdId() {
-            Log.d("HouseholdServiceImpl", "Fetching household ID")
-            Log.d("HouseholdServiceImpl", "User ID: $userId")
             if (userId == null) return
 
             firestore
