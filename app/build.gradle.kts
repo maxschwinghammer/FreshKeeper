@@ -32,9 +32,12 @@ android {
         val keystoreFile = project.rootProject.file("app/keys.properties")
         val properties = Properties()
         properties.load(keystoreFile.inputStream())
+
         val apiKey = properties.getProperty("API_KEY") ?: ""
-        @Suppress("UnstableApiUsage")
-        buildConfigField("String", "API_KEY", "\"$apiKey\"")
+        buildConfigField("String", "API_KEY", apiKey)
+
+        val emailPassword = properties.getProperty("EMAIL_PASSWORD") ?: ""
+        buildConfigField("String", "EMAIL_PASSWORD", emailPassword)
     }
 
     @Suppress("UnstableApiUsage")
@@ -47,9 +50,7 @@ android {
         getByName("release") {
             @Suppress("UnstableApiUsage")
             isMinifyEnabled = false
-            @Suppress("UnstableApiUsage")
             proguardFiles(
-                @Suppress("UnstableApiUsage")
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )

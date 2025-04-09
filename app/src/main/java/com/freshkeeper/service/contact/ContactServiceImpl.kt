@@ -49,7 +49,7 @@ class ContactServiceImpl
                                 override fun getPasswordAuthentication() =
                                     javax.mail.PasswordAuthentication(
                                         "feedback@freshkeeper.de",
-                                        "4??!f_UG!H52yM@",
+                                        "§",
                                     )
                             },
                         )
