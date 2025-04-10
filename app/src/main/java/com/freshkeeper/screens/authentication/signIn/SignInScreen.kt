@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.authentication.signIn
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,6 +36,7 @@ import com.freshkeeper.R
 import com.freshkeeper.screens.authentication.AuthenticationButton
 import com.freshkeeper.screens.authentication.launchCredManBottomSheet
 import com.freshkeeper.screens.authentication.viewmodel.GoogleViewModel
+import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
@@ -122,9 +124,10 @@ fun SignInScreen(
                             activity,
                         )
                     }
-                    Spacer(Modifier.padding(8.dp))
+                    Spacer(Modifier.padding(20.dp))
                     TextButton(
                         onClick = { navController.navigate("signUp") },
+                        border = BorderStroke(1.dp, AccentTurquoiseColor),
                         modifier = Modifier.padding(horizontal = 16.dp),
                     ) {
                         Text(

@@ -420,4 +420,10 @@
     <string name="pick_image_chooser_title">Escolher foto a partir de</string>
     <string name="pick_image_camera">Câmera</string>
     <string name="pick_image_gallery">Galeria</string>
+    <string name="joghurt_expires_tomorrow_title">O iogurte vence amanhã</string>
+    <string name="joghurt_expires_tomorrow_description">Consuma-o rapidamente para evitar desperdício</string>
+    <string name="your_progress_this_week_title">O seu progresso esta semana</string>
+    <string name="your_progress_this_week_description">Você usou 15 alimentos a tempo esta semana</string>
+    <string name="tip_of_the_day_title">Dica do dia</string>
+    <string name="tip_of_the_day_description">Armazene frutas e vegetais separadamente para mantê-los frescos por mais tempo</string>
 </resources>

@@ -135,7 +135,7 @@
     <string name="settings">Einstellungen</string>
     <string name="share">Haushalts-ID teilen</string>
     <string name="sign_in">Einloggen</string>
-    <string name="sign_in_description">Du hast noch kein Konto? Klicken hier, um dich zu registrieren!</string>
+    <string name="sign_in_description">Du hast noch kein Konto? Klicke hier, um dich zu registrieren!</string>
     <string name="sign_in_with_email">Mit E-Mail einloggen</string>
     <string name="sign_in_with_google">Mit Google einloggen</string>
     <string name="sign_out">Ausloggen</string>
@@ -420,4 +420,11 @@
     <string name="pick_image_chooser_title">Quelle wählen</string>
     <string name="pick_image_camera">Kamera</string>
     <string name="pick_image_gallery">Galerie</string>
+    <string name="joghurt_expires_tomorrow_title">Joghurt läuft morgen ab</string>
+    <string name="joghurt_expires_tomorrow_description">Verbrauchen Sie es schnell, um Abfall zu vermeiden</string>
+    <string name="your_progress_this_week_title">Ihr Fortschritt diese Woche</string>
+    <string name="your_progress_this_week_description">Sie haben diese Woche 15 Lebensmittel rechtzeitig verwendet</string>
+    <string name="tip_of_the_day_title">Tipp des Tages</string>
+    <string name="tip_of_the_day_description">Lagern Sie Obst und Gemüse separat, um sie länger frisch zu halten</string>
+
 </resources>

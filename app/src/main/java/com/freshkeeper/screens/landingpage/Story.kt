@@ -1,11 +1,11 @@
 package com.freshkeeper.screens.landingpage
 
+import android.R.attr.maxWidth
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,12 +22,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
+import com.freshkeeper.ui.theme.BackgroundColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.WhiteColor
@@ -36,25 +36,27 @@ import kotlin.math.min
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun Story(onComplete: () -> Unit) {
-    val images =
+fun Story(
+    onComplete: () -> Unit,
+    navController: NavHostController,
+) {
+    val screens =
         remember {
-            listOf(
-                R.drawable.story_0,
-                R.drawable.story_1,
-                R.drawable.story_2,
-                R.drawable.story_3,
-                R.drawable.story_4,
-                R.drawable.story_5,
+            listOf<@Composable () -> Unit>(
+                { Story0() },
+                { Story1() },
+                { Story2() },
+                { Story3(navController) },
+                { Story4() },
             )
         }
 
-    val stepCount = images.size
+    val stepCount = screens.size
     val currentStep = remember { mutableIntStateOf(0) }
     val isPaused = remember { mutableStateOf(false) }
 
-    BoxWithConstraints(
-        modifier = Modifier.fillMaxSize().background(Color(0xFF121317)),
+    Box(
+        modifier = Modifier.fillMaxSize().background(BackgroundColor),
     ) {
         val imageModifier =
             Modifier
@@ -62,11 +64,11 @@ fun Story(onComplete: () -> Unit) {
                 .pointerInput(Unit) {
                     detectTapGestures(
                         onTap = { offset ->
-                            if (currentStep.intValue == stepCount - 1 && offset.x > constraints.maxWidth / 2) {
+                            if (currentStep.intValue == stepCount - 1 && offset.x > maxWidth / 2) {
                                 onComplete()
                             } else {
                                 currentStep.intValue =
-                                    if (offset.x < constraints.maxWidth / 2) {
+                                    if (offset.x < maxWidth / 2) {
                                         max(0, currentStep.intValue - 1)
                                     } else {
                                         min(stepCount - 1, currentStep.intValue + 1)
@@ -85,12 +87,9 @@ fun Story(onComplete: () -> Unit) {
                     )
                 }.padding(bottom = 75.dp)
 
-        Image(
-            painter = painterResource(id = images[currentStep.intValue]),
-            contentDescription = "StoryImage",
-            contentScale = ContentScale.FillWidth,
-            modifier = imageModifier,
-        )
+        Box(modifier = imageModifier) {
+            screens[currentStep.intValue]()
+        }
 
         ProgressIndicator(
             modifier =

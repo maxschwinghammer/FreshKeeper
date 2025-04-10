@@ -420,4 +420,10 @@
     <string name="pick_image_chooser_title">Seleccionar fuente</string>
     <string name="pick_image_camera">Cámara</string>
     <string name="pick_image_gallery">Galería</string>
+    <string name="joghurt_expires_tomorrow_title">El yogur caduca mañana</string>
+    <string name="joghurt_expires_tomorrow_description">Consúmelo rápidamente para evitar el desperdicio</string>
+    <string name="your_progress_this_week_title">Tu progreso esta semana</string>
+    <string name="your_progress_this_week_description">Usaste 15 alimentos a tiempo esta semana</string>
+    <string name="tip_of_the_day_title">Consejo del día</string>
+    <string name="tip_of_the_day_description">Almacena las frutas y verduras por separado para mantenerlas frescas por más tiempo</string>
 </resources>

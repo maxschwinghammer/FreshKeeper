@@ -77,7 +77,7 @@ fun HomeScreen(navController: NavHostController) {
     var recognizedFoodName by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
     var foodItem by remember { mutableStateOf<FoodItem?>(null) }
-    val isMember by viewModel.isMember.observeAsState()
+//    val isMember by viewModel.isMember.observeAsState()
     val allFoodItems by viewModel.allFoodItems.observeAsState(emptyList())
 
     val coroutineScope = rememberCoroutineScope()
@@ -126,19 +126,19 @@ fun HomeScreen(navController: NavHostController) {
                             modifier = Modifier.weight(1f),
                         )
 
-                        if (isMember == true) {
-                            Icon(
-                                painter = painterResource(R.drawable.ai_chat),
-                                tint = AccentTurquoiseColor,
-                                contentDescription = "AI Chat",
-                                modifier =
-                                    Modifier
-                                        .size(25.dp)
-                                        .clickable {
-                                            navController.navigate("chat")
-                                        },
-                            )
-                        }
+//                        if (isMember == true) {
+                        Icon(
+                            painter = painterResource(R.drawable.ai_chat),
+                            tint = AccentTurquoiseColor,
+                            contentDescription = "AI Chat",
+                            modifier =
+                                Modifier
+                                    .size(25.dp)
+                                    .clickable {
+                                        navController.navigate("chat")
+                                    },
+                        )
+//                        }
                     }
                     Box(modifier = Modifier.weight(1f)) {
                         LazyColumn(

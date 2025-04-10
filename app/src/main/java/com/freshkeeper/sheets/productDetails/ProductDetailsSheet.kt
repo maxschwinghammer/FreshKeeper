@@ -28,6 +28,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -52,10 +53,11 @@ fun ProductDetailsSheet(
     editProductSheetState: SheetState,
     foodItem: FoodItem,
 ) {
+    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val productDetails = remember { mutableStateOf<ProductDetails?>(null) }
     val isLoading = remember { mutableStateOf(true) }
-    val productDetailsService = remember { ProductDetailsServiceImpl() }
+    val productDetailsService = remember { ProductDetailsServiceImpl(context) }
 
     LaunchedEffect(Unit) {
         productDetails.value =
@@ -160,7 +162,7 @@ fun ProductDetailsSheet(
                                     CertificatesSection(details, modifier = Modifier.weight(1f))
                                     Spacer(modifier = Modifier.width(10.dp))
                                     NutriScoreSection(
-                                        score = details.nutriScore!!,
+                                        score = details.nutriScore,
                                         modifier = Modifier.fillMaxHeight().weight(1f),
                                     )
                                 }
@@ -178,7 +180,7 @@ fun ProductDetailsSheet(
 
                                     if (nutriScoreAvailable) {
                                         NutriScoreSection(
-                                            score = details.nutriScore!!,
+                                            score = details.nutriScore,
                                             modifier = Modifier.weight(1f),
                                         )
                                     }

@@ -10,6 +10,7 @@ fun LandingPageScreen(navController: NavHostController) {
     FreshKeeperTheme {
         Story(
             onComplete = { navController.navigate("signUp") },
+            navController,
         )
     }
 }

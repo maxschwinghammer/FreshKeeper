@@ -132,7 +132,7 @@ fun ChatScreen(navController: NavHostController) {
                         .padding(paddingValues),
             ) {
                 Text(
-                    text = stringResource(R.string.ai_chat) + " (Beta)",
+                    text = stringResource(R.string.ai_chat),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     color = TextColor,

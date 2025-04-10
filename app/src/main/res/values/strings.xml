@@ -426,4 +426,10 @@
     <string name="pick_image_chooser_title">Select source</string>
     <string name="pick_image_camera">Camera</string>
     <string name="pick_image_gallery">Gallery</string>
+    <string name="joghurt_expires_tomorrow_title">Joghurt expires tomorrow</string>
+    <string name="joghurt_expires_tomorrow_description">Consume it promptly to save waste</string>
+    <string name="your_progress_this_week_title">Your progress this week</string>
+    <string name="your_progress_this_week_description">You used 15 foods in time this week</string>
+    <string name="tip_of_the_day_title">Tip of the day</string>
+    <string name="tip_of_the_day_description">Store fruit and vegetables separately to keep them fresh for longer</string>
 </resources>

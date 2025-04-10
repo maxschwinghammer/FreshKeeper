@@ -38,7 +38,6 @@ import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.screens.profileSettings.cards.AccountCenterCard
-import com.freshkeeper.screens.profileSettings.cards.BiometricSwitchCard
 import com.freshkeeper.screens.profileSettings.cards.DisplayNameCard
 import com.freshkeeper.screens.profileSettings.cards.DownloadDataCard
 import com.freshkeeper.screens.profileSettings.cards.EmailCard
@@ -146,8 +145,10 @@ fun ProfileSettingsScreen(
                                     },
                                 )
                                 UserIdCard(user.id)
-                                ResetPasswordCard(viewModel, navController)
-                                BiometricSwitchCard()
+                                if (user.provider == "email") {
+                                    ResetPasswordCard(viewModel, navController)
+                                }
+//                                BiometricSwitchCard()
                                 DownloadDataCard(user.id, viewModel)
                                 SignOutCard {
                                     viewModel.onSignOutClick {

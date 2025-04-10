@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.authentication.signUp
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -129,9 +130,10 @@ fun SignUpScreen(
                     }
                     Spacer(Modifier.padding(8.dp))
                     SignUpInfo()
-                    Spacer(Modifier.padding(8.dp))
+                    Spacer(Modifier.padding(20.dp))
                     TextButton(
                         onClick = { navController.navigate("signIn") },
+                        border = BorderStroke(1.dp, AccentTurquoiseColor),
                         modifier = Modifier.padding(horizontal = 16.dp),
                     ) {
                         Text(
@@ -171,7 +173,6 @@ fun signUpInfoText(): AnnotatedString =
 @Composable
 fun SignUpInfo() {
     val annotatedText = signUpInfoText()
-
     Text(
         text = annotatedText,
         style =
@@ -180,5 +181,6 @@ fun SignUpInfo() {
                 color = LightGreyColor,
                 textAlign = TextAlign.Center,
             ),
+        modifier = Modifier.padding(horizontal = 20.dp),
     )
 }

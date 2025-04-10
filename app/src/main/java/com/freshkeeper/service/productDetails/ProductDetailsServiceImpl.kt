@@ -1,14 +1,16 @@
 package com.freshkeeper.service.productDetails
 
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
 import android.util.Log
 import android.widget.Toast
+import com.freshkeeper.model.ApiResponse
 import com.freshkeeper.model.Nutriments
 import com.freshkeeper.model.ProductData
 import com.freshkeeper.model.ProductDetails
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -18,14 +20,19 @@ import org.json.JSONObject
 import java.math.BigDecimal
 import java.math.RoundingMode
 import java.net.SocketTimeoutException
+import java.util.Locale
 import javax.inject.Inject
 
 class ProductDetailsServiceImpl
     @Inject
-    constructor() : ProductDetailsService {
+    constructor(
+        context: Context,
+    ) : ProductDetailsService {
         private val firestore = FirebaseFirestore.getInstance()
         private val client = OkHttpClient()
         private val gson = Gson()
+        private val sharedPreferences: SharedPreferences =
+            context.getSharedPreferences("FreshKeeperPrefs", MODE_PRIVATE)
 
         override suspend fun fetchProductDetails(barcode: String): ProductDetails? {
             return withContext(Dispatchers.IO) {
@@ -34,7 +41,10 @@ class ProductDetailsServiceImpl
                 if (snapshot.exists()) {
                     return@withContext snapshot.toObject(ProductDetails::class.java)
                 } else {
-                    val url = "https://world.openfoodfacts.org/api/v3/product/$barcode.json"
+                    val languageCode =
+                        sharedPreferences
+                            .getString("language", Locale.getDefault().language) ?: "en"
+                    val url = getOpenFoodFactsUrl(languageCode, barcode)
                     val request = Request.Builder().url(url).build()
                     try {
                         client.newCall(request).execute().use { response ->
@@ -47,67 +57,53 @@ class ProductDetailsServiceImpl
                                 return@withContext null
                             }
                             val body = response.body.string()
-                            val apiResponse = gson.fromJson(body, OpenFoodFactsResponse::class.java)
+                            val apiResponse = gson.fromJson(body, ApiResponse::class.java)
 
-                            val product = apiResponse.product
+                            val product = apiResponse.apiProduct
                             val nutriments =
                                 product.nutriments?.let {
                                     Nutriments(
                                         energyKcal =
                                             it.energyKcal?.let { value ->
                                                 BigDecimal(value)
-                                                    .setScale(
-                                                        2,
-                                                        RoundingMode.DOWN,
-                                                    ).toDouble()
+                                                    .setScale(2, RoundingMode.DOWN)
+                                                    .toDouble()
                                             },
                                         fat =
                                             it.fat?.let { value ->
                                                 BigDecimal(value)
-                                                    .setScale(
-                                                        2,
-                                                        RoundingMode.DOWN,
-                                                    ).toDouble()
+                                                    .setScale(2, RoundingMode.DOWN)
+                                                    .toDouble()
                                             },
                                         carbohydrates =
                                             it.carbohydrates?.let { value ->
                                                 BigDecimal(value)
-                                                    .setScale(
-                                                        2,
-                                                        RoundingMode.DOWN,
-                                                    ).toDouble()
+                                                    .setScale(2, RoundingMode.DOWN)
+                                                    .toDouble()
                                             },
                                         sugars =
                                             it.sugars?.let { value ->
                                                 BigDecimal(value)
-                                                    .setScale(
-                                                        2,
-                                                        RoundingMode.DOWN,
-                                                    ).toDouble()
+                                                    .setScale(2, RoundingMode.DOWN)
+                                                    .toDouble()
                                             },
                                         fiber =
                                             it.fiber?.let { value ->
                                                 BigDecimal(value)
-                                                    .setScale(
-                                                        2,
-                                                        RoundingMode.DOWN,
-                                                    ).toDouble()
+                                                    .setScale(2, RoundingMode.DOWN)
+                                                    .toDouble()
                                             },
                                         proteins =
                                             it.proteins?.let { value ->
                                                 BigDecimal(value)
-                                                    .setScale(
-                                                        2,
-                                                        RoundingMode.DOWN,
-                                                    ).toDouble()
+                                                    .setScale(2, RoundingMode.DOWN)
+                                                    .toDouble()
                                             },
                                         salt =
                                             it.salt?.let { value ->
                                                 BigDecimal(value)
-                                                    .setScale(
-                                                        2,
-                                                        RoundingMode.DOWN,
-                                                    ).toDouble()
+                                                    .setScale(2, RoundingMode.DOWN)
+                                                    .toDouble()
                                             },
                                     )
                                 }
@@ -149,9 +145,9 @@ class ProductDetailsServiceImpl
                 if (!response.isSuccessful) return@withContext
                 val body = response.body.string()
 
-                val apiResponse = gson.fromJson(body, OpenFoodFactsResponse::class.java)
+                val apiResponse = gson.fromJson(body, ApiResponse::class.java)
 
-                val product = apiResponse.product
+                val product = apiResponse.apiProduct
                 val nutriments =
                     product.nutriments?.let { it ->
                         Nutriments(
@@ -163,15 +159,7 @@ class ProductDetailsServiceImpl
                             proteins = it.proteins?.takeIf { it.isFinite() } ?: 0.0,
                             salt = it.salt?.takeIf { it.isFinite() } ?: 0.0,
                         )
-                    } ?: Nutriments(
-                        energyKcal = null,
-                        fat = null,
-                        carbohydrates = null,
-                        sugars = null,
-                        fiber = null,
-                        proteins = null,
-                        salt = null,
-                    )
+                    }
 
                 val productDetails =
                     ProductDetails(
@@ -195,7 +183,10 @@ class ProductDetailsServiceImpl
             barcode: String,
         ): ProductData? {
             return withContext(Dispatchers.IO) {
-                val url = "https://world.openfoodfacts.org/api/v3/product/$barcode.json"
+                val languageCode =
+                    sharedPreferences
+                        .getString("language", Locale.getDefault().language) ?: "en"
+                val url = getOpenFoodFactsUrl(languageCode, barcode)
                 val request = Request.Builder().url(url).build()
 
                 try {
@@ -218,7 +209,7 @@ class ProductDetailsServiceImpl
 
                         return@withContext ProductData(name, quantity, unit, imageUrl)
                     }
-                } catch (e: SocketTimeoutException) {
+                } catch (_: SocketTimeoutException) {
                     withContext(Dispatchers.Main) {
                         Toast
                             .makeText(
@@ -257,33 +248,9 @@ class ProductDetailsServiceImpl
                     ?.trim() ?: ""
             return Pair(quantity, unit)
         }
+
+        override suspend fun getOpenFoodFactsUrl(
+            languageCode: String,
+            barcode: String,
+        ): String = "https://$languageCode.openfoodfacts.org/api/v3/product/$barcode.json"
     }
-
-data class OpenFoodFactsResponse(
-    val status: String,
-    val product: Product,
-)
-
-data class Product(
-    @SerializedName("product_name")
-    val productName: String?,
-    val brands: String?,
-    @SerializedName("nutriscore_grade")
-    val nutriscoreGrade: String?,
-    @SerializedName("ingredients_text")
-    val ingredientsText: String?,
-    @SerializedName("labels_tags")
-    val labelsTags: List<String>?,
-    val nutriments: ApiNutriments?,
-)
-
-data class ApiNutriments(
-    @SerializedName("energy-kcal")
-    val energyKcal: Double?,
-    val fat: Double?,
-    val carbohydrates: Double?,
-    val sugars: Double?,
-    val fiber: Double?,
-    val proteins: Double?,
-    val salt: Double?,
-)

@@ -1,7 +1,6 @@
 package com.freshkeeper
 
 import android.Manifest
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -48,7 +47,7 @@ class MainActivity : FragmentActivity() {
 
     private fun isNetworkAvailable(): Boolean {
         val connectivityManager =
-            getSystemService(Context.CONNECTIVITY_SERVICE) as
+            getSystemService(CONNECTIVITY_SERVICE) as
                 ConnectivityManager
         val network = connectivityManager.activeNetwork ?: return false
         val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
@@ -59,7 +58,7 @@ class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        sharedPreferences = getSharedPreferences("FreshKeeperPrefs", Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("FreshKeeperPrefs", MODE_PRIVATE)
         val savedLanguage =
             sharedPreferences.getString(
                 "language",

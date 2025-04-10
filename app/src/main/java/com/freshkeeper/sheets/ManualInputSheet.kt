@@ -87,8 +87,9 @@ fun ManualInputSheet(
     expiryTimestamp: Long,
     recognizedFoodName: String,
 ) {
+    val context = LocalContext.current
     val accountService = remember { AccountServiceImpl() }
-    val productDetailsService = remember { ProductDetailsServiceImpl() }
+    val productDetailsService = remember { ProductDetailsServiceImpl(context) }
     val productService = remember { ProductServiceImpl(accountService) }
 
     var productName by remember { mutableStateOf("") }
@@ -96,7 +97,6 @@ fun ManualInputSheet(
     var quantity by remember { mutableStateOf("") }
     val unit = remember { mutableStateOf("") }
     var imageUrl by remember { mutableStateOf("") }
-    val context = LocalContext.current
 
     val defaultImageRes = R.drawable.default_product_image
     var imageUri by remember { mutableStateOf<Uri?>(null) }

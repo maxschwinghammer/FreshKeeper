@@ -15,4 +15,9 @@ interface ProductDetailsService {
     suspend fun fetchProductDetails(barcode: String): ProductDetails?
 
     suspend fun fetchAndSaveProductDetails(barcode: String)
+
+    suspend fun getOpenFoodFactsUrl(
+        languageCode: String,
+        barcode: String,
+    ): String
 }

@@ -43,12 +43,10 @@ import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
-import com.freshkeeper.screens.settings.buttons.BuyACoffeeButton
 import com.freshkeeper.screens.settings.buttons.ChangeLanguageCard
 import com.freshkeeper.screens.settings.buttons.ExternalLinkButton
 import com.freshkeeper.screens.settings.buttons.ReviewAppButton
 import com.freshkeeper.screens.settings.buttons.SettingsButton
-import com.freshkeeper.screens.settings.buttons.UpgradeToPremiumVersionButton
 import com.freshkeeper.screens.settings.viewmodel.SettingsViewModel
 import com.freshkeeper.sheets.ChangePlanSheet
 import com.freshkeeper.sheets.ManagePremiumSheet
@@ -158,14 +156,14 @@ fun SettingsScreen(
                         )
                     }
                     item { ReviewAppButton() }
-                    item {
-                        UpgradeToPremiumVersionButton(
-                            membership = membership,
-                            onManagePremiumClick = {
-                                coroutineScope.launch { managePremiumSheetState.show() }
-                            },
-                        )
-                    }
+//                    item {
+//                        UpgradeToPremiumVersionButton(
+//                            membership = membership,
+//                            onManagePremiumClick = {
+//                                coroutineScope.launch { managePremiumSheetState.show() }
+//                            },
+//                        )
+//                    }
                     item {
                         Column(
                             modifier =
@@ -201,7 +199,7 @@ fun SettingsScreen(
                             navController.navigate("help")
                         }
                     }
-                    item { BuyACoffeeButton() }
+//                    item { BuyACoffeeButton() }
                     item { Spacer(modifier = Modifier.height(10.dp)) }
                 }
                 if (showUpperTransition) {

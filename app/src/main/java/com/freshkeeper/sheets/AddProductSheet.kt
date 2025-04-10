@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
@@ -79,17 +80,17 @@ fun AddProductSheet(
                     }
                 },
             )
-            Spacer(modifier = Modifier.height(10.dp))
-            AddEntryButton(
-                text = stringResource(R.string.food_recognition),
-                iconId = R.drawable.recognition,
-                onClick = {
-                    coroutineScope.launch {
-                        foodRecognitionSheetState.show()
-                        sheetState.hide()
-                    }
-                },
-            )
+//            Spacer(modifier = Modifier.height(10.dp))
+//            AddEntryButton(
+//                text = stringResource(R.string.food_recognition),
+//                iconId = R.drawable.recognition,
+//                onClick = {
+//                    coroutineScope.launch {
+//                        foodRecognitionSheetState.show()
+//                        sheetState.hide()
+//                    }
+//                },
+//            )
             Spacer(modifier = Modifier.height(10.dp))
             AddEntryButton(
                 text = stringResource(R.string.manual_input),
@@ -123,7 +124,7 @@ fun AddEntryButton(
             modifier = Modifier.padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Text(text, color = TextColor)
+            Text(text, color = TextColor, textAlign = TextAlign.Center)
             Spacer(modifier = Modifier.height(10.dp))
             Image(
                 painter = painterResource(id = iconId),
