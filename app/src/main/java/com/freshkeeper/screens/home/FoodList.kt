@@ -52,6 +52,7 @@ fun FoodList(
     items: List<Triple<String?, String, String>>,
     editProductSheetState: SheetState,
     onEditProduct: (String) -> Unit,
+    isClickable: Boolean = true,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -91,18 +92,26 @@ fun FoodList(
             val isMultiLine = item.length > 20
             val dynamicHeight = if (isMultiLine) 40.dp else Dp.Unspecified
 
-            Row(
-                modifier =
-                    Modifier
-                        .padding(bottom = 8.dp)
-                        .fillMaxWidth()
-                        .clickable {
-                            coroutineScope.launch {
-                                editProductSheetState.show()
-                                onEditProduct(safeId)
+            val rowModifier =
+                Modifier
+                    .padding(bottom = 8.dp)
+                    .fillMaxWidth()
+                    .then(
+                        if (isClickable) {
+                            Modifier.clickable {
+                                coroutineScope.launch {
+                                    editProductSheetState.show()
+                                    onEditProduct(safeId)
+                                }
                             }
-                        }.clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp))
-                        .clip(RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp)),
+                        } else {
+                            Modifier
+                        },
+                    ).clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp))
+                    .clip(RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp))
+
+            Row(
+                modifier = rowModifier,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Box(

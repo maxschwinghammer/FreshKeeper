@@ -432,4 +432,13 @@
     <string name="your_progress_this_week_description">You used 15 foods in time this week</string>
     <string name="tip_of_the_day_title">Tip of the day</string>
     <string name="tip_of_the_day_description">Store fruit and vegetables separately to keep them fresh for longer</string>
+    <string name="push_notifications">Receive push notifications</string>
+    <string name="welcome_message">Welcome to FreshKeeper!</string>
+    <string name="start_reducing_waste">Start reducing your food waste today!</string>
+    <string name="view_personal_stats">View personal statistics</string>
+    <string name="check_current_inventory">Check your current inventory</string>
+    <string name="overview_expiring_products">Get an overview of expiring products</string>
+    <string name="manage_your_household">Manage your household</string>
+    <string name="expired_today">Expired today</string>
+
 </resources>

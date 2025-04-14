@@ -68,7 +68,7 @@
     <string name="invite_people">Personen einladen</string>
     <string name="invite_partner">Partner einladen</string>
     <string name="invite_text">Lade eine Person in deinen Haushalt ein</string>
-    <string name="invite_message">Hallo! Mit der App FreshKeeper behalte ich den Überblick über meine Lebensmittel und minimiere Verschwendung 🥬🍎\n\nDie App erinnert mich rechtzeitig an ablaufende Produkte und hilft mir, klüger zu konsumieren 📅\n\nProbier es aus und werde Teil unseres Haushalts! Gebe zum Beitrete einfach folgende Haushalts-ID in den Einstellungen ein:</string>
+    <string name="invite_message">Hallo! Mit der App FreshKeeper behalte ich den Überblick über meine Lebensmittel und minimiere Verschwendung 🥬🍎\n\nDie App erinnert mich rechtzeitig an ablaufende Produkte und hilft mir, klüger zu konsumieren 📅\n\nProbier es aus und werde Teil unseres Haushalts! Gebe zum Beitreten einfach folgende Haushalts-ID in den Einstellungen ein:</string>
     <string name="item">Produkt</string>
     <string name="items">Produkte</string>
     <string name="items_per_day">Produkte pro Tag</string>
@@ -426,5 +426,13 @@
     <string name="your_progress_this_week_description">Sie haben diese Woche 15 Lebensmittel rechtzeitig verwendet</string>
     <string name="tip_of_the_day_title">Tipp des Tages</string>
     <string name="tip_of_the_day_description">Lagern Sie Obst und Gemüse separat, um sie länger frisch zu halten</string>
+    <string name="push_notifications">Erhalte Push-Benachrichtigungen</string>
+    <string name="welcome_message">Willkommen bei FreshKeeper!</string>
+    <string name="start_reducing_waste">Beginne noch heute damit, deine Lebensmittelabfälle zu reduzieren!</string>
+    <string name="view_personal_stats">Eigene Statistiken einsehen</string>
+    <string name="check_current_inventory">Prüfe deine aktuellen Bestände</string>
+    <string name="overview_expiring_products">Bekomme einen Überblick über ablaufende Produkte</string>
+    <string name="manage_your_household">Verwalte deinen Haushalt</string>
+    <string name="expired_today">Heute abgelaufen</string>
 
 </resources>

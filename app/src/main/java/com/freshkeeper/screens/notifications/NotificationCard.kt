@@ -37,6 +37,7 @@ fun NotificationCard(
     notification: Notification,
     navController: NavHostController,
     onRemove: () -> Unit,
+    isClickable: Boolean = true,
 ) {
     Box(
         modifier =
@@ -72,7 +73,12 @@ fun NotificationCard(
                 Text(
                     text = "✕",
                     color = TextColor,
-                    modifier = Modifier.clickable { onRemove() },
+                    modifier =
+                        if (!isClickable) {
+                            Modifier.clickable { onRemove() }
+                        } else {
+                            Modifier
+                        },
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -87,8 +93,9 @@ fun NotificationCard(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Button(
+                enabled = isClickable,
                 onClick = { navController.navigate(notification.destinationScreen) },
-                colors = ButtonDefaults.buttonColors(containerColor = TextColor),
+                colors = ButtonDefaults.buttonColors(containerColor = TextColor, disabledContainerColor = TextColor),
             ) {
                 Text(
                     text =

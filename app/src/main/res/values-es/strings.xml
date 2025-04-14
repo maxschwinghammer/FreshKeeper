@@ -426,4 +426,13 @@
     <string name="your_progress_this_week_description">Usaste 15 alimentos a tiempo esta semana</string>
     <string name="tip_of_the_day_title">Consejo del día</string>
     <string name="tip_of_the_day_description">Almacena las frutas y verduras por separado para mantenerlas frescas por más tiempo</string>
+    <string name="push_notifications">Recibe notificaciones push</string>
+    <string name="welcome_message">¡Bienvenido a FreshKeeper!</string>
+    <string name="start_reducing_waste">¡Empieza hoy mismo a reducir tus desperdicios de alimentos!</string>
+    <string name="view_personal_stats">Ver estadísticas personales</string>
+    <string name="check_current_inventory">Revisa tu inventario actual</string>
+    <string name="overview_expiring_products">Obtén una visión general de los productos que van a caducar</string>
+    <string name="manage_your_household">Administra tu hogar</string>
+    <string name="expired_today">Caducado hoy</string>
+
 </resources>

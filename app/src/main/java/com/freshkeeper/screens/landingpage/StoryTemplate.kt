@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,11 +30,9 @@ import com.freshkeeper.ui.theme.FreshKeeperTheme
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun StoryTemplate(
-    headline: String,
+    headline: Int,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-//    val listState = rememberLazyListState()
-
     FreshKeeperTheme {
         Scaffold { innerPadding ->
             Box(
@@ -56,12 +55,12 @@ fun StoryTemplate(
                     Row(
                         modifier =
                             Modifier
-                                .padding(40.dp)
+                                .padding(top = 50.dp, start = 30.dp, end = 30.dp, bottom = 30.dp)
                                 .fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
                     ) {
                         Text(
-                            text = headline,
+                            text = stringResource(id = headline),
                             fontSize = 24.sp,
                             lineHeight = 30.sp,
                             fontWeight = FontWeight.Bold,

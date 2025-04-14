@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -17,7 +18,7 @@ import com.freshkeeper.model.FoodItem
 import com.freshkeeper.screens.home.FoodList
 import java.util.Calendar
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun Story1() {
@@ -169,7 +170,7 @@ fun Story1() {
     val editProductSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     StoryTemplate(
-        headline = "Bekomme einen Überblick über ablaufende Produkte",
+        headline = R.string.overview_expiring_products,
         content = {
             LazyColumn(
                 state = listState,
@@ -205,6 +206,7 @@ fun Story1() {
                             },
                         editProductSheetState = editProductSheetState,
                         onEditProduct = {},
+                        isClickable = false,
                     )
                 }
                 item {}
@@ -233,6 +235,7 @@ fun Story1() {
                             },
                         editProductSheetState = editProductSheetState,
                         onEditProduct = {},
+                        isClickable = false,
                     )
                 }
             }

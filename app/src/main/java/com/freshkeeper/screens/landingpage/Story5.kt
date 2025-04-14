@@ -5,9 +5,9 @@ import com.freshkeeper.R
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun Story2() {
+fun Story5() {
     StoryTemplate(
-        headline = R.string.check_current_inventory,
+        headline = R.string.view_personal_stats,
         content = {
         },
     )

@@ -63,7 +63,6 @@ import com.freshkeeper.model.FoodItem
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
-import com.freshkeeper.screens.home.viewmodel.HomeViewModel
 import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.service.categoryMap
@@ -91,7 +90,7 @@ import kotlinx.coroutines.launch
 fun InventoryScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
     val inventoryViewModel: InventoryViewModel = hiltViewModel()
-    val homeViewModel: HomeViewModel = hiltViewModel()
+//    val homeViewModel: HomeViewModel = hiltViewModel()
 
     var scannedBarcode by remember { mutableStateOf("") }
     var recognizedFoodName by remember { mutableStateOf("") }
@@ -418,12 +417,81 @@ fun InventoryScreen(navController: NavHostController) {
                     barcode = scannedBarcode,
                     expiryTimestamp = expiryDate,
                     recognizedFoodName = recognizedFoodName,
+                    onAddProduct = {
+                        name,
+                        barcode,
+                        expiry,
+                        qty,
+                        unit,
+                        storage,
+                        category,
+                        image,
+                        imageUrl,
+                        householdId,
+                        coroutineScope,
+                        addedText,
+                        ->
+                        inventoryViewModel.addProduct(
+                            name,
+                            barcode,
+                            expiry,
+                            qty,
+                            unit,
+                            storage,
+                            category,
+                            image,
+                            imageUrl,
+                            householdId,
+                            coroutineScope,
+                            { coroutineScope.launch { manualInputSheetState.hide() } },
+                            addedText,
+                        )
+                    },
                 )
             }
 
             if (editProductSheetState.isVisible) {
                 foodItem?.let { item ->
-                    EditProductSheet(editProductSheetState, productInfoSheetState, item)
+                    EditProductSheet(
+                        editProductSheetState,
+                        productInfoSheetState,
+                        item,
+                        onGetFoodItemPicture = { imageId, onSuccess, onFailure ->
+                            inventoryViewModel.getFoodItemPicture(imageId, onSuccess, onFailure)
+                        },
+                        onUpdateProduct = {
+                            foodItem,
+                            productName,
+                            quantity,
+                            unit,
+                            storageLocation,
+                            category,
+                            expiryDate,
+                            isConsumedChecked,
+                            isThrownAwayChecked,
+                            coroutineScope,
+                            addedText,
+                            ->
+                            inventoryViewModel.updateProduct(
+                                foodItem,
+                                productName,
+                                quantity,
+                                unit,
+                                storageLocation,
+                                category,
+                                expiryDate,
+                                isConsumedChecked,
+                                isThrownAwayChecked,
+                                coroutineScope,
+                                onSuccess = {
+                                    coroutineScope.launch {
+                                        editProductSheetState.hide()
+                                    }
+                                },
+                                addedText,
+                            )
+                        },
+                    )
                 }
             }
 

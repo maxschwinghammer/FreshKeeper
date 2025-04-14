@@ -146,6 +146,7 @@ fun MembersSection(
                             },
                 )
             }
+            Spacer(modifier = Modifier.height(6.dp))
             FlowRow(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -210,7 +211,7 @@ fun MembersSection(
                                     else -> {}
                                 }
                             }
-                            Spacer(modifier = Modifier.height(5.dp))
+                            Spacer(modifier = Modifier.height(4.dp))
                             Text(
                                 text = member.name.split(" ").first(),
                                 color = TextColor,

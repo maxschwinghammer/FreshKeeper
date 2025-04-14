@@ -112,10 +112,18 @@ fun HomeScreen(navController: NavHostController) {
                 }
             },
         ) { it ->
-            Box(modifier = Modifier.fillMaxSize().padding(it)) {
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(it),
+            ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
                     Row(
-                        modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                        modifier =
+                            Modifier
+                                .padding(16.dp)
+                                .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         Text(
@@ -208,17 +216,17 @@ fun HomeScreen(navController: NavHostController) {
                                             expiredItems.map { item ->
                                                 val displayText =
                                                     when {
+                                                        item.daysDifference == 0 ->
+                                                            stringResource(R.string.today)
                                                         -item.daysDifference == 1 ->
                                                             stringResource(
                                                                 R.string.yesterday,
                                                             )
-
                                                         item.daysDifference < 0 ->
                                                             stringResource(
                                                                 R.string.days_ago,
                                                                 -item.daysDifference,
                                                             )
-
                                                         else -> ""
                                                     }
                                                 Triple(item.id, item.name, displayText)
@@ -330,12 +338,82 @@ fun HomeScreen(navController: NavHostController) {
                     barcode = scannedBarcode,
                     expiryTimestamp = expiryDate,
                     recognizedFoodName = recognizedFoodName,
+                    onAddProduct = {
+                        name,
+                        barcode,
+                        expiry,
+                        qty,
+                        unit,
+                        storage,
+                        category,
+                        image,
+                        imageUrl,
+                        householdId,
+                        coroutineScope,
+                        addedText,
+                        ->
+
+                        viewModel.addProduct(
+                            name,
+                            barcode,
+                            expiry,
+                            qty,
+                            unit,
+                            storage,
+                            category,
+                            image,
+                            imageUrl,
+                            householdId,
+                            coroutineScope,
+                            { coroutineScope.launch { manualInputSheetState.hide() } },
+                            addedText,
+                        )
+                    },
                 )
             }
 
             if (editProductSheetState.isVisible) {
                 foodItem?.let { item ->
-                    EditProductSheet(editProductSheetState, productInfoSheetState, item)
+                    EditProductSheet(
+                        editProductSheetState,
+                        productInfoSheetState,
+                        item,
+                        onGetFoodItemPicture = { imageId, onSuccess, onFailure ->
+                            viewModel.getFoodItemPicture(imageId, onSuccess, onFailure)
+                        },
+                        onUpdateProduct = {
+                            foodItem,
+                            productName,
+                            quantity,
+                            unit,
+                            storageLocation,
+                            category,
+                            expiryDate,
+                            isConsumedChecked,
+                            isThrownAwayChecked,
+                            coroutineScope,
+                            addedText,
+                            ->
+                            viewModel.updateProduct(
+                                foodItem,
+                                productName,
+                                quantity,
+                                unit,
+                                storageLocation,
+                                category,
+                                expiryDate,
+                                isConsumedChecked,
+                                isThrownAwayChecked,
+                                coroutineScope,
+                                onSuccess = {
+                                    coroutineScope.launch {
+                                        editProductSheetState.hide()
+                                    }
+                                },
+                                addedText,
+                            )
+                        },
+                    )
                 }
             }
 

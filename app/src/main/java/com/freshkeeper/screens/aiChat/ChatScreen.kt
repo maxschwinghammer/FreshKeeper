@@ -182,10 +182,11 @@ fun ChatList(
             ) {
                 item {
                     BoxWithConstraints {
+                        val boxWithConstraintsScope = this
                         Card(
                             colors = CardDefaults.cardColors(containerColor = AccentTurquoiseColor),
                             shape = RoundedCornerShape(4.dp, 20.dp, 20.dp, 20.dp),
-                            modifier = Modifier.widthIn(0.dp, maxWidth * 0.9f),
+                            modifier = Modifier.widthIn(0.dp, boxWithConstraintsScope.maxWidth * 0.9f),
                         ) {
                             Box(
                                 modifier = Modifier.padding(12.dp),
@@ -253,10 +254,11 @@ fun ChatBubbleItem(chatMessage: ChatMessage) {
     ) {
         Row {
             BoxWithConstraints {
+                val boxWithConstraintsScope = this
                 Card(
                     colors = CardDefaults.cardColors(containerColor = backgroundColor),
                     shape = bubbleShape,
-                    modifier = Modifier.widthIn(0.dp, maxWidth * 0.9f),
+                    modifier = Modifier.widthIn(0.dp, boxWithConstraintsScope.maxWidth * 0.9f),
                 ) {
                     MarkdownText(
                         markdown = chatMessage.text,

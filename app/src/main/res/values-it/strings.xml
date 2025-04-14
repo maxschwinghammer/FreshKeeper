@@ -426,5 +426,13 @@
     <string name="your_progress_this_week_description">Hai utilizzato 15 alimenti in tempo questa settimana</string>
     <string name="tip_of_the_day_title">Consiglio del giorno</string>
     <string name="tip_of_the_day_description">Conserva frutta e verdura separatamente per mantenerli freschi più a lungo</string>
+    <string name="push_notifications">Ricevi notifiche push</string>
+    <string name="welcome_message">Benvenuto su FreshKeeper!</string>
+    <string name="start_reducing_waste">Inizia oggi stesso a ridurre i tuoi sprechi alimentari!</string>
+    <string name="view_personal_stats">Visualizza le statistiche personali</string>
+    <string name="check_current_inventory">Controlla le tue scorte attuali</string>
+    <string name="overview_expiring_products">Ottieni una panoramica dei prodotti in scadenza</string>
+    <string name="manage_your_household">Gestisci la tua casa</string>
+    <string name="expired_today">Scaduto oggi</string>
 
 </resources>

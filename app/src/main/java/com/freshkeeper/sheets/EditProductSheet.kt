@@ -57,11 +57,9 @@ import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
 import com.freshkeeper.screens.profileSettings.convertBase64ToBitmap
-import com.freshkeeper.service.account.AccountServiceImpl
 import com.freshkeeper.service.categoryMap
 import com.freshkeeper.service.categoryReverseMap
 import com.freshkeeper.service.categoryTips
-import com.freshkeeper.service.product.ProductServiceImpl
 import com.freshkeeper.service.storageLocationMap
 import com.freshkeeper.service.storageLocationReverseMap
 import com.freshkeeper.ui.theme.AccentGreenColor
@@ -72,6 +70,7 @@ import com.freshkeeper.ui.theme.ExpiredColor
 import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -81,10 +80,25 @@ fun EditProductSheet(
     sheetState: SheetState,
     productInfoSheetState: SheetState,
     foodItem: FoodItem,
+    onGetFoodItemPicture: (
+        imageId: String,
+        onSuccess: (FoodItemPicture) -> Unit,
+        onFailure: (Exception) -> Unit,
+    ) -> Unit,
+    onUpdateProduct: (
+        foodItem: FoodItem,
+        productName: String,
+        quantity: Int,
+        unit: String,
+        storageLocation: String,
+        category: String,
+        expiryDate: Long,
+        isConsumedChecked: Boolean,
+        isThrownAwayChecked: Boolean,
+        coroutineScope: CoroutineScope,
+        addedText: String,
+    ) -> Unit,
 ) {
-    val accountService = remember { AccountServiceImpl() }
-    val productService = remember { ProductServiceImpl(accountService) }
-
     var productName by remember { mutableStateOf(foodItem.name) }
     var quantity by remember { mutableStateOf(foodItem.quantity.toString()) }
     val unit = remember { mutableStateOf(foodItem.unit) }
@@ -102,12 +116,12 @@ fun EditProductSheet(
     var foodItemPicture by remember { mutableStateOf<FoodItemPicture?>(null) }
 
     LaunchedEffect(foodItem.imageId) {
-        foodItem.imageId?.let {
-            productService.getFoodItemPicture(it, { picture ->
-                foodItemPicture = picture
-            }, { e ->
-                Log.e("ProductService", "Error fetching food item picture", e)
-            })
+        foodItem.imageId?.let { imageId ->
+            onGetFoodItemPicture(
+                imageId,
+                { picture -> foodItemPicture = picture },
+                { e -> Log.e("EditProductSheet", "Error fetching food item picture", e) },
+            )
         }
     }
 
@@ -173,6 +187,7 @@ fun EditProductSheet(
 
                 val timeText =
                     when {
+                        days == 0 -> stringResource(R.string.expired_today)
                         days < 7 ->
                             stringResource(
                                 R.string.expired_since,
@@ -424,30 +439,18 @@ fun EditProductSheet(
             Button(
                 onClick = {
                     coroutineScope.launch {
-                        productService.updateProduct(
-                            foodItem = foodItem,
-                            productName = productName,
-                            quantity = quantity.toInt(),
-                            unit = unit.value,
-                            storageLocation = storageLocation.value,
-                            category = category.value,
-                            expiryDate = expiryDate,
-                            isConsumedChecked = isConsumedChecked,
-                            isThrownAwayChecked = isThrownAwayChecked,
-                            coroutineScope = coroutineScope,
-                            onSuccess = {
-                                coroutineScope.launch {
-                                    sheetState.hide()
-                                }
-                            },
-                            onFailure = { e ->
-                                Log.e(
-                                    "ProductService",
-                                    "Error updating product",
-                                    e,
-                                )
-                            },
-                            addedText = addedText,
+                        onUpdateProduct(
+                            foodItem,
+                            productName,
+                            quantity.toInt(),
+                            unit.value,
+                            storageLocation.value,
+                            category.value,
+                            expiryDate,
+                            isConsumedChecked,
+                            isThrownAwayChecked,
+                            coroutineScope,
+                            addedText,
                         )
                     }
                 },

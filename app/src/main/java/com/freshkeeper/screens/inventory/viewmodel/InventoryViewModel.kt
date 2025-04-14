@@ -4,9 +4,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.FoodItemPicture
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.service.inventory.InventoryService
+import com.freshkeeper.service.product.ProductService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
 
 @HiltViewModel
@@ -14,6 +17,7 @@ class InventoryViewModel
     @Inject
     constructor(
         private val inventoryService: InventoryService,
+        private val productService: ProductService,
     ) : AppViewModel() {
         private val _foodItems = MutableLiveData<List<FoodItem>>()
         val foodItems: LiveData<List<FoodItem>> = _foodItems
@@ -112,6 +116,131 @@ class InventoryViewModel
                         )
                     },
                 )
+            }
+        }
+
+        fun addProduct(
+            productName: String,
+            barcode: String,
+            expiryDate: Long,
+            quantity: Int,
+            unit: String,
+            storageLocation: String,
+            category: String,
+            image: String?,
+            imageUrl: String,
+            householdId: String,
+            coroutineScope: CoroutineScope,
+            onSuccess: () -> Unit,
+            addedText: String,
+        ) {
+            launchCatching {
+                productService.addProduct(
+                    productName,
+                    barcode,
+                    expiryDate,
+                    quantity,
+                    unit,
+                    storageLocation,
+                    category,
+                    image,
+                    imageUrl,
+                    householdId,
+                    coroutineScope,
+                    onSuccess = { newItem ->
+                        _foodItems.value = (_foodItems.value ?: emptyList()) + newItem
+                        when (newItem.storageLocation) {
+                            "fridge" -> _fridgeItems.value = (_fridgeItems.value ?: emptyList()) + newItem
+                            "cupboard" -> _cupboardItems.value = (_cupboardItems.value ?: emptyList()) + newItem
+                            "freezer" -> _freezerItems.value = (_freezerItems.value ?: emptyList()) + newItem
+                            "counter_top", "countertop" -> _countertopItems.value = (_countertopItems.value ?: emptyList()) + newItem
+                            "cellar" -> _cellarItems.value = (_cellarItems.value ?: emptyList()) + newItem
+                            "bread_box", "bakery" -> _bakeryItems.value = (_bakeryItems.value ?: emptyList()) + newItem
+                            "spice_rack", "spiceRack" -> _spiceRackItems.value = (_spiceRackItems.value ?: emptyList()) + newItem
+                            "pantry" -> _pantryItems.value = (_pantryItems.value ?: emptyList()) + newItem
+                            "fruit_basket", "fruitBasket" -> _fruitBasketItems.value = (_fruitBasketItems.value ?: emptyList()) + newItem
+                            "other" -> _otherItems.value = (_otherItems.value ?: emptyList()) + newItem
+                        }
+                        onSuccess()
+                    },
+                    { e ->
+                        Log.e("ProductService", "Error adding product", e)
+                    },
+                    addedText,
+                )
+            }
+        }
+
+        fun updateProduct(
+            foodItem: FoodItem,
+            productName: String,
+            quantity: Int,
+            unit: String,
+            storageLocation: String,
+            category: String,
+            expiryDate: Long,
+            isConsumedChecked: Boolean,
+            isThrownAwayChecked: Boolean,
+            coroutineScope: CoroutineScope,
+            onSuccess: () -> Unit,
+            addedText: String,
+        ) {
+            launchCatching {
+                productService.updateProduct(
+                    foodItem,
+                    productName,
+                    quantity,
+                    unit,
+                    storageLocation,
+                    category,
+                    expiryDate,
+                    isConsumedChecked,
+                    isThrownAwayChecked,
+                    coroutineScope,
+                    onSuccess = { updatedItem ->
+                        _foodItems.value =
+                            _foodItems.value?.map { currentItem ->
+                                if (currentItem.id == updatedItem.id) updatedItem else currentItem
+                            }
+
+                        updateStorageLists(updatedItem)
+                        onSuccess()
+                    },
+                    addedText,
+                )
+            }
+        }
+
+        private fun updateStorageLists(updatedItem: FoodItem) {
+            val storageLists =
+                listOf(
+                    _fridgeItems,
+                    _cupboardItems,
+                    _freezerItems,
+                    _countertopItems,
+                    _cellarItems,
+                    _bakeryItems,
+                    _spiceRackItems,
+                    _pantryItems,
+                    _fruitBasketItems,
+                    _otherItems,
+                )
+
+            storageLists.forEach { liveDataList ->
+                liveDataList.value =
+                    liveDataList.value?.map { currentItem ->
+                        if (currentItem.id == updatedItem.id) updatedItem else currentItem
+                    }
+            }
+        }
+
+        fun getFoodItemPicture(
+            imageId: String,
+            onSuccess: (FoodItemPicture) -> Unit,
+            onFailure: (Exception) -> Unit,
+        ) {
+            launchCatching {
+                productService.getFoodItemPicture(imageId, onSuccess, onFailure)
             }
         }
     }

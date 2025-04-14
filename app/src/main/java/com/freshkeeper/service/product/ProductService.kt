@@ -17,7 +17,7 @@ interface ProductService {
         imageUrl: String?,
         householdId: String,
         coroutineScope: CoroutineScope,
-        onSuccess: () -> Unit,
+        onSuccess: (FoodItem) -> Unit,
         onFailure: (Exception) -> Unit,
         addedText: String,
     )
@@ -39,8 +39,7 @@ interface ProductService {
         isConsumedChecked: Boolean,
         isThrownAwayChecked: Boolean,
         coroutineScope: CoroutineScope,
-        onSuccess: () -> Unit,
-        onFailure: (Exception) -> Unit,
+        onSuccess: (FoodItem) -> Unit,
         addedText: String,
     )
 

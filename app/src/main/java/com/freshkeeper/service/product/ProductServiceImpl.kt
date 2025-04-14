@@ -47,7 +47,7 @@ class ProductServiceImpl
             imageUrl: String?,
             householdId: String,
             coroutineScope: CoroutineScope,
-            onSuccess: () -> Unit,
+            onSuccess: (FoodItem) -> Unit,
             onFailure: (Exception) -> Unit,
             addedText: String,
         ) {
@@ -92,7 +92,7 @@ class ProductServiceImpl
                                                     addedText,
                                                 )
                                             }
-                                            onSuccess()
+                                            onSuccess(foodItem.copy(id = documentReference.id))
                                         }
                                     }.addOnFailureListener { e -> onFailure(e) }
                             }.addOnFailureListener { e -> onFailure(e) }
@@ -137,7 +137,7 @@ class ProductServiceImpl
                                                     addedText,
                                                 )
                                             }
-                                            onSuccess()
+                                            onSuccess(foodItem.copy(id = documentReference.id))
                                         }
                                     }.addOnFailureListener { e -> onFailure(e) }
                             }.addOnFailureListener { e -> onFailure(e) }
@@ -175,7 +175,7 @@ class ProductServiceImpl
                                             addedText,
                                         )
                                     }
-                                    onSuccess()
+                                    onSuccess(foodItem.copy(id = documentReference.id))
                                 }
                             }.addOnFailureListener { e -> onFailure(e) }
                     }.addOnFailureListener { e -> onFailure(e) }
@@ -218,8 +218,7 @@ class ProductServiceImpl
             isConsumedChecked: Boolean,
             isThrownAwayChecked: Boolean,
             coroutineScope: CoroutineScope,
-            onSuccess: () -> Unit,
-            onFailure: (Exception) -> Unit,
+            onSuccess: (FoodItem) -> Unit,
             addedText: String,
         ) {
             val currentUser = _user.value ?: return
@@ -267,29 +266,21 @@ class ProductServiceImpl
                                                         activityType,
                                                         addedText,
                                                     )
-                                                    onSuccess()
+                                                    onSuccess(foodItem)
                                                 }
-                                            } else {
-                                                onSuccess()
                                             }
                                         }.addOnFailureListener { e ->
                                             Log.e("Firestore", "Error retrieving household", e)
-                                            onSuccess()
                                         }
-                                } else {
-                                    onSuccess()
                                 }
                             }.addOnFailureListener { e ->
                                 Log.e("Firestore", "Error when updating the product", e)
-                                onFailure(e)
                             }
                     } else {
                         Log.e("Firestore", "No document found with the given ID")
-                        onFailure(Exception("Document not found"))
                     }
                 }.addOnFailureListener { e ->
                     Log.e("Firestore", "Error retrieving document", e)
-                    onFailure(e)
                 }
         }
 

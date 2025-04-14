@@ -7,7 +7,6 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -67,7 +66,6 @@ import com.freshkeeper.screens.profileSettings.convertBitmapToBase64
 import com.freshkeeper.service.account.AccountServiceImpl
 import com.freshkeeper.service.categoryMap
 import com.freshkeeper.service.categoryReverseMap
-import com.freshkeeper.service.product.ProductServiceImpl
 import com.freshkeeper.service.productDetails.ProductDetailsServiceImpl
 import com.freshkeeper.service.storageLocationMap
 import com.freshkeeper.service.storageLocationReverseMap
@@ -76,6 +74,7 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Suppress("ktlint:standard:function-naming")
@@ -86,11 +85,24 @@ fun ManualInputSheet(
     barcode: String,
     expiryTimestamp: Long,
     recognizedFoodName: String,
+    onAddProduct: (
+        productName: String,
+        barcode: String,
+        expiryDate: Long,
+        quantity: Int,
+        unit: String,
+        storageLocation: String,
+        category: String,
+        image: String?,
+        imageUrl: String,
+        householdId: String,
+        coroutineScope: CoroutineScope,
+        addedText: String,
+    ) -> Unit,
 ) {
     val context = LocalContext.current
     val accountService = remember { AccountServiceImpl() }
     val productDetailsService = remember { ProductDetailsServiceImpl(context) }
-    val productService = remember { ProductServiceImpl(accountService) }
 
     var productName by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(expiryTimestamp) }
@@ -410,7 +422,7 @@ fun ManualInputSheet(
                                     convertBitmapToBase64(bitmap)
                                 }
                             }
-                        productService.addProduct(
+                        onAddProduct(
                             productName,
                             barcode,
                             expiryDate,
@@ -422,8 +434,6 @@ fun ManualInputSheet(
                             imageUrl,
                             householdId,
                             coroutineScope,
-                            { coroutineScope.launch { sheetState.hide() } },
-                            { e -> Log.e("Firestore", "Error when adding the product", e) },
                             addedText,
                         )
                     }

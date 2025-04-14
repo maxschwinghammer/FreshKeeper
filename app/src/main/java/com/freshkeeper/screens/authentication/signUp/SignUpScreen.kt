@@ -22,6 +22,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -80,6 +81,7 @@ fun SignUpScreen(
                         contentDescription = "Auth image",
                         modifier =
                             modifier
+                                .scale(1.25f)
                                 .fillMaxWidth()
                                 .padding(16.dp, 4.dp),
                     )
@@ -105,7 +107,6 @@ fun SignUpScreen(
                             contentDescription = "Email icon",
                             modifier = Modifier.padding(horizontal = 16.dp),
                         )
-
                         Text(
                             text = stringResource(R.string.sign_up_with_email),
                             color = ComponentBackgroundColor,
@@ -134,13 +135,14 @@ fun SignUpScreen(
                     TextButton(
                         onClick = { navController.navigate("signIn") },
                         border = BorderStroke(1.dp, AccentTurquoiseColor),
-                        modifier = Modifier.padding(horizontal = 16.dp),
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                     ) {
                         Text(
                             text = stringResource(R.string.sign_up_description),
                             fontSize = 14.sp,
                             textAlign = TextAlign.Center,
                             color = TextColor,
+                            modifier = Modifier.padding(vertical = 4.dp),
                         )
                     }
                 }
