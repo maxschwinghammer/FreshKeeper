@@ -1,3 +1,9 @@
+---
+layout: page
+title: Terms of Service
+permalink: /terms-of-service/
+---
+
 # Nutzungsbedingungen
 
 Zuletzt aktualisiert: 27.03.2025
