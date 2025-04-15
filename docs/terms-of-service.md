@@ -48,4 +48,4 @@ Bei Fragen oder Anliegen zu diesen Nutzungsbedingungen kontaktieren Sie FreshKee
 Diese Nutzungsbedingungen unterliegen dem Recht der Bundesrepublik Deutschland. Sollten einzelne Bestimmungen unwirksam sein, bleibt der Rest der Bedingungen unberührt.
 
 ## 13. Datenschutzerklärung
-Die Datenschutzerklärung von FreshKeeper ist unter [Privacy Policy](https://bit.ly/freshkeeper-privacy-policy) abrufbar.
+Die Datenschutzerklärung von FreshKeeper ist unter [Privacy Policy](https://freshkeeper.de/privacy-policy/) abrufbar.
