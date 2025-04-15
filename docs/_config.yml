@@ -8,13 +8,6 @@ header_pages:
   - privacy-policy.md
   - imprint.md
 
-author:
-  name: Max Schwinghammer
-  email: info@freshkeeper.de
-
-social:
-  github: maxschwinghammer
-
 locale: "de-DE"
 lang: "de"
 timezone: "Europe/Berlin"
