@@ -1,6 +1,5 @@
 ---
 layout: default
-title: Welcome to FreshKeeper
 ---
 
 # 👋 Welcome to FreshKeeper
