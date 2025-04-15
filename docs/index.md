@@ -7,7 +7,7 @@ title: FreshKeeper
     <h1 class="post-title">FreshKeeper</h1>
 </header>
 
-<div align="center">
+<div align="left">
     <a href="https://play.google.com/store/apps/details?id=com.freshkeeper">
       <img src="https://github.com/user-attachments/assets/04b829bc-c29d-4739-9c5d-530c13aecd26" width="150" height="150" alt="logo-transparent" />
     </a>
