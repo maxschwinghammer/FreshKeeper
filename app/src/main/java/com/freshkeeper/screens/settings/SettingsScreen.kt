@@ -71,9 +71,6 @@ fun SettingsScreen(
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
 
     var selectedLanguage by remember { mutableStateOf(Locale.getDefault().language) }
-    val termsOfServiceUrl = "https://github.com/maxschwinghammer/FreshKeeper/blob/master/terms-of-service.md"
-    val privacyPolicyUrl = "https://github.com/maxschwinghammer/FreshKeeper/blob/master/privacy-policy.md"
-    val imprintUrl = "https://github.com/maxschwinghammer/FreshKeeper/blob/master/imprint.md"
 
     val membership by settingsViewModel.membership.collectAsState(initial = Membership())
     val managePremiumSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -181,15 +178,15 @@ fun SettingsScreen(
                                 color = TextColor,
                             )
                             ExternalLinkButton(
-                                termsOfServiceUrl,
+                                "https://freshkeeper.de/terms-of-service/",
                                 stringResource(R.string.settings_terms_of_service),
                             )
                             ExternalLinkButton(
-                                privacyPolicyUrl,
+                                "https://freshkeeper.de/privacy-policy/",
                                 stringResource(R.string.settings_privacy_policy),
                             )
                             ExternalLinkButton(
-                                imprintUrl,
+                                "https://freshkeeper.de/imprint/",
                                 stringResource(R.string.settings_imprint),
                             )
                         }
