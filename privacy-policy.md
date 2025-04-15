@@ -1,10 +1,8 @@
 ---
 layout: page
-title: Privacy Policy
+title: Datenschutzerklärung
 permalink: /privacy-policy/
 ---
-
-# Datenschutzerklärung
 
 Zuletzt aktualisiert: 24.03.2025
 
