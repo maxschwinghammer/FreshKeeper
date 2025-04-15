@@ -1,10 +1,8 @@
 ---
 layout: page
-title: Terms of Service
+title: Nutzungsbedingungen
 permalink: /terms-of-service/
 ---
-
-# Nutzungsbedingungen
 
 Zuletzt aktualisiert: 27.03.2025
 
