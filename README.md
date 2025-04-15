@@ -1,4 +1,15 @@
-# FreshKeeper
+<div align="center">
+    <a href="https://play.google.com/store/apps/details?id=com.freshkeeper">
+      <img src="https://github.com/user-attachments/assets/04b829bc-c29d-4739-9c5d-530c13aecd26" width="150" height="150" alt="logo-transparent" />
+    </a>
+</div>
+<div align="center">
+    <a href="https://play.google.com/store/apps/details?id=com.freshkeeper">
+      <img src="https://github.com/user-attachments/assets/a643742b-7e31-46ef-90f5-857bb57ceab1" width="250 "alt="logo-transparent" />
+    </a>
+</div>
+
+---
 
 ![GitHub Stars](https://img.shields.io/github/stars/maxschwinghammer/FreshKeeper?style=social)
 ![GitHub Watchers](https://img.shields.io/github/watchers/maxschwinghammer/FreshKeeper?style=social)
@@ -27,6 +38,13 @@ FreshKeeper is a mobile app that helps users track their food’s expiration dat
 - LiveData
 
 ## Installation
+You can download the app via Google Play:
+<p align="left">
+  <a href="https://play.google.com/store/apps/details?id=com.freshkeeper">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/2560px-Google_Play_Store_badge_EN.svg.png" width="200" alt="Get it on Google Play" />
+  </a>
+</p>
+
 To install and run FreshKeeper locally, ensure you have [Android Studio](https://developer.android.com/studio) installed. 
 
 1. Clone the repository:
