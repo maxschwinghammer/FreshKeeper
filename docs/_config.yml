@@ -2,3 +2,17 @@ title: FreshKeeper
 description: FreshKeeper is a mobile app that helps users track their food’s expiration dates and minimize waste. By providing timely reminders and simplifying the process of managing food inventories, FreshKeeper encourages smarter consumption habits and reduces household food waste.
 markdown: kramdown
 theme: minima
+header_pages:
+  - terms-of-service.md
+  - privacy-policy.md
+  - imprint.md
+author:
+  name: Max Schwinghammer
+  email: info@freshkeeper.de
+social:
+  github: maxschwinghammer
+locale: "de-DE"
+lang: "de"
+timezone: "Europe/Berlin"
+plugins:
+  - jekyll-seo-tag
