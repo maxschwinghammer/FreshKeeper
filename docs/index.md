@@ -1,7 +1,11 @@
 ---
 layout: default
-title: 👋 Welcome to FreshKeeper
+title: FreshKeeper
 ---
+
+<header class="post-header">
+    <h1 class="post-title">FreshKeeper</h1>
+</header>
 
 <div align="center">
     <a href="https://play.google.com/store/apps/details?id=com.freshkeeper">
