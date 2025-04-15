@@ -96,7 +96,7 @@
     <string name="candy">Candy</string>
     <string name="skip_scan">Skip scan</string>
     <string name="scan_expiry_date">Scan expiry date</string>
-    <string name="scan_barcode">Scan Barcode</string>
+    <string name="scan_barcode">Scan barcode</string>
     <string name="expiry_date">Expiry date</string>
     <string name="select_date">Select date</string>
     <string name="add_an_entry">Add an entry</string>
