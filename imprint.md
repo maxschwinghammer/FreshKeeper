@@ -1,10 +1,8 @@
 ---
 layout: page
-title: Imprint
+title: Impressum
 permalink: /imprint/
 ---
-
-# Impressum
 
 ## Anbieter:
 FreshKeeper
