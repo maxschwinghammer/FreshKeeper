@@ -1,4 +1,8 @@
-# Datenschutzerklärung
+---
+layout: page
+title: Datenschutzerklärung
+permalink: /privacy-policy/
+---
 
 Zuletzt aktualisiert: 24.03.2025
 

@@ -19,10 +19,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
+          
       - name: Create keys.properties
-        run: echo "API_KEY=${{ secrets.API_KEY }}" > app/keys.properties
-        
+        run: |
+          echo "API_KEY=${{ secrets.API_KEY }}" > app/keys.properties
+          echo "EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }}" >> app/keys.properties
+
       - name: Create local.properties
         run: echo "sdk.dir=/usr/local/android-sdk" > local.properties
 

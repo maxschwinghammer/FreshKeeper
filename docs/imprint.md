@@ -1,4 +1,8 @@
-# Impressum
+---
+layout: page
+title: Impressum
+permalink: /imprint/
+---
 
 ## Anbieter:
 FreshKeeper
