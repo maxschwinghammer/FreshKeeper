@@ -25,13 +25,13 @@
 FreshKeeper is a mobile application designed to help households effectively manage their food inventories and reduce waste through smart tracking of expiration dates. The app streamlines food management by integrating a barcode scanner, timely notifications, and organized inventory management. It provides users with real-time product information by integrating public APIs for enhanced food data, and features a modern, minimalist UI powered by Jetpack Compose.
 
 ### Features
-- **Food Inventory Management**: Track expiration dates and organize food items by location (e.g., fridge, pantry).
-- **Timely Notifications**: Receive alerts before food items expire.
-- **Barcode Scanner Integration**: Quickly add products by scanning their barcode.
-- **API-Driven Enhancements**: Retrieve detailed product information from public APIs.
-- **Modern UI/UX**: Built with Kotlin and Jetpack Compose following the MVVM pattern for clean architecture.
-- **Secure Multi-User Support**: User authentication via OAuth 2.0 with Firebase Authentication and robust data management using Firebase Firestore.
-- **Continuous Integration & Delivery**: Automated testing and builds using GitHub Actions.
+- **Food Inventory Management**: Track expiration dates and organize food items by location (e.g., fridge, pantry)
+- **Timely Notifications**: Receive alerts before food items expire
+- **Barcode Scanner Integration**: Quickly add products by scanning their barcode
+- **API-Driven Enhancements**: Retrieve detailed product information from public APIs
+- **Modern UI/UX**: Built with Kotlin and Jetpack Compose following the MVVM pattern for clean architecture
+- **Secure Multi-User Support**: User authentication via OAuth 2.0 with Firebase Authentication and robust data management using Firebase Firestore
+- **Continuous Integration & Delivery**: Automated testing and builds using GitHub Actions
 
 ## Installation
 You can download the app via Google Play:
