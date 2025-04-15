@@ -4,7 +4,7 @@ title: Kontolöschung in FreshKeeper
 permalink: /delete-account/
 ---
 
-Um dein Konto und alle damit verbundenen Daten zu löschen, folge bitte den unten stehenden Schritten:
+### Um dein Konto und alle damit verbundenen Daten zu löschen, folge bitte den unten stehenden Schritten:
 
 **1. Anmeldung:**  
 Melde dich in deinem **FreshKeeper**-Konto an.
