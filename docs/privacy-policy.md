@@ -6,7 +6,7 @@ permalink: /privacy-policy/
 
 Zuletzt aktualisiert: 24.03.2025
 
-## 1. Verantwortliche Stelle
+### 1. Verantwortliche Stelle
 
 Verantwortliche Stelle im Sinne des Datenschutzrechts ist:
 
@@ -19,13 +19,13 @@ info@freshkeeper.de
 
 gesetzlich vertreten durch Max Schwinghammer (nachfolgend „wir“ genannt).
 
-## 2. Allgemeine Hinweise
+### 2. Allgemeine Hinweise
 
 Wir nehmen den Schutz Ihrer persönlichen Daten außerordentlich ernst. Diese Datenschutzerklärung informiert Sie darüber, welche personenbezogenen Daten (also Informationen, die zur Identifikation Ihrer Person beitragen) wir im Rahmen der Nutzung unserer App verarbeiten, zu welchen Zwecken dies geschieht und auf welcher Rechtsgrundlage die Datenverarbeitung erfolgt.
 
-## 3. Erhebung und Verarbeitung personenbezogener Daten
+### 3. Erhebung und Verarbeitung personenbezogener Daten
 
-### a) Registrierung und Anmeldung
+#### a) Registrierung und Anmeldung
 
 Um Ihnen den Zugang zu unseren Services zu ermöglichen, bieten wir verschiedene Anmeldeoptionen an:
 - **Anmeldung per E-Mail und Passwort:**  
@@ -34,7 +34,7 @@ Um Ihnen den Zugang zu unseren Services zu ermöglichen, bieten wir verschiedene
 - **Anmeldung über Google:**  
   Wird diese Methode gewählt, übernehmen wir automatisch Ihr öffentlich zugängliches Profilbild sowie Ihre E-Mail-Adresse aus Ihrem Google-Konto.
 
-### b) Nutzung der App
+#### b) Nutzung der App
 
 Im Rahmen der Nutzung der App werden Daten erhoben, die uns dabei helfen, Ihnen eine personalisierte und benutzerfreundliche Erfahrung zu bieten. Dazu gehören:
 - Allgemeine Profildaten zur Identifikation Ihres Accounts
@@ -43,7 +43,7 @@ Im Rahmen der Nutzung der App werden Daten erhoben, die uns dabei helfen, Ihnen 
 
 Alle erhobenen Daten werden ausschließlich zur Bereitstellung, Verwaltung und Verbesserung unserer App-Dienste verwendet.
 
-## 4. Zweck der Datenverarbeitung und Rechtsgrundlagen
+### 4. Zweck der Datenverarbeitung und Rechtsgrundlagen
 
 Ihre Daten werden zu folgenden Zwecken verarbeitet:
 
@@ -64,26 +64,26 @@ Die Verarbeitung erfolgt auf der Grundlage folgender Rechtsgrundlagen:
 - **Art. 6 Abs. 1 lit. a DSGVO:**  
   Soweit Sie uns ausdrücklich Ihre Einwilligung zur Verarbeitung bestimmter Daten erteilt haben.
 
-## 5. Weitergabe von Daten an Dritte
+### 5. Weitergabe von Daten an Dritte
 
 Ihre personenbezogenen Daten werden ausschließlich für die interne Verwaltung und Personalisierung unserer App genutzt. Eine Weitergabe an Dritte, insbesondere zu Werbe- oder Marketingzwecken, findet nicht statt. Übermittlungen an externe Dienstleister erfolgen nur, wenn dies zur Erfüllung vertraglicher Leistungen erforderlich ist oder wir gesetzlich dazu verpflichtet sind.
 
-## 6. Verwendung von Cookies und ähnlichen Technologien
+### 6. Verwendung von Cookies und ähnlichen Technologien
 
 Unsere App setzt Cookies und vergleichbare Technologien ein, um die Funktionalität sowie die Benutzerfreundlichkeit sicherzustellen. Diese Technologien speichern unter anderem Ihre Präferenzen und unterstützen uns dabei, die App sicher und effizient zu betreiben. Es erfolgt keine Erhebung personenbezogener Daten zu externen Marketingzwecken ohne Ihre ausdrückliche Einwilligung.
 
-## 7. Datensicherheit
+### 7. Datensicherheit
 
 Wir setzen moderne technische und organisatorische Maßnahmen ein, um Ihre Daten vor unbefugtem Zugriff, Verlust oder Missbrauch zu schützen. Dazu gehören:
 - Verschlüsselte Datenübertragung (z. B. via HTTPS)
 - Regelmäßige Sicherheitsupdates unserer Systeme
 - Beschränkte Zugriffsrechte und ein kontrolliertes Zugriffsmanagement
 
-## 8. Speicherdauer und Löschung
+### 8. Speicherdauer und Löschung
 
 Ihre personenbezogenen Daten werden nur so lange gespeichert, wie es für die Erbringung unserer Dienste notwendig ist oder gesetzliche Aufbewahrungsfristen dies vorschreiben. Sobald Ihre Daten nicht mehr benötigt werden, werden sie routinemäßig gelöscht oder anonymisiert.
 
-## 9. Ihre Rechte
+### 9. Ihre Rechte
 
 Sie haben in Bezug auf Ihre personenbezogenen Daten die folgenden Rechte, deren gesetzliche Grundlagen wie folgt lauten:
 
@@ -110,6 +110,6 @@ Sie haben in Bezug auf Ihre personenbezogenen Daten die folgenden Rechte, deren 
 
 Für die Ausübung dieser Rechte oder bei Fragen zum Datenschutz können Sie uns jederzeit über die oben genannten Kontaktinformationen erreichen.
 
-## 10. Änderungen der Datenschutzerklärung
+### 10. Änderungen der Datenschutzerklärung
 
 Wir behalten uns vor, diese Datenschutzerklärung an geänderte gesetzliche Bestimmungen oder technische Anforderungen anzupassen. Die jeweils aktuelle Version ist in unserer App stets einsehbar.
