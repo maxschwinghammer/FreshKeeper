@@ -1,4 +1,8 @@
-# Kontolöschung in FreshKeeper
+---
+layout: page
+title: Kontolöschung in FreshKeeper
+permalink: /delete-account/
+---
 
 Um dein Konto und alle damit verbundenen Daten zu löschen, folge bitte den unten stehenden Schritten:
 
