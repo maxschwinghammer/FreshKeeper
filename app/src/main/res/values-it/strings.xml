@@ -85,7 +85,7 @@
     <string name="bread">Pane</string>
     <string name="confectionery">Dolciumi</string>
     <string name="drinks">Bevande</string>
-    <string name="noodles">Noodles</string>
+    <string name="pasta">Pasta</string>
     <string name="canned_goods">Conserve</string>
     <string name="candy">Caramelle</string>
     <string name="skip_scan">Salta scansione</string>
@@ -134,14 +134,14 @@
     <string name="no_email">Nessun indirizzo email fornito.</string>
     <string name="no_password">Nessuna password fornita.</string>
     <string name="profile">Profilo</string>
-    <string name="notification_group_creation">Ora puoi gestire il tuo cibo insieme</string>
+    <string name="notification_household_creation">Ora puoi gestire il tuo cibo insieme</string>
     <string name="notification_product_expires_tomorrow">Consumalo rapidamente per evitare sprechi</string>
-    <string name="notification_created_household_group">%1$s ha creato un gruppo familiare</string>
+    <string name="notification_created_household">%1$s ha creato un gruppo familiare</string>
     <string name="notification_your_progress_this_week">Hai utilizzato %1$d alimenti in tempo questa settimana</string>
     <string name="notification_tip_of_the_day">Conserva frutta e verdura separatamente per mantenerle fresche più a lungo</string>
     <string name="notification_inventory_check">Sono passati %1$d giorni dall"ultimo controllo dell"inventario</string>
     <string name="notification_product_expires">%1$s scade tra %2$d giorni</string>
-    <string name="notification_joined_household_group">%1$s si è unito al tuo gruppo familiare</string>
+    <string name="notification_joined_household">%1$s si è unito al tuo gruppo familiare</string>
     <string name="notification_weekly_tip_organize_fridge">Disponi gli articoli in scadenza davanti per consumarli prima</string>
     <string name="notification_inventory_attention_needed">Il tuo inventario necessita attenzione</string>
     <string name="notification_added_items_to_inventory">%1$s ha aggiunto nuovi articoli all"inventario</string>
@@ -365,7 +365,7 @@
     <string name="week">settimana</string>
     <string name="weeks">settimane</string>
     <string name="spice_tip">Consiglio: Le spezie si conservano a lungo. Se asciutte e profumate, usale.</string>
-    <string name="noodles_tip">Consiglio: La pasta secca dura a lungo. Se è asciutta e senza muffa, usala!</string>
+    <string name="pasta_tip">Consiglio: La pasta secca dura a lungo. Se è asciutta e senza muffa, usala!</string>
     <string name="canned_goods_tip">Consiglio: I cibi in scatola durano anni. Se la lattina è integra e l\'odore è normale, è sicura.</string>
     <string name="groats_tip">Consiglio: Riso e avena durano a lungo. Se sono asciutti e senza parassiti, sono commestibili.</string>
     <string name="sauces_tip">Consiglio: Molte salse durano a lungo. Se chiuse e inalterate, sono solitamente buone.</string>
@@ -434,5 +434,21 @@
     <string name="overview_expiring_products">Ottieni una panoramica dei prodotti in scadenza</string>
     <string name="manage_your_household">Gestisci la tua casa</string>
     <string name="expired_today">Scaduto oggi</string>
+    <string name="food_tofu_natural">Tofu naturale</string>
+    <string name="food_serrano_ham">Prosciutto serrano</string>
+    <string name="food_mozzarella">Mozzarella</string>
+    <string name="food_yogurt">Yogurt</string>
+    <string name="food_hummus">Hummus</string>
+    <string name="food_kimchi">Kimchi</string>
+    <string name="food_edamame">Edamame</string>
+    <string name="food_falafel">Falafel</string>
+    <string name="food_spinach">Spinaci</string>
+    <string name="food_gyoza">Gyoza</string>
+    <string name="food_ice">Ghiaccio</string>
+    <string name="food_pickled_vegetables">Verdure sottaceto</string>
+    <string name="food_onions">Cipolle</string>
+    <string name="food_wine">Vino</string>
+    <string name="food_coconut_milk">Latte di cocco</string>
+    <string name="food_spaghetti">Spaghetti</string>
 
 </resources>

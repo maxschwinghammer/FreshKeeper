@@ -74,7 +74,7 @@ fun DropdownMenu(
             R.string.bread,
             R.string.confectionery,
             R.string.drinks,
-            R.string.noodles,
+            R.string.pasta,
             R.string.canned_goods,
             R.string.candy,
             R.string.groats,
@@ -147,7 +147,7 @@ fun DropdownMenu(
                 val iconResId =
                     try {
                         R.drawable::class.java.getDeclaredField(iconName).getInt(null)
-                    } catch (e: Exception) {
+                    } catch (_: Exception) {
                         null
                     }
 
@@ -190,7 +190,7 @@ fun LeadingIcon(
     val iconResId =
         try {
             R.drawable::class.java.getDeclaredField(iconName).getInt(null)
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             null
         }
 

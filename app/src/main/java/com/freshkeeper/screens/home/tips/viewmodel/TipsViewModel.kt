@@ -85,7 +85,7 @@ class TipsViewModel
                     Tip(
                         titleId = R.string.tip_title_pasta,
                         descriptionId = R.string.tip_desc_pasta,
-                        imageResId = R.drawable.noodles,
+                        imageResId = R.drawable.pasta,
                     ),
                     Tip(
                         titleId = R.string.tip_title_rice,

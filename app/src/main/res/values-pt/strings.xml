@@ -85,7 +85,7 @@
     <string name="bread">Pão</string>
     <string name="confectionery">Doces</string>
     <string name="drinks">Bebidas</string>
-    <string name="noodles">Macarrão</string>
+    <string name="pasta">Massa</string>
     <string name="canned_goods">Enlatados</string>
     <string name="candy">Balas</string>
     <string name="skip_scan">Pular escaneamento</string>
@@ -134,14 +134,14 @@
     <string name="no_email">Nenhum email fornecido.</string>
     <string name="no_password">Nenhuma senha fornecida.</string>
     <string name="profile">Perfil</string>
-    <string name="notification_group_creation">Agora você pode gerenciar seus alimentos juntos</string>
+    <string name="notification_household_creation">Agora você pode gerenciar seus alimentos juntos</string>
     <string name="notification_product_expires_tomorrow">Consuma-o rapidamente para evitar desperdício</string>
-    <string name="notification_created_household_group">%1$s criou um grupo familiar</string>
+    <string name="notification_created_household">%1$s criou um grupo familiar</string>
     <string name="notification_your_progress_this_week">Você utilizou %1$d alimentos a tempo esta semana</string>
     <string name="notification_tip_of_the_day">Armazene frutas e vegetais separadamente para mantê-los frescos por mais tempo</string>
     <string name="notification_inventory_check">Faz %1$d dias desde a última verificação do inventário</string>
     <string name="notification_product_expires">%1$s expira em %2$d dias</string>
-    <string name="notification_joined_household_group">%1$s se juntou ao seu grupo familiar</string>
+    <string name="notification_joined_household">%1$s se juntou ao seu grupo familiar</string>
     <string name="notification_weekly_tip_organize_fridge">Coloque os itens próximos ao vencimento na frente para consumi-los primeiro</string>
     <string name="notification_inventory_attention_needed">Seu inventário precisa de atenção</string>
     <string name="notification_added_items_to_inventory">%1$s adicionou novos itens ao inventário</string>
@@ -365,7 +365,7 @@
     <string name="week">semana</string>
     <string name="weeks">semanas</string>
     <string name="spice_tip">Dica: As especiarias duram muito. Se secas e cheirosas, ainda são boas.</string>
-    <string name="noodles_tip">Dica: Massas secas duram muito. Se estiverem secas e sem mofo, pode usá-las!</string>
+    <string name="pasta_tip">Dica: Massas secas duram muito. Se estiverem secas e sem mofo, pode usá-las!</string>
     <string name="canned_goods_tip">Dica: Enlatados duram anos. Se a lata estiver intacta e cheirar bem, é segura.</string>
     <string name="groats_tip">Dica: Arroz e aveia duram muito. Se secos e sem pragas, são comestíveis.</string>
     <string name="sauces_tip">Dica: Muitos molhos duram muito. Se fechados e sem alterações, costumam estar bons.</string>
@@ -434,5 +434,21 @@
     <string name="overview_expiring_products">Tenha uma visão geral dos produtos que estão para vencer</string>
     <string name="manage_your_household">Gerencie sua casa</string>
     <string name="expired_today">Vencido hoje</string>
+    <string name="food_tofu_natural">Tofu natural</string>
+    <string name="food_serrano_ham">Presunto serrano</string>
+    <string name="food_mozzarella">Mozarela</string>
+    <string name="food_yogurt">Iogurte</string>
+    <string name="food_hummus">Húmus</string>
+    <string name="food_kimchi">Kimchi</string>
+    <string name="food_edamame">Edamame</string>
+    <string name="food_falafel">Falafel</string>
+    <string name="food_spinach">Espinafre</string>
+    <string name="food_gyoza">Gyoza</string>
+    <string name="food_ice">Gelo</string>
+    <string name="food_pickled_vegetables">Legumes em conserva</string>
+    <string name="food_onions">Cebolas</string>
+    <string name="food_wine">Vinho</string>
+    <string name="food_coconut_milk">Leite de coco</string>
+    <string name="food_spaghetti">Esparguete</string>
 
 </resources>

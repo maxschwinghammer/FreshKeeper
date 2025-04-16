@@ -85,7 +85,7 @@
     <string name="bread">Pain</string>
     <string name="confectionery">Confiserie</string>
     <string name="drinks">Boissons</string>
-    <string name="noodles">Nouilles</string>
+    <string name="pasta">Pâtes alimentaires</string>
     <string name="canned_goods">Aliments en conserve</string>
     <string name="candy">Bonbons</string>
     <string name="skip_scan">Passer le scan</string>
@@ -134,14 +134,14 @@
     <string name="no_email">Aucune adresse e-mail fournie.</string>
     <string name="no_password">Aucun mot de passe fourni.</string>
     <string name="profile">Profil</string>
-    <string name="notification_group_creation">Vous pouvez désormais gérer vos aliments ensemble</string>
+    <string name="notification_household_creation">Vous pouvez désormais gérer vos aliments ensemble</string>
     <string name="notification_product_expires_tomorrow">Consommez-le rapidement pour éviter le gaspillage</string>
-    <string name="notification_created_household_group">%1$s a créé un groupe de ménage</string>
+    <string name="notification_created_household">%1$s a créé un groupe de ménage</string>
     <string name="notification_your_progress_this_week">Vous avez utilisé %1$d aliments à temps cette semaine</string>
     <string name="notification_tip_of_the_day">Rangez les fruits et légumes séparément pour les garder frais plus longtemps</string>
     <string name="notification_inventory_check">Cela fait %1$d jours depuis votre dernière vérification de l\'inventaire</string>
     <string name="notification_product_expires">%1$s expire dans %2$d jours</string>
-    <string name="notification_joined_household_group">%1$s a rejoint votre groupe de ménage</string>
+    <string name="notification_joined_household">%1$s a rejoint votre groupe de ménage</string>
     <string name="notification_weekly_tip_organize_fridge">Placez les articles proches de la péremption devant pour les consommer en premier</string>
     <string name="notification_inventory_attention_needed">Votre inventaire nécessite une attention</string>
     <string name="notification_added_items_to_inventory">%1$s a ajouté de nouveaux articles à l\'inventaire</string>
@@ -365,7 +365,7 @@
     <string name="week">semaine</string>
     <string name="weeks">semaines</string>
     <string name="spice_tip">Astuce : Les épices se conservent bien. Si elles sont sèches et odorantes, utilisez-les.</string>
-    <string name="noodles_tip">Astuce : Les pâtes sèches durent longtemps. Si elles sont sèches et sans moisissure, utilisez-les !</string>
+    <string name="pasta_tip">Astuce : Les pâtes sèches durent longtemps. Si elles sont sèches et sans moisissure, utilisez-les !</string>
     <string name="canned_goods_tip">Astuce : Les conserves durent des années. Si la boîte est intacte et sent bon, elle est sûre.</string>
     <string name="groats_tip">Astuce : Le riz et l’avoine durent longtemps. S\'ils sont secs et sans parasites, ils sont comestibles.</string>
     <string name="sauces_tip">Astuce : De nombreuses sauces durent longtemps. Si elles sont fermées et inchangées, elles sont souvent bonnes.</string>
@@ -434,5 +434,21 @@
     <string name="overview_expiring_products">Obtiens un aperçu des produits qui expirent</string>
     <string name="manage_your_household">Gère ton foyer</string>
     <string name="expired_today">Expiré aujourd\'hui</string>
+    <string name="food_tofu_natural">Tofu nature</string>
+    <string name="food_serrano_ham">Jambon serrano</string>
+    <string name="food_mozzarella">Mozzarella</string>
+    <string name="food_yogurt">Yaourt</string>
+    <string name="food_hummus">Houmous</string>
+    <string name="food_kimchi">Kimchi</string>
+    <string name="food_edamame">Edamame</string>
+    <string name="food_falafel">Falafel</string>
+    <string name="food_spinach">Épinards</string>
+    <string name="food_gyoza">Gyoza</string>
+    <string name="food_ice">Glace</string>
+    <string name="food_pickled_vegetables">Légumes marinés</string>
+    <string name="food_onions">Oignons</string>
+    <string name="food_wine">Vin</string>
+    <string name="food_coconut_milk">Lait de coco</string>
+    <string name="food_spaghetti">Spaghetti</string>
 
 </resources>

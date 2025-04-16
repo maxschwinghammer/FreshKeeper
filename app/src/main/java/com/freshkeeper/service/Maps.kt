@@ -28,7 +28,7 @@ val categoryMap =
         "bread" to R.string.bread,
         "confectionery" to R.string.confectionery,
         "drinks" to R.string.drinks,
-        "noodles" to R.string.noodles,
+        "pasta" to R.string.pasta,
         "canned_goods" to R.string.canned_goods,
         "candy" to R.string.candy,
         "groats" to R.string.groats,
@@ -41,7 +41,7 @@ val categoryMap =
 val categoryTips =
     mapOf(
         "spices" to R.string.spice_tip,
-        "noodles" to R.string.noodles_tip,
+        "pasta" to R.string.pasta_tip,
         "canned_goods" to R.string.canned_goods_tip,
         "groats" to R.string.groats_tip,
         "sauces" to R.string.sauces_tip,
@@ -82,7 +82,7 @@ val categoryReverseMap =
         R.string.bread to "bread",
         R.string.confectionery to "confectionery",
         R.string.drinks to "drinks",
-        R.string.noodles to "noodles",
+        R.string.pasta to "pasta",
         R.string.canned_goods to "canned_goods",
         R.string.candy to "candy",
         R.string.groats to "groats",

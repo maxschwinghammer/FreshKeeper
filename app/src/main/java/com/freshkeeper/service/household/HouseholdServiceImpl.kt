@@ -18,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.time.Instant
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
@@ -286,12 +287,10 @@ class HouseholdServiceImpl
             val currentTimestamp = System.currentTimeMillis()
             return documents.mapNotNull { doc ->
                 doc.toObject(FoodItem::class.java).apply {
-                    daysDifference =
-                        ChronoUnit.DAYS
-                            .between(
-                                Instant.ofEpochMilli(currentTimestamp),
-                                Instant.ofEpochMilli(expiryTimestamp),
-                            ).toInt()
+                    val currentDate = Instant.ofEpochMilli(currentTimestamp).atZone(ZoneId.systemDefault()).toLocalDate()
+                    val expiryDate = Instant.ofEpochMilli(expiryTimestamp).atZone(ZoneId.systemDefault()).toLocalDate()
+
+                    daysDifference = ChronoUnit.DAYS.between(currentDate, expiryDate).toInt()
                 }
             }
         }
@@ -321,13 +320,11 @@ class HouseholdServiceImpl
                         .set(newHousehold)
                         .await()
 
-                    if (userId != null) {
-                        firestore
-                            .collection("users")
-                            .document(userId)
-                            .update("householdId", newHousehold.id)
-                            .await()
-                    }
+                    firestore
+                        .collection("users")
+                        .document(userId)
+                        .update("householdId", newHousehold.id)
+                        .await()
                 }
 
                 val foodItemsQuerySnapshot =

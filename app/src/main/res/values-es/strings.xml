@@ -85,7 +85,7 @@
     <string name="bread">Pan</string>
     <string name="confectionery">Dulces</string>
     <string name="drinks">Bebidas</string>
-    <string name="noodles">Fideos</string>
+    <string name="pasta">Pasta</string>
     <string name="canned_goods">Alimentos enlatados</string>
     <string name="candy">Caramelos</string>
     <string name="skip_scan">Omitir escaneo</string>
@@ -134,14 +134,14 @@
     <string name="no_email">No se proporcionó dirección de correo electrónico.</string>
     <string name="no_password">No se proporcionó contraseña.</string>
     <string name="profile">Perfil</string>
-    <string name="notification_group_creation">Ahora puedes gestionar tus alimentos juntos</string>
+    <string name="notification_household_creation">Ahora puedes gestionar tus alimentos juntos</string>
     <string name="notification_product_expires_tomorrow">Consúmelo de inmediato para evitar el desperdicio</string>
-    <string name="notification_created_household_group">%1$s ha creado un grupo familiar</string>
+    <string name="notification_created_household">%1$s ha creado un grupo familiar</string>
     <string name="notification_your_progress_this_week">Esta semana has utilizado %1$d alimentos a tiempo</string>
     <string name="notification_tip_of_the_day">Guarda las frutas y verduras por separado para mantenerlas frescas por más tiempo</string>
     <string name="notification_inventory_check">Han pasado %1$d días desde la última vez que revisaste tu inventario</string>
     <string name="notification_product_expires">%1$s caduca en %2$d días</string>
-    <string name="notification_joined_household_group">%1$s se ha unido a tu grupo familiar</string>
+    <string name="notification_joined_household">%1$s se ha unido a tu grupo familiar</string>
     <string name="notification_weekly_tip_organize_fridge">Coloca los artículos próximos a caducar al frente para consumirlos primero</string>
     <string name="notification_inventory_attention_needed">Tu inventario necesita atención</string>
     <string name="notification_added_items_to_inventory">%1$s añadió nuevos artículos al inventario</string>
@@ -365,7 +365,7 @@
     <string name="week">semana</string>
     <string name="weeks">semanas</string>
     <string name="spice_tip">Consejo: Las especias casi no se estropean. Si están secas y huelen bien, úsalas.</string>
-    <string name="noodles_tip">Consejo: La pasta seca dura mucho. Si está seca y sin moho, úsala.</string>
+    <string name="pasta_tip">Consejo: La pasta seca dura mucho. Si está seca y sin moho, úsala.</string>
     <string name="canned_goods_tip">Consejo: Las conservas duran años. Si la lata está intacta y huele bien, es segura.</string>
     <string name="groats_tip">Consejo: El arroz y la avena duran mucho. Si están secos y sin plagas, son comestibles.</string>
     <string name="sauces_tip">Consejo: Muchas salsas duran mucho. Si están cerradas y sin cambios, suelen estar bien.</string>
@@ -434,5 +434,21 @@
     <string name="overview_expiring_products">Obtén una visión general de los productos que van a caducar</string>
     <string name="manage_your_household">Administra tu hogar</string>
     <string name="expired_today">Caducado hoy</string>
+    <string name="food_tofu_natural">Tofu natural</string>
+    <string name="food_serrano_ham">Jamón serrano</string>
+    <string name="food_mozzarella">Mozzarella</string>
+    <string name="food_yogurt">Yogur</string>
+    <string name="food_hummus">Hummus</string>
+    <string name="food_kimchi">Kimchi</string>
+    <string name="food_edamame">Edamame</string>
+    <string name="food_falafel">Falafel</string>
+    <string name="food_spinach">Espinacas</string>
+    <string name="food_gyoza">Gyoza</string>
+    <string name="food_ice">Hielo</string>
+    <string name="food_pickled_vegetables">Verduras en escabeche</string>
+    <string name="food_onions">Cebollas</string>
+    <string name="food_wine">Vino</string>
+    <string name="food_coconut_milk">Leche de coco</string>
+    <string name="food_spaghetti">Espaguetis</string>
 
 </resources>

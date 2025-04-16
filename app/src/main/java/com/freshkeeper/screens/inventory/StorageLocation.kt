@@ -48,6 +48,7 @@ fun StorageLocation(
     items: List<FoodItem>,
     editProductSheetState: SheetState,
     onItemClick: (FoodItem) -> Unit,
+    isClickable: Boolean = true,
 ) {
     val coroutineScope = rememberCoroutineScope()
 
@@ -95,12 +96,18 @@ fun StorageLocation(
                     modifier =
                         Modifier
                             .clip(RoundedCornerShape(10.dp))
-                            .clickable {
-                                coroutineScope.launch {
-                                    onItemClick(item)
-                                    editProductSheetState.show()
-                                }
-                            }.border(1.dp, borderColor, RoundedCornerShape(10.dp))
+                            .then(
+                                if (isClickable) {
+                                    Modifier.clickable {
+                                        coroutineScope.launch {
+                                            onItemClick(item)
+                                            editProductSheetState.show()
+                                        }
+                                    }
+                                } else {
+                                    Modifier
+                                },
+                            ).border(1.dp, borderColor, RoundedCornerShape(10.dp))
                             .padding(horizontal = 8.dp, vertical = 4.dp),
                 ) {
                     Text(

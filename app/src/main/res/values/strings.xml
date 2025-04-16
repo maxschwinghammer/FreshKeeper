@@ -91,7 +91,7 @@
     <string name="bread">Bread</string>
     <string name="confectionery">Confectionery</string>
     <string name="drinks">Drinks</string>
-    <string name="noodles">Noodles</string>
+    <string name="pasta">Pasta</string>
     <string name="canned_goods">Canned goods</string>
     <string name="candy">Candy</string>
     <string name="skip_scan">Skip scan</string>
@@ -140,14 +140,14 @@
     <string name="no_email">No e-mail address provided.</string>
     <string name="no_password">No password provided.</string>
     <string name="profile">Profile</string>
-    <string name="notification_group_creation">You can now manage your food together</string>
+    <string name="notification_household_creation">You can now manage your food together</string>
     <string name="notification_product_expires_tomorrow">Consume it promptly to save waste</string>
-    <string name="notification_created_household_group">%1$s created a household group</string>
+    <string name="notification_created_household">%1$s created a household</string>
     <string name="notification_your_progress_this_week">You used %1$d foods in time this week</string>
     <string name="notification_tip_of_the_day">Store fruit and vegetables separately to keep them fresh for longer</string>
     <string name="notification_inventory_check">It\'s been %1$d days since you last checked your inventory</string>
     <string name="notification_product_expires">%1$s expires in %1$d days</string>
-    <string name="notification_joined_household_group">%1$s joined your household group</string>
+    <string name="notification_joined_household">%1$s joined your household</string>
     <string name="notification_weekly_tip_organize_fridge">Place items nearing expiration in front to consume first</string>
     <string name="notification_inventory_attention_needed">Your inventory needs attention</string>
     <string name="notification_added_items_to_inventory">%1$s added new items to inventory</string>
@@ -371,7 +371,7 @@
     <string name="week">week</string>
     <string name="weeks">weeks</string>
     <string name="spice_tip">Tip: Spices rarely spoil. If dry and fragrant, they remain usable for years!</string>
-    <string name="noodles_tip">Tip: Dry pasta lasts long. If dry and mold-free, you can use it!</string>
+    <string name="pasta_tip">Tip: Dry pasta lasts long. If dry and mold-free, you can use it!</string>
     <string name="canned_goods_tip">Tip: Canned food lasts years. If the can is intact and smells fine, it\'s safe to eat.</string>
     <string name="groats_tip">Tip: Rice and oats last long. If dry and pest-free, they are edible.</string>
     <string name="sauces_tip">Tip: Many sauces last long. If unopened and unchanged, they are usually fine.</string>
@@ -412,7 +412,7 @@
     <string name="inventory_items_title">%1$s added new items to inventory</string>
     <string name="statistics_savings_title">Your savings for %1$s</string>
     <string name="statistics_savings_description">You reduced food waste by %1$s</string>
-    <string name="household_title">%1$s joined your household group</string>
+    <string name="household_title">%1$s joined your household</string>
     <string name="household_description">Manage food items together with %1$s</string>
     <string name="weekly_tip_title">Weekly tip: %1$s</string>
     <string name="weekly_tip_description">Place %1$s in front to consume first</string>
@@ -440,5 +440,21 @@
     <string name="overview_expiring_products">Get an overview of expiring products</string>
     <string name="manage_your_household">Manage your household</string>
     <string name="expired_today">Expired today</string>
+    <string name="food_tofu_natural">Tofu natural</string>
+    <string name="food_serrano_ham">Serrano ham</string>
+    <string name="food_mozzarella">Mozzarella</string>
+    <string name="food_yogurt">Yogurt</string>
+    <string name="food_hummus">Hummus</string>
+    <string name="food_kimchi">Kimchi</string>
+    <string name="food_edamame">Edamame</string>
+    <string name="food_falafel">Falafel</string>
+    <string name="food_spinach">Spinat</string>
+    <string name="food_gyoza">Gyoza</string>
+    <string name="food_ice">Ice</string>
+    <string name="food_pickled_vegetables">Pickled vegetables</string>
+    <string name="food_onions">Onions</string>
+    <string name="food_wine">Wine</string>
+    <string name="food_coconut_milk">Coconut milk</string>
+    <string name="food_spaghetti">Spaghetti</string>
 
 </resources>

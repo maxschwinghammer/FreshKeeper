@@ -168,16 +168,11 @@ fun HomeScreen(navController: NavHostController) {
                                                     when {
                                                         item.daysDifference == 1 ->
                                                             stringResource(R.string.tomorrow)
-
                                                         item.daysDifference > 1 ->
                                                             stringResource(
                                                                 R.string.in_days,
                                                                 item.daysDifference,
                                                             )
-
-                                                        item.daysDifference == 0 ->
-                                                            stringResource(R.string.today)
-
                                                         else -> ""
                                                     }
                                                 Triple(item.id, item.name, displayText)
