@@ -3,7 +3,14 @@ package com.freshkeeper.screens.profileSettings.cards
 import android.content.Context
 import androidx.activity.compose.LocalActivity
 import androidx.biometric.BiometricPrompt
+import androidx.biometric.BiometricPrompt.CryptoObject
 import androidx.compose.foundation.BorderStroke
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
+import java.security.KeyStore
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -46,6 +53,35 @@ import com.google.firebase.firestore.FirebaseFirestore
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
+fun generateSecretKey() {
+    val keyGenParameterSpec = KeyGenParameterSpec.Builder(
+        "MySecretKey",
+        KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+    )
+        .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+        .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+        .setUserAuthenticationRequired(true)
+        .setInvalidatedByBiometricEnrollment(true)
+        .build()
+    val keyGenerator = KeyGenerator.getInstance(
+        KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore"
+    )
+    keyGenerator.init(keyGenParameterSpec)
+    keyGenerator.generateKey()
+}
+
+fun getSecretKey(): SecretKey {
+    val keyStore = KeyStore.getInstance("AndroidKeyStore")
+    keyStore.load(null)
+    return keyStore.getKey("MySecretKey", null) as SecretKey
+}
+
+fun getCipher(): Cipher {
+    return Cipher.getInstance(
+        "${KeyProperties.KEY_ALGORITHM_AES}/${KeyProperties.BLOCK_MODE_CBC}/${KeyProperties.ENCRYPTION_PADDING_PKCS7}"
+    )
+}
+
 fun BiometricSwitchCard() {
     val activity = LocalActivity.current as? FragmentActivity
     Card(
@@ -104,23 +140,27 @@ fun BiometricSwitchCard() {
                                     executor,
                                     object : BiometricPrompt.AuthenticationCallback() {
                                         override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                                            isBiometricEnabled = true
-                                            sharedPreferences
-                                                .edit()
-                                                .putBoolean(
-                                                    "biometric_enabled",
-                                                    true,
-                                                ).apply()
+                                            val cipher = result.cryptoObject?.cipher
+                                            if (cipher != null) {
+                                                val encryptedData = cipher.doFinal("SensitiveData".toByteArray())
+                                                isBiometricEnabled = true
+                                                sharedPreferences
+                                                    .edit()
+                                                    .putBoolean(
+                                                        "biometric_enabled",
+                                                        true,
+                                                    ).apply()
 
-                                            user?.let { currentUser ->
-                                                val userRef =
-                                                    firestore
-                                                        .collection("users")
-                                                        .document(currentUser.uid)
-                                                userRef.update(
-                                                    "isBiometricEnabled",
-                                                    true,
-                                                )
+                                                user?.let { currentUser ->
+                                                    val userRef =
+                                                        firestore
+                                                            .collection("users")
+                                                            .document(currentUser.uid)
+                                                    userRef.update(
+                                                        "isBiometricEnabled",
+                                                        true,
+                                                    )
+                                                }
                                             }
                                         }
 
@@ -157,7 +197,12 @@ fun BiometricSwitchCard() {
                                     .setNegativeButtonText(cancel)
                                     .build()
 
-                            biometricPrompt.authenticate(promptInfo)
+                            generateSecretKey()
+                            val cipher = getCipher()
+                            val secretKey = getSecretKey()
+                            cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+                            val cryptoObject = CryptoObject(cipher)
+                            biometricPrompt.authenticate(promptInfo, cryptoObject)
                         }
                     }
                 },
