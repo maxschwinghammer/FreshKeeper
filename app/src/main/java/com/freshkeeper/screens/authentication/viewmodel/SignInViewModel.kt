@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.authentication.viewmodel
 
+
 import android.content.Context
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
@@ -18,7 +19,8 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 
 @HiltViewModel
-class SignInViewModel
+class SignInViewModel {
+
     @Inject
     constructor(
         private val accountService: AccountService,
@@ -104,15 +106,25 @@ class SignInViewModel
         ): Boolean =
             suspendCancellableCoroutine { continuation ->
                 val executor = ContextCompat.getMainExecutor(context)
+                val cipher = getCipher()
+                val secretKey = getSecretKey()
+                cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+                val cryptoObject = BiometricPrompt.CryptoObject(cipher)
                 val biometricPrompt =
                     BiometricPrompt(
                         activity,
                         executor,
                         object : BiometricPrompt.AuthenticationCallback() {
                             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                                continuation.resume(true)
-                                launchCatching {
-                                    accountService.signInWithEmail(_email.value, _password.value)
+                                val cipher = result.cryptoObject?.cipher
+                                if (cipher != null) {
+                                    val encryptedData = cipher.doFinal("SensitiveData".toByteArray())
+                                    continuation.resume(true)
+                                    launchCatching {
+                                        accountService.signInWithEmail(_email.value, _password.value)
+                                    }
+                                } else {
+                                    continuation.resume(false)
                                 }
                             }
 
@@ -137,6 +149,6 @@ class SignInViewModel
                         .setNegativeButtonText("Cancel")
                         .build()
 
-                biometricPrompt.authenticate(promptInfo)
+                biometricPrompt.authenticate(promptInfo, cryptoObject)
             }
     }
