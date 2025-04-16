@@ -34,10 +34,10 @@ android {
         properties.load(keystoreFile.inputStream())
 
         val apiKey = properties.getProperty("API_KEY") ?: ""
-        buildConfigField("String", "API_KEY", apiKey)
+        buildConfigField("String", "API_KEY", "\"$apiKey\"")
 
         val emailPassword = properties.getProperty("EMAIL_PASSWORD") ?: ""
-        buildConfigField("String", "EMAIL_PASSWORD", emailPassword)
+        buildConfigField("String", "EMAIL_PASSWORD", "\"$emailPassword\"")
     }
 
     @Suppress("UnstableApiUsage")
