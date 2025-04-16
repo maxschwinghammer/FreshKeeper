@@ -33,10 +33,12 @@ android {
         val properties = Properties()
         properties.load(keystoreFile.inputStream())
 
-        val apiKey = properties.getProperty("API_KEY") ?: ""
+        val rawApiKey = properties.getProperty("API_KEY") ?: ""
+        val apiKey = rawApiKey.trim('"')
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
 
-        val emailPassword = properties.getProperty("EMAIL_PASSWORD") ?: ""
+        val rawPassword = properties.getProperty("EMAIL_PASSWORD") ?: ""
+        val emailPassword = rawPassword.trim('"')
         buildConfigField("String", "EMAIL_PASSWORD", "\"$emailPassword\"")
     }
 
