@@ -95,8 +95,8 @@
     <string name="notification_inventory_attention_needed">Dein Inventar benötigt Aufmerksamkeit</string>
     <string name="notification_inventory_check">Es sind %1$d Tage vergangen, seitdem du dein Inventar überprüft hast</string>
     <string name="notification_joined_household">%1$s ist deinem Haushalt beigetreten</string>
-    <string name="notification_product_expires">Milch läuft in %1$d Tagen ab</string>
-    <string name="notification_product_expires_tomorrow">Verbraucht es schnell, um Abfall zu vermeiden</string>
+    <string name="notification_product_expires">%1$s läuft in %1$d Tagen ab</string>
+    <string name="notification_product_expires_tomorrow">Verbrauche es schnell, um Abfall zu vermeiden</string>
     <string name="notification_savings_this_month">Du hast diesen Monat %1$d%% weniger Lebensmittelabfall</string>
     <string name="notification_tip_of_the_day">Lagere Obst und Gemüse separat, um sie länger frisch zu halten</string>
     <string name="notification_weekly_tip_organize_fridge">Platziere Lebensmittel, die bald ablaufen, vorne, um sie zuerst zu verbrauchen</string>
@@ -332,6 +332,17 @@
     <string name="faq_answer_2">Du kannst ein neues Produkt hinzufügen, indem du auf den Button Produkt hinzufügen im Home-Bereich klickst.</string>
     <string name="faq_question_3">Wie werde ich benachrichtigt?</string>
     <string name="faq_answer_3">Benachrichtigungen erinnern dich an ablaufende Produkte und geben Tipps zur Vermeidung von Verschwendung.</string>
+    <string name="faq_question_4">Kann ich mein Profilbild ändern?</string>
+    <string name="faq_answer_4">Ja, du kannst dein Profilbild in den Einstellungen unter Profileinstellungen ändern.</string>
+    <string name="faq_question_5">Sind meine Daten sicher?</string>
+    <string name="faq_answer_5">Ja, deine Daten sind sicher. Weitere Informationen findest du in unserer Datenschutzerklärung unter https://freshkeeper.de/privacy-policy.</string>
+    <string name="faq_question_6">Wie kann ich ein Produkt bearbeiten?</string>
+    <string name="faq_answer_6">Wähle das jeweilige Produkt aus, um dessen Detailansicht zu öffnen. Dort kannst du alle Angaben nach Bedarf anpassen und das Produkt als vebraucht oder entsorgt markieren.</string>
+    <string name="faq_question_7">Kann ich die Erinnerungszeiten anpassen?</string>
+    <string name="faq_answer_7">Ja, in den Benachrichtigungseinstellungen legst du fest, wann du benachrichtigt werden möchtest.</string>
+    <string name="faq_question_8">Welche Funktionen bietet die Premium-Version?</string>
+    <string name="faq_answer_8">Mit der Premium-Version erhältst du Zugriff auf den KI-Chat mit Rezeptvorschlägen, kannst eigene Kategorien und Lagerorte anlegen und eine unbegrenzte Anzahl an Artikeln verwalten. Zusätzlich stehen dir erweiterte Statistiken über längere Zeiträume zur Verfügung, ein Widget für bald ablaufende Produkte sowie die Möglichkeit, mehreren Haushalten gleichzeitig beizutreten.</string>
+
     <string name="add_products_inventory">Füge Produkte über den Button hinzu, um sie im Inventar anzuzeigen</string>
     <string name="add_products_home">Füge Produkte über den Button hinzu, um sie hier anzuzeigen</string>
     <string name="no_products_expiring_soon">Perfekt! Keine deiner Produkte laufen innerhalb des nächsten Monats ab.</string>

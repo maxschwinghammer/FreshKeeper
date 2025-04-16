@@ -332,6 +332,16 @@
     <string name="faq_answer_2">Você pode adicionar um novo item clicando no botão "Adicionar alimento" na tela inicial.</string>
     <string name="faq_question_3">Como recebo as notificações?</string>
     <string name="faq_answer_3">As notificações lembrarão você dos itens próximos da expiração e sugerirão dicas para reduzir o desperdício.</string>
+    <string name="faq_question_4">Posso mudar minha foto de perfil?</string>
+    <string name="faq_answer_4">Sim, você pode alterá-la nas configurações, em Perfil.</string>
+    <string name="faq_question_5">Meus dados estão seguros?</string>
+    <string name="faq_answer_5">Sim, seus dados estão protegidos. Veja nossa política de privacidade em https://freshkeeper.de/privacy-policy.</string>
+    <string name="faq_question_6">Como posso editar um produto?</string>
+    <string name="faq_answer_6">Toque no produto para abrir os detalhes. Você pode atualizar as informações e marcá-lo como consumido ou descartado.</string>
+    <string name="faq_question_7">Posso alterar os horários das notificações?</string>
+    <string name="faq_answer_7">Sim, você define isso nas configurações de notificações.</string>
+    <string name="faq_question_8">Quais recursos estão disponíveis na versão Premium?</string>
+    <string name="faq_answer_8">Com a versão Premium, você acessa o chat com IA e receitas, cria categorias e locais personalizados, gerencia itens ilimitados, vê estatísticas avançadas, usa um widget para itens próximos do vencimento e participa de várias casas ao mesmo tempo.</string>
     <string name="add_products_inventory">Adicione produtos usando o botão para visualizá-los no inventário</string>
     <string name="add_products_home">Adicione produtos usando o botão para visualizá-los aqui</string>
     <string name="no_products_expiring_soon">Perfeito! Nenhum dos seus produtos expira no próximo mês.</string>

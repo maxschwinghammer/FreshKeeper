@@ -332,6 +332,16 @@
     <string name="faq_answer_2">Vous pouvez ajouter un nouvel article en cliquant sur le bouton "Ajouter un aliment" dans la section d\'accueil.</string>
     <string name="faq_question_3">Comment suis-je notifié ?</string>
     <string name="faq_answer_3">Les notifications vous rappelleront les articles proches de la péremption et vous proposeront des conseils pour réduire le gaspillage.</string>
+    <string name="faq_question_4">Puis-je changer ma photo de profil ?</string>
+    <string name="faq_answer_4">Oui, tu peux la modifier dans les paramètres, sous Profil.</string>
+    <string name="faq_question_5">Mes données sont-elles sécurisées ?</string>
+    <string name="faq_answer_5">Oui, tes données sont en sécurité. Plus d\'infos dans notre politique de confidentialité : https://freshkeeper.de/privacy-policy.</string>
+    <string name="faq_question_6">Comment modifier un produit ?</string>
+    <string name="faq_answer_6">Sélectionne le produit pour ouvrir ses détails. Tu pourras modifier les informations et le marquer comme consommé ou jeté.</string>
+    <string name="faq_question_7">Puis-je modifier les horaires de notification ?</string>
+    <string name="faq_answer_7">Oui, tu peux régler cela dans les paramètres de notifications.</string>
+    <string name="faq_question_8">Quelles fonctionnalités offre la version Premium ?</string>
+    <string name="faq_answer_8">La version Premium donne accès au chat IA avec recettes, aux catégories et lieux personnalisés, à un nombre illimité d\'articles, à des statistiques détaillées, à un widget pour les produits proches de la date limite et à la gestion de plusieurs foyers.</string>
     <string name="add_products_inventory">Ajoutez des produits en utilisant le bouton pour les afficher dans l\'inventaire</string>
     <string name="add_products_home">Ajoutez des produits en utilisant le bouton pour les afficher ici</string>
     <string name="no_products_expiring_soon">Parfait ! Aucun de vos produits n\'expire dans le mois à venir.</string>

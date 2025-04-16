@@ -332,6 +332,16 @@
     <string name="faq_answer_2">Puedes agregar un nuevo artículo haciendo clic en el botón "Añadir alimento" en la sección de inicio.</string>
     <string name="faq_question_3">¿Cómo recibo notificaciones?</string>
     <string name="faq_answer_3">Las notificaciones te recordarán los artículos próximos a caducar y sugerirán consejos para reducir el desperdicio.</string>
+    <string name="faq_question_4">¿Puedo cambiar mi foto de perfil?</string>
+    <string name="faq_answer_4">Sí, puedes cambiar tu foto de perfil en la configuración, en la sección de perfil.</string>
+    <string name="faq_question_5">¿Mis datos están seguros?</string>
+    <string name="faq_answer_5">Sí, tus datos están seguros. Más información en nuestra política de privacidad: https://freshkeeper.de/privacy-policy.</string>
+    <string name="faq_question_6">¿Cómo puedo editar un producto?</string>
+    <string name="faq_answer_6">Selecciona el producto para ver los detalles. Allí puedes editar la información y marcarlo como consumido o desechado.</string>
+    <string name="faq_question_7">¿Puedo ajustar los horarios de notificación?</string>
+    <string name="faq_answer_7">Sí, puedes elegir cuándo recibir notificaciones en la configuración de notificaciones.</string>
+    <string name="faq_question_8">¿Qué funciones incluye la versión Premium?</string>
+    <string name="faq_answer_8">La versión Premium incluye acceso al chat con IA y recetas, categorías y ubicaciones personalizadas, artículos ilimitados, estadísticas avanzadas, un widget de productos por caducar y la posibilidad de unirte a varios hogares.</string>
     <string name="add_products_inventory">Agrega productos utilizando el botón para mostrarlos en el inventario</string>
     <string name="add_products_home">Agrega productos utilizando el botón para mostrarlos aquí</string>
     <string name="no_products_expiring_soon">¡Perfecto! Ninguno de tus productos caduca en el próximo mes.</string>
