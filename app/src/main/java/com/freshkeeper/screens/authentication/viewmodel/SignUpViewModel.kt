@@ -1,5 +1,12 @@
 package com.freshkeeper.screens.authentication.viewmodel
 
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
+import java.security.KeyStore
+import javax.crypto.Cipher
+import javax.crypto.KeyGenerator
+import javax.crypto.SecretKey
+
 import android.app.AlertDialog
 import android.content.Context
 import android.util.Log
@@ -27,7 +34,38 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 
 @HiltViewModel
-class SignUpViewModel
+class SignUpViewModel {
+
+    private fun generateSecretKey() {
+        val keyGenParameterSpec = KeyGenParameterSpec.Builder(
+            "MySecretKey",
+            KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+        )
+            .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+            .setUserAuthenticationRequired(true)
+            .setInvalidatedByBiometricEnrollment(true)
+            .build()
+        val keyGenerator = KeyGenerator.getInstance(
+            KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore"
+        )
+        keyGenerator.init(keyGenParameterSpec)
+        keyGenerator.generateKey()
+    }
+
+    private fun getSecretKey(): SecretKey {
+        val keyStore = KeyStore.getInstance("AndroidKeyStore")
+        keyStore.load(null)
+        return keyStore.getKey("MySecretKey", null) as SecretKey
+    }
+
+    private fun getCipher(): Cipher {
+        return Cipher.getInstance(
+            "${KeyProperties.KEY_ALGORITHM_AES}/" +
+            "${KeyProperties.BLOCK_MODE_CBC}/" +
+            "${KeyProperties.ENCRYPTION_PADDING_PKCS7}"
+        )
+    }
     @Inject
     constructor(
         private val accountService: AccountService,
@@ -181,7 +219,13 @@ class SignUpViewModel
                                 result: BiometricPrompt
                                     .AuthenticationResult,
                             ) {
-                                continuation.resume(true)
+                                val cipher = result.cryptoObject?.cipher
+                                if (cipher != null) {
+                                    // Perform cryptographic operation, e.g., decrypt data
+                                    continuation.resume(true)
+                                } else {
+                                    continuation.resume(false)
+                                }
                             }
 
                             override fun onAuthenticationFailed() {
@@ -205,6 +249,12 @@ class SignUpViewModel
                         .setNegativeButtonText("Cancel")
                         .build()
 
-                biometricPrompt.authenticate(promptInfo)
+                val cipher = getCipher()
+                val secretKey = getSecretKey()
+                cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+                biometricPrompt.authenticate(
+                    BiometricPrompt.CryptoObject(cipher),
+                    promptInfo
+                )
             }
     }
