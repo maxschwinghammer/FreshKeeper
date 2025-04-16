@@ -34,6 +34,41 @@ class GoogleAccountServiceImpl
     ) : GoogleAccountService {
         private val firestore = FirebaseFirestore.getInstance()
 
+        init {
+            generateSecretKey()
+        }
+
+        private fun generateSecretKey() {
+            val keyGenParameterSpec = KeyGenParameterSpec.Builder(
+                "MySecretKey",
+                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+            )
+                .setBlockModes(KeyProperties.BLOCK_MODE_CBC)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_PKCS7)
+                .setUserAuthenticationRequired(true)
+                .setInvalidatedByBiometricEnrollment(true)
+                .build()
+            val keyGenerator = KeyGenerator.getInstance(
+                KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore"
+            )
+            keyGenerator.init(keyGenParameterSpec)
+            keyGenerator.generateKey()
+        }
+
+        private fun getSecretKey(): SecretKey {
+            val keyStore = KeyStore.getInstance("AndroidKeyStore")
+            keyStore.load(null)
+            return keyStore.getKey("MySecretKey", null) as SecretKey
+        }
+
+        private fun getCipher(): Cipher {
+            return Cipher.getInstance(
+                "${KeyProperties.KEY_ALGORITHM_AES}/" +
+                        "${KeyProperties.BLOCK_MODE_CBC}/" +
+                        "${KeyProperties.ENCRYPTION_PADDING_PKCS7}"
+            )
+        }
+
         override suspend fun authenticateBiometric(
             context: Context,
             activity: FragmentActivity,
@@ -50,17 +85,21 @@ class GoogleAccountServiceImpl
                                 result: BiometricPrompt
                                     .AuthenticationResult,
                             ) {
-                                if (credential is
+                                val cipher = result.cryptoObject?.cipher
+                                if (cipher != null && credential is
                                         CustomCredential &&
                                     credential.type == TYPE_GOOGLE_ID_TOKEN_CREDENTIAL
                                 ) {
                                     val googleIdTokenCredential =
                                         GoogleIdTokenCredential
                                             .createFrom(credential.data)
+                                    val decryptedData = cipher.doFinal(
+                                        googleIdTokenCredential.idToken.toByteArray()
+                                    )
                                     continuation.resume(
                                         runBlocking {
                                             accountService.signInWithGoogle(
-                                                googleIdTokenCredential.idToken,
+                                                String(decryptedData)
                                             )
                                             true
                                         },
@@ -89,7 +128,15 @@ class GoogleAccountServiceImpl
                         .setSubtitle("Please authenticate yourself to continue")
                         .setNegativeButtonText("Cancel")
                         .build()
-                biometricPrompt.authenticate(promptInfo)
+
+                val cipher = getCipher()
+                val secretKey = getSecretKey()
+                cipher.init(Cipher.DECRYPT_MODE, secretKey)
+
+                biometricPrompt.authenticate(
+                    BiometricPrompt.CryptoObject(cipher),
+                    promptInfo
+                )
             }
 
         override fun saveUserToFirestore(
