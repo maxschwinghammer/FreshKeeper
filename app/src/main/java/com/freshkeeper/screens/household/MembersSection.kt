@@ -55,6 +55,7 @@ import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
 import com.freshkeeper.R
+import com.freshkeeper.model.Member
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.screens.profileSettings.convertBase64ToBitmap
@@ -78,6 +79,7 @@ fun MembersSection(
     onJoinHouseholdClick: (String) -> Unit,
     onAddProducts: () -> Unit,
     onDeleteProducts: () -> Unit,
+    isStory: Boolean = false,
 ) {
     val viewModel: HouseholdViewModel = hiltViewModel()
     val inventoryViewModel: InventoryViewModel = hiltViewModel()
@@ -137,13 +139,15 @@ fun MembersSection(
                     imageVector = Icons.Outlined.Settings,
                     contentDescription = null,
                     modifier =
-                        Modifier
-                            .size(20.dp)
-                            .clickable {
+                        if (!isStory) {
+                            Modifier.size(20.dp).clickable {
                                 coroutineScope.launch {
                                     navController.navigate("householdSettings")
                                 }
-                            },
+                            }
+                        } else {
+                            Modifier.size(20.dp)
+                        },
                 )
             }
             Spacer(modifier = Modifier.height(6.dp))
@@ -151,73 +155,122 @@ fun MembersSection(
                 horizontalArrangement = Arrangement.spacedBy(10.dp),
                 verticalArrangement = Arrangement.spacedBy(10.dp),
             ) {
-                members?.forEach { member ->
-                    Box(
-                        modifier =
-                            Modifier
-                                .clip(RoundedCornerShape(10.dp))
-                                .clickable {
-                                    navController.navigate("profile/${member.userId}")
-                                }.width(100.dp)
-                                .height(100.dp)
-                                .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
-                                .background(ComponentBackgroundColor)
-                                .padding(10.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
+                if (isStory) {
+                    val dummyMembers =
+                        listOf(
+                            Member(null, "Tim", "1"),
+                            Member(null, "Emma", "2"),
+                        )
+                    dummyMembers.forEach { member ->
+                        val profilePicture =
+                            when (member.userId) {
+                                "1" -> R.drawable.avatar1
+                                "2" -> R.drawable.avatar2
+                                else -> R.drawable.profile
+                            }
+
+                        Box(
+                            modifier =
+                                Modifier
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .width(100.dp)
+                                    .height(100.dp)
+                                    .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+                                    .background(ComponentBackgroundColor)
+                                    .padding(10.dp),
+                            contentAlignment = Alignment.Center,
                         ) {
-                            val profilePicture = member.profilePicture
-                            profilePicture?.let {
-                                when (it.type) {
-                                    "base64" -> {
-                                        val decodedImage =
-                                            it.image?.let { it1 ->
-                                                convertBase64ToBitmap(
-                                                    it1,
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                Image(
+                                    painter = painterResource(id = profilePicture),
+                                    contentDescription = "Profile Picture",
+                                    modifier =
+                                        Modifier
+                                            .size(55.dp)
+                                            .clip(RoundedCornerShape(50)),
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = member.name,
+                                    color = TextColor,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
+                            }
+                        }
+                    }
+                } else {
+                    members?.forEach { member ->
+                        Box(
+                            modifier =
+                                Modifier
+                                    .clip(RoundedCornerShape(10.dp))
+                                    .clickable {
+                                        navController.navigate("profile/${member.userId}")
+                                    }.width(100.dp)
+                                    .height(100.dp)
+                                    .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
+                                    .background(ComponentBackgroundColor)
+                                    .padding(10.dp),
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Column(
+                                horizontalAlignment = Alignment.CenterHorizontally,
+                                verticalArrangement = Arrangement.Center,
+                            ) {
+                                val profilePicture = member.profilePicture
+                                profilePicture?.let {
+                                    when (it.type) {
+                                        "base64" -> {
+                                            val decodedImage =
+                                                it.image?.let { it1 ->
+                                                    convertBase64ToBitmap(
+                                                        it1,
+                                                    )
+                                                }
+                                            if (decodedImage != null) {
+                                                Image(
+                                                    bitmap = decodedImage.asImageBitmap(),
+                                                    contentDescription = "Profile Picture",
+                                                    modifier =
+                                                        Modifier
+                                                            .size(55.dp)
+                                                            .clip(RoundedCornerShape(50)),
                                                 )
+                                            } else {
+                                                Log.e("MembersSection", "Base64 decoding failed")
                                             }
-                                        if (decodedImage != null) {
+                                        }
+
+                                        "url" -> {
                                             Image(
-                                                bitmap = decodedImage.asImageBitmap(),
+                                                painter =
+                                                    rememberAsyncImagePainter(
+                                                        model = it.image,
+                                                        imageLoader = imageLoader,
+                                                    ),
                                                 contentDescription = "Profile Picture",
                                                 modifier =
                                                     Modifier
                                                         .size(55.dp)
                                                         .clip(RoundedCornerShape(50)),
                                             )
-                                        } else {
-                                            Log.e("MembersSection", "Base64 decoding failed")
                                         }
-                                    }
 
-                                    "url" -> {
-                                        Image(
-                                            painter =
-                                                rememberAsyncImagePainter(
-                                                    model = it.image,
-                                                    imageLoader = imageLoader,
-                                                ),
-                                            contentDescription = "Profile Picture",
-                                            modifier =
-                                                Modifier
-                                                    .size(55.dp)
-                                                    .clip(RoundedCornerShape(50)),
-                                        )
+                                        else -> {}
                                     }
-
-                                    else -> {}
                                 }
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    text = member.name.split(" ").first(),
+                                    color = TextColor,
+                                    fontSize = 14.sp,
+                                    fontWeight = FontWeight.Bold,
+                                )
                             }
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = member.name.split(" ").first(),
-                                color = TextColor,
-                                fontSize = 14.sp,
-                                fontWeight = FontWeight.Bold,
-                            )
                         }
                     }
                 }
@@ -235,8 +288,17 @@ fun MembersSection(
                                     .clip(RoundedCornerShape(10.dp))
                                     .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                                     .background(ComponentBackgroundColor)
-                                    .clickable { coroutineScope.launch { inviteSheetState.show() } }
-                                    .padding(10.dp),
+                                    .then(
+                                        if (!isStory) {
+                                            Modifier.clickable {
+                                                coroutineScope.launch {
+                                                    inviteSheetState.show()
+                                                }
+                                            }
+                                        } else {
+                                            Modifier
+                                        },
+                                    ).padding(10.dp),
                             contentAlignment = Alignment.Center,
                         ) {
                             Column(
@@ -268,8 +330,13 @@ fun MembersSection(
                                 .clip(RoundedCornerShape(10.dp))
                                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                                 .background(ComponentBackgroundColor)
-                                .clickable { showJoinHouseholdDialog.value = true }
-                                .padding(10.dp),
+                                .then(
+                                    if (!isStory) {
+                                        Modifier.clickable { showJoinHouseholdDialog.value = true }
+                                    } else {
+                                        Modifier
+                                    },
+                                ).padding(10.dp),
                         contentAlignment = Alignment.Center,
                     ) {
                         Column(
@@ -300,8 +367,13 @@ fun MembersSection(
                                 .clip(RoundedCornerShape(10.dp))
                                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                                 .background(ComponentBackgroundColor)
-                                .clickable { showCreateHouseholdDialog = true }
-                                .padding(10.dp),
+                                .then(
+                                    if (!isStory) {
+                                        Modifier.clickable { showCreateHouseholdDialog = true }
+                                    } else {
+                                        Modifier
+                                    },
+                                ).padding(10.dp),
                         contentAlignment = Alignment.Center,
                     ) {
                         Column(

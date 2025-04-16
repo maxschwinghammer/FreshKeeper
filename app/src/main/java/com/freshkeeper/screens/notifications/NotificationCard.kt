@@ -95,7 +95,11 @@ fun NotificationCard(
             Button(
                 enabled = isClickable,
                 onClick = { navController.navigate(notification.destinationScreen) },
-                colors = ButtonDefaults.buttonColors(containerColor = TextColor, disabledContainerColor = TextColor),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = TextColor,
+                        disabledContainerColor = TextColor,
+                    ),
             ) {
                 Text(
                     text =

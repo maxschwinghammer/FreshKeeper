@@ -81,6 +81,7 @@ fun HomeScreen(navController: NavHostController) {
     val allFoodItems by viewModel.allFoodItems.observeAsState(emptyList())
 
     val coroutineScope = rememberCoroutineScope()
+    val addedText = stringResource(R.string.added_product)
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -344,8 +345,6 @@ fun HomeScreen(navController: NavHostController) {
                         image,
                         imageUrl,
                         householdId,
-                        coroutineScope,
-                        addedText,
                         ->
 
                         viewModel.addProduct(
@@ -386,8 +385,6 @@ fun HomeScreen(navController: NavHostController) {
                             expiryDate,
                             isConsumedChecked,
                             isThrownAwayChecked,
-                            coroutineScope,
-                            addedText,
                             ->
                             viewModel.updateProduct(
                                 foodItem,

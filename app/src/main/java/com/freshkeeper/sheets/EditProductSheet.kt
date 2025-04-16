@@ -70,7 +70,6 @@ import com.freshkeeper.ui.theme.ExpiredColor
 import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -95,8 +94,6 @@ fun EditProductSheet(
         expiryDate: Long,
         isConsumedChecked: Boolean,
         isThrownAwayChecked: Boolean,
-        coroutineScope: CoroutineScope,
-        addedText: String,
     ) -> Unit,
 ) {
     var productName by remember { mutableStateOf(foodItem.name) }
@@ -124,8 +121,6 @@ fun EditProductSheet(
             )
         }
     }
-
-    val addedText = stringResource(R.string.added_product)
 
     ModalBottomSheet(
         onDismissRequest = { coroutineScope.launch { sheetState.hide() } },
@@ -449,8 +444,6 @@ fun EditProductSheet(
                             expiryDate,
                             isConsumedChecked,
                             isThrownAwayChecked,
-                            coroutineScope,
-                            addedText,
                         )
                     }
                 },

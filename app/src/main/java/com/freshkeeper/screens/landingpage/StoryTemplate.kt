@@ -55,7 +55,7 @@ fun StoryTemplate(
                     Row(
                         modifier =
                             Modifier
-                                .padding(top = 50.dp, start = 30.dp, end = 30.dp, bottom = 30.dp)
+                                .padding(top = 50.dp, start = 25.dp, end = 25.dp, bottom = 30.dp)
                                 .fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
                     ) {

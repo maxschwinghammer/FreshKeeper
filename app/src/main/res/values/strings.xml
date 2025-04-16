@@ -332,12 +332,10 @@
     <string name="food_expiring">Food Expiring</string>
     <string name="select_time_before_expiration">Select notification time before expiration</string>
     <string name="used_items_percentage">Share of food utilised:</string>
-    <string name="faq_question_1">What is the purpose of this app?</string>
-    <string name="faq_answer_1">The app helps reduce food waste by tracking food inventory and expiry dates.</string>
+    <string name="faq_question_1">What features does the Premium version offer?</string>
+    <string name="faq_answer_1">The Premium version gives you access to the AI chat with recipe suggestions, lets you create custom categories and storage locations, manage unlimited items, view extended statistics, use a widget for soon-expiring products, and join multiple households.</string>
     <string name="faq_question_2">How can I add a new item?</string>
     <string name="faq_answer_2">You can add a new item by clicking on the Add Food button in the Home section.</string>
-    <string name="faq_question_3">How do I get notified?</string>
-    <string name="faq_answer_3">Notifications will remind you of expiring items and suggest waste-reducing tips.</string>
     <string name="faq_question_4">Can I change my profile picture?</string>
     <string name="faq_answer_4">Yes, you can change your profile picture in the settings under Profile Settings.</string>
     <string name="faq_question_5">Is my data safe?</string>
@@ -346,8 +344,6 @@
     <string name="faq_answer_6">Select the product to open its details. There you can update the information and mark it as used or discarded.</string>
     <string name="faq_question_7">Can I adjust notification times?</string>
     <string name="faq_answer_7">Yes, you can set when to receive notifications in the notification settings.</string>
-    <string name="faq_question_8">What features does the Premium version offer?</string>
-    <string name="faq_answer_8">The Premium version gives you access to the AI chat with recipe suggestions, lets you create custom categories and storage locations, manage unlimited items, view extended statistics, use a widget for soon-expiring products, and join multiple households.</string>
     <string name="add_products_inventory">Add products using the button to display them in the inventory</string>
     <string name="add_products_home">Add products using the button to display them here</string>
     <string name="no_products_expiring_soon">Perfect! None of your products expire within the next month.</string>
@@ -453,7 +449,6 @@
     <string name="food_tofu_natural">Tofu natural</string>
     <string name="food_serrano_ham">Serrano ham</string>
     <string name="food_mozzarella">Mozzarella</string>
-    <string name="food_yogurt">Yogurt</string>
     <string name="food_hummus">Hummus</string>
     <string name="food_kimchi">Kimchi</string>
     <string name="food_edamame">Edamame</string>
@@ -466,5 +461,17 @@
     <string name="food_wine">Wine</string>
     <string name="food_coconut_milk">Coconut milk</string>
     <string name="food_spaghetti">Spaghetti</string>
-
+    <string name="food_minced_meat">Minced meat</string>
+    <string name="food_eggs">Eggs</string>
+    <string name="food_whole_grain_bread">Whole grain bread</string>
+    <string name="food_yogurt">Yogurt</string>
+    <string name="food_lettuce">Lettuce</string>
+    <string name="food_skyr">Skyr</string>
+    <string name="food_cream">Cream</string>
+    <string name="food_tofu">Tofu</string>
+    <string name="food_camembert">Camembert</string>
+    <string name="food_milk">Milk</string>
+    <string name="activity_tim_joined">Tim has joined the household</string>
+    <string name="activity_emma_added_product">Emma added apples</string>
+    <string name="activity_paul_consumed_milk">Paul consumed milk</string>
 </resources>

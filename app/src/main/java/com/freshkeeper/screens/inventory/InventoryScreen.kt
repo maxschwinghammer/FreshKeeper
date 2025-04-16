@@ -99,6 +99,7 @@ fun InventoryScreen(navController: NavHostController) {
 
     val coroutineScope = rememberCoroutineScope()
     val keyboardController = LocalSoftwareKeyboardController.current
+    val addedText = stringResource(R.string.added_product)
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -428,8 +429,6 @@ fun InventoryScreen(navController: NavHostController) {
                         image,
                         imageUrl,
                         householdId,
-                        coroutineScope,
-                        addedText,
                         ->
                         inventoryViewModel.addProduct(
                             name,
@@ -469,8 +468,6 @@ fun InventoryScreen(navController: NavHostController) {
                             expiryDate,
                             isConsumedChecked,
                             isThrownAwayChecked,
-                            coroutineScope,
-                            addedText,
                             ->
                             inventoryViewModel.updateProduct(
                                 foodItem,

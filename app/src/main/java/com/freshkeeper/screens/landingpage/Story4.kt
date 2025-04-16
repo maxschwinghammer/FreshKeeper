@@ -45,15 +45,6 @@ fun Story4(navController: NavHostController) {
                 buttonText = NotificationText(resId = R.string.see_statistics),
                 imageResId = R.drawable.statistics,
             ),
-            Notification(
-                id = "tip_001",
-                type = "tips",
-                title = NotificationText(resId = R.string.tip_of_the_day_title),
-                description = NotificationText(resId = R.string.tip_of_the_day_description),
-                buttonText = NotificationText(resId = R.string.view_more_tips),
-                destinationScreen = "TipsScreen",
-                imageResId = R.drawable.tip,
-            ),
         )
 
     StoryTemplate(
@@ -63,15 +54,12 @@ fun Story4(navController: NavHostController) {
                 modifier =
                     Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 15.dp),
+                        .padding(horizontal = 30.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 LazyColumn(
                     state = listState,
-                    modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .padding(start = 15.dp, end = 15.dp),
+                    modifier = Modifier.fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(10.dp),
                 ) {
                     item {

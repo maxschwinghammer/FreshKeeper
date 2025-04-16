@@ -251,8 +251,13 @@ class ProductServiceImpl
                                         .document(currentUser.householdId)
                                         .get()
                                         .addOnSuccessListener { householdDoc ->
-                                            val household = householdDoc.toObject(Household::class.java)
-                                            if (household != null && household.type != "Single household") {
+                                            val household =
+                                                householdDoc.toObject(
+                                                    Household::class.java,
+                                                )
+                                            if (household != null &&
+                                                household.type != "Single household"
+                                            ) {
                                                 coroutineScope.launch {
                                                     val activityType =
                                                         when {

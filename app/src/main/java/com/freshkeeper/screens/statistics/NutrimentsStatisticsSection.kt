@@ -1,6 +1,7 @@
 package com.freshkeeper.screens.statistics
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,7 +17,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
 import com.freshkeeper.model.Nutriments
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
+import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
 
@@ -33,13 +34,14 @@ import com.freshkeeper.ui.theme.TextColor
 fun NutrimentsStatisticsSection(
     averageNutriments: Nutriments,
     averageNutriScore: String,
+    isStory: Boolean = false,
 ) {
     Column(
         modifier =
             Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .clip(RoundedCornerShape(10.dp))
+                .background(ComponentBackgroundColor, RoundedCornerShape(10.dp))
                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                 .padding(16.dp),
     ) {
@@ -54,11 +56,13 @@ fun NutrimentsStatisticsSection(
                 color = AccentTurquoiseColor,
                 modifier = Modifier.weight(1f),
             )
-            Image(
-                painter = painterResource(R.drawable.share),
-                contentDescription = "Share",
-                modifier = Modifier.size(20.dp),
-            )
+            if (!isStory) {
+                Image(
+                    painter = painterResource(R.drawable.share),
+                    contentDescription = "Share",
+                    modifier = Modifier.size(20.dp),
+                )
+            }
         }
         Row(
             modifier = Modifier.fillMaxWidth(),

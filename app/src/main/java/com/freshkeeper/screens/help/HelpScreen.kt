@@ -12,6 +12,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -28,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,13 +52,19 @@ import com.freshkeeper.ui.theme.WhiteColor
 @Composable
 fun HelpScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
+    var expandedIndex by remember { mutableStateOf<Int?>(null) }
 
     val faqList =
         listOf(
             stringResource(R.string.faq_question_1) to stringResource(R.string.faq_answer_1),
             stringResource(R.string.faq_question_2) to stringResource(R.string.faq_answer_2),
-            stringResource(R.string.faq_question_3) to stringResource(R.string.faq_answer_3),
+            stringResource(R.string.faq_question_4) to stringResource(R.string.faq_answer_4),
+            stringResource(R.string.faq_question_5) to stringResource(R.string.faq_answer_5),
+            stringResource(R.string.faq_question_6) to stringResource(R.string.faq_answer_6),
+            stringResource(R.string.faq_question_7) to stringResource(R.string.faq_answer_7),
         )
+
+    val listState = rememberLazyListState()
 
     FreshKeeperTheme {
         Scaffold(
@@ -91,9 +99,19 @@ fun HelpScreen(navController: NavHostController) {
                         color = TextColor,
                     )
 
-                    Column(modifier = Modifier.fillMaxWidth()) {
-                        faqList.forEachIndexed { _, (question, answer) ->
-                            FAQAccordion(question = question, answer = answer)
+                    LazyColumn(
+                        state = listState,
+                        modifier = Modifier.height(500.dp).fillMaxWidth(),
+                    ) {
+                        itemsIndexed(faqList) { index, (question, answer) ->
+                            FAQAccordion(
+                                question = question,
+                                answer = answer,
+                                isExpanded = expandedIndex == index,
+                                onClick = {
+                                    expandedIndex = if (expandedIndex == index) null else index
+                                },
+                            )
                         }
                     }
 
@@ -103,6 +121,7 @@ fun HelpScreen(navController: NavHostController) {
                         modifier =
                             Modifier
                                 .fillMaxWidth()
+                                .background(ComponentBackgroundColor, RoundedCornerShape(10.dp))
                                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                                 .padding(10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -115,13 +134,14 @@ fun HelpScreen(navController: NavHostController) {
                         )
                         Button(
                             onClick = { navController.navigate("contact") },
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier =
+                                Modifier.fillMaxWidth().padding(5.dp),
                             shape = RoundedCornerShape(10.dp),
                             colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
                         ) {
                             Text(
                                 text = stringResource(R.string.send_us_message),
-                                color = ComponentBackgroundColor,
+                                color = GreyColor,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.Bold,
                             )
@@ -138,9 +158,9 @@ fun HelpScreen(navController: NavHostController) {
 fun FAQAccordion(
     question: String,
     answer: String,
+    isExpanded: Boolean,
+    onClick: () -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(false) }
-
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier =
@@ -149,7 +169,7 @@ fun FAQAccordion(
                     .padding(vertical = 10.dp)
                     .background(GreyColor, RoundedCornerShape(10.dp))
                     .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
-                    .clickable { expanded = !expanded },
+                    .clickable { onClick() },
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -158,39 +178,22 @@ fun FAQAccordion(
                 color = TextColor,
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(10.dp),
+                modifier = Modifier.weight(1f).padding(10.dp),
             )
             Icon(
-                imageVector =
-                    if (expanded) {
-                        Icons.Default.KeyboardArrowUp
-                    } else {
-                        Icons.Default.KeyboardArrowDown
-                    },
+                imageVector = if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                 contentDescription = null,
                 modifier = Modifier.padding(10.dp),
                 tint = TextColor,
             )
         }
-        if (expanded) {
+        if (isExpanded) {
             Box(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .clip(
-                            RoundedCornerShape(
-                                bottomStart = 10.dp,
-                                bottomEnd = 10.dp,
-                            ),
-                        ).background(GreyColor)
-                        .border(
-                            1.dp,
-                            ComponentStrokeColor,
-                            RoundedCornerShape(
-                                bottomStart = 10.dp,
-                                bottomEnd = 10.dp,
-                            ),
-                        ),
+                        .background(GreyColor, RoundedCornerShape(10.dp))
+                        .border(1.dp, GreyColor, RoundedCornerShape(10.dp)),
             ) {
                 Text(
                     text = answer,

@@ -25,34 +25,34 @@ class InventoryViewModel
         private val _itemList = MutableLiveData<String>()
         val itemList: LiveData<String> = _itemList
 
-        private val _fridgeItems = MutableLiveData<List<FoodItem>>()
+        private val _fridgeItems = MutableLiveData<List<FoodItem>>(emptyList())
         val fridgeItems: LiveData<List<FoodItem>> = _fridgeItems
 
-        private val _cupboardItems = MutableLiveData<List<FoodItem>>()
+        private val _cupboardItems = MutableLiveData<List<FoodItem>>(emptyList())
         val cupboardItems: LiveData<List<FoodItem>> = _cupboardItems
 
-        private val _freezerItems = MutableLiveData<List<FoodItem>>()
+        private val _freezerItems = MutableLiveData<List<FoodItem>>(emptyList())
         val freezerItems: LiveData<List<FoodItem>> = _freezerItems
 
-        private val _countertopItems = MutableLiveData<List<FoodItem>>()
+        private val _countertopItems = MutableLiveData<List<FoodItem>>(emptyList())
         val countertopItems: LiveData<List<FoodItem>> = _countertopItems
 
-        private val _cellarItems = MutableLiveData<List<FoodItem>>()
+        private val _cellarItems = MutableLiveData<List<FoodItem>>(emptyList())
         val cellarItems: LiveData<List<FoodItem>> = _cellarItems
 
-        private val _bakeryItems = MutableLiveData<List<FoodItem>>()
+        private val _bakeryItems = MutableLiveData<List<FoodItem>>(emptyList())
         val bakeryItems: LiveData<List<FoodItem>> = _bakeryItems
 
-        private val _spiceRackItems = MutableLiveData<List<FoodItem>>()
+        private val _spiceRackItems = MutableLiveData<List<FoodItem>>(emptyList())
         val spiceRackItems: LiveData<List<FoodItem>> = _spiceRackItems
 
-        private val _pantryItems = MutableLiveData<List<FoodItem>>()
+        private val _pantryItems = MutableLiveData<List<FoodItem>>(emptyList())
         val pantryItems: LiveData<List<FoodItem>> = _pantryItems
 
-        private val _fruitBasketItems = MutableLiveData<List<FoodItem>>()
+        private val _fruitBasketItems = MutableLiveData<List<FoodItem>>(emptyList())
         val fruitBasketItems: LiveData<List<FoodItem>> = _fruitBasketItems
 
-        private val _otherItems = MutableLiveData<List<FoodItem>>()
+        private val _otherItems = MutableLiveData<List<FoodItem>>(emptyList())
         val otherItems: LiveData<List<FoodItem>> = _otherItems
 
         init {

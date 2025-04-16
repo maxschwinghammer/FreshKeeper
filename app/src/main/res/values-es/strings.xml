@@ -326,12 +326,10 @@
     <string name="food_expiring">Alimentos por caducar</string>
     <string name="select_time_before_expiration">Selecciona el tiempo de notificación antes de la caducidad</string>
     <string name="used_items_percentage">Porcentaje de alimentos utilizados:</string>
-    <string name="faq_question_1">¿Cuál es el propósito de esta aplicación?</string>
-    <string name="faq_answer_1">La aplicación ayuda a reducir el desperdicio de alimentos controlando el inventario y las fechas de caducidad.</string>
+    <string name="faq_question_1">¿Qué funciones incluye la versión Premium?</string>
+    <string name="faq_answer_1">La versión Premium incluye acceso al chat con IA y recetas, categorías y ubicaciones personalizadas, artículos ilimitados, estadísticas avanzadas, un widget de productos por caducar y la posibilidad de unirte a varios hogares.</string>
     <string name="faq_question_2">¿Cómo puedo agregar un nuevo artículo?</string>
     <string name="faq_answer_2">Puedes agregar un nuevo artículo haciendo clic en el botón "Añadir alimento" en la sección de inicio.</string>
-    <string name="faq_question_3">¿Cómo recibo notificaciones?</string>
-    <string name="faq_answer_3">Las notificaciones te recordarán los artículos próximos a caducar y sugerirán consejos para reducir el desperdicio.</string>
     <string name="faq_question_4">¿Puedo cambiar mi foto de perfil?</string>
     <string name="faq_answer_4">Sí, puedes cambiar tu foto de perfil en la configuración, en la sección de perfil.</string>
     <string name="faq_question_5">¿Mis datos están seguros?</string>
@@ -340,8 +338,6 @@
     <string name="faq_answer_6">Selecciona el producto para ver los detalles. Allí puedes editar la información y marcarlo como consumido o desechado.</string>
     <string name="faq_question_7">¿Puedo ajustar los horarios de notificación?</string>
     <string name="faq_answer_7">Sí, puedes elegir cuándo recibir notificaciones en la configuración de notificaciones.</string>
-    <string name="faq_question_8">¿Qué funciones incluye la versión Premium?</string>
-    <string name="faq_answer_8">La versión Premium incluye acceso al chat con IA y recetas, categorías y ubicaciones personalizadas, artículos ilimitados, estadísticas avanzadas, un widget de productos por caducar y la posibilidad de unirte a varios hogares.</string>
     <string name="add_products_inventory">Agrega productos utilizando el botón para mostrarlos en el inventario</string>
     <string name="add_products_home">Agrega productos utilizando el botón para mostrarlos aquí</string>
     <string name="no_products_expiring_soon">¡Perfecto! Ninguno de tus productos caduca en el próximo mes.</string>
@@ -447,7 +443,6 @@
     <string name="food_tofu_natural">Tofu natural</string>
     <string name="food_serrano_ham">Jamón serrano</string>
     <string name="food_mozzarella">Mozzarella</string>
-    <string name="food_yogurt">Yogur</string>
     <string name="food_hummus">Hummus</string>
     <string name="food_kimchi">Kimchi</string>
     <string name="food_edamame">Edamame</string>
@@ -460,5 +455,17 @@
     <string name="food_wine">Vino</string>
     <string name="food_coconut_milk">Leche de coco</string>
     <string name="food_spaghetti">Espaguetis</string>
-
+    <string name="food_minced_meat">Carne picada</string>
+    <string name="food_eggs">Huevos</string>
+    <string name="food_whole_grain_bread">Pan integral</string>
+    <string name="food_yogurt">Yogur</string>
+    <string name="food_lettuce">Lechuga</string>
+    <string name="food_skyr">Skyr</string>
+    <string name="food_cream">Nata</string>
+    <string name="food_tofu">Tofu</string>
+    <string name="food_camembert">Camembert</string>
+    <string name="food_milk">Leche</string>
+    <string name="activity_tim_joined">Tim se unió al hogar</string>
+    <string name="activity_emma_added_product">Emma añadió manzanas</string>
+    <string name="activity_paul_consumed_milk">Paul consumió leche</string>
 </resources>

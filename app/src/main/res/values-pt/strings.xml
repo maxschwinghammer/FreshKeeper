@@ -326,12 +326,10 @@
     <string name="food_expiring">Alimentos vencendo</string>
     <string name="select_time_before_expiration">Selecione o tempo de notificação antes da expiração</string>
     <string name="used_items_percentage">Percentual de alimento utilizado:</string>
-    <string name="faq_question_1">Qual é o objetivo deste aplicativo?</string>
-    <string name="faq_answer_1">O app ajuda a reduzir o desperdício de alimentos monitorando o inventário e as datas de validade.</string>
+    <string name="faq_question_1">Quais recursos estão disponíveis na versão Premium?</string>
+    <string name="faq_answer_1">Com a versão Premium, você acessa o chat com IA e receitas, cria categorias e locais personalizados, gerencia itens ilimitados, vê estatísticas avançadas, usa um widget para itens próximos do vencimento e participa de várias casas ao mesmo tempo.</string>
     <string name="faq_question_2">Como posso adicionar um novo item?</string>
     <string name="faq_answer_2">Você pode adicionar um novo item clicando no botão "Adicionar alimento" na tela inicial.</string>
-    <string name="faq_question_3">Como recebo as notificações?</string>
-    <string name="faq_answer_3">As notificações lembrarão você dos itens próximos da expiração e sugerirão dicas para reduzir o desperdício.</string>
     <string name="faq_question_4">Posso mudar minha foto de perfil?</string>
     <string name="faq_answer_4">Sim, você pode alterá-la nas configurações, em Perfil.</string>
     <string name="faq_question_5">Meus dados estão seguros?</string>
@@ -340,8 +338,6 @@
     <string name="faq_answer_6">Toque no produto para abrir os detalhes. Você pode atualizar as informações e marcá-lo como consumido ou descartado.</string>
     <string name="faq_question_7">Posso alterar os horários das notificações?</string>
     <string name="faq_answer_7">Sim, você define isso nas configurações de notificações.</string>
-    <string name="faq_question_8">Quais recursos estão disponíveis na versão Premium?</string>
-    <string name="faq_answer_8">Com a versão Premium, você acessa o chat com IA e receitas, cria categorias e locais personalizados, gerencia itens ilimitados, vê estatísticas avançadas, usa um widget para itens próximos do vencimento e participa de várias casas ao mesmo tempo.</string>
     <string name="add_products_inventory">Adicione produtos usando o botão para visualizá-los no inventário</string>
     <string name="add_products_home">Adicione produtos usando o botão para visualizá-los aqui</string>
     <string name="no_products_expiring_soon">Perfeito! Nenhum dos seus produtos expira no próximo mês.</string>
@@ -447,7 +443,6 @@
     <string name="food_tofu_natural">Tofu natural</string>
     <string name="food_serrano_ham">Presunto serrano</string>
     <string name="food_mozzarella">Mozarela</string>
-    <string name="food_yogurt">Iogurte</string>
     <string name="food_hummus">Húmus</string>
     <string name="food_kimchi">Kimchi</string>
     <string name="food_edamame">Edamame</string>
@@ -460,5 +455,17 @@
     <string name="food_wine">Vinho</string>
     <string name="food_coconut_milk">Leite de coco</string>
     <string name="food_spaghetti">Esparguete</string>
-
+    <string name="food_minced_meat">Carne moída</string>
+    <string name="food_eggs">Ovos</string>
+    <string name="food_whole_grain_bread">Pão integral</string>
+    <string name="food_yogurt">Iogurte</string>
+    <string name="food_lettuce">Alface</string>
+    <string name="food_skyr">Skyr</string>
+    <string name="food_cream">Nata</string>
+    <string name="food_tofu">Tofu</string>
+    <string name="food_camembert">Camembert</string>
+    <string name="food_milk">Leite</string>
+    <string name="activity_tim_joined">Tim entrou na casa</string>
+    <string name="activity_emma_added_product">Emma adicionou maçãs</string>
+    <string name="activity_paul_consumed_milk">Paul consumiu leite</string>
 </resources>

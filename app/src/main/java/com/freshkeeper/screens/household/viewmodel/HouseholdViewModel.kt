@@ -63,35 +63,6 @@ class HouseholdViewModel
 
         init {
             getHousehold()
-            _expiredDates.value =
-                listOf(
-                    System.currentTimeMillis() - 2 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 2 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 5 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 5 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 5 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 6 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 7 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 10 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 10 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 10 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 17 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 17 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 19 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 20 * 24 * 60 * 60 * 1000,
-                    System.currentTimeMillis() - 21 * 24 * 60 * 60 * 1000,
-                )
-            _averageNutriments.value =
-                Nutriments(
-                    energyKcal = 250.0,
-                    fat = 10.5,
-                    carbohydrates = 30.0,
-                    sugars = 15.0,
-                    fiber = 4.5,
-                    proteins = 8.0,
-                    salt = 0.5,
-                )
-            _averageNutriScore.value = "C"
         }
 
         private fun getHousehold() {

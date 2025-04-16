@@ -74,7 +74,6 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Suppress("ktlint:standard:function-naming")
@@ -96,8 +95,6 @@ fun ManualInputSheet(
         image: String?,
         imageUrl: String,
         householdId: String,
-        coroutineScope: CoroutineScope,
-        addedText: String,
     ) -> Unit,
 ) {
     val context = LocalContext.current
@@ -389,7 +386,6 @@ fun ManualInputSheet(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            val addedText = stringResource(R.string.added_product)
             val enterProductName = stringResource(R.string.enter_product_name)
             val selectExpiryDate = stringResource(R.string.select_expiry_date)
             val enterQuantity = stringResource(R.string.enter_quantity)
@@ -433,8 +429,6 @@ fun ManualInputSheet(
                             image,
                             imageUrl,
                             householdId,
-                            coroutineScope,
-                            addedText,
                         )
                     }
                 },

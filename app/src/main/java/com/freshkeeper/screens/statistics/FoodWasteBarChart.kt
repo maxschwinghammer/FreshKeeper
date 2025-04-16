@@ -2,8 +2,8 @@ package com.freshkeeper.screens.statistics
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.nativeCanvas
@@ -28,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
+import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.WhiteColor
 import java.time.Instant
@@ -36,7 +36,10 @@ import java.time.ZoneId
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun FoodWasteBarChart(expiredDates: List<Long>) {
+fun FoodWasteBarChart(
+    expiredDates: List<Long>,
+    isStory: Boolean = false,
+) {
     val today = LocalDate.now()
     val last30Days = (0 until 30).map { today.minusDays(it.toLong()) }.reversed()
     val counts =
@@ -52,7 +55,7 @@ fun FoodWasteBarChart(expiredDates: List<Long>) {
             Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .clip(RoundedCornerShape(10.dp))
+                .background(ComponentBackgroundColor, RoundedCornerShape(10.dp))
                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))
                 .padding(16.dp),
     ) {
@@ -67,15 +70,15 @@ fun FoodWasteBarChart(expiredDates: List<Long>) {
                 color = AccentTurquoiseColor,
                 modifier = Modifier.weight(1f),
             )
-            Image(
-                painter = painterResource(R.drawable.share),
-                contentDescription = "Share",
-                modifier =
-                    Modifier
-                        .size(20.dp)
-                        .clickable {
-                        },
-            )
+            if (!isStory) {
+                Image(
+                    painter = painterResource(R.drawable.share),
+                    contentDescription = "Share",
+                    modifier =
+                        Modifier
+                            .size(20.dp),
+                )
+            }
         }
         Canvas(modifier = Modifier.fillMaxWidth().height(200.dp)) {
             val leftMargin = 20.dp.toPx()

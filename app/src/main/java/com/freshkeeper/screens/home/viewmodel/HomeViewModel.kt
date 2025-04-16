@@ -129,8 +129,8 @@ class HomeViewModel
                     isThrownAwayChecked,
                     coroutineScope,
                     onSuccess = { updatedItem ->
-                        onSuccess()
                         updateItem(updatedItem)
+                        onSuccess()
                     },
                     addedText,
                 )

@@ -326,12 +326,10 @@
     <string name="food_expiring">Ablaufende Produkte</string>
     <string name="select_time_before_expiration">Benachrichtigungszeit vor dem Ablauf wählen</string>
     <string name="used_items_percentage">Anteil der verwerteten Lebensmittel:</string>
-    <string name="faq_question_1">Was ist der Zweck dieser App?</string>
-    <string name="faq_answer_1">Die App hilft, Lebensmittelverschwendung zu reduzieren, indem sie Bestände und Ablaufdaten verfolgt.</string>
+    <string name="faq_question_1">Welche Funktionen bietet die Premium-Version?</string>
+    <string name="faq_answer_1">Mit der Premium-Version erhältst du Zugriff auf den KI-Chat mit Rezeptvorschlägen, kannst eigene Kategorien und Lagerorte anlegen und eine unbegrenzte Anzahl an Artikeln verwalten. Zusätzlich stehen dir erweiterte Statistiken über längere Zeiträume zur Verfügung, ein Widget für bald ablaufende Produkte sowie die Möglichkeit, mehreren Haushalten gleichzeitig beizutreten.</string>
     <string name="faq_question_2">Wie kann ich ein neues Produkt hinzufügen?</string>
     <string name="faq_answer_2">Du kannst ein neues Produkt hinzufügen, indem du auf den Button Produkt hinzufügen im Home-Bereich klickst.</string>
-    <string name="faq_question_3">Wie werde ich benachrichtigt?</string>
-    <string name="faq_answer_3">Benachrichtigungen erinnern dich an ablaufende Produkte und geben Tipps zur Vermeidung von Verschwendung.</string>
     <string name="faq_question_4">Kann ich mein Profilbild ändern?</string>
     <string name="faq_answer_4">Ja, du kannst dein Profilbild in den Einstellungen unter Profileinstellungen ändern.</string>
     <string name="faq_question_5">Sind meine Daten sicher?</string>
@@ -340,9 +338,6 @@
     <string name="faq_answer_6">Wähle das jeweilige Produkt aus, um dessen Detailansicht zu öffnen. Dort kannst du alle Angaben nach Bedarf anpassen und das Produkt als vebraucht oder entsorgt markieren.</string>
     <string name="faq_question_7">Kann ich die Erinnerungszeiten anpassen?</string>
     <string name="faq_answer_7">Ja, in den Benachrichtigungseinstellungen legst du fest, wann du benachrichtigt werden möchtest.</string>
-    <string name="faq_question_8">Welche Funktionen bietet die Premium-Version?</string>
-    <string name="faq_answer_8">Mit der Premium-Version erhältst du Zugriff auf den KI-Chat mit Rezeptvorschlägen, kannst eigene Kategorien und Lagerorte anlegen und eine unbegrenzte Anzahl an Artikeln verwalten. Zusätzlich stehen dir erweiterte Statistiken über längere Zeiträume zur Verfügung, ein Widget für bald ablaufende Produkte sowie die Möglichkeit, mehreren Haushalten gleichzeitig beizutreten.</string>
-
     <string name="add_products_inventory">Füge Produkte über den Button hinzu, um sie im Inventar anzuzeigen</string>
     <string name="add_products_home">Füge Produkte über den Button hinzu, um sie hier anzuzeigen</string>
     <string name="no_products_expiring_soon">Perfekt! Keine deiner Produkte laufen innerhalb des nächsten Monats ab.</string>
@@ -440,15 +435,14 @@
     <string name="push_notifications">Erhalte Push-Benachrichtigungen</string>
     <string name="welcome_message">Willkommen bei FreshKeeper!</string>
     <string name="start_reducing_waste">Beginne noch heute damit, deine Lebensmittelabfälle zu reduzieren!</string>
-    <string name="view_personal_stats">Eigene Statistiken einsehen</string>
+    <string name="view_personal_stats">Sehe deine eigenen Statistiken</string>
     <string name="check_current_inventory">Prüfe deine aktuellen Bestände</string>
-    <string name="overview_expiring_products">Zu den ablaufenden Produkten</string>
+    <string name="overview_expiring_products">Bekomme einen Überblick über ablaufende Produkte</string>
     <string name="manage_your_household">Verwalte deinen Haushalt</string>
     <string name="expired_today">Heute abgelaufen</string>
     <string name="food_tofu_natural">Tofu natur</string>
     <string name="food_serrano_ham">Serrano-Schinken</string>
     <string name="food_mozzarella">Mozzarella</string>
-    <string name="food_yogurt">Joghurt</string>
     <string name="food_hummus">Hummus</string>
     <string name="food_kimchi">Kimchi</string>
     <string name="food_edamame">Edamame</string>
@@ -461,5 +455,17 @@
     <string name="food_wine">Wein</string>
     <string name="food_coconut_milk">Kokosmilch</string>
     <string name="food_spaghetti">Spaghetti</string>
-
+    <string name="food_minced_meat">Hackfleisch</string>
+    <string name="food_eggs">Eier</string>
+    <string name="food_whole_grain_bread">Vollkornbrot</string>
+    <string name="food_yogurt">Joghurt</string>
+    <string name="food_lettuce">Salat</string>
+    <string name="food_skyr">Skyr</string>
+    <string name="food_cream">Sahne</string>
+    <string name="food_tofu">Tofu</string>
+    <string name="food_camembert">Camembert</string>
+    <string name="food_milk">Milch</string>
+    <string name="activity_tim_joined">Tim ist dem Haushalt beigetreten</string>
+    <string name="activity_emma_added_product">Emma hat Äpfel hinzugefügt</string>
+    <string name="activity_paul_consumed_milk">Paul hat Milch verbraucht</string>
 </resources>
