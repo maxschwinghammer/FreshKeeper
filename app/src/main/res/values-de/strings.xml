@@ -95,7 +95,7 @@
     <string name="notification_inventory_attention_needed">Dein Inventar benötigt Aufmerksamkeit</string>
     <string name="notification_inventory_check">Es sind %1$d Tage vergangen, seitdem du dein Inventar überprüft hast</string>
     <string name="notification_joined_household">%1$s ist deinem Haushalt beigetreten</string>
-    <string name="notification_product_expires">%1$s läuft in %1$d Tagen ab</string>
+    <string name="notification_product_expires">%1$s läuft in %2$d Tagen ab</string>
     <string name="notification_product_expires_tomorrow">Verbrauche es schnell, um Abfall zu vermeiden</string>
     <string name="notification_savings_this_month">Du hast diesen Monat %1$d%% weniger Lebensmittelabfall</string>
     <string name="notification_tip_of_the_day">Lagere Obst und Gemüse separat, um sie länger frisch zu halten</string>

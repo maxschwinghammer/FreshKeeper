@@ -146,7 +146,7 @@
     <string name="notification_your_progress_this_week">You used %1$d foods in time this week</string>
     <string name="notification_tip_of_the_day">Store fruit and vegetables separately to keep them fresh for longer</string>
     <string name="notification_inventory_check">It\'s been %1$d days since you last checked your inventory</string>
-    <string name="notification_product_expires">%1$s expires in %1$d days</string>
+    <string name="notification_product_expires">%1$s expires in %2$d days</string>
     <string name="notification_joined_household">%1$s joined your household</string>
     <string name="notification_weekly_tip_organize_fridge">Place items nearing expiration in front to consume first</string>
     <string name="notification_inventory_attention_needed">Your inventory needs attention</string>
