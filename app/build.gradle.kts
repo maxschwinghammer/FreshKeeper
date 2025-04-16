@@ -80,6 +80,8 @@ kapt {
 }
 
 dependencies {
+    implementation 'androidx.biometric:biometric:1.4.0-alpha03'
+    implementation 'androidx.security:security-crypto:1.1.0-alpha07'
     implementation(libs.commonmark.commonmark)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
