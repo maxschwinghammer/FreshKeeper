@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -64,6 +65,8 @@ import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,6 +102,20 @@ fun HomeScreen(navController: NavHostController) {
             listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0
         }
     }
+
+    Log.d("Token", FirebaseMessaging.getInstance().getToken().toString())
+
+    FirebaseMessaging.getInstance().token.addOnCompleteListener(
+        OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("Token", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+            val token = task.result
+            val msg = token
+            Log.d("Token", msg)
+        },
+    )
 
     FreshKeeperTheme {
         Scaffold(

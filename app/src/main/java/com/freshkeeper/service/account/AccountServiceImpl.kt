@@ -87,7 +87,7 @@ class AccountServiceImpl
                 val userDocumentRef = firestore.collection("users").document(userId)
                 try {
                     val userSnapshot = userDocumentRef.get().await()
-                    userSnapshot.getBoolean("isBiometricEnabled") ?: false
+                    userSnapshot.getBoolean("isBiometricEnabled") == true
                 } catch (e: Exception) {
                     Log.e("AccountServiceImpl", "Error fetching biometric status", e)
                     false
@@ -407,6 +407,12 @@ class AccountServiceImpl
                     if (userDoc != null) {
                         val user = userDoc.toObject(User::class.java)
                         if (user != null) {
+                            val profilePictureTask =
+                                firestore
+                                    .collection("profilePictures")
+                                    .document(userId)
+                                    .get()
+
                             val activitiesTask =
                                 firestore
                                     .collection("activities")
@@ -425,11 +431,26 @@ class AccountServiceImpl
                                         .collection("households")
                                         .document(householdId)
                                         .get()
-                                }
+                                } ?: Tasks.forResult(null)
+
+                            val notificationSettingsTask =
+                                firestore
+                                    .collection("notificationSettings")
+                                    .document(userId)
+                                    .get()
 
                             Tasks
-                                .whenAllComplete(activitiesTask, foodItemsTask, householdTask)
-                                .addOnCompleteListener {
+                                .whenAllComplete(
+                                    profilePictureTask,
+                                    activitiesTask,
+                                    foodItemsTask,
+                                    householdTask,
+                                    notificationSettingsTask,
+                                ).addOnCompleteListener {
+                                    val profilePicture =
+                                        profilePictureTask.result.toObject(
+                                            ProfilePicture::class.java,
+                                        )
                                     val activities =
                                         activitiesTask.result?.toObjects(
                                             Activity::class.java,
@@ -439,16 +460,22 @@ class AccountServiceImpl
                                             FoodItem::class.java,
                                         ) ?: emptyList()
                                     val household =
-                                        householdTask?.result?.toObject(
+                                        householdTask.result?.toObject(
                                             Household::class.java,
+                                        )
+                                    val notificationSettings =
+                                        notificationSettingsTask.result.toObject(
+                                            NotificationSettings::class.java,
                                         )
 
                                     val downloadableData =
                                         DownloadableUserData(
                                             user,
+                                            profilePicture,
                                             activities,
                                             foodItems,
                                             household,
+                                            notificationSettings,
                                         )
 
                                     val jsonString = Gson().toJson(downloadableData)
