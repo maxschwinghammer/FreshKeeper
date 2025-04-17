@@ -80,6 +80,7 @@ kapt {
 }
 
 dependencies {
+    implementation(libs.firebase.inappmessaging.display)
     implementation(libs.commonmark.commonmark)
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
