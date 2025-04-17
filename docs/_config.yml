@@ -19,3 +19,6 @@ minima:
   skin: dark
   custom_css:
     - /assets/css/custom.css
+
+include:
+  - .well-known
