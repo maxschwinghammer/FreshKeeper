@@ -1,7 +1,6 @@
 package com.freshkeeper.service.notification
 
 import android.app.AlarmManager
-import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
@@ -18,16 +17,9 @@ class DailyReminderReceiver : BroadcastReceiver() {
         context: Context,
         intent: Intent,
     ) {
-        val channel =
-            NotificationChannel(
-                "default",
-                "Default Channel",
-                NotificationManager.IMPORTANCE_DEFAULT,
-            )
         val notificationManager =
             context.getSystemService(Context.NOTIFICATION_SERVICE)
                 as NotificationManager
-        notificationManager.createNotificationChannel(channel)
 
         val openAppIntent =
             Intent(context, MainActivity::class.java).apply {
@@ -45,7 +37,7 @@ class DailyReminderReceiver : BroadcastReceiver() {
         val builder =
             NotificationCompat
                 .Builder(context, "default")
-                .setSmallIcon(R.drawable.logo_transparent)
+                .setSmallIcon(R.drawable.logo)
                 .setContentTitle("Daily Reminder")
                 .setContentText("Check your inventory!")
                 .setAutoCancel(true)

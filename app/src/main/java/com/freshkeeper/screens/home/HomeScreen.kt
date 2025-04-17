@@ -29,6 +29,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -65,7 +66,6 @@ import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 
@@ -103,19 +103,15 @@ fun HomeScreen(navController: NavHostController) {
         }
     }
 
-    Log.d("Token", FirebaseMessaging.getInstance().getToken().toString())
-
-    FirebaseMessaging.getInstance().token.addOnCompleteListener(
-        OnCompleteListener { task ->
+    LaunchedEffect(Unit) {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w("Token", "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
+            } else {
+                Log.d("Token", task.result)
             }
-            val token = task.result
-            val msg = token
-            Log.d("Token", msg)
-        },
-    )
+        }
+    }
 
     FreshKeeperTheme {
         Scaffold(

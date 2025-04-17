@@ -1,6 +1,8 @@
 package com.freshkeeper
 
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -57,6 +59,15 @@ class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val channel =
+            NotificationChannel(
+                "default",
+                "Standard notifications",
+                NotificationManager.IMPORTANCE_HIGH,
+            )
+        val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        manager.createNotificationChannel(channel)
 
         sharedPreferences = getSharedPreferences("FreshKeeperPrefs", MODE_PRIVATE)
         val savedLanguage =

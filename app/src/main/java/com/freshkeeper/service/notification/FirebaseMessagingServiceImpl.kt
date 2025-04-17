@@ -2,7 +2,6 @@ package com.freshkeeper.service.notification
 
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import com.freshkeeper.MainActivity
@@ -12,10 +11,9 @@ import com.google.firebase.messaging.RemoteMessage
 
 class FirebaseMessagingServiceImpl : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        remoteMessage.data.isNotEmpty().let {
+        if (remoteMessage.data.isNotEmpty()) {
             val title = remoteMessage.data["title"]
             val message = remoteMessage.data["message"]
-
             sendNotification(title, message)
         }
     }
@@ -36,14 +34,14 @@ class FirebaseMessagingServiceImpl : FirebaseMessagingService() {
         val notificationBuilder =
             NotificationCompat
                 .Builder(this, "default")
-                .setSmallIcon(R.drawable.logo_transparent)
+                .setSmallIcon(R.drawable.logo)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent)
 
         val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE)
+            getSystemService(NOTIFICATION_SERVICE)
                 as NotificationManager
         notificationManager.notify(0, notificationBuilder.build())
     }

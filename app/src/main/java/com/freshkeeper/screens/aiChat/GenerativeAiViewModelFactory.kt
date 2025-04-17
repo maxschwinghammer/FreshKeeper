@@ -22,17 +22,20 @@ val GenerativeViewModelFactory =
                     temperature = 0.5f
                 }
 
+//            val unknownSafety =
+//                SafetySetting(HarmCategory.UNKNOWN, BlockThreshold.LOW_AND_ABOVE)
+
             val harassmentSafety =
-                SafetySetting(HarmCategory.HARASSMENT, BlockThreshold.ONLY_HIGH)
+                SafetySetting(HarmCategory.HARASSMENT, BlockThreshold.LOW_AND_ABOVE)
 
             val hateSpeechSafety =
-                SafetySetting(HarmCategory.HATE_SPEECH, BlockThreshold.MEDIUM_AND_ABOVE)
+                SafetySetting(HarmCategory.HATE_SPEECH, BlockThreshold.LOW_AND_ABOVE)
 
             val sexualSafety =
-                SafetySetting(HarmCategory.SEXUALLY_EXPLICIT, BlockThreshold.MEDIUM_AND_ABOVE)
+                SafetySetting(HarmCategory.SEXUALLY_EXPLICIT, BlockThreshold.LOW_AND_ABOVE)
 
             val dangerousContentSafety =
-                SafetySetting(HarmCategory.DANGEROUS_CONTENT, BlockThreshold.ONLY_HIGH)
+                SafetySetting(HarmCategory.DANGEROUS_CONTENT, BlockThreshold.LOW_AND_ABOVE)
 
             @Suppress("UNCHECKED_CAST")
             return when {
@@ -44,6 +47,7 @@ val GenerativeViewModelFactory =
                             generationConfig = config,
                             safetySettings =
                                 listOf(
+//                                    unknownSafety,
                                     harassmentSafety,
                                     hateSpeechSafety,
                                     sexualSafety,

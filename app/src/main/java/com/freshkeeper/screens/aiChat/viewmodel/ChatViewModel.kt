@@ -36,7 +36,7 @@ class ChatViewModel(
         _uiState.value.addMessage(
             ChatMessage(
                 text = roleText,
-                participant = Participant.MODEL,
+                participant = Participant.USER,
                 isPending = false,
             ),
         )
@@ -57,7 +57,7 @@ class ChatViewModel(
         _uiState.value.addMessage(
             ChatMessage(
                 text = userMessage,
-                participant = Participant.USER,
+                participant = Participant.MODEL,
                 isPending = true,
             ),
         )
