@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.freshkeeper",
+      "sha256_cert_fingerprints": [
+        "58:A5:3E:8A:FD:8C:3F:6D:D4:F4:19:3A:D3:F3:04:51:D3:83:FB:82:BB:58:3E:F0:A0:39:34:7D:64:AD:22:4E"
+      ]
+    }
+  }
+]

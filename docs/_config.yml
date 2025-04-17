@@ -8,6 +8,9 @@ header_pages:
   - privacy-policy.md
   - imprint.md
 
+include:
+  - .well-known
+
 locale: "de-DE"
 lang: "de"
 timezone: "Europe/Berlin"
