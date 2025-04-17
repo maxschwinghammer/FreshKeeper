@@ -436,7 +436,7 @@
     <string name="push_notifications">Erhalte Push-Benachrichtigungen</string>
     <string name="welcome_message">Willkommen bei FreshKeeper!</string>
     <string name="start_reducing_waste">Beginne noch heute damit, deine Lebensmittelabfälle zu reduzieren!</string>
-    <string name="view_personal_stats">Sehe deine eigenen Statistiken</string>
+    <string name="view_personal_stats">Analysiere deine Statistiken</string>
     <string name="check_current_inventory">Prüfe deine aktuellen Bestände</string>
     <string name="overview_expiring_products">Bekomme einen Überblick über ablaufende Produkte</string>
     <string name="manage_your_household">Verwalte deinen Haushalt</string>
