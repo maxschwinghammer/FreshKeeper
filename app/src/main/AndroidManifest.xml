@@ -77,6 +77,15 @@
                     android:host="freshkeeper.de"
                     android:pathPrefix="/invite" />
             </intent-filter>
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="freshkeeper.de"
+                    android:pathPrefix="/app" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".service.cropImage.CropImageActivity"
