@@ -7,6 +7,7 @@ data class FoodItem(
     val householdId: String,
     val name: String,
     val expiryTimestamp: Long,
+    val discardTimestamp: Long? = null,
     val quantity: Int,
     val unit: String,
     val storageLocation: String,
@@ -15,6 +16,8 @@ data class FoodItem(
     val thrownAway: Boolean,
     val imageId: String? = null,
     var daysDifference: Int = 0,
+    val nutriments: Nutriments? = null,
+    val nutriScore: String? = null,
 ) {
     constructor() : this(
         "",
@@ -22,6 +25,7 @@ data class FoodItem(
         "",
         "",
         "",
+        0L,
         0L,
         0,
         "",
@@ -31,5 +35,7 @@ data class FoodItem(
         false,
         "",
         0,
+        Nutriments(),
+        "",
     )
 }

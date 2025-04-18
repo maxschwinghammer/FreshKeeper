@@ -49,8 +49,8 @@ class HouseholdViewModel
         private val _mostWastedCategory = MutableLiveData<String>()
         val mostWastedCategory: LiveData<String> = _mostWastedCategory
 
-        private val _expiredDates = MutableLiveData<List<Long>>()
-        val expiredDates: LiveData<List<Long>> = _expiredDates
+        private val _discardedDates = MutableLiveData<List<Long>>()
+        val discardedDates: LiveData<List<Long>> = _discardedDates
 
         private val _averageNutriments = MutableLiveData<Nutriments>()
         val averageNutriments: LiveData<Nutriments> = _averageNutriments
@@ -66,19 +66,21 @@ class HouseholdViewModel
 
         init {
             getHousehold()
+            getFoodWasteData()
             _storyActivities.value =
                 listOf(
                     Activity(
                         id = "1",
                         userId = "1",
-                        type = "user_joined",
+                        type = "thrown_away",
                         userName = "Tim",
+                        productName = "Chips",
                         timestamp = System.currentTimeMillis(),
                     ),
                     Activity(
                         id = "2",
                         userId = "2",
-                        type = "add_product",
+                        type = "product_added",
                         userName = "Emma",
                         productName = "Eier",
                         timestamp = System.currentTimeMillis(),
@@ -92,6 +94,23 @@ class HouseholdViewModel
                         timestamp = System.currentTimeMillis(),
                     ),
                 )
+        }
+
+        private fun getFoodWasteData() {
+            launchCatching {
+                val expired = householdService.getExpiredProducts()
+                val allItems = householdService.getAllFoodItems()
+                val stats = householdService.calculateStatistics(expired, allItems)
+
+                _totalWaste.value = stats.totalWaste
+                _averageWaste.value = stats.averageWaste
+                _daysWithoutWaste.value = stats.daysWithoutWaste
+                _mostWastedItems.value = stats.mostWastedItems
+                _wasteReduction.value = stats.wasteReduction
+                _usedItemsPercentage.value = stats.usedItemsPercentage
+                _mostWastedCategory.value = stats.mostWastedCategory
+                _discardedDates.value = stats.discardedDates
+            }
         }
 
         private fun getHousehold() {
@@ -115,15 +134,6 @@ class HouseholdViewModel
                 householdService.getActivities(
                     onResult = { _activities.value = it },
                     onFailure = { Log.e("HouseholdViewModel", "Error loading activities") },
-                )
-                householdService.getFoodWasteData(
-                    onResult = { _totalWaste.value = it.size },
-                    onFailure = {
-                        Log.e(
-                            "HouseholdViewModel",
-                            "Error loading food waste data",
-                        )
-                    },
                 )
             }
         }

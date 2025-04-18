@@ -60,6 +60,7 @@ import com.freshkeeper.model.Member
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.service.convertBase64ToBitmap
+import com.freshkeeper.service.householdTypeMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -97,14 +98,6 @@ fun MembersSection(
     var showHouseholdTypeDialog by remember { mutableStateOf(false) }
     var showAddProductsDialog by remember { mutableStateOf(false) }
     var householdType by remember { mutableStateOf("") }
-
-    val householdTypeMap =
-        mapOf(
-            stringResource(R.string.family) to "Family",
-            stringResource(R.string.shared_apartment) to "Shared apartment",
-            stringResource(R.string.single_household) to "Single household",
-            stringResource(R.string.pair) to "Pair",
-        )
 
     val imageLoader =
         ImageLoader
@@ -547,7 +540,7 @@ fun MembersSection(
                                         Alignment.CenterHorizontally,
                                     ),
                             ) {
-                                Text(text = localName)
+                                Text(text = stringResource(localName))
                             }
                         }
                     }

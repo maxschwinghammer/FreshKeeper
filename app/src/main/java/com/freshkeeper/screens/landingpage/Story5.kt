@@ -20,7 +20,7 @@ import com.freshkeeper.screens.statistics.NutrimentsStatisticsSection
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun Story5() {
-    val expiredDates =
+    val discardedDates =
         listOf(
             System.currentTimeMillis() - 2 * 24 * 60 * 60 * 1000,
             System.currentTimeMillis() - 2 * 24 * 60 * 60 * 1000,
@@ -67,7 +67,7 @@ fun Story5() {
                     ) {
                         item {
                             FoodWasteBarChart(
-                                expiredDates,
+                                discardedDates,
                                 isStory = true,
                             )
                         }

@@ -8,5 +8,7 @@ data class Statistics(
     val wasteReduction: Int,
     val usedItemsPercentage: Int,
     val mostWastedCategory: String,
-    val expiredDates: List<Long>,
+    val discardedDates: List<Long>,
+    val averageNutriments: Nutriments? = null,
+    val averageNutriScore: String? = null,
 )

@@ -102,6 +102,7 @@ fun ProfileSettingsScreen(
                     modifier = Modifier.padding(16.dp),
                 )
                 LazyColumn(
+                    state = listState,
                     modifier =
                         Modifier
                             .fillMaxSize()

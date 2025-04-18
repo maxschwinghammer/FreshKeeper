@@ -225,8 +225,8 @@ class ProductServiceImpl
                 .addOnSuccessListener { querySnapshot ->
                     val document = querySnapshot.documents.firstOrNull()
                     if (document != null) {
-                        val updates =
-                            mapOf(
+                        val updates: MutableMap<String, Any> =
+                            mutableMapOf(
                                 "name" to productName,
                                 "quantity" to quantity,
                                 "unit" to unit,
@@ -236,6 +236,12 @@ class ProductServiceImpl
                                 "consumed" to isConsumedChecked,
                                 "thrownAway" to isThrownAwayChecked,
                             )
+
+                        if ((isConsumedChecked || isThrownAwayChecked) &&
+                            foodItem.discardTimestamp == null
+                        ) {
+                            updates["discardTimestamp"] = System.currentTimeMillis()
+                        }
 
                         document.reference
                             .update(updates)
@@ -274,7 +280,8 @@ class ProductServiceImpl
                                                         when {
                                                             isConsumedChecked -> "consumed"
                                                             isThrownAwayChecked -> "thrown_away"
-                                                            changedFields.size == 1 -> changedFields.first()
+                                                            changedFields.size == 1 ->
+                                                                changedFields.first()
                                                             else -> "edit"
                                                         }
                                                     logActivity(

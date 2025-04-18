@@ -1,24 +1,18 @@
 package com.freshkeeper.screens.statistics
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,8 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -44,25 +36,15 @@ import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
-import com.freshkeeper.service.share.ShareService
-import com.freshkeeper.service.share.ShareServiceImpl
-import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
-import com.freshkeeper.ui.theme.ComponentBackgroundColor
-import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
-import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
-import com.freshkeeper.ui.theme.WhiteColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun StatisticsScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
     val householdViewModel: HouseholdViewModel = hiltViewModel()
-
-    val context = LocalContext.current
-    val shareService: ShareService = ShareServiceImpl(context)
 
     val listState = rememberLazyListState()
     val showTransition by remember {
@@ -83,7 +65,7 @@ fun StatisticsScreen(navController: NavHostController) {
             householdViewModel.wasteReduction.observeAsState(0).value,
             householdViewModel.usedItemsPercentage.observeAsState(0).value,
             householdViewModel.mostWastedCategory.observeAsState("N/A").value,
-            householdViewModel.expiredDates.observeAsState(emptyList()).value,
+            householdViewModel.discardedDates.observeAsState(emptyList()).value,
         )
 
     FreshKeeperTheme {
@@ -122,6 +104,7 @@ fun StatisticsScreen(navController: NavHostController) {
                     )
                     Box(modifier = Modifier.weight(1f)) {
                         LazyColumn(
+                            state = listState,
                             modifier =
                                 Modifier
                                     .fillMaxWidth()
@@ -130,166 +113,11 @@ fun StatisticsScreen(navController: NavHostController) {
                             verticalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
                             item {
-                                Column(
-                                    modifier =
-                                        Modifier
-                                            .fillMaxWidth()
-                                            .wrapContentHeight()
-                                            .clip(RoundedCornerShape(10.dp))
-                                            .border(
-                                                1.dp,
-                                                ComponentStrokeColor,
-                                                RoundedCornerShape(10.dp),
-                                            ).padding(16.dp),
-                                ) {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                    ) {
-                                        Text(
-                                            text = stringResource(R.string.food_waste_summary),
-                                            fontSize = 16.sp,
-                                            fontWeight = FontWeight.Bold,
-                                            color = AccentTurquoiseColor,
-                                            modifier = Modifier.weight(1f).padding(bottom = 8.dp),
-                                        )
-                                        Image(
-                                            painter = painterResource(R.drawable.share),
-                                            contentDescription = "Share",
-                                            modifier =
-                                                Modifier
-                                                    .size(20.dp)
-                                                    .clickable {
-                                                        shareService.shareStatistics(statistics)
-                                                    },
-                                        )
-                                    }
-                                    Text(
-                                        text =
-                                            stringResource(R.string.total_food_waste) + ": " +
-                                                statistics.totalWaste + " " +
-                                                stringResource(R.string.items),
-                                        color = TextColor,
-                                        fontSize = 14.sp,
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        text =
-                                            stringResource(R.string.average_food_waste) +
-                                                ": ${"%.2f".format(statistics.averageWaste)} " +
-                                                stringResource(R.string.items),
-                                        color = TextColor,
-                                        fontSize = 14.sp,
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        text =
-                                            stringResource(R.string.days_without_waste) + ": " +
-                                                statistics.daysWithoutWaste + " " +
-                                                stringResource(R.string.days),
-                                        color = TextColor,
-                                        fontSize = 14.sp,
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
-
-                                    if (statistics.mostWastedItems.isNotEmpty()) {
-                                        Text(
-                                            text = stringResource(R.string.most_wasted_food_items) + ":",
-                                            color = TextColor,
-                                            fontSize = 14.sp,
-                                        )
-                                        Spacer(modifier = Modifier.height(4.dp))
-
-                                        statistics.mostWastedItems.forEach { (item, count) ->
-                                            Row(
-                                                modifier =
-                                                    Modifier
-                                                        .padding(bottom = 8.dp)
-                                                        .fillMaxWidth(),
-                                                horizontalArrangement = Arrangement.SpaceBetween,
-                                            ) {
-                                                Box(
-                                                    modifier =
-                                                        Modifier
-                                                            .clip(
-                                                                RoundedCornerShape(
-                                                                    topStart = 10.dp,
-                                                                    bottomStart = 10.dp,
-                                                                ),
-                                                            ).weight(1f)
-                                                            .background(WhiteColor)
-                                                            .padding(
-                                                                horizontal = 10.dp,
-                                                                vertical = 2.dp,
-                                                            ),
-                                                ) {
-                                                    if (item != null) {
-                                                        Text(
-                                                            text = item,
-                                                            style = MaterialTheme.typography.labelLarge,
-                                                            color = ComponentBackgroundColor,
-                                                            maxLines = 1,
-                                                        )
-                                                    }
-                                                }
-
-                                                Box(
-                                                    modifier =
-                                                        Modifier
-                                                            .clip(
-                                                                RoundedCornerShape(
-                                                                    topEnd = 10.dp,
-                                                                    bottomEnd = 10.dp,
-                                                                ),
-                                                            ).weight(1f)
-                                                            .background(GreyColor)
-                                                            .padding(
-                                                                horizontal = 10.dp,
-                                                                vertical = 2.dp,
-                                                            ),
-                                                    contentAlignment = Alignment.Center,
-                                                ) {
-                                                    if (count != null) {
-                                                        Text(
-                                                            text = count,
-                                                            style = MaterialTheme.typography.labelLarge,
-                                                            color = TextColor,
-                                                            maxLines = 1,
-                                                        )
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                    }
-                                    Text(
-                                        text =
-                                            stringResource(R.string.waste_reduction) +
-                                                ": " + statistics.wasteReduction + " %",
-                                        color = TextColor,
-                                        fontSize = 14.sp,
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        text =
-                                            stringResource(R.string.used_items_percentage) +
-                                                " " + statistics.usedItemsPercentage + " %",
-                                        color = TextColor,
-                                        fontSize = 14.sp,
-                                    )
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                    Text(
-                                        text =
-                                            stringResource(R.string.most_wasted_category) + ": " +
-                                                statistics.mostWastedCategory,
-                                        color = TextColor,
-                                        fontSize = 14.sp,
-                                    )
-                                }
+                                FoodWasteSummary(statistics)
                             }
                             item {
-                                if (statistics.expiredDates.isNotEmpty()) {
-                                    FoodWasteBarChart(statistics.expiredDates)
+                                if (statistics.discardedDates.isNotEmpty()) {
+                                    FoodWasteBarChart(statistics.discardedDates)
                                 }
                             }
                             item {

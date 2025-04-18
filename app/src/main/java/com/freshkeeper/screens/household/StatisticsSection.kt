@@ -34,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.freshkeeper.R
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
+import com.freshkeeper.service.categoryMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -53,6 +54,7 @@ fun StatisticsSection(navController: NavController) {
     val mostWastedItems by viewModel.mostWastedItems.observeAsState(emptyList())
     val wasteReduction by viewModel.wasteReduction.observeAsState(0)
     val usedItemsPercentage by viewModel.usedItemsPercentage.observeAsState(0)
+    val mostWastedCategory by viewModel.mostWastedCategory.observeAsState("N/A")
 
     Card(
         modifier =
@@ -173,16 +175,17 @@ fun StatisticsSection(navController: NavController) {
             }
             Text(
                 text =
-                    stringResource(R.string.waste_reduction) +
-                        ": " + wasteReduction + "%",
+                    stringResource(R.string.used_items_percentage) +
+                        " " + usedItemsPercentage + "%",
                 color = TextColor,
                 fontSize = 14.sp,
             )
             Spacer(modifier = Modifier.height(4.dp))
+            val categoryRes = categoryMap[mostWastedCategory] ?: R.string.other
             Text(
                 text =
-                    stringResource(R.string.used_items_percentage) +
-                        " " + usedItemsPercentage + "%",
+                    stringResource(R.string.most_wasted_category) + ": " +
+                        stringResource(categoryRes),
                 color = TextColor,
                 fontSize = 14.sp,
             )

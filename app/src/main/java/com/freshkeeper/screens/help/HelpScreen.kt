@@ -5,10 +5,8 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -19,6 +17,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -33,6 +32,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.navigation.BottomNavigationBar
+import com.freshkeeper.screens.LowerTransition
+import com.freshkeeper.screens.UpperTransition
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
@@ -59,6 +60,16 @@ fun HelpScreen(navController: NavHostController) {
         )
 
     val listState = rememberLazyListState()
+    val showUpperTransition by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0
+        }
+    }
+    val showLowerTransition by remember {
+        derivedStateOf {
+            listState.layoutInfo.visibleItemsInfo.size < faqList.size
+        }
+    }
 
     FreshKeeperTheme {
         Scaffold(
@@ -92,10 +103,9 @@ fun HelpScreen(navController: NavHostController) {
                         fontWeight = FontWeight.Bold,
                         color = TextColor,
                     )
-
                     LazyColumn(
                         state = listState,
-                        modifier = Modifier.height(500.dp).fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         itemsIndexed(faqList) { index, (question, answer) ->
                             FAQAccordion(
@@ -108,12 +118,19 @@ fun HelpScreen(navController: NavHostController) {
                             )
                         }
                     }
-
-                    Spacer(modifier = Modifier.weight(1f))
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        if (showUpperTransition) {
+                            UpperTransition()
+                        }
+                        if (showLowerTransition) {
+                            LowerTransition(modifier = Modifier.align(Alignment.BottomCenter))
+                        }
+                    }
 
                     Column(
                         modifier =
                             Modifier
+                                .weight(1f)
                                 .fillMaxWidth()
                                 .background(ComponentBackgroundColor, RoundedCornerShape(10.dp))
                                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))

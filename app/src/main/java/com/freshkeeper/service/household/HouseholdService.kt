@@ -5,6 +5,7 @@ import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.Member
 import com.freshkeeper.model.ProfilePicture
+import com.freshkeeper.model.Statistics
 import com.freshkeeper.model.User
 import kotlinx.coroutines.CoroutineScope
 
@@ -32,10 +33,14 @@ interface HouseholdService {
         onFailure: (Exception) -> Unit,
     )
 
-    suspend fun getFoodWasteData(
-        onResult: (List<FoodItem>) -> Unit,
-        onFailure: (Exception) -> Unit,
-    )
+    suspend fun getExpiredProducts(): List<FoodItem>
+
+    suspend fun getAllFoodItems(): List<FoodItem>
+
+    suspend fun calculateStatistics(
+        expired: List<FoodItem>,
+        allItems: List<FoodItem>,
+    ): Statistics
 
     suspend fun removeActivity(
         activity: Activity,

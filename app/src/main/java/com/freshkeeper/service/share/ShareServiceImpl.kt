@@ -8,13 +8,16 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -23,6 +26,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +39,7 @@ import androidx.core.content.FileProvider
 import androidx.core.view.drawToBitmap
 import com.freshkeeper.R
 import com.freshkeeper.model.Statistics
+import com.freshkeeper.service.categoryMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
@@ -41,6 +49,9 @@ import com.freshkeeper.ui.theme.WhiteColor
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileOutputStream
+import java.time.Instant
+import java.time.LocalDate
+import java.time.ZoneId
 import javax.inject.Inject
 
 class ShareServiceImpl
@@ -84,7 +95,7 @@ class ShareServiceImpl
             return bitmap
         }
 
-        override fun shareStatistics(statistics: Statistics) {
+        override fun shareFoodWasteSummary(statistics: Statistics) {
             val bitmap =
                 captureStatisticsBitmap {
                     FreshKeeperTheme {
@@ -93,7 +104,7 @@ class ShareServiceImpl
                                 Modifier
                                     .fillMaxWidth()
                                     .wrapContentHeight()
-                                    .clip(RoundedCornerShape(10.dp))
+                                    .background(ComponentBackgroundColor, RoundedCornerShape(10.dp))
                                     .padding(16.dp),
                             verticalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
@@ -189,25 +200,130 @@ class ShareServiceImpl
                             }
                             Text(
                                 text =
-                                    stringResource(R.string.waste_reduction) + ": " +
-                                        statistics.wasteReduction + "%",
-                                color = TextColor,
-                                fontSize = 14.sp,
-                            )
-                            Text(
-                                text =
                                     stringResource(R.string.used_items_percentage) + " " +
                                         statistics.usedItemsPercentage + "%",
                                 color = TextColor,
                                 fontSize = 14.sp,
                             )
+                            val categoryRes =
+                                categoryMap[statistics.mostWastedCategory]
+                                    ?: R.string.other
                             Text(
                                 text =
-                                    stringResource(R.string.most_wasted_category) + ": " +
-                                        statistics.mostWastedCategory,
+                                    stringResource(R.string.most_wasted_category) +
+                                        ": " + stringResource(categoryRes),
                                 color = TextColor,
                                 fontSize = 14.sp,
                             )
+                        }
+                    }
+                }
+            val uri = saveBitmapToCache(bitmap)
+            val message = context.getString(R.string.share_statistics_message)
+            val intent =
+                Intent(Intent.ACTION_SEND).apply {
+                    type = "image/png"
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    putExtra(Intent.EXTRA_TEXT, message)
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                }
+            context.startActivity(Intent.createChooser(intent, "Share Image"))
+        }
+
+        override fun shareFoodWasteBarChart(discardedDates: List<Long>) {
+            val today = LocalDate.now()
+            val last30Days = (0 until 30).map { today.minusDays(it.toLong()) }.reversed()
+            val counts =
+                last30Days.map { day ->
+                    discardedDates.count { epoch ->
+                        Instant.ofEpochMilli(epoch).atZone(ZoneId.systemDefault()).toLocalDate() == day
+                    }
+                }
+            val maxCount = counts.maxOrNull()?.takeIf { it > 0 } ?: 1
+            val bitmap =
+                captureStatisticsBitmap {
+                    FreshKeeperTheme {
+                        Column(
+                            modifier =
+                                Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .background(ComponentBackgroundColor, RoundedCornerShape(10.dp))
+                                    .padding(16.dp),
+                        ) {
+                            Text(
+                                text =
+                                    stringResource(R.string.wasted_food_items) +
+                                        " - FreshKeeper",
+                                color = AccentTurquoiseColor,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.padding(bottom = 20.dp),
+                            )
+                            Canvas(modifier = Modifier.fillMaxWidth().height(200.dp)) {
+                                val leftMargin = 20.dp.toPx()
+                                val bottomMargin = 20.dp.toPx()
+                                val widthEffective = size.width - leftMargin
+                                val heightEffective = size.height - bottomMargin
+                                val barWidth = widthEffective / 30f
+                                drawLine(
+                                    color = WhiteColor,
+                                    start = Offset(leftMargin, 0f),
+                                    end = Offset(leftMargin, heightEffective),
+                                    strokeWidth = 2.dp.toPx(),
+                                )
+                                drawLine(
+                                    color = WhiteColor,
+                                    start = Offset(leftMargin, heightEffective),
+                                    end = Offset(size.width, heightEffective),
+                                    strokeWidth = 2.dp.toPx(),
+                                )
+                                val textPaint =
+                                    android.graphics.Paint().apply {
+                                        color = WhiteColor.toArgb()
+                                        textSize = 10.sp.toPx()
+                                        isAntiAlias = true
+                                    }
+                                counts.forEachIndexed { index, count ->
+                                    val barHeight = (count.toFloat() / maxCount) * heightEffective
+                                    drawRect(
+                                        color = AccentTurquoiseColor,
+                                        topLeft =
+                                            Offset(
+                                                leftMargin + index * barWidth,
+                                                heightEffective - barHeight,
+                                            ),
+                                        size = Size(barWidth * 0.8f, barHeight),
+                                    )
+                                }
+                                val dateFormatter =
+                                    java.time.format.DateTimeFormatter
+                                        .ofPattern("dd.MM")
+                                (0 until 30).forEach { index ->
+                                    if (index % 5 == 0) {
+                                        val x = leftMargin + index * barWidth + (barWidth * 0.8f) / 2
+                                        val dateLabel = dateFormatter.format(last30Days[index])
+                                        drawContext.canvas.nativeCanvas.drawText(
+                                            dateLabel,
+                                            x,
+                                            heightEffective + 15.dp.toPx(),
+                                            textPaint,
+                                        )
+                                    }
+                                }
+                                drawContext.canvas.nativeCanvas.drawText(
+                                    "0",
+                                    5.dp.toPx(),
+                                    heightEffective,
+                                    textPaint,
+                                )
+                                drawContext.canvas.nativeCanvas.drawText(
+                                    "$maxCount",
+                                    5.dp.toPx(),
+                                    textPaint.textSize,
+                                    textPaint,
+                                )
+                            }
                         }
                     }
                 }

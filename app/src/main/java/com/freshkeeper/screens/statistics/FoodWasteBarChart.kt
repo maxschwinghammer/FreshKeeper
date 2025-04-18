@@ -4,6 +4,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,12 +21,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
+import com.freshkeeper.service.share.ShareService
+import com.freshkeeper.service.share.ShareServiceImpl
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -37,14 +41,16 @@ import java.time.ZoneId
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun FoodWasteBarChart(
-    expiredDates: List<Long>,
+    discardedDates: List<Long>,
     isStory: Boolean = false,
 ) {
+    val context = LocalContext.current
+    val shareService: ShareService = ShareServiceImpl(context)
     val today = LocalDate.now()
     val last30Days = (0 until 30).map { today.minusDays(it.toLong()) }.reversed()
     val counts =
         last30Days.map { day ->
-            expiredDates.count { epoch ->
+            discardedDates.count { epoch ->
                 Instant.ofEpochMilli(epoch).atZone(ZoneId.systemDefault()).toLocalDate() == day
             }
         }
@@ -76,7 +82,10 @@ fun FoodWasteBarChart(
                     contentDescription = "Share",
                     modifier =
                         Modifier
-                            .size(20.dp),
+                            .size(20.dp)
+                            .clickable {
+                                shareService.shareFoodWasteBarChart(discardedDates)
+                            },
                 )
             }
         }

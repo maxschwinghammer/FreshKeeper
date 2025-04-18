@@ -9,6 +9,7 @@ import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.Member
 import com.freshkeeper.model.ProfilePicture
+import com.freshkeeper.model.Statistics
 import com.freshkeeper.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
@@ -206,30 +207,84 @@ class HouseholdServiceImpl
                 }.addOnFailureListener(onFailure)
         }
 
-        override suspend fun getFoodWasteData(
-            onResult: (List<FoodItem>) -> Unit,
-            onFailure: (Exception) -> Unit,
-        ) {
-            val query =
-                if (householdId != null) {
-                    firestore.collection("foodItems").whereEqualTo(
-                        "householdId",
-                        householdId,
-                    )
-                } else {
-                    firestore.collection("foodItems").whereEqualTo(
-                        "userId",
-                        userId,
-                    )
-                }
-
-            query
-                .whereEqualTo("thrownAway", true)
+        override suspend fun getExpiredProducts(): List<FoodItem> =
+            firestore
+                .collection("foodItems")
+                .whereEqualTo(
+                    if (householdId != null) "householdId" else "userId",
+                    householdId ?: userId,
+                ).whereEqualTo("thrownAway", true)
                 .get()
-                .addOnSuccessListener { documents ->
-                    val foodItems = documents.map { it.toObject(FoodItem::class.java) }
-                    onResult(foodItems)
-                }.addOnFailureListener(onFailure)
+                .await()
+                .map { it.toObject(FoodItem::class.java) }
+
+        override suspend fun getAllFoodItems(): List<FoodItem> =
+            firestore
+                .collection("foodItems")
+                .whereEqualTo(
+                    if (householdId != null) "householdId" else "userId",
+                    householdId ?: userId,
+                ).get()
+                .await()
+                .map { it.toObject(FoodItem::class.java) }
+
+        override suspend fun calculateStatistics(
+            expired: List<FoodItem>,
+            allItems: List<FoodItem>,
+        ): Statistics {
+            val totalWaste = expired.size
+            val firstDiscard = expired.minOfOrNull { it.discardTimestamp ?: it.expiryTimestamp }
+            val daysSpan =
+                (
+                    (
+                        System.currentTimeMillis() -
+                            (firstDiscard ?: System.currentTimeMillis())
+                    ) / 86_400_000
+                ).coerceAtLeast(1L)
+            val averageWaste = totalWaste.toFloat() / 30L
+            val wasteDays =
+                expired
+                    .map {
+                        (it.discardTimestamp ?: it.expiryTimestamp) / 86_400_000L
+                    }.toSet()
+            val daysWithoutWaste =
+                (0L until minOf(daysSpan, 30L)).count { day ->
+                    !wasteDays.contains(System.currentTimeMillis() / 86_400_000L - day)
+                }
+            val itemCounts = expired.groupingBy { it.id }.eachCount()
+            val topIds =
+                itemCounts.entries
+                    .sortedByDescending { it.value }
+                    .take(3)
+                    .map { it.key }
+                    .toSet()
+            val mostWastedItems = topIds.mapNotNull { id -> expired.find { it.id == id } }
+            val usedItemsPercentage =
+                (
+                    (
+                        allItems
+                            .count
+                            { !it.thrownAway }
+                            .toFloat() / allItems.size.coerceAtLeast(1)
+                    ) * 100
+                ).toInt()
+            val catCounts = expired.groupingBy { it.category }.eachCount()
+            val mostWastedCategory = catCounts.maxByOrNull { it.value }?.key.orEmpty()
+            val discardedDates =
+                allItems
+                    .filter { it.thrownAway && it.discardTimestamp != null }
+                    .mapNotNull { it.discardTimestamp }
+
+            return Statistics(
+                totalWaste = totalWaste,
+                averageWaste = averageWaste,
+                daysWithoutWaste = daysWithoutWaste,
+                mostWastedItems = mostWastedItems,
+                wasteReduction = 0,
+                usedItemsPercentage = usedItemsPercentage,
+                mostWastedCategory = mostWastedCategory,
+                discardedDates = discardedDates,
+            )
         }
 
         override suspend fun removeActivity(

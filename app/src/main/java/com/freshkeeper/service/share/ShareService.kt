@@ -10,5 +10,7 @@ interface ShareService {
 
     fun captureStatisticsBitmap(content: @Composable () -> Unit): Bitmap
 
-    fun shareStatistics(statistics: Statistics)
+    fun shareFoodWasteSummary(statistics: Statistics)
+
+    fun shareFoodWasteBarChart(discardedDates: List<Long>)
 }
