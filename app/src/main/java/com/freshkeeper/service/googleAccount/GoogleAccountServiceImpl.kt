@@ -21,6 +21,7 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential.Co
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.suspendCancellableCoroutine
 import java.time.LocalTime
@@ -30,12 +31,12 @@ import kotlin.coroutines.resume
 class GoogleAccountServiceImpl
     @Inject
     constructor(
+        @ApplicationContext private val context: Context,
         private val accountService: AccountService,
     ) : GoogleAccountService {
         private val firestore = FirebaseFirestore.getInstance()
 
         override suspend fun authenticateBiometric(
-            context: Context,
             activity: FragmentActivity,
             credential: Credential?,
         ): Boolean =
@@ -168,7 +169,6 @@ class GoogleAccountServiceImpl
 
         override suspend fun signInWithGoogle(
             credential: Credential,
-            context: Context,
             activity: FragmentActivity,
             onSuccess: () -> Unit,
             onError: (Int) -> Unit,
@@ -176,7 +176,7 @@ class GoogleAccountServiceImpl
             val isBiometricEnabled = runBlocking { accountService.getBiometricEnabled() }
 
             if (isBiometricEnabled) {
-                if (authenticateBiometric(context, activity, credential)) {
+                if (authenticateBiometric(activity, credential)) {
                     onSuccess()
                 } else {
                     onError(R.string.biometric_auth_failed)

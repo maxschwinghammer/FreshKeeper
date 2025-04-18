@@ -60,9 +60,10 @@ import com.freshkeeper.ui.theme.WhiteColor
 fun StatisticsScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
     val householdViewModel: HouseholdViewModel = hiltViewModel()
-    val shareService: ShareService = ShareServiceImpl()
 
     val context = LocalContext.current
+    val shareService: ShareService = ShareServiceImpl(context)
+
     val listState = rememberLazyListState()
     val showTransition by remember {
         derivedStateOf {
@@ -159,10 +160,7 @@ fun StatisticsScreen(navController: NavHostController) {
                                                 Modifier
                                                     .size(20.dp)
                                                     .clickable {
-                                                        shareService.shareStatistics(
-                                                            context,
-                                                            statistics,
-                                                        )
+                                                        shareService.shareStatistics(statistics)
                                                     },
                                         )
                                     }

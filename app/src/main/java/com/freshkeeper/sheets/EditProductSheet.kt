@@ -108,9 +108,9 @@ fun EditProductSheet(
     val selectedCategory = categoryMap[category.value] ?: R.string.dairy_goods
 
     var expiryDate by remember { mutableLongStateOf(foodItem.expiryTimestamp) }
-    val coroutineScope = rememberCoroutineScope()
-
     var foodItemPicture by remember { mutableStateOf<FoodItemPicture?>(null) }
+
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(foodItem.imageId) {
         foodItem.imageId?.let { imageId ->

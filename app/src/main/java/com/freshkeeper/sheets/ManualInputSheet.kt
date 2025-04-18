@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -58,15 +59,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.R
+import com.freshkeeper.model.ProductData
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
 import com.freshkeeper.screens.profileSettings.compressImage
 import com.freshkeeper.screens.profileSettings.convertBitmapToBase64
-import com.freshkeeper.service.account.AccountServiceImpl
 import com.freshkeeper.service.categoryMap
 import com.freshkeeper.service.categoryReverseMap
-import com.freshkeeper.service.productDetails.ProductDetailsServiceImpl
 import com.freshkeeper.service.storageLocationMap
 import com.freshkeeper.service.storageLocationReverseMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -84,6 +84,11 @@ fun ManualInputSheet(
     barcode: String,
     expiryTimestamp: Long,
     recognizedFoodName: String,
+    onFetchProductDataFromBarcode: (
+        barcode: String,
+        onSuccess: (ProductData) -> Unit,
+        onFailure: (Exception) -> Unit,
+    ) -> Unit,
     onAddProduct: (
         productName: String,
         barcode: String,
@@ -94,34 +99,39 @@ fun ManualInputSheet(
         category: String,
         image: String?,
         imageUrl: String,
-        householdId: String,
     ) -> Unit,
 ) {
     val context = LocalContext.current
-    val accountService = remember { AccountServiceImpl() }
-    val productDetailsService = remember { ProductDetailsServiceImpl(context) }
 
     var productName by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(expiryTimestamp) }
     var quantity by remember { mutableStateOf("") }
     val unit = remember { mutableStateOf("") }
     var imageUrl by remember { mutableStateOf("") }
-
-    val defaultImageRes = R.drawable.default_product_image
     var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var productData by remember { mutableStateOf<ProductData?>(null) }
 
     var showAddImageButton by remember { mutableStateOf(true) }
     var showImageComposable by remember { mutableStateOf(false) }
 
-    LaunchedEffect(barcode, recognizedFoodName) {
+    LaunchedEffect(barcode) {
         if (barcode.isNotEmpty()) {
-            val productData = productDetailsService.fetchProductDataFromBarcode(context, barcode)
-            productName = productData?.name ?: ""
-            quantity = productData?.quantity ?: ""
-            unit.value = productData?.unit ?: ""
-            imageUrl = productData?.imageUrl ?: ""
-            showImageComposable = true
-            showAddImageButton = false
+            onFetchProductDataFromBarcode(
+                barcode,
+                { data ->
+                    productData = data
+                    Log.d("ManualInputSheet", "Product data: $productData")
+
+                    productName = data.name ?: ""
+                    quantity = data.quantity ?: ""
+                    unit.value = data.unit ?: ""
+                    imageUrl = data.imageUrl ?: ""
+
+                    showImageComposable = true
+                    showAddImageButton = false
+                },
+                { e -> Log.e("ManualInputSheet", "Error fetching product data", e) },
+            )
         } else if (recognizedFoodName.isNotBlank()) {
             productName = recognizedFoodName
         }
@@ -324,7 +334,7 @@ fun ManualInputSheet(
                                 if (imageUrl.isNotEmpty()) {
                                     rememberAsyncImagePainter(imageUrl)
                                 } else {
-                                    painterResource(defaultImageRes)
+                                    painterResource(R.drawable.default_product_image)
                                 },
                             contentDescription = "Product Image",
                             contentScale = ContentScale.Fit,
@@ -386,32 +396,46 @@ fun ManualInputSheet(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            val enterProductName = stringResource(R.string.enter_product_name)
-            val selectExpiryDate = stringResource(R.string.select_expiry_date)
-            val enterQuantity = stringResource(R.string.enter_quantity)
-            val selectUnit = stringResource(R.string.select_unit)
-
             Button(
                 onClick = {
                     if (productName.isBlank()) {
-                        Toast.makeText(context, enterProductName, Toast.LENGTH_SHORT).show()
+                        Toast
+                            .makeText(
+                                context,
+                                context.getString(R.string.enter_product_name),
+                                Toast.LENGTH_SHORT,
+                            ).show()
                         return@Button
                     }
                     if (expiryDate == 0L) {
-                        Toast.makeText(context, selectExpiryDate, Toast.LENGTH_SHORT).show()
+                        Toast
+                            .makeText(
+                                context,
+                                context.getString(R.string.select_expiry_date),
+                                Toast.LENGTH_SHORT,
+                            ).show()
                         return@Button
                     }
                     if (quantity.isBlank() || quantity.toIntOrNull() == null || quantity.toInt() <= 0) {
-                        Toast.makeText(context, enterQuantity, Toast.LENGTH_SHORT).show()
+                        Toast
+                            .makeText(
+                                context,
+                                context.getString(R.string.enter_quantity),
+                                Toast.LENGTH_SHORT,
+                            ).show()
                         return@Button
                     }
                     if (unit.value.isBlank()) {
-                        Toast.makeText(context, selectUnit, Toast.LENGTH_SHORT).show()
+                        Toast
+                            .makeText(
+                                context,
+                                context.getString(R.string.select_unit),
+                                Toast.LENGTH_SHORT,
+                            ).show()
                         return@Button
                     }
 
                     coroutineScope.launch {
-                        val householdId = accountService.getHouseholdId()
                         val image =
                             imageUri?.let { uri ->
                                 compressImage(uri, context)?.let { bitmap ->
@@ -428,7 +452,6 @@ fun ManualInputSheet(
                             category.value,
                             image,
                             imageUrl,
-                            householdId,
                         )
                     }
                 },

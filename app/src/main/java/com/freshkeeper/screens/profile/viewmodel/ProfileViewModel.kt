@@ -1,6 +1,5 @@
 package com.freshkeeper.screens.profile.viewmodel
 
-import android.content.Context
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
@@ -44,8 +43,5 @@ class ProfileViewModel
             }
         }
 
-        fun formatMemberSince(
-            days: Long,
-            context: Context,
-        ): String = profileService.formatMemberSince(days, context)
+        fun formatMemberSince(days: Long): String = profileService.formatMemberSince(days)
     }

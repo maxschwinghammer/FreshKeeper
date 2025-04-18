@@ -125,7 +125,6 @@ fun SignUpScreen(
                         googleViewModel.onSignInWithGoogle(
                             credential,
                             navController,
-                            context,
                             activity,
                         )
                     }

@@ -1,6 +1,5 @@
 package com.freshkeeper.screens.authentication.viewmodel
 
-import android.content.Context
 import androidx.credentials.Credential
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavController
@@ -23,11 +22,10 @@ class GoogleViewModel
         fun onSignInWithGoogle(
             credential: Credential,
             navController: NavController,
-            context: Context,
             activity: FragmentActivity,
         ) {
             launchCatching {
-                googleAccountService.signInWithGoogle(credential, context, activity, {
+                googleAccountService.signInWithGoogle(credential, activity, {
                     navController.navigate("home") { launchSingleTop = true }
                 }, { _errorMessage.value = R.string.biometric_auth_failed })
             }

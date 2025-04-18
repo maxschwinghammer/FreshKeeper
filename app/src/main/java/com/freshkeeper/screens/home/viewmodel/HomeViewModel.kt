@@ -1,15 +1,16 @@
 package com.freshkeeper.screens.home.viewmodel
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodItemPicture
+import com.freshkeeper.model.ProductData
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.service.household.HouseholdService
 import com.freshkeeper.service.membership.MembershipService
 import com.freshkeeper.service.product.ProductService
+import com.freshkeeper.service.productDetails.ProductDetailsService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
@@ -21,6 +22,7 @@ class HomeViewModel
         private val householdService: HouseholdService,
         private val membershipService: MembershipService,
         private val productService: ProductService,
+        private val productDetailsService: ProductDetailsService,
     ) : AppViewModel() {
         private val _allFoodItems = MutableLiveData<List<FoodItem>>()
         val allFoodItems: LiveData<List<FoodItem>> = _allFoodItems
@@ -34,10 +36,14 @@ class HomeViewModel
         private val _isMember = MutableLiveData<Boolean>()
         val isMember: LiveData<Boolean> = _isMember
 
+        private val _householdId = MutableLiveData<String>()
+        val householdId: LiveData<String> = _householdId
+
         init {
             launchCatching {
                 getFoodItems()
                 checkMembershipStatus()
+                getHouseholdId()
             }
         }
 
@@ -63,6 +69,27 @@ class HomeViewModel
             }
         }
 
+        private fun getHouseholdId() {
+            launchCatching {
+                householdService.getHouseholdId(
+                    onResult = { householdId ->
+                        _householdId.value = householdId
+                    },
+                )
+            }
+        }
+
+        suspend fun fetchProductDataFromBarcode(
+            barcode: String,
+            onSuccess: (ProductData) -> Unit,
+            onFailure: (Exception) -> Unit,
+        ): ProductData? =
+            productDetailsService.fetchProductDataFromBarcode(
+                barcode,
+                onSuccess,
+                onFailure,
+            )
+
         fun addProduct(
             productName: String,
             barcode: String,
@@ -76,7 +103,6 @@ class HomeViewModel
             householdId: String,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
-            context: Context,
         ) {
             launchCatching {
                 productService.addProduct(
@@ -98,7 +124,6 @@ class HomeViewModel
                     { e ->
                         Log.e("ProductService", "Error adding product", e)
                     },
-                    context,
                 )
             }
         }
@@ -115,7 +140,6 @@ class HomeViewModel
             isThrownAwayChecked: Boolean,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
-            context: Context,
         ) {
             launchCatching {
                 productService.updateProduct(
@@ -133,7 +157,6 @@ class HomeViewModel
                         updateItem(updatedItem)
                         onSuccess()
                     },
-                    context,
                 )
             }
         }

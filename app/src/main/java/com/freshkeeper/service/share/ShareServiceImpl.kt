@@ -38,17 +38,17 @@ import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.File
 import java.io.FileOutputStream
 import javax.inject.Inject
 
 class ShareServiceImpl
     @Inject
-    constructor() : ShareService {
-        override fun saveBitmapToCache(
-            context: Context,
-            bitmap: Bitmap,
-        ): Uri {
+    constructor(
+        @ApplicationContext private val context: Context,
+    ) : ShareService {
+        override fun saveBitmapToCache(bitmap: Bitmap): Uri {
             val cachePath = File(context.cacheDir, "images")
             cachePath.mkdirs()
             val file = File(cachePath, "image.png")
@@ -63,10 +63,7 @@ class ShareServiceImpl
             )
         }
 
-        override fun captureStatisticsBitmap(
-            context: Context,
-            content: @Composable () -> Unit,
-        ): Bitmap {
+        override fun captureStatisticsBitmap(content: @Composable () -> Unit): Bitmap {
             val composeView = ComposeView(context)
             composeView.setContent { content() }
             val parent =
@@ -87,12 +84,9 @@ class ShareServiceImpl
             return bitmap
         }
 
-        override fun shareStatistics(
-            context: Context,
-            statistics: Statistics,
-        ) {
+        override fun shareStatistics(statistics: Statistics) {
             val bitmap =
-                captureStatisticsBitmap(context) {
+                captureStatisticsBitmap {
                     FreshKeeperTheme {
                         Column(
                             modifier =
@@ -217,7 +211,7 @@ class ShareServiceImpl
                         }
                     }
                 }
-            val uri = saveBitmapToCache(context, bitmap)
+            val uri = saveBitmapToCache(bitmap)
             val message = context.getString(R.string.share_statistics_message)
             val intent =
                 Intent(Intent.ACTION_SEND).apply {

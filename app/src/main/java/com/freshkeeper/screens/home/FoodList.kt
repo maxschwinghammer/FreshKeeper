@@ -4,14 +4,14 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -30,7 +30,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
@@ -89,9 +88,6 @@ fun FoodList(
         items.forEach { (id, item, date) ->
             val safeId = id ?: ""
 
-            val isMultiLine = item.length > 20
-            val dynamicHeight = if (isMultiLine) 40.dp else Dp.Unspecified
-
             val rowModifier =
                 Modifier
                     .padding(bottom = 8.dp)
@@ -107,16 +103,16 @@ fun FoodList(
                         } else {
                             Modifier
                         },
-                    ).clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp))
-                    .clip(RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp))
+                    )
 
             Row(
-                modifier = rowModifier,
-                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = rowModifier.height(IntrinsicSize.Min),
             ) {
                 Box(
                     modifier =
                         Modifier
+                            .fillMaxHeight()
+                            .clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp))
                             .weight(1f)
                             .background(WhiteColor)
                             .padding(horizontal = 10.dp, vertical = 2.dp),
@@ -130,14 +126,14 @@ fun FoodList(
                         softWrap = true,
                     )
                 }
-
                 Box(
                     modifier =
                         Modifier
+                            .fillMaxHeight()
+                            .clip(RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp))
                             .weight(1f)
                             .background(GreyColor)
-                            .padding(horizontal = 10.dp, vertical = 2.dp)
-                            .heightIn(min = dynamicHeight),
+                            .padding(horizontal = 10.dp, vertical = 2.dp),
                     contentAlignment = Alignment.Center,
                 ) {
                     Text(

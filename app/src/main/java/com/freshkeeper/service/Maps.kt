@@ -113,3 +113,18 @@ val drawableMap =
         "storage" to R.drawable.update,
         "category" to R.drawable.update,
     )
+
+val activityTypeMap =
+    mapOf(
+        "consumed" to R.string.activity_consumed,
+        "thrown_away" to R.string.activity_thrown_away,
+        "name" to R.string.activity_name_changed,
+        "quantity_increased" to R.string.activity_quantity_increased,
+        "quantity_decreased" to R.string.activity_quantity_decreased,
+        "expiry" to R.string.activity_expiry_changed,
+        "storage" to R.string.activity_storage_changed,
+        "category" to R.string.activity_category_changed,
+        "edit" to R.string.activity_edited,
+        "product_added" to R.string.activity_added,
+        "default" to R.string.activity_default,
+    )

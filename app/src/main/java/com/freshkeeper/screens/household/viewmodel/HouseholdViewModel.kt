@@ -25,6 +25,9 @@ class HouseholdViewModel
         private val _activities = MutableLiveData<List<Activity>?>()
         val activities: LiveData<List<Activity>?> = _activities
 
+        private val _storyActivities = MutableLiveData<List<Activity>?>()
+        val storyActivities: LiveData<List<Activity>?> = _storyActivities
+
         private val _totalWaste = MutableLiveData<Int>()
         val totalWaste: LiveData<Int> = _totalWaste
 
@@ -63,6 +66,32 @@ class HouseholdViewModel
 
         init {
             getHousehold()
+            _storyActivities.value =
+                listOf(
+                    Activity(
+                        id = "1",
+                        userId = "1",
+                        type = "user_joined",
+                        userName = "Tim",
+                        timestamp = System.currentTimeMillis(),
+                    ),
+                    Activity(
+                        id = "2",
+                        userId = "2",
+                        type = "add_product",
+                        userName = "Emma",
+                        productName = "Eier",
+                        timestamp = System.currentTimeMillis(),
+                    ),
+                    Activity(
+                        id = "3",
+                        userId = "3",
+                        type = "consumed",
+                        userName = "Paul",
+                        productName = "Milch",
+                        timestamp = System.currentTimeMillis(),
+                    ),
+                )
         }
 
         private fun getHousehold() {

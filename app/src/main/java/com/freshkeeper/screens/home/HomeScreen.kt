@@ -41,7 +41,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -77,6 +76,7 @@ fun HomeScreen(navController: NavHostController) {
     val viewModel: HomeViewModel = hiltViewModel()
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
 
+    val householdId by viewModel.householdId.observeAsState("")
     var scannedBarcode by remember { mutableStateOf("") }
     var recognizedFoodName by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
@@ -85,8 +85,6 @@ fun HomeScreen(navController: NavHostController) {
     val allFoodItems by viewModel.allFoodItems.observeAsState(emptyList())
 
     val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
-
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val editProductSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -348,6 +346,11 @@ fun HomeScreen(navController: NavHostController) {
                     barcode = scannedBarcode,
                     expiryTimestamp = expiryDate,
                     recognizedFoodName = recognizedFoodName,
+                    onFetchProductDataFromBarcode = { barcode, onSuccess, onFailure ->
+                        coroutineScope.launch {
+                            viewModel.fetchProductDataFromBarcode(barcode, onSuccess, onFailure)
+                        }
+                    },
                     onAddProduct = {
                         name,
                         barcode,
@@ -358,9 +361,7 @@ fun HomeScreen(navController: NavHostController) {
                         category,
                         image,
                         imageUrl,
-                        householdId,
                         ->
-
                         viewModel.addProduct(
                             name,
                             barcode,
@@ -374,7 +375,6 @@ fun HomeScreen(navController: NavHostController) {
                             householdId,
                             coroutineScope,
                             { coroutineScope.launch { manualInputSheetState.hide() } },
-                            context,
                         )
                     },
                 )
@@ -416,7 +416,6 @@ fun HomeScreen(navController: NavHostController) {
                                         editProductSheetState.hide()
                                     }
                                 },
-                                context,
                             )
                         },
                     )

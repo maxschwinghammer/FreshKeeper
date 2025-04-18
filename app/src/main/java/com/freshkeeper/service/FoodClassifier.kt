@@ -19,7 +19,7 @@ class FoodClassifier(
     private val labels: List<String> =
         try {
             FileUtil.loadLabels(context, "labels.txt")
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             emptyList()
         }
 

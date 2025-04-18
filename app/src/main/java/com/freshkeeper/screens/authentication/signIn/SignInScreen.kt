@@ -56,7 +56,7 @@ fun SignInScreen(
 
     LaunchedEffect(Unit) {
         launchCredManBottomSheet(context) { result ->
-            googleViewModel.onSignInWithGoogle(result, navController, context, activity)
+            googleViewModel.onSignInWithGoogle(result, navController, activity)
         }
     }
 
@@ -122,7 +122,6 @@ fun SignInScreen(
                         googleViewModel.onSignInWithGoogle(
                             credential,
                             navController,
-                            context,
                             activity,
                         )
                     }

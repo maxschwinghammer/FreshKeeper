@@ -1,6 +1,5 @@
 package com.freshkeeper.screens.householdSettings.viewmodel
 
-import android.content.Context
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
@@ -38,14 +37,10 @@ class HouseholdSettingsViewModel
             }
         }
 
-        fun addUserById(
-            userId: String,
-            context: Context,
-        ) {
+        fun addUserById(userId: String) {
             launchCatching {
                 householdService.addUserById(
                     userId,
-                    context,
                     onSuccess = { user ->
                         _household.value =
                             _household.value.copy(
@@ -95,14 +90,10 @@ class HouseholdSettingsViewModel
             }
         }
 
-        fun joinHouseholdById(
-            householdId: String,
-            context: Context,
-        ) {
+        fun joinHouseholdById(householdId: String) {
             launchCatching {
                 householdService.joinHouseholdById(
                     householdId,
-                    context,
                     onSuccess = { joinedHousehold ->
                         _household.value = joinedHousehold
                     },

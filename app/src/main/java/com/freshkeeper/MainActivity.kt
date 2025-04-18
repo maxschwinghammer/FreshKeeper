@@ -15,6 +15,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
@@ -206,7 +207,8 @@ class MainActivity : FragmentActivity() {
 @Composable
 fun FreshKeeperApp(onLocaleChange: (String) -> Unit) {
     val navController = rememberNavController()
-    val accountService = remember { AccountServiceImpl() }
+    val context = LocalContext.current
+    val accountService = remember { AccountServiceImpl(context) }
     NavigationHost(
         navController,
         accountService = accountService,

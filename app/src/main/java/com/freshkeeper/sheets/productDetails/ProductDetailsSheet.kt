@@ -28,15 +28,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.ProductDetails
-import com.freshkeeper.service.productDetails.ProductDetailsServiceImpl
+import com.freshkeeper.sheets.productDetails.viewmodel.ProductDetailsViewModel
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -53,16 +53,15 @@ fun ProductDetailsSheet(
     editProductSheetState: SheetState,
     foodItem: FoodItem,
 ) {
-    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val productDetails = remember { mutableStateOf<ProductDetails?>(null) }
     val isLoading = remember { mutableStateOf(true) }
-    val productDetailsService = remember { ProductDetailsServiceImpl(context) }
+    val viewModel: ProductDetailsViewModel = hiltViewModel()
 
     LaunchedEffect(Unit) {
         productDetails.value =
             foodItem.barcode?.let {
-                productDetailsService.fetchProductDetails(it)
+                viewModel.fetchProductDetails(it)
             }
         isLoading.value = false
     }

@@ -13,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -32,7 +31,6 @@ fun DownloadDataCard(
     viewModel: ProfileSettingsViewModel,
 ) {
     var showDialog by remember { mutableStateOf(false) }
-    val context = LocalContext.current
 
     if (showDialog) {
         AlertDialog(
@@ -56,7 +54,7 @@ fun DownloadDataCard(
             confirmButton = {
                 Button(
                     onClick = {
-                        viewModel.downloadUserData(userId, context)
+                        viewModel.downloadUserData(userId)
                         showDialog = false
                     },
                     colors =

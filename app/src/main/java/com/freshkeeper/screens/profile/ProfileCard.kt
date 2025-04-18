@@ -22,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,11 +41,10 @@ fun ProfileCard(
     profilePicture: ProfilePicture?,
 ) {
     val profileViewModel: ProfileViewModel = hiltViewModel()
-    val context = LocalContext.current
 
     val memberSince =
         profileViewModel.memberSinceDays.collectAsState().value.let {
-            profileViewModel.formatMemberSince(it, context)
+            profileViewModel.formatMemberSince(it)
         }
 
     Card(

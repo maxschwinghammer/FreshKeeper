@@ -22,7 +22,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -70,8 +69,6 @@ fun HouseholdSettingsScreen(
     val qrCodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val inviteSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val addUserByIdSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-    val context = LocalContext.current
 
     FreshKeeperTheme {
         Scaffold(
@@ -131,7 +128,6 @@ fun HouseholdSettingsScreen(
                                     JoinHouseholdCard(onJoinHouseholdClick = { householdId ->
                                         viewModel.joinHouseholdById(
                                             householdId,
-                                            context,
                                         )
                                     })
                                 }
@@ -178,7 +174,6 @@ fun HouseholdSettingsScreen(
                 AddUserByIdSheet(addUserByIdSheetState) { userId ->
                     viewModel.addUserById(
                         userId,
-                        context,
                     )
                 }
             }

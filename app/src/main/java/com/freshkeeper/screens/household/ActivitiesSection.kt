@@ -41,8 +41,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.freshkeeper.R
-import com.freshkeeper.model.Activity
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
+import com.freshkeeper.service.activityTypeMap
 import com.freshkeeper.service.drawableMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
@@ -57,39 +57,9 @@ import kotlinx.coroutines.launch
 fun ActivitiesSection(isStory: Boolean = false) {
     val viewModel: HouseholdViewModel = hiltViewModel()
     val coroutineScope = rememberCoroutineScope()
+
     val activities by viewModel.activities.observeAsState(emptyList())
-
-    val storyActivities =
-        listOf(
-            Activity(
-                id = "1",
-                userId = "1",
-                type = "user_joined",
-                textResId = R.string.activity_user_joined,
-                userName = "Tim",
-                timestamp = System.currentTimeMillis(),
-            ),
-            Activity(
-                id = "2",
-                userId = "2",
-                type = "add_product",
-                textResId = R.string.activity_added,
-                userName = "Emma",
-                productName = "Eier",
-                timestamp = System.currentTimeMillis(),
-            ),
-            Activity(
-                id = "3",
-                userId = "3",
-                type = "consumed",
-                textResId = R.string.activity_consumed,
-                userName = "Paul",
-                productName = "Milch",
-                timestamp = System.currentTimeMillis(),
-            ),
-        )
-
-    fun getDrawableId(imageId: String): Int = drawableMap[imageId] ?: R.drawable.plus
+    val storyActivities by viewModel.storyActivities.observeAsState(emptyList())
 
     if (isStory) {
         Card(
@@ -110,10 +80,10 @@ fun ActivitiesSection(isStory: Boolean = false) {
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(bottom = 8.dp),
                 )
-                storyActivities.forEach { activity ->
+                storyActivities?.forEach { activity ->
                     val message =
                         stringResource(
-                            id = activity.textResId,
+                            id = activityTypeMap[activity.type] ?: R.string.activity_default,
                             activity.userName,
                             activity.productName ?: "",
                             activity.oldProductName ?: "",
@@ -130,7 +100,10 @@ fun ActivitiesSection(isStory: Boolean = false) {
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
-                            painter = painterResource(id = getDrawableId(activity.type)),
+                            painter =
+                                painterResource(
+                                    id = drawableMap[activity.type] ?: R.drawable.plus,
+                                ),
                             contentDescription = null,
                             tint = WhiteColor,
                             modifier = Modifier.size(15.dp),
@@ -174,7 +147,7 @@ fun ActivitiesSection(isStory: Boolean = false) {
                 activities?.forEach { activity ->
                     val message =
                         stringResource(
-                            id = activity.textResId,
+                            id = activityTypeMap[activity.type] ?: R.string.activity_default,
                             activity.userName,
                             activity.productName ?: "",
                             activity.oldProductName ?: "",
@@ -240,7 +213,10 @@ fun ActivitiesSection(isStory: Boolean = false) {
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Icon(
-                                painter = painterResource(id = getDrawableId(activity.type)),
+                                painter =
+                                    painterResource(
+                                        id = drawableMap[activity.type] ?: R.drawable.plus,
+                                    ),
                                 contentDescription = null,
                                 tint = WhiteColor,
                                 modifier = Modifier.size(15.dp),

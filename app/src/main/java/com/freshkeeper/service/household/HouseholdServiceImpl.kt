@@ -14,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,7 +26,9 @@ import javax.inject.Inject
 
 class HouseholdServiceImpl
     @Inject
-    constructor() : HouseholdService {
+    constructor(
+        @ApplicationContext private val context: Context,
+    ) : HouseholdService {
         private val firestore = FirebaseFirestore.getInstance()
         private val userId = FirebaseAuth.getInstance().currentUser?.uid
         private var householdId: String? = null
@@ -74,7 +77,7 @@ class HouseholdServiceImpl
                 }
         }
 
-        override suspend fun getHouseholdId(onResult: (String?) -> Unit) {
+        override suspend fun getHouseholdId(onResult: (String) -> Unit) {
             if (userId == null) {
                 return
             }
@@ -85,7 +88,7 @@ class HouseholdServiceImpl
                 .get()
                 .addOnSuccessListener { document ->
                     householdId = document.getString("householdId")
-                    onResult(householdId)
+                    householdId?.let { onResult(it) }
                 }
         }
 
@@ -481,7 +484,6 @@ class HouseholdServiceImpl
 
         override suspend fun addUserById(
             userId: String,
-            context: Context,
             onSuccess: (User) -> Unit,
         ) {
             val userSnapshot =
@@ -518,12 +520,16 @@ class HouseholdServiceImpl
                 onSuccess(user)
             }
 
-            Toast.makeText(context, context.getString(R.string.user_added), Toast.LENGTH_SHORT).show()
+            Toast
+                .makeText(
+                    context,
+                    context.getString(R.string.user_added),
+                    Toast.LENGTH_SHORT,
+                ).show()
         }
 
         override suspend fun joinHouseholdById(
             householdId: String,
-            context: Context,
             onSuccess: (Household) -> Unit,
         ) {
             try {
@@ -535,7 +541,12 @@ class HouseholdServiceImpl
                         .await()
 
                 if (!householdSnapshot.exists()) {
-                    Toast.makeText(context, context.getString(R.string.user_not_found), Toast.LENGTH_SHORT).show()
+                    Toast
+                        .makeText(
+                            context,
+                            context.getString(R.string.user_not_found),
+                            Toast.LENGTH_SHORT,
+                        ).show()
                     return
                 }
 
@@ -585,7 +596,9 @@ class HouseholdServiceImpl
                 when (newType) {
                     "Single household" -> {
                         val usersToRemove = users.filter { it != ownerId && it != selectedUser }
-                        val householdIdNonNull = householdId ?: throw IllegalStateException("Household ID is null")
+                        val householdIdNonNull =
+                            householdId
+                                ?: throw IllegalStateException("Household ID is null")
                         batch.update(
                             firestore.collection("households").document(householdIdNonNull),
                             "users",
@@ -621,7 +634,9 @@ class HouseholdServiceImpl
                     "Pair" ->
                         if (selectedUser != null) {
                             val usersToRemove = users.filter { it != ownerId && it != selectedUser }
-                            val householdIdNonNull = householdId ?: throw IllegalStateException("Household ID is null")
+                            val householdIdNonNull =
+                                householdId
+                                    ?: throw IllegalStateException("Household ID is null")
 
                             batch.update(
                                 firestore.collection("households").document(householdIdNonNull),

@@ -1,6 +1,5 @@
 package com.freshkeeper.service.household
 
-import android.content.Context
 import com.freshkeeper.model.Activity
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
@@ -12,7 +11,7 @@ import kotlinx.coroutines.CoroutineScope
 interface HouseholdService {
     suspend fun getHousehold(onResult: (Household) -> Unit)
 
-    suspend fun getHouseholdId(onResult: (String?) -> Unit)
+    suspend fun getHouseholdId(onResult: (String) -> Unit)
 
     suspend fun updateHouseholdName(newName: String)
 
@@ -64,13 +63,11 @@ interface HouseholdService {
 
     suspend fun addUserById(
         userId: String,
-        context: Context,
         onSuccess: (User) -> Unit,
     )
 
     suspend fun joinHouseholdById(
         householdId: String,
-        context: Context,
         onSuccess: (Household) -> Unit,
     )
 

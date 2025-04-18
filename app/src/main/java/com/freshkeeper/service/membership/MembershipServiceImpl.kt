@@ -23,7 +23,7 @@ class MembershipServiceImpl
                         .get()
                         .await()
                 membershipDoc.toObject(Membership::class.java) ?: Membership()
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 Membership()
             }
         }
@@ -32,7 +32,7 @@ class MembershipServiceImpl
             try {
                 val membership = getMembershipStatus()
                 membership.hasPremium && (membership.endDate ?: 0) > System.currentTimeMillis()
-            } catch (e: Exception) {
+            } catch (_: Exception) {
                 false
             }
 

@@ -1,14 +1,16 @@
 package com.freshkeeper.screens.inventory.viewmodel
 
-import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodItemPicture
+import com.freshkeeper.model.ProductData
 import com.freshkeeper.screens.AppViewModel
+import com.freshkeeper.service.household.HouseholdService
 import com.freshkeeper.service.inventory.InventoryService
 import com.freshkeeper.service.product.ProductService
+import com.freshkeeper.service.productDetails.ProductDetailsService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
@@ -19,6 +21,8 @@ class InventoryViewModel
     constructor(
         private val inventoryService: InventoryService,
         private val productService: ProductService,
+        private val productDetailsService: ProductDetailsService,
+        private val householdService: HouseholdService,
     ) : AppViewModel() {
         private val _foodItems = MutableLiveData<List<FoodItem>>()
         val foodItems: LiveData<List<FoodItem>> = _foodItems
@@ -56,6 +60,9 @@ class InventoryViewModel
         private val _otherItems = MutableLiveData<List<FoodItem>>(emptyList())
         val otherItems: LiveData<List<FoodItem>> = _otherItems
 
+        private val _householdId = MutableLiveData<String>()
+        val householdId: LiveData<String> = _householdId
+
         init {
             getStorageLocationItems("fridge", _fridgeItems)
             getStorageLocationItems("cupboard", _cupboardItems)
@@ -68,6 +75,17 @@ class InventoryViewModel
             getStorageLocationItems("fruit_basket", _fruitBasketItems)
             getStorageLocationItems("other", _otherItems)
             getAllFoodItems()
+            getHouseholdId()
+        }
+
+        private fun getHouseholdId() {
+            launchCatching {
+                householdService.getHouseholdId(
+                    onResult = { householdId ->
+                        _householdId.value = householdId
+                    },
+                )
+            }
         }
 
         private fun getAllFoodItems() {
@@ -120,6 +138,17 @@ class InventoryViewModel
             }
         }
 
+        suspend fun fetchProductDataFromBarcode(
+            barcode: String,
+            onSuccess: (ProductData) -> Unit,
+            onFailure: (Exception) -> Unit,
+        ): ProductData? =
+            productDetailsService.fetchProductDataFromBarcode(
+                barcode,
+                onSuccess,
+                onFailure,
+            )
+
         fun addProduct(
             productName: String,
             barcode: String,
@@ -133,7 +162,6 @@ class InventoryViewModel
             householdId: String,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
-            context: Context,
         ) {
             launchCatching {
                 productService.addProduct(
@@ -167,7 +195,6 @@ class InventoryViewModel
                     { e ->
                         Log.e("ProductService", "Error adding product", e)
                     },
-                    context,
                 )
             }
         }
@@ -184,7 +211,6 @@ class InventoryViewModel
             isThrownAwayChecked: Boolean,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
-            context: Context,
         ) {
             launchCatching {
                 productService.updateProduct(
@@ -207,7 +233,6 @@ class InventoryViewModel
                         updateStorageLists(updatedItem)
                         onSuccess()
                     },
-                    context,
                 )
             }
         }

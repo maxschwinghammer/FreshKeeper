@@ -19,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,8 +49,6 @@ fun HouseholdScreen(navController: NavHostController) {
     val household by householdSettingsViewModel.household.collectAsState(initial = Household())
 
     val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
-
     val inviteSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val qrCodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val addUserByIdSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -107,7 +104,6 @@ fun HouseholdScreen(navController: NavHostController) {
                                     onJoinHouseholdClick = { householdId ->
                                         householdSettingsViewModel.joinHouseholdById(
                                             householdId,
-                                            context,
                                         )
                                     },
                                     onAddProducts = { householdSettingsViewModel.addProducts() },
@@ -132,10 +128,7 @@ fun HouseholdScreen(navController: NavHostController) {
 
             if (addUserByIdSheetState.isVisible) {
                 AddUserByIdSheet(addUserByIdSheetState) { userId ->
-                    householdSettingsViewModel.addUserById(
-                        userId,
-                        context,
-                    )
+                    householdSettingsViewModel.addUserById(userId)
                 }
             }
             if (inviteSheetState.isVisible) {

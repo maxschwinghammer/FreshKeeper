@@ -1,8 +1,6 @@
 package com.freshkeeper.service.product
 
-import android.content.Context
 import android.util.Log
-import com.freshkeeper.R
 import com.freshkeeper.model.Activity
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodItemPicture
@@ -51,7 +49,6 @@ class ProductServiceImpl
             coroutineScope: CoroutineScope,
             onSuccess: (FoodItem) -> Unit,
             onFailure: (Exception) -> Unit,
-            context: Context,
         ) {
             val currentUser = _user.value ?: return
             if (!image.isNullOrEmpty()) {
@@ -91,7 +88,6 @@ class ProductServiceImpl
                                                     foodItem.copy(id = documentReference.id),
                                                     productName,
                                                     "product_added",
-                                                    context,
                                                 )
                                             }
                                             onSuccess(foodItem.copy(id = documentReference.id))
@@ -136,7 +132,6 @@ class ProductServiceImpl
                                                     foodItem.copy(id = documentReference.id),
                                                     productName,
                                                     "product_added",
-                                                    context,
                                                 )
                                             }
                                             onSuccess(foodItem.copy(id = documentReference.id))
@@ -174,7 +169,6 @@ class ProductServiceImpl
                                             foodItem.copy(id = documentReference.id),
                                             productName,
                                             "product_added",
-                                            context,
                                         )
                                     }
                                     onSuccess(foodItem.copy(id = documentReference.id))
@@ -221,7 +215,6 @@ class ProductServiceImpl
             isThrownAwayChecked: Boolean,
             coroutineScope: CoroutineScope,
             onSuccess: (FoodItem) -> Unit,
-            context: Context,
         ) {
             val currentUser = _user.value ?: return
 
@@ -294,7 +287,6 @@ class ProductServiceImpl
                                                         ),
                                                         productName,
                                                         activityType,
-                                                        context,
                                                         oldName = foodItem.name,
                                                         oldQuantity = foodItem.quantity,
                                                     )
@@ -320,39 +312,29 @@ class ProductServiceImpl
             foodItem: FoodItem,
             productName: String,
             activityType: String,
-            context: Context,
             oldName: String?,
             oldQuantity: Int?,
         ) {
             val currentUser = _user.value ?: return
+            val householdId = accountService.getHouseholdId()
 
-            val resId =
+            val resolvedType =
                 when (activityType) {
-                    "consumed" -> R.string.activity_consumed
-                    "thrown_away" -> R.string.activity_thrown_away
-                    "name" -> R.string.activity_name_changed
-                    "quantity" ->
+                    "quantity" -> {
                         if (oldQuantity != null && foodItem.quantity > oldQuantity) {
-                            R.string.activity_quantity_increased
+                            "quantity_increased"
                         } else {
-                            R.string.activity_quantity_decreased
+                            "quantity_decreased"
                         }
-                    "expiry" -> R.string.activity_expiry_changed
-                    "storage" -> R.string.activity_storage_changed
-                    "category" -> R.string.activity_category_changed
-                    "edit" -> R.string.activity_edited
-                    "product_added" -> R.string.activity_added
-                    else -> R.string.activity_default
+                    }
+                    else -> activityType
                 }
 
-            val householdId = accountService.getHouseholdId()
             val activity =
                 Activity(
-                    id = null,
                     userId = currentUser.id,
                     householdId = householdId,
-                    type = activityType,
-                    textResId = resId,
+                    type = resolvedType,
                     userName = currentUser.displayName!!,
                     timestamp = System.currentTimeMillis(),
                     oldProductName = oldName ?: "",

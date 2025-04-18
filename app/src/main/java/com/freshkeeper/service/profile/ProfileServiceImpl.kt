@@ -2,15 +2,15 @@ package com.freshkeeper.service.profile
 
 import android.content.Context
 import com.freshkeeper.R
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 class ProfileServiceImpl
     @Inject
-    constructor() : ProfileService {
-        override fun formatMemberSince(
-            days: Long,
-            context: Context,
-        ): String =
+    constructor(
+        @ApplicationContext private val context: Context,
+    ) : ProfileService {
+        override fun formatMemberSince(days: Long): String =
             when {
                 days > 365 -> {
                     val years = days / 365

@@ -49,7 +49,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -89,17 +88,17 @@ import kotlinx.coroutines.launch
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun InventoryScreen(navController: NavHostController) {
+    val viewModel: InventoryViewModel = hiltViewModel()
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
-    val inventoryViewModel: InventoryViewModel = hiltViewModel()
 //    val homeViewModel: HomeViewModel = hiltViewModel()
 
+    val householdId by viewModel.householdId.observeAsState("")
     var scannedBarcode by remember { mutableStateOf("") }
     var recognizedFoodName by remember { mutableStateOf("") }
     var expiryDate by remember { mutableLongStateOf(0L) }
 //    val isMember by homeViewModel.isMember.observeAsState()
 
     val coroutineScope = rememberCoroutineScope()
-    val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -113,7 +112,7 @@ fun InventoryScreen(navController: NavHostController) {
     var selectedCategories by remember { mutableStateOf(emptyList<String>()) }
     var selectedStorageLocations by remember { mutableStateOf(emptyList<String>()) }
 
-    val items by inventoryViewModel.foodItems.observeAsState(emptyList())
+    val items by viewModel.foodItems.observeAsState(emptyList())
 
     var foodItems by remember { mutableStateOf(emptyList<FoodItem>()) }
     var foodItem by remember { mutableStateOf<FoodItem?>(null) }
@@ -419,6 +418,11 @@ fun InventoryScreen(navController: NavHostController) {
                     barcode = scannedBarcode,
                     expiryTimestamp = expiryDate,
                     recognizedFoodName = recognizedFoodName,
+                    onFetchProductDataFromBarcode = { barcode, onSuccess, onFailure ->
+                        coroutineScope.launch {
+                            viewModel.fetchProductDataFromBarcode(barcode, onSuccess, onFailure)
+                        }
+                    },
                     onAddProduct = {
                         name,
                         barcode,
@@ -429,9 +433,8 @@ fun InventoryScreen(navController: NavHostController) {
                         category,
                         image,
                         imageUrl,
-                        householdId,
                         ->
-                        inventoryViewModel.addProduct(
+                        viewModel.addProduct(
                             name,
                             barcode,
                             expiry,
@@ -444,7 +447,6 @@ fun InventoryScreen(navController: NavHostController) {
                             householdId,
                             coroutineScope,
                             { coroutineScope.launch { manualInputSheetState.hide() } },
-                            context,
                         )
                     },
                 )
@@ -457,7 +459,7 @@ fun InventoryScreen(navController: NavHostController) {
                         productInfoSheetState,
                         item,
                         onGetFoodItemPicture = { imageId, onSuccess, onFailure ->
-                            inventoryViewModel.getFoodItemPicture(imageId, onSuccess, onFailure)
+                            viewModel.getFoodItemPicture(imageId, onSuccess, onFailure)
                         },
                         onUpdateProduct = {
                             foodItem,
@@ -470,7 +472,7 @@ fun InventoryScreen(navController: NavHostController) {
                             isConsumedChecked,
                             isThrownAwayChecked,
                             ->
-                            inventoryViewModel.updateProduct(
+                            viewModel.updateProduct(
                                 foodItem,
                                 productName,
                                 quantity,
@@ -486,7 +488,6 @@ fun InventoryScreen(navController: NavHostController) {
                                         editProductSheetState.hide()
                                     }
                                 },
-                                context,
                             )
                         },
                     )

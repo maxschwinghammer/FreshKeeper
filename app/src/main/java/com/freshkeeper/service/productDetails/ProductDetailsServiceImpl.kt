@@ -11,6 +11,7 @@ import com.freshkeeper.model.ProductData
 import com.freshkeeper.model.ProductDetails
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
@@ -26,7 +27,7 @@ import javax.inject.Inject
 class ProductDetailsServiceImpl
     @Inject
     constructor(
-        context: Context,
+        @ApplicationContext private val context: Context,
     ) : ProductDetailsService {
         private val firestore = FirebaseFirestore.getInstance()
         private val client = OkHttpClient()
@@ -179,8 +180,9 @@ class ProductDetailsServiceImpl
         }
 
         override suspend fun fetchProductDataFromBarcode(
-            context: Context,
             barcode: String,
+            onSuccess: (ProductData) -> Unit,
+            onFailure: (Exception) -> Unit,
         ): ProductData? {
             return withContext(Dispatchers.IO) {
                 val languageCode =
@@ -207,7 +209,9 @@ class ProductDetailsServiceImpl
 
                         val imageUrl = productJson?.optString("image_url")
 
-                        return@withContext ProductData(name, quantity, unit, imageUrl)
+                        val productData = ProductData(name, quantity, unit, imageUrl)
+                        onSuccess(productData)
+                        return@withContext productData
                     }
                 } catch (_: SocketTimeoutException) {
                     withContext(Dispatchers.Main) {
@@ -218,6 +222,7 @@ class ProductDetailsServiceImpl
                                 Toast.LENGTH_SHORT,
                             ).show()
                     }
+                    onFailure(Exception("Network error: Timeout"))
                     return@withContext null
                 } catch (e: Exception) {
                     withContext(Dispatchers.Main) {
@@ -228,6 +233,7 @@ class ProductDetailsServiceImpl
                                 Toast.LENGTH_SHORT,
                             ).show()
                     }
+                    onFailure(e)
                     return@withContext null
                 }
             }

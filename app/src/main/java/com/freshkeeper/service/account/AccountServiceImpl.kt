@@ -26,6 +26,7 @@ import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.firestore.firestore
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
@@ -41,7 +42,9 @@ import javax.inject.Inject
 
 class AccountServiceImpl
     @Inject
-    constructor() : AccountService {
+    constructor(
+        @ApplicationContext private val context: Context,
+    ) : AccountService {
         private val auth: FirebaseAuth = Firebase.auth
         private val firestore = Firebase.firestore
 
@@ -393,10 +396,7 @@ class AccountServiceImpl
                 null
             }
 
-        override suspend fun downloadUserData(
-            userId: String,
-            context: Context,
-        ) {
+        override suspend fun downloadUserData(userId: String) {
             val fileName = "user_data.json"
 
             firestore

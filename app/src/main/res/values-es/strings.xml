@@ -482,7 +482,7 @@
     <string name="activity_edited">%1$s editó el producto %2$s</string>
     <string name="activity_added">%1$s añadió: %2$s</string>
     <string name="activity_default">%1$s realizó una actividad con %2$s</string>
-    <string name="activity_name_changed">%1$s renombró el producto de %2$s a %3$s</string>
+    <string name="activity_name_changed">%1$s renombró el producto de %3$s a %2$s</string>
     <string name="activity_quantity_increased">%1$s aumentó la cantidad de %2$s</string>
     <string name="activity_quantity_decreased">%1$s redujo la cantidad de %2$s</string>
     <string name="activity_expiry_changed">%1$s cambió la fecha de caducidad de %2$s</string>
