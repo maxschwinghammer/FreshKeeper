@@ -11,5 +11,7 @@ import javax.inject.Singleton
 abstract class NotificationSettingsServiceModule {
     @Binds
     @Singleton
-    abstract fun bindNotificationSettingsService(notificationSettingsService: NotificationSettingsServiceImpl): NotificationSettingsService
+    abstract fun bindNotificationSettingsService(
+        notificationSettingsServiceImpl: NotificationSettingsServiceImpl,
+    ): NotificationSettingsService
 }

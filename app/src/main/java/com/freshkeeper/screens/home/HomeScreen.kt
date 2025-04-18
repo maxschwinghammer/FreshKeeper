@@ -79,7 +79,7 @@ fun HomeScreen(navController: NavHostController) {
     val householdId by viewModel.householdId.observeAsState("")
     var scannedBarcode by remember { mutableStateOf("") }
     var recognizedFoodName by remember { mutableStateOf("") }
-    var expiryDate by remember { mutableLongStateOf(0L) }
+    var expiryDate by remember { mutableLongStateOf(System.currentTimeMillis()) }
     var foodItem by remember { mutableStateOf<FoodItem?>(null) }
 //    val isMember by viewModel.isMember.observeAsState()
     val allFoodItems by viewModel.allFoodItems.observeAsState(emptyList())

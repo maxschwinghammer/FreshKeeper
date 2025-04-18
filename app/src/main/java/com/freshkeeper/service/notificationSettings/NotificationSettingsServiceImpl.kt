@@ -5,10 +5,8 @@ import com.freshkeeper.model.User
 import com.freshkeeper.service.account.AccountService
 import com.google.firebase.firestore.FirebaseFirestore
 import jakarta.inject.Inject
-import jakarta.inject.Singleton
 import kotlinx.coroutines.tasks.await
 
-@Singleton
 class NotificationSettingsServiceImpl
     @Inject
     constructor(
