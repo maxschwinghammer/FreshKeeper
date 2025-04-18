@@ -68,7 +68,10 @@ fun CurrentInventoriesSection(
         storageLocations.all { (_, _, items) ->
             items.isEmpty() ||
                 items.none {
-                    (selectedStorageLocations.isEmpty() || it.storageLocation in selectedStorageLocations) &&
+                    (
+                        selectedStorageLocations.isEmpty() ||
+                            it.storageLocation in selectedStorageLocations
+                    ) &&
                         (selectedCategories.isEmpty() || it.category in selectedCategories)
                 }
         }

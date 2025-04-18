@@ -8,10 +8,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.freshkeeper.R
 import com.freshkeeper.model.NotificationSettings
 import com.freshkeeper.screens.notificationSettings.cards.NotificationSwitchCard
 import com.freshkeeper.screens.notificationSettings.viewmodel.NotificationSettingsViewModel
+import com.freshkeeper.service.notificationSwitchMap
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -19,16 +19,6 @@ fun NotificationSwitchList(
     notificationSettings: NotificationSettings,
     viewModel: NotificationSettingsViewModel,
 ) {
-    val switches =
-        listOf(
-            stringResource(R.string.daily_reminders) to "daily_reminders",
-            stringResource(R.string.food_added) to "food_added",
-            stringResource(R.string.household_changes) to "household_changes",
-            stringResource(R.string.food_expiring) to "food_expiring",
-            stringResource(R.string.tips) to "tips",
-            stringResource(R.string.statistics) to "statistics",
-        )
-
     Column(
         modifier =
             Modifier
@@ -36,7 +26,7 @@ fun NotificationSwitchList(
                 .padding(horizontal = 16.dp),
         verticalArrangement = Arrangement.spacedBy(15.dp),
     ) {
-        switches.forEach { (title, key) ->
+        notificationSwitchMap.forEach { (title, key) ->
             val switchChecked =
                 when (key) {
                     "daily_reminders" -> notificationSettings.dailyReminders
@@ -49,7 +39,7 @@ fun NotificationSwitchList(
                 }
 
             NotificationSwitchCard(
-                title = title,
+                title = stringResource(title),
                 isChecked = switchChecked,
                 onCheckedChange = { newState ->
                     when (key) {

@@ -43,7 +43,12 @@ fun DeleteHouseholdCard(onDeleteHouseholdClick: () -> Unit) {
         AlertDialog(
             containerColor = ComponentBackgroundColor,
             title = { Text(stringResource(R.string.delete_household)) },
-            text = { Text(stringResource(R.string.delete_household_description), color = TextColor) },
+            text = {
+                Text(
+                    stringResource(R.string.delete_household_description),
+                    color = TextColor,
+                )
+            },
             dismissButton = {
                 Button(
                     onClick = { showDeleteHouseholdDialog = false },

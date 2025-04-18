@@ -2,7 +2,6 @@ package com.freshkeeper.sheets
 
 import android.app.AlertDialog
 import android.content.ContentValues
-import android.content.Context
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Environment
@@ -63,10 +62,10 @@ import com.freshkeeper.model.ProductData
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
-import com.freshkeeper.screens.profileSettings.compressImage
-import com.freshkeeper.screens.profileSettings.convertBitmapToBase64
 import com.freshkeeper.service.categoryMap
 import com.freshkeeper.service.categoryReverseMap
+import com.freshkeeper.service.compressImage
+import com.freshkeeper.service.convertBitmapToBase64
 import com.freshkeeper.service.storageLocationMap
 import com.freshkeeper.service.storageLocationReverseMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -192,7 +191,6 @@ fun ManualInputSheet(
     val cancel = stringResource(R.string.cancel)
 
     fun showImagePicker(
-        context: Context,
         galleryLauncher: ManagedActivityResultLauncher<String, Uri?>,
         cameraLauncher: ManagedActivityResultLauncher<Void?, Bitmap?>,
     ) {
@@ -312,7 +310,6 @@ fun ManualInputSheet(
                                             when (which) {
                                                 0 ->
                                                     showImagePicker(
-                                                        context,
                                                         launcher,
                                                         cameraLauncher,
                                                     )

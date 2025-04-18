@@ -28,6 +28,7 @@ import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.screens.profileSettings.cards.AccountCenterCard
 import com.freshkeeper.screens.profileSettings.cards.card
+import com.freshkeeper.service.householdTypeMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -49,14 +50,6 @@ fun CreateHouseholdCard(
 
     var householdName by remember { mutableStateOf("") }
     var householdType by remember { mutableStateOf("") }
-
-    val householdTypeMap =
-        mapOf(
-            stringResource(R.string.family) to "Family",
-            stringResource(R.string.shared_apartment) to "Shared apartment",
-            stringResource(R.string.single_household) to "Single household",
-            stringResource(R.string.pair) to "Pair",
-        )
 
     AccountCenterCard(
         title = stringResource(R.string.create_household),
@@ -159,7 +152,7 @@ fun CreateHouseholdCard(
                                     Alignment.CenterHorizontally,
                                 ),
                         ) {
-                            Text(text = localName)
+                            Text(text = stringResource(localName))
                         }
                     }
                 }

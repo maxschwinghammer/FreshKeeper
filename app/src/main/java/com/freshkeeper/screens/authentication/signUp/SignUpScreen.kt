@@ -26,14 +26,8 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.LinkAnnotation
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.FragmentActivity
@@ -45,7 +39,6 @@ import com.freshkeeper.screens.authentication.viewmodel.GoogleViewModel
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
-import com.freshkeeper.ui.theme.LightGreyColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
 
@@ -148,40 +141,4 @@ fun SignUpScreen(
             }
         }
     }
-}
-
-@Composable
-fun signUpInfoText(): AnnotatedString =
-    buildAnnotatedString {
-        pushStyle(SpanStyle(color = WhiteColor, fontSize = 14.sp))
-        append(stringResource(R.string.sign_up_info_1) + " ")
-
-        pushStyle(SpanStyle(color = AccentTurquoiseColor))
-        withLink(LinkAnnotation.Url(url = "https://github.com/maxschwinghammer/FreshKeeper/blob/master/terms-of-service.md")) {
-            append(stringResource(R.string.terms_of_service))
-        }
-
-        pushStyle(SpanStyle(color = WhiteColor))
-        append(" " + stringResource(R.string.sign_up_info_2) + " ")
-
-        pushStyle(SpanStyle(color = AccentTurquoiseColor))
-        withLink(LinkAnnotation.Url(url = "https://github.com/maxschwinghammer/FreshKeeper/blob/master/privacy-policy.md")) {
-            append(stringResource(R.string.privacy_policy))
-        }
-    }
-
-@Suppress("ktlint:standard:function-naming")
-@Composable
-fun SignUpInfo() {
-    val annotatedText = signUpInfoText()
-    Text(
-        text = annotatedText,
-        style =
-            TextStyle(
-                fontSize = 12.sp,
-                color = LightGreyColor,
-                textAlign = TextAlign.Center,
-            ),
-        modifier = Modifier.padding(horizontal = 20.dp),
-    )
 }

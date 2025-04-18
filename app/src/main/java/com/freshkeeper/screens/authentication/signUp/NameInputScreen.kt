@@ -52,12 +52,10 @@ fun NameInputScreen(
     var name by remember { mutableStateOf("") }
     var skipName by remember { mutableStateOf(false) }
     var showError by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf("") }
 
     val profileViewModel: ProfileViewModel = hiltViewModel()
     val userId = FirebaseAuth.getInstance().currentUser?.uid
-
-    val isNameValid = name.length >= 3 && name.matches("^[A-Za-z ]+$".toRegex())
-    var errorMessage by remember { mutableStateOf("") }
 
     if (showError) {
         errorMessage =
@@ -170,7 +168,10 @@ fun NameInputScreen(
                     Button(
                         onClick = {
                             showError = true
-                            if (!skipName && isNameValid) {
+                            if (!skipName &&
+                                name.length >= 3 &&
+                                name.matches("^[A-Za-z ]+$".toRegex())
+                            ) {
                                 if (userId != null) {
                                     profileViewModel.updateDisplayName(name)
                                 }

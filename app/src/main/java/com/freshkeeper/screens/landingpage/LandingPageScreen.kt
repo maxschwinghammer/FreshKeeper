@@ -93,7 +93,10 @@ fun LandingPageScreen(navController: NavHostController) {
                             onTap = { offset: Offset ->
                                 if (containerSize.value.width > 0) {
                                     val centerX = containerSize.value.width / 2f
-                                    if (currentStep.intValue == stepCount - 1 && offset.x > centerX) {
+                                    if (currentStep.intValue == stepCount - 1 &&
+                                        offset.x >
+                                        centerX
+                                    ) {
                                         onComplete()
                                     } else {
                                         currentStep.intValue =

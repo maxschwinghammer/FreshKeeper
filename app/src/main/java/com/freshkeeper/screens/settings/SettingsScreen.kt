@@ -242,10 +242,10 @@ fun SettingsScreen(
         if (showCancelPremiumDialog) {
             AlertDialog(
                 containerColor = ComponentBackgroundColor,
-                title = { Text("Cancel membership") },
+                title = { Text(stringResource(R.string.cancel_membership)) },
                 text = {
                     Text(
-                        "Your membership will be canceled. You will loose all premium functions at the end of your current plan.",
+                        stringResource(R.string.cancel_membership_description),
                         color = TextColor,
                     )
                 },

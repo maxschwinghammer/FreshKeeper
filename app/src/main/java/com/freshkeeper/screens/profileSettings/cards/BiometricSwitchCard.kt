@@ -86,7 +86,7 @@ fun BiometricSwitchCard() {
                 onCheckedChange = { isChecked ->
                     if (!isChecked) {
                         isBiometricEnabled = false
-                        sharedPreferences.edit().putBoolean("biometric_enabled", false).apply()
+                        sharedPreferences.edit { putBoolean("biometric_enabled", false) }
 
                         user?.let { currentUser ->
                             val userRef =
@@ -103,14 +103,18 @@ fun BiometricSwitchCard() {
                                     it,
                                     executor,
                                     object : BiometricPrompt.AuthenticationCallback() {
-                                        override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                                        override fun onAuthenticationSucceeded(
+                                            result: BiometricPrompt
+                                                .AuthenticationResult,
+                                        ) {
                                             isBiometricEnabled = true
                                             sharedPreferences
-                                                .edit()
-                                                .putBoolean(
-                                                    "biometric_enabled",
-                                                    true,
-                                                ).apply()
+                                                .edit {
+                                                    putBoolean(
+                                                        "biometric_enabled",
+                                                        true,
+                                                    )
+                                                }
 
                                             user?.let { currentUser ->
                                                 val userRef =
@@ -127,11 +131,12 @@ fun BiometricSwitchCard() {
                                         override fun onAuthenticationFailed() {
                                             isBiometricEnabled = false
                                             sharedPreferences
-                                                .edit()
-                                                .putBoolean(
-                                                    "biometric_enabled",
-                                                    false,
-                                                ).apply()
+                                                .edit {
+                                                    putBoolean(
+                                                        "biometric_enabled",
+                                                        false,
+                                                    )
+                                                }
                                         }
 
                                         override fun onAuthenticationError(
@@ -140,11 +145,12 @@ fun BiometricSwitchCard() {
                                         ) {
                                             isBiometricEnabled = false
                                             sharedPreferences
-                                                .edit()
-                                                .putBoolean(
-                                                    "biometric_enabled",
-                                                    false,
-                                                ).apply()
+                                                .edit {
+                                                    putBoolean(
+                                                        "biometric_enabled",
+                                                        false,
+                                                    )
+                                                }
                                         }
                                     },
                                 )
@@ -183,7 +189,7 @@ fun BiometricSwitchCard() {
                     Button(
                         onClick = {
                             isBiometricEnabled = false
-                            sharedPreferences.edit().putBoolean("biometric_enabled", false).apply()
+                            sharedPreferences.edit { putBoolean("biometric_enabled", false) }
                             showBiometricDialog = false
                         },
                         colors =

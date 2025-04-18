@@ -29,7 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.screens.profile.viewmodel.ProfileViewModel
-import com.freshkeeper.screens.profileSettings.convertBase64ToBitmap
+import com.freshkeeper.service.convertBase64ToBitmap
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor

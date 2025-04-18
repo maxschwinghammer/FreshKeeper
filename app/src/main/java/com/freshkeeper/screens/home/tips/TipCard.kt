@@ -29,10 +29,7 @@ import com.freshkeeper.ui.theme.TextColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun TipCard(
-    tip: Tip,
-    onRemove: () -> Unit,
-) {
+fun TipCard(tip: Tip) {
     Box(
         modifier =
             Modifier

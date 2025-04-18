@@ -179,16 +179,36 @@ class InventoryViewModel
                     onSuccess = { newItem ->
                         _foodItems.value = (_foodItems.value ?: emptyList()) + newItem
                         when (newItem.storageLocation) {
-                            "fridge" -> _fridgeItems.value = (_fridgeItems.value ?: emptyList()) + newItem
-                            "cupboard" -> _cupboardItems.value = (_cupboardItems.value ?: emptyList()) + newItem
-                            "freezer" -> _freezerItems.value = (_freezerItems.value ?: emptyList()) + newItem
-                            "counter_top", "countertop" -> _countertopItems.value = (_countertopItems.value ?: emptyList()) + newItem
-                            "cellar" -> _cellarItems.value = (_cellarItems.value ?: emptyList()) + newItem
-                            "bread_box", "bakery" -> _bakeryItems.value = (_bakeryItems.value ?: emptyList()) + newItem
-                            "spice_rack", "spiceRack" -> _spiceRackItems.value = (_spiceRackItems.value ?: emptyList()) + newItem
-                            "pantry" -> _pantryItems.value = (_pantryItems.value ?: emptyList()) + newItem
-                            "fruit_basket", "fruitBasket" -> _fruitBasketItems.value = (_fruitBasketItems.value ?: emptyList()) + newItem
-                            "other" -> _otherItems.value = (_otherItems.value ?: emptyList()) + newItem
+                            "fridge" ->
+                                _fridgeItems.value =
+                                    (_fridgeItems.value ?: emptyList()) + newItem
+                            "cupboard" ->
+                                _cupboardItems.value =
+                                    (_cupboardItems.value ?: emptyList()) + newItem
+                            "freezer" ->
+                                _freezerItems.value =
+                                    (_freezerItems.value ?: emptyList()) + newItem
+                            "counter_top", "countertop" ->
+                                _countertopItems.value =
+                                    (_countertopItems.value ?: emptyList()) + newItem
+                            "cellar" ->
+                                _cellarItems.value =
+                                    (_cellarItems.value ?: emptyList()) + newItem
+                            "bread_box", "bakery" ->
+                                _bakeryItems.value =
+                                    (_bakeryItems.value ?: emptyList()) + newItem
+                            "spice_rack", "spiceRack" ->
+                                _spiceRackItems.value =
+                                    (_spiceRackItems.value ?: emptyList()) + newItem
+                            "pantry" ->
+                                _pantryItems.value =
+                                    (_pantryItems.value ?: emptyList()) + newItem
+                            "fruit_basket", "fruitBasket" ->
+                                _fruitBasketItems.value =
+                                    (_fruitBasketItems.value ?: emptyList()) + newItem
+                            "other" ->
+                                _otherItems.value =
+                                    (_otherItems.value ?: emptyList()) + newItem
                         }
                         onSuccess()
                     },

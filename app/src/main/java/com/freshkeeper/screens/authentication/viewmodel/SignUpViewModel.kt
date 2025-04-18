@@ -158,11 +158,13 @@ class SignUpViewModel
             suspendCancellableCoroutine { continuation ->
                 AlertDialog
                     .Builder(context)
-                    .setTitle("Biometric authentication")
-                    .setMessage("Would you like to activate biometric authentication?")
-                    .setPositiveButton("Yes") { _, _ -> continuation.resume(true) }
-                    .setNegativeButton("No") { _, _ -> continuation.resume(false) }
-                    .setOnCancelListener { continuation.resume(false) }
+                    .setTitle(context.getString(R.string.biometric_auth_title))
+                    .setMessage(context.getString(R.string.biometric_auth_text))
+                    .setPositiveButton(context.getString(R.string.yes)) { _, _ ->
+                        continuation.resume(true)
+                    }.setNegativeButton(context.getString(R.string.no)) { _, _ ->
+                        continuation.resume(false)
+                    }.setOnCancelListener { continuation.resume(false) }
                     .show()
             }
 
@@ -200,9 +202,9 @@ class SignUpViewModel
                 val promptInfo =
                     BiometricPrompt.PromptInfo
                         .Builder()
-                        .setTitle("Biometric authentication")
-                        .setSubtitle("Please authenticate yourself to continue")
-                        .setNegativeButtonText("Cancel")
+                        .setTitle(context.getString(R.string.biometric_auth_title))
+                        .setSubtitle(context.getString(R.string.biometric_auth_subtitle))
+                        .setNegativeButtonText(context.getString(R.string.cancel))
                         .build()
 
                 biometricPrompt.authenticate(promptInfo)

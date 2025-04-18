@@ -42,7 +42,12 @@ fun LeaveHouseholdCard(onLeaveHouseholdClick: () -> Unit) {
         AlertDialog(
             containerColor = ComponentBackgroundColor,
             title = { Text(stringResource(R.string.leave_household)) },
-            text = { Text(stringResource(R.string.leave_household_description), color = TextColor) },
+            text = {
+                Text(
+                    stringResource(R.string.leave_household_description),
+                    color = TextColor,
+                )
+            },
             dismissButton = {
                 Button(
                     onClick = { showLeaveHouseholdDialog = false },

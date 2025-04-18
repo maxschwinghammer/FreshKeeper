@@ -140,7 +140,10 @@ fun NotificationsScreen(navController: NavHostController) {
                                             )
                                             Spacer(modifier = Modifier.width(16.dp))
                                             Text(
-                                                text = stringResource(R.string.no_pending_notifications),
+                                                text =
+                                                    stringResource(
+                                                        R.string.no_pending_notifications,
+                                                    ),
                                                 color = TextColor,
                                             )
                                         }
@@ -161,7 +164,8 @@ fun NotificationsScreen(navController: NavHostController) {
                                         notification = notification,
                                         navController,
                                         onRemove = {
-                                            notificationsViewModel.removeNotification(notification.id)
+                                            notificationsViewModel
+                                                .removeNotification(notification.id)
                                         },
                                     )
                                 }

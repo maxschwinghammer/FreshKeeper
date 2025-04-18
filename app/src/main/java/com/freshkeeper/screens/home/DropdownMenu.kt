@@ -172,33 +172,3 @@ fun DropdownMenu(
         }
     }
 }
-
-@Suppress("ktlint:standard:function-naming")
-@Composable
-fun LeadingIcon(
-    selectedId: Int,
-    type: String,
-) {
-    val englishName =
-        when (type) {
-            "storageLocations" -> storageLocationReverseMap[selectedId]
-            "categories" -> categoryReverseMap[selectedId]
-            else -> null
-        } ?: stringResource(id = selectedId)
-
-    val iconName = englishName.lowercase(Locale.ROOT).replace(" ", "_")
-    val iconResId =
-        try {
-            R.drawable::class.java.getDeclaredField(iconName).getInt(null)
-        } catch (_: Exception) {
-            null
-        }
-
-    iconResId?.let {
-        Image(
-            painter = painterResource(id = it),
-            contentDescription = englishName,
-            modifier = Modifier.size(25.dp),
-        )
-    }
-}

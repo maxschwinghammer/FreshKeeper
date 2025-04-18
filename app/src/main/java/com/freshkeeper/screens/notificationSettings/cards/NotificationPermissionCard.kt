@@ -1,6 +1,5 @@
 package com.freshkeeper.screens.notificationSettings.cards
 
-import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import androidx.compose.foundation.Image
@@ -17,6 +16,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -27,10 +27,9 @@ import com.freshkeeper.ui.theme.ComponentStrokeColor
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun NotificationPermissionCard(
-    context: Context,
-    isNotificationEnabled: Boolean,
-) {
+fun NotificationPermissionCard(isNotificationEnabled: Boolean) {
+    val context = LocalContext.current
+
     Card(
         modifier =
             Modifier.card().border(

@@ -16,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -48,7 +47,6 @@ fun HouseholdScreen(navController: NavHostController) {
 
     val household by householdSettingsViewModel.household.collectAsState(initial = Household())
 
-    val coroutineScope = rememberCoroutineScope()
     val inviteSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val qrCodeSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val addUserByIdSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -96,7 +94,6 @@ fun HouseholdScreen(navController: NavHostController) {
                             item {
                                 MembersSection(
                                     navController,
-                                    coroutineScope,
                                     inviteSheetState,
                                     onCreateHouseholdClick = { name, type ->
                                         householdSettingsViewModel.createHousehold(name, type)

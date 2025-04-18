@@ -42,7 +42,13 @@ fun AccountCenterCard(
                     .fillMaxWidth()
                     .padding(16.dp),
         ) {
-            Column(modifier = Modifier.weight(1f)) { Text(title, color = TextColor, softWrap = true) }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    title,
+                    color = TextColor,
+                    softWrap = true,
+                )
+            }
             if (icon != null) {
                 when (icon) {
                     is ImageVector ->

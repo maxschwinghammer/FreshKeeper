@@ -56,10 +56,10 @@ import com.freshkeeper.model.FoodItemPicture
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
-import com.freshkeeper.screens.profileSettings.convertBase64ToBitmap
 import com.freshkeeper.service.categoryMap
 import com.freshkeeper.service.categoryReverseMap
 import com.freshkeeper.service.categoryTips
+import com.freshkeeper.service.convertBase64ToBitmap
 import com.freshkeeper.service.storageLocationMap
 import com.freshkeeper.service.storageLocationReverseMap
 import com.freshkeeper.ui.theme.AccentGreenColor

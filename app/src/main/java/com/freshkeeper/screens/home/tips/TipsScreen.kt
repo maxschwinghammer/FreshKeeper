@@ -93,10 +93,7 @@ fun TipsScreen(navController: NavHostController) {
                             verticalArrangement = Arrangement.spacedBy(10.dp),
                         ) {
                             items(tips) { tip ->
-                                TipCard(
-                                    tip,
-                                    onRemove = { tipsViewModel.removeTip(tip) },
-                                )
+                                TipCard(tip)
                             }
                             item {
                                 Spacer(modifier = Modifier.height(10.dp))

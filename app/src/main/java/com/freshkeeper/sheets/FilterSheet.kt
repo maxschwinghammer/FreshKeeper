@@ -26,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.service.categoryMap
+import com.freshkeeper.service.storageLocationMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
@@ -42,8 +44,6 @@ import kotlinx.coroutines.launch
 fun FilterSheet(
     filterSheetState: SheetState,
     foodItems: List<FoodItem>,
-    categories: Map<String, Int>,
-    storageLocations: Map<String, Int>,
     selectedCategories: List<String>,
     selectedStorageLocations: List<String>,
     onUpdateCategories: (List<String>) -> Unit,
@@ -91,7 +91,7 @@ fun FilterSheet(
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    categories.forEach { (key, value) ->
+                    categoryMap.forEach { (key, value) ->
                         val isSelected = selectedCategories.contains(key)
                         Button(
                             onClick = {
@@ -143,7 +143,7 @@ fun FilterSheet(
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    storageLocations.forEach { (key, value) ->
+                    storageLocationMap.forEach { (key, value) ->
                         val isSelected = selectedStorageLocations.contains(key)
                         Button(
                             onClick = {

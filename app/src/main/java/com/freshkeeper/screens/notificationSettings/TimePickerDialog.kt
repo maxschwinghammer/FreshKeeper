@@ -63,12 +63,16 @@ fun TimePickerDialog(
                         selectorColor = AccentTurquoiseColor,
                         containerColor = ComponentBackgroundColor,
                         periodSelectorBorderColor = GreyColor.copy(alpha = 0.5f),
-                        periodSelectorSelectedContainerColor = AccentTurquoiseColor.copy(alpha = 0.2f),
-                        periodSelectorUnselectedContainerColor = ComponentBackgroundColor.copy(alpha = 0.1f),
+                        periodSelectorSelectedContainerColor =
+                            AccentTurquoiseColor.copy(alpha = 0.2f),
+                        periodSelectorUnselectedContainerColor =
+                            ComponentBackgroundColor.copy(alpha = 0.1f),
                         periodSelectorSelectedContentColor = AccentTurquoiseColor,
                         periodSelectorUnselectedContentColor = TextColor.copy(alpha = 0.6f),
-                        timeSelectorSelectedContainerColor = AccentTurquoiseColor.copy(alpha = 0.3f),
-                        timeSelectorUnselectedContainerColor = ComponentBackgroundColor.copy(alpha = 0.1f),
+                        timeSelectorSelectedContainerColor =
+                            AccentTurquoiseColor.copy(alpha = 0.3f),
+                        timeSelectorUnselectedContainerColor =
+                            ComponentBackgroundColor.copy(alpha = 0.1f),
                         timeSelectorSelectedContentColor = AccentTurquoiseColor,
                         timeSelectorUnselectedContentColor = TextColor.copy(alpha = 0.5f),
                     ),

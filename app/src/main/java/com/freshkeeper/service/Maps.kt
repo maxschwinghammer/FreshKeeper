@@ -128,3 +128,21 @@ val activityTypeMap =
         "product_added" to R.string.activity_added,
         "default" to R.string.activity_default,
     )
+
+val householdTypeMap =
+    mapOf(
+        R.string.family to "Family",
+        R.string.shared_apartment to "Shared apartment",
+        R.string.single_household to "Single household",
+        R.string.pair to "Pair",
+    )
+
+val notificationSwitchMap =
+    listOf(
+        R.string.daily_reminders to "daily_reminders",
+        R.string.food_added to "food_added",
+        R.string.household_changes to "household_changes",
+        R.string.food_expiring to "food_expiring",
+        R.string.tips to "tips",
+        R.string.statistics to "statistics",
+    )

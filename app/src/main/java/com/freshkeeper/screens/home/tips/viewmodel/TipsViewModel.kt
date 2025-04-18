@@ -1,13 +1,11 @@
 package com.freshkeeper.screens.home.tips.viewmodel
 
-import androidx.lifecycle.viewModelScope
 import com.freshkeeper.R
 import com.freshkeeper.model.Tip
 import com.freshkeeper.screens.AppViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -121,13 +119,4 @@ class TipsViewModel
             )
 
         val tips: StateFlow<List<Tip>> = _tips
-
-        fun removeTip(tip: Tip) {
-            viewModelScope.launch {
-                _tips.value =
-                    _tips.value.toMutableList().apply {
-                        remove(tip)
-                    }
-            }
-        }
     }

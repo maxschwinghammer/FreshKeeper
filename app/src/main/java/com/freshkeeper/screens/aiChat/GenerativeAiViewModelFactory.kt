@@ -22,9 +22,6 @@ val GenerativeViewModelFactory =
                     temperature = 0.5f
                 }
 
-//            val unknownSafety =
-//                SafetySetting(HarmCategory.UNKNOWN, BlockThreshold.LOW_AND_ABOVE)
-
             val harassmentSafety =
                 SafetySetting(HarmCategory.HARASSMENT, BlockThreshold.LOW_AND_ABOVE)
 
@@ -47,7 +44,6 @@ val GenerativeViewModelFactory =
                             generationConfig = config,
                             safetySettings =
                                 listOf(
-//                                    unknownSafety,
                                     harassmentSafety,
                                     hateSpeechSafety,
                                     sexualSafety,

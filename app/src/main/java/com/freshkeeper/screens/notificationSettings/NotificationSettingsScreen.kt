@@ -113,7 +113,7 @@ fun NotificationSettingsScreen(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             verticalArrangement = Arrangement.spacedBy(15.dp),
                         ) {
-                            NotificationPermissionCard(context, isNotificationEnabled)
+                            NotificationPermissionCard(isNotificationEnabled)
                             SelectDailyNotificationTimeCard(
                                 LocalTime.parse(
                                     notificationSettings?.dailyNotificationTime

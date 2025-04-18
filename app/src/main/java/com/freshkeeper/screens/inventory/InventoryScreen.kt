@@ -446,8 +446,7 @@ fun InventoryScreen(navController: NavHostController) {
                             imageUrl,
                             householdId,
                             coroutineScope,
-                            { coroutineScope.launch { manualInputSheetState.hide() } },
-                        )
+                        ) { coroutineScope.launch { manualInputSheetState.hide() } }
                     },
                 )
             }
@@ -498,8 +497,6 @@ fun InventoryScreen(navController: NavHostController) {
                 FilterSheet(
                     filterSheetState = filterSheetState,
                     foodItems = items,
-                    categories = categoryMap,
-                    storageLocations = storageLocationMap,
                     selectedCategories = selectedCategories,
                     selectedStorageLocations = selectedStorageLocations,
                     onUpdateCategories = { updatedCategories ->

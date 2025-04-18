@@ -37,6 +37,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,14 +59,13 @@ import com.freshkeeper.R
 import com.freshkeeper.model.Member
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
-import com.freshkeeper.screens.profileSettings.convertBase64ToBitmap
+import com.freshkeeper.service.convertBase64ToBitmap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
@@ -73,7 +73,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun MembersSection(
     navController: NavController,
-    coroutineScope: CoroutineScope,
     inviteSheetState: SheetState,
     onCreateHouseholdClick: (String, String) -> Unit,
     onJoinHouseholdClick: (String) -> Unit,
@@ -88,6 +87,7 @@ fun MembersSection(
     val members by viewModel.members.observeAsState(emptyList())
     val isInHousehold by viewModel.isInHousehold.observeAsState(false)
     val household by viewModel.household.observeAsState()
+    val coroutineScope = rememberCoroutineScope()
 
     val householdId = remember { mutableStateOf(household?.id ?: "") }
     var householdName by remember { mutableStateOf(household?.name ?: "") }

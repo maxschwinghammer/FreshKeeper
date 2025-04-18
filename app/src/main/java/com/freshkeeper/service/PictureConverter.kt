@@ -1,4 +1,4 @@
-package com.freshkeeper.screens.profileSettings
+package com.freshkeeper.service
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
 import android.util.Log
+import androidx.core.graphics.scale
 import java.io.ByteArrayOutputStream
 
 fun convertBitmapToBase64(bitmap: Bitmap): String {
@@ -22,7 +23,7 @@ fun getBitmapFromUri(
     try {
         val inputStream = context.contentResolver.openInputStream(uri)
         BitmapFactory.decodeStream(inputStream)
-    } catch (e: Exception) {
+    } catch (_: Exception) {
         null
     }
 
@@ -47,7 +48,7 @@ fun compressImage(
 ): Bitmap? {
     val originalBitmap = getBitmapFromUri(context, uri)
     return originalBitmap?.let {
-        val scaledBitmap = Bitmap.createScaledBitmap(it, 500, 500, true)
+        val scaledBitmap = it.scale(500, 500)
         val outputStream = ByteArrayOutputStream()
         scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
         val byteArray = outputStream.toByteArray()

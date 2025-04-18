@@ -374,8 +374,7 @@ fun HomeScreen(navController: NavHostController) {
                             imageUrl,
                             householdId,
                             coroutineScope,
-                            { coroutineScope.launch { manualInputSheetState.hide() } },
-                        )
+                        ) { coroutineScope.launch { manualInputSheetState.hide() } }
                     },
                 )
             }

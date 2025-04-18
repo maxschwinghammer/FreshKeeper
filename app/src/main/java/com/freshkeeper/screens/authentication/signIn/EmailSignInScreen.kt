@@ -1,7 +1,6 @@
 package com.freshkeeper.screens.authentication.signIn
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.credentials.GetCredentialException
 import android.util.Log
 import android.widget.EditText
@@ -213,11 +212,11 @@ fun EmailSignInScreen(
 
     @Composable
     fun setupAutofillForCredentials(
-        context: Context,
         usernameEditText: EditText,
         passwordEditText: EditText,
     ) {
         val getPasswordOption = GetPasswordOption()
+        val context = LocalContext.current
 
         val getCredRequest =
             GetCredentialRequest(
