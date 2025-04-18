@@ -3,6 +3,7 @@ package com.freshkeeper.screens.notifications
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +29,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -44,12 +49,14 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
+import kotlinx.coroutines.launch
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun NotificationsScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
     val notifications by notificationsViewModel.notifications.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
 
     val listState = rememberLazyListState()
     val showUpperTransition by remember {
@@ -83,13 +90,28 @@ fun NotificationsScreen(navController: NavHostController) {
                         .padding(it),
             ) {
                 Column(modifier = Modifier.fillMaxWidth()) {
-                    Text(
-                        text = stringResource(R.string.notifications),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = TextColor,
-                        modifier = Modifier.padding(16.dp),
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.notifications),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = TextColor,
+                            modifier = Modifier.padding(16.dp).weight(1f),
+                        )
+                        Icon(
+                            imageVector = Icons.Outlined.Settings,
+                            contentDescription = null,
+                            modifier =
+                                Modifier.padding(top = 17.dp, end = 17.dp).size(25.dp).clickable {
+                                    coroutineScope.launch {
+                                        navController.navigate("notificationSettings")
+                                    }
+                                },
+                        )
+                    }
                     Box(modifier = Modifier.weight(1f)) {
                         if (notifications.isEmpty()) {
                             Column(modifier = Modifier.padding(start = 15.dp, end = 15.dp)) {

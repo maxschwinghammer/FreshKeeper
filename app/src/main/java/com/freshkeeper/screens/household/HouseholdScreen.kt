@@ -63,10 +63,6 @@ fun HouseholdScreen(navController: NavHostController) {
         }
     }
 
-    val errorText = stringResource(R.string.user_not_found)
-    val householdErrorText = stringResource(R.string.household_not_found)
-    val successText = stringResource(R.string.user_added)
-
     FreshKeeperTheme {
         Scaffold(
             bottomBar = {
@@ -112,7 +108,6 @@ fun HouseholdScreen(navController: NavHostController) {
                                         householdSettingsViewModel.joinHouseholdById(
                                             householdId,
                                             context,
-                                            householdErrorText,
                                         )
                                     },
                                     onAddProducts = { householdSettingsViewModel.addProducts() },
@@ -140,8 +135,6 @@ fun HouseholdScreen(navController: NavHostController) {
                     householdSettingsViewModel.addUserById(
                         userId,
                         context,
-                        errorText,
-                        successText,
                     )
                 }
             }

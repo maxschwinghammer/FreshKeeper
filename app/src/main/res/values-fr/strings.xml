@@ -465,7 +465,29 @@
     <string name="food_tofu">Tofu</string>
     <string name="food_camembert">Camembert</string>
     <string name="food_milk">Lait</string>
-    <string name="activity_tim_joined">Tim a rejoint le foyer</string>
-    <string name="activity_emma_added_product">Emma a ajouté des pommes</string>
-    <string name="activity_paul_consumed_milk">Paul a consommé du lait</string>
+    <string name="allow_camera">Autoriser l\'accès à la caméra</string>
+    <string name="member_since_year_single">Membre depuis %1$d an</string>
+    <string name="member_since_year_plural">Membre depuis %1$d ans</string>
+    <string name="member_since_month_single">Membre depuis %1$d mois</string>
+    <string name="member_since_month_plural">Membre depuis %1$d mois</string>
+    <string name="member_since_days">Membre depuis %1$d jours</string>
+    <string name="member_since_yesterday">Membre depuis hier</string>
+    <string name="member_since_today">Membre depuis aujourd\'hui</string>
+    <string name="member_since_year_and_month_single_single">Membre depuis %1$d an et %2$d mois</string>
+    <string name="member_since_year_and_month_single_plural">Membre depuis %1$d an et %2$d mois</string>
+    <string name="member_since_year_and_month_plural_single">Membre depuis %1$d ans et %2$d mois</string>
+    <string name="member_since_year_and_month_plural_plural">Membre depuis %1$d ans et %2$d mois</string>
+    <string name="activity_consumed">%1$s a consommé %2$s</string>
+    <string name="activity_thrown_away">%1$s a jeté %2$s</string>
+    <string name="activity_edited">%1$s a modifié le produit %2$s</string>
+    <string name="activity_added">%1$s a ajouté : %2$s</string>
+    <string name="activity_default">%1$s a effectué une activité sur %2$s</string>
+    <string name="activity_name_changed">%1$s a renommé le produit de %2$s en %3$s</string>
+    <string name="activity_quantity_increased">%1$s a augmenté la quantité de %2$s</string>
+    <string name="activity_quantity_decreased">%1$s a diminué la quantité de %2$s</string>
+    <string name="activity_expiry_changed">%1$s a modifié la date d\'expiration de %2$s</string>
+    <string name="activity_storage_changed">%1$s a modifié le lieu de stockage de %2$s</string>
+    <string name="activity_category_changed">%1$s a modifié la catégorie de %2$s</string>
+    <string name="activity_user_joined">%1$s a rejoint le foyer</string>
+
 </resources>

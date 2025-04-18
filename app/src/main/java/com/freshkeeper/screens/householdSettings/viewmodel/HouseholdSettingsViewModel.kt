@@ -41,15 +41,11 @@ class HouseholdSettingsViewModel
         fun addUserById(
             userId: String,
             context: Context,
-            errorText: String,
-            successText: String,
         ) {
             launchCatching {
                 householdService.addUserById(
                     userId,
                     context,
-                    errorText,
-                    successText,
                     onSuccess = { user ->
                         _household.value =
                             _household.value.copy(
@@ -102,13 +98,11 @@ class HouseholdSettingsViewModel
         fun joinHouseholdById(
             householdId: String,
             context: Context,
-            errorText: String,
         ) {
             launchCatching {
                 householdService.joinHouseholdById(
                     householdId,
                     context,
-                    errorText,
                     onSuccess = { joinedHousehold ->
                         _household.value = joinedHousehold
                     },

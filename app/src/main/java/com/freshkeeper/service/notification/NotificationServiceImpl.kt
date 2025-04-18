@@ -30,7 +30,7 @@ class NotificationServiceImpl
                     doc.toObject<Notification>()?.copy(id = doc.id)
                 }
             } catch (e: Exception) {
-                Log.d("NotificationService", "Error getting notifications: ${e.message}")
+                Log.e("NotificationService", "Error getting notifications: ${e.message}")
                 emptyList()
             }
         }

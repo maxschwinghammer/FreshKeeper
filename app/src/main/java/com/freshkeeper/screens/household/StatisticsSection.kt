@@ -126,7 +126,6 @@ fun StatisticsSection(navController: NavController) {
                 fontSize = 14.sp,
             )
             Spacer(modifier = Modifier.height(4.dp))
-
             mostWastedItems.forEach { (item, count) ->
                 Row(
                     modifier =
@@ -152,7 +151,6 @@ fun StatisticsSection(navController: NavController) {
                             )
                         }
                     }
-
                     Box(
                         modifier =
                             Modifier
@@ -173,7 +171,6 @@ fun StatisticsSection(navController: NavController) {
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text =
                     stringResource(R.string.waste_reduction) +

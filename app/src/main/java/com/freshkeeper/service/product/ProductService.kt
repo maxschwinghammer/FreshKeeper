@@ -1,5 +1,6 @@
 package com.freshkeeper.service.product
 
+import android.content.Context
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodItemPicture
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +20,7 @@ interface ProductService {
         coroutineScope: CoroutineScope,
         onSuccess: (FoodItem) -> Unit,
         onFailure: (Exception) -> Unit,
-        addedText: String,
+        context: Context,
     )
 
     fun getFoodItemPicture(
@@ -40,13 +41,15 @@ interface ProductService {
         isThrownAwayChecked: Boolean,
         coroutineScope: CoroutineScope,
         onSuccess: (FoodItem) -> Unit,
-        addedText: String,
+        context: Context,
     )
 
     suspend fun logActivity(
         foodItem: FoodItem,
         productName: String,
         activityType: String,
-        addedText: String,
+        context: Context,
+        oldName: String? = null,
+        oldQuantity: Int? = null,
     )
 }

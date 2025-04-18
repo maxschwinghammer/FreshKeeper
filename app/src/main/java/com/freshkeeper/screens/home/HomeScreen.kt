@@ -41,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -84,7 +85,7 @@ fun HomeScreen(navController: NavHostController) {
     val allFoodItems by viewModel.allFoodItems.observeAsState(emptyList())
 
     val coroutineScope = rememberCoroutineScope()
-    val addedText = stringResource(R.string.added_product)
+    val context = LocalContext.current
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -373,7 +374,7 @@ fun HomeScreen(navController: NavHostController) {
                             householdId,
                             coroutineScope,
                             { coroutineScope.launch { manualInputSheetState.hide() } },
-                            addedText,
+                            context,
                         )
                     },
                 )
@@ -415,7 +416,7 @@ fun HomeScreen(navController: NavHostController) {
                                         editProductSheetState.hide()
                                     }
                                 },
-                                addedText,
+                                context,
                             )
                         },
                     )

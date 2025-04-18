@@ -65,15 +65,12 @@ interface HouseholdService {
     suspend fun addUserById(
         userId: String,
         context: Context,
-        errorText: String,
-        successText: String,
         onSuccess: (User) -> Unit,
     )
 
     suspend fun joinHouseholdById(
         householdId: String,
         context: Context,
-        errorText: String,
         onSuccess: (Household) -> Unit,
     )
 

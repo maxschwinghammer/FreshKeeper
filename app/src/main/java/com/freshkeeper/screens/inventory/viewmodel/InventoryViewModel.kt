@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.inventory.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -132,7 +133,7 @@ class InventoryViewModel
             householdId: String,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
-            addedText: String,
+            context: Context,
         ) {
             launchCatching {
                 productService.addProduct(
@@ -166,7 +167,7 @@ class InventoryViewModel
                     { e ->
                         Log.e("ProductService", "Error adding product", e)
                     },
-                    addedText,
+                    context,
                 )
             }
         }
@@ -183,7 +184,7 @@ class InventoryViewModel
             isThrownAwayChecked: Boolean,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
-            addedText: String,
+            context: Context,
         ) {
             launchCatching {
                 productService.updateProduct(
@@ -206,7 +207,7 @@ class InventoryViewModel
                         updateStorageLists(updatedItem)
                         onSuccess()
                     },
-                    addedText,
+                    context,
                 )
             }
         }

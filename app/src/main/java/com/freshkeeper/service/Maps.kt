@@ -99,3 +99,17 @@ val reverseHouseholdTypeMap =
         "Single household" to R.string.single_household,
         "Pair" to R.string.pair,
     )
+
+val drawableMap =
+    mapOf(
+        "user_joined" to R.drawable.user_joined,
+        "add_product" to R.drawable.plus,
+        "edit" to R.drawable.edit,
+        "name" to R.drawable.edit,
+        "consumed" to R.drawable.remove,
+        "thrown_away" to R.drawable.remove,
+        "quantity" to R.drawable.update,
+        "expiry" to R.drawable.update,
+        "storage" to R.drawable.update,
+        "category" to R.drawable.update,
+    )

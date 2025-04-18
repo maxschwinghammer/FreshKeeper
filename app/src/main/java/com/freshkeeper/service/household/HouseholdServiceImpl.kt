@@ -3,6 +3,7 @@ package com.freshkeeper.service.household
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import com.freshkeeper.R
 import com.freshkeeper.model.Activity
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
@@ -69,8 +70,6 @@ class HouseholdServiceImpl
                                     onResult(household)
                                 }
                             }
-                    } else {
-                        Log.d("HouseholdServiceImpl", "Household ID is null")
                     }
                 }
         }
@@ -483,8 +482,6 @@ class HouseholdServiceImpl
         override suspend fun addUserById(
             userId: String,
             context: Context,
-            errorText: String,
-            successText: String,
             onSuccess: (User) -> Unit,
         ) {
             val userSnapshot =
@@ -495,7 +492,7 @@ class HouseholdServiceImpl
                     .await()
 
             if (!userSnapshot.exists()) {
-                Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, context.getString(R.string.user_not_found), Toast.LENGTH_SHORT).show()
                 return
             }
 
@@ -521,13 +518,12 @@ class HouseholdServiceImpl
                 onSuccess(user)
             }
 
-            Toast.makeText(context, successText, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, context.getString(R.string.user_added), Toast.LENGTH_SHORT).show()
         }
 
         override suspend fun joinHouseholdById(
             householdId: String,
             context: Context,
-            errorText: String,
             onSuccess: (Household) -> Unit,
         ) {
             try {
@@ -539,7 +535,7 @@ class HouseholdServiceImpl
                         .await()
 
                 if (!householdSnapshot.exists()) {
-                    Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, context.getString(R.string.user_not_found), Toast.LENGTH_SHORT).show()
                     return
                 }
 
@@ -567,7 +563,12 @@ class HouseholdServiceImpl
                     "Error joining household with ID: $householdId",
                     e,
                 )
-                Toast.makeText(context, errorText, Toast.LENGTH_SHORT).show()
+                Toast
+                    .makeText(
+                        context,
+                        context.getString(R.string.household_not_found),
+                        Toast.LENGTH_SHORT,
+                    ).show()
             }
         }
 

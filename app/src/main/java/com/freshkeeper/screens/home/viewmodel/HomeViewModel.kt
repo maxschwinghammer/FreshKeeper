@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.home.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -75,7 +76,7 @@ class HomeViewModel
             householdId: String,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
-            addedText: String,
+            context: Context,
         ) {
             launchCatching {
                 productService.addProduct(
@@ -97,7 +98,7 @@ class HomeViewModel
                     { e ->
                         Log.e("ProductService", "Error adding product", e)
                     },
-                    addedText,
+                    context,
                 )
             }
         }
@@ -114,7 +115,7 @@ class HomeViewModel
             isThrownAwayChecked: Boolean,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
-            addedText: String,
+            context: Context,
         ) {
             launchCatching {
                 productService.updateProduct(
@@ -132,7 +133,7 @@ class HomeViewModel
                         updateItem(updatedItem)
                         onSuccess()
                     },
-                    addedText,
+                    context,
                 )
             }
         }

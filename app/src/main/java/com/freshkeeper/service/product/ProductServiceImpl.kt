@@ -1,6 +1,8 @@
 package com.freshkeeper.service.product
 
+import android.content.Context
 import android.util.Log
+import com.freshkeeper.R
 import com.freshkeeper.model.Activity
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodItemPicture
@@ -49,7 +51,7 @@ class ProductServiceImpl
             coroutineScope: CoroutineScope,
             onSuccess: (FoodItem) -> Unit,
             onFailure: (Exception) -> Unit,
-            addedText: String,
+            context: Context,
         ) {
             val currentUser = _user.value ?: return
             if (!image.isNullOrEmpty()) {
@@ -89,7 +91,7 @@ class ProductServiceImpl
                                                     foodItem.copy(id = documentReference.id),
                                                     productName,
                                                     "product_added",
-                                                    addedText,
+                                                    context,
                                                 )
                                             }
                                             onSuccess(foodItem.copy(id = documentReference.id))
@@ -134,7 +136,7 @@ class ProductServiceImpl
                                                     foodItem.copy(id = documentReference.id),
                                                     productName,
                                                     "product_added",
-                                                    addedText,
+                                                    context,
                                                 )
                                             }
                                             onSuccess(foodItem.copy(id = documentReference.id))
@@ -172,7 +174,7 @@ class ProductServiceImpl
                                             foodItem.copy(id = documentReference.id),
                                             productName,
                                             "product_added",
-                                            addedText,
+                                            context,
                                         )
                                     }
                                     onSuccess(foodItem.copy(id = documentReference.id))
@@ -219,7 +221,7 @@ class ProductServiceImpl
             isThrownAwayChecked: Boolean,
             coroutineScope: CoroutineScope,
             onSuccess: (FoodItem) -> Unit,
-            addedText: String,
+            context: Context,
         ) {
             val currentUser = _user.value ?: return
 
@@ -259,17 +261,42 @@ class ProductServiceImpl
                                                 household.type != "Single household"
                                             ) {
                                                 coroutineScope.launch {
+                                                    val changedFields = mutableListOf<String>()
+                                                    if (foodItem.name != productName) {
+                                                        changedFields.add("name")
+                                                    }
+                                                    if (foodItem.quantity != quantity) {
+                                                        changedFields.add("quantity")
+                                                    }
+                                                    if (foodItem.expiryTimestamp != expiryDate) {
+                                                        changedFields.add("expiry")
+                                                    }
+                                                    if (foodItem.storageLocation != storageLocation) {
+                                                        changedFields.add("storage")
+                                                    }
+                                                    if (foodItem.category != category) {
+                                                        changedFields.add("category")
+                                                    }
                                                     val activityType =
                                                         when {
                                                             isConsumedChecked -> "consumed"
                                                             isThrownAwayChecked -> "thrown_away"
+                                                            changedFields.size == 1 -> changedFields.first()
                                                             else -> "edit"
                                                         }
                                                     logActivity(
-                                                        foodItem,
+                                                        foodItem.copy(
+                                                            name = productName,
+                                                            quantity = quantity,
+                                                            expiryTimestamp = expiryDate,
+                                                            storageLocation = storageLocation,
+                                                            category = category,
+                                                        ),
                                                         productName,
                                                         activityType,
-                                                        addedText,
+                                                        context,
+                                                        oldName = foodItem.name,
+                                                        oldQuantity = foodItem.quantity,
                                                     )
                                                     onSuccess(foodItem)
                                                 }
@@ -293,37 +320,50 @@ class ProductServiceImpl
             foodItem: FoodItem,
             productName: String,
             activityType: String,
-            addedText: String,
+            context: Context,
+            oldName: String?,
+            oldQuantity: Int?,
         ) {
             val currentUser = _user.value ?: return
 
-            val activityText =
+            val resId =
                 when (activityType) {
-                    "consumed" -> "${currentUser.displayName} marked $productName as consumed"
-                    "thrown_away" -> "${currentUser.displayName} marked $productName as thrown away"
-                    "edit" -> "${currentUser.displayName} edited the product $productName"
-                    "product_added" -> "${currentUser.displayName} $addedText: $productName"
-                    else -> "${currentUser.displayName} performed an activity on $productName"
+                    "consumed" -> R.string.activity_consumed
+                    "thrown_away" -> R.string.activity_thrown_away
+                    "name" -> R.string.activity_name_changed
+                    "quantity" ->
+                        if (oldQuantity != null && foodItem.quantity > oldQuantity) {
+                            R.string.activity_quantity_increased
+                        } else {
+                            R.string.activity_quantity_decreased
+                        }
+                    "expiry" -> R.string.activity_expiry_changed
+                    "storage" -> R.string.activity_storage_changed
+                    "category" -> R.string.activity_category_changed
+                    "edit" -> R.string.activity_edited
+                    "product_added" -> R.string.activity_added
+                    else -> R.string.activity_default
                 }
 
             val householdId = accountService.getHouseholdId()
-
             val activity =
                 Activity(
                     id = null,
                     userId = currentUser.id,
                     householdId = householdId,
                     type = activityType,
-                    text = activityText,
+                    textResId = resId,
+                    userName = currentUser.displayName!!,
                     timestamp = System.currentTimeMillis(),
+                    oldProductName = oldName ?: "",
+                    productName = productName,
                 )
 
             firestore
                 .collection("activities")
                 .add(activity)
                 .addOnSuccessListener { documentReference ->
-                    val updatedActivity = activity.copy(id = documentReference.id)
-                    documentReference.update("id", updatedActivity.id)
+                    documentReference.update("id", documentReference.id)
                 }.addOnFailureListener { e ->
                     Log.e("Firestore", "Error when adding the activity", e)
                 }

@@ -49,6 +49,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -98,8 +99,8 @@ fun InventoryScreen(navController: NavHostController) {
 //    val isMember by homeViewModel.isMember.observeAsState()
 
     val coroutineScope = rememberCoroutineScope()
+    val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    val addedText = stringResource(R.string.added_product)
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -443,7 +444,7 @@ fun InventoryScreen(navController: NavHostController) {
                             householdId,
                             coroutineScope,
                             { coroutineScope.launch { manualInputSheetState.hide() } },
-                            addedText,
+                            context,
                         )
                     },
                 )
@@ -485,7 +486,7 @@ fun InventoryScreen(navController: NavHostController) {
                                         editProductSheetState.hide()
                                     }
                                 },
-                                addedText,
+                                context,
                             )
                         },
                     )

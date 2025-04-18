@@ -43,6 +43,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.freshkeeper.R
 import com.freshkeeper.model.Activity
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
+import com.freshkeeper.service.drawableMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -64,33 +65,28 @@ fun ActivitiesSection(isStory: Boolean = false) {
                 id = "1",
                 userId = "1",
                 type = "user_joined",
-                text = stringResource(R.string.activity_tim_joined),
+                textResId = R.string.activity_user_joined,
+                userName = "Tim",
                 timestamp = System.currentTimeMillis(),
             ),
             Activity(
                 id = "2",
                 userId = "2",
                 type = "add_product",
-                text = stringResource(R.string.activity_emma_added_product),
+                textResId = R.string.activity_added,
+                userName = "Emma",
+                productName = "Eier",
                 timestamp = System.currentTimeMillis(),
             ),
             Activity(
                 id = "3",
                 userId = "3",
                 type = "consumed",
-                text = stringResource(R.string.activity_paul_consumed_milk),
+                textResId = R.string.activity_consumed,
+                userName = "Paul",
+                productName = "Milch",
                 timestamp = System.currentTimeMillis(),
             ),
-        )
-
-    val drawableMap =
-        mapOf(
-            "user_joined" to R.drawable.user_joined,
-            "add_product" to R.drawable.plus,
-            "edit" to R.drawable.edit,
-            "consumed" to R.drawable.remove,
-            "thrown_away" to R.drawable.remove,
-            "update" to R.drawable.update,
         )
 
     fun getDrawableId(imageId: String): Int = drawableMap[imageId] ?: R.drawable.plus
@@ -115,6 +111,14 @@ fun ActivitiesSection(isStory: Boolean = false) {
                     modifier = Modifier.padding(bottom = 8.dp),
                 )
                 storyActivities.forEach { activity ->
+                    val message =
+                        stringResource(
+                            id = activity.textResId,
+                            activity.userName,
+                            activity.productName ?: "",
+                            activity.oldProductName ?: "",
+                        )
+
                     Row(
                         modifier =
                             Modifier
@@ -132,10 +136,13 @@ fun ActivitiesSection(isStory: Boolean = false) {
                             modifier = Modifier.size(15.dp),
                         )
                         Text(
-                            text = activity.text,
+                            text = message,
                             color = TextColor,
                             fontSize = 14.sp,
-                            modifier = Modifier.padding(horizontal = 10.dp),
+                            modifier =
+                                Modifier
+                                    .padding(horizontal = 10.dp)
+                                    .fillMaxWidth(),
                         )
                     }
                     Spacer(modifier = Modifier.height(8.dp))
@@ -165,6 +172,14 @@ fun ActivitiesSection(isStory: Boolean = false) {
                 )
 
                 activities?.forEach { activity ->
+                    val message =
+                        stringResource(
+                            id = activity.textResId,
+                            activity.userName,
+                            activity.productName ?: "",
+                            activity.oldProductName ?: "",
+                        )
+
                     var offsetX by remember { mutableFloatStateOf(0f) }
                     val animatedOffsetX by animateDpAsState(targetValue = offsetX.dp, label = "")
 
@@ -231,7 +246,7 @@ fun ActivitiesSection(isStory: Boolean = false) {
                                 modifier = Modifier.size(15.dp),
                             )
                             Text(
-                                text = activity.text,
+                                text = message,
                                 color = TextColor,
                                 fontSize = 14.sp,
                                 modifier = Modifier.padding(horizontal = 10.dp).fillMaxWidth(),

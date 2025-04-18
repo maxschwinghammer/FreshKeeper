@@ -5,17 +5,12 @@ data class Activity(
     val userId: String,
     val householdId: String? = null,
     val type: String,
-    val text: String,
+    val textResId: Int,
+    val userName: String,
     val timestamp: Long,
+    val oldProductName: String? = null,
+    val productName: String? = null,
     val deleted: Boolean = false,
 ) {
-    constructor() : this(
-        "",
-        "",
-        "",
-        "",
-        "",
-        0,
-        false,
-    )
+    constructor() : this("", "", "", "", 0, "", 0, "", "", false)
 }

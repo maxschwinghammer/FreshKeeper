@@ -465,7 +465,29 @@
     <string name="food_tofu">Tofu</string>
     <string name="food_camembert">Camembert</string>
     <string name="food_milk">Leche</string>
-    <string name="activity_tim_joined">Tim se unió al hogar</string>
-    <string name="activity_emma_added_product">Emma añadió manzanas</string>
-    <string name="activity_paul_consumed_milk">Paul consumió leche</string>
+    <string name="allow_camera">Permitir acceso a la cámara</string>
+    <string name="member_since_year_single">Miembro desde hace %1$d año</string>
+    <string name="member_since_year_plural">Miembro desde hace %1$d años</string>
+    <string name="member_since_month_single">Miembro desde hace %1$d mes</string>
+    <string name="member_since_month_plural">Miembro desde hace %1$d meses</string>
+    <string name="member_since_days">Miembro desde hace %1$d días</string>
+    <string name="member_since_yesterday">Miembro desde ayer</string>
+    <string name="member_since_today">Miembro desde hoy</string>
+    <string name="member_since_year_and_month_single_single">Miembro desde hace %1$d año y %2$d mes</string>
+    <string name="member_since_year_and_month_single_plural">Miembro desde hace %1$d año y %2$d meses</string>
+    <string name="member_since_year_and_month_plural_single">Miembro desde hace %1$d años y %2$d mes</string>
+    <string name="member_since_year_and_month_plural_plural">Miembro desde hace %1$d años y %2$d meses</string>
+    <string name="activity_consumed">%1$s consumió %2$s</string>
+    <string name="activity_thrown_away">%1$s tiró %2$s</string>
+    <string name="activity_edited">%1$s editó el producto %2$s</string>
+    <string name="activity_added">%1$s añadió: %2$s</string>
+    <string name="activity_default">%1$s realizó una actividad con %2$s</string>
+    <string name="activity_name_changed">%1$s renombró el producto de %2$s a %3$s</string>
+    <string name="activity_quantity_increased">%1$s aumentó la cantidad de %2$s</string>
+    <string name="activity_quantity_decreased">%1$s redujo la cantidad de %2$s</string>
+    <string name="activity_expiry_changed">%1$s cambió la fecha de caducidad de %2$s</string>
+    <string name="activity_storage_changed">%1$s cambió el lugar de almacenamiento de %2$s</string>
+    <string name="activity_category_changed">%1$s cambió la categoría de %2$s</string>
+    <string name="activity_user_joined">%1$s se unió al hogar</string>
+
 </resources>

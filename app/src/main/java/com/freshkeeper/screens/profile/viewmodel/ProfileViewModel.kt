@@ -1,9 +1,11 @@
 package com.freshkeeper.screens.profile.viewmodel
 
+import android.content.Context
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.service.account.AccountService
+import com.freshkeeper.service.profile.ProfileService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +17,7 @@ class ProfileViewModel
     @Inject
     constructor(
         private val accountService: AccountService,
+        private val profileService: ProfileService,
     ) : AppViewModel() {
         private val _user = MutableStateFlow<User?>(null)
         val user: StateFlow<User?> = _user.asStateFlow()
@@ -40,4 +43,9 @@ class ProfileViewModel
                 accountService.updateDisplayName(newDisplayName)
             }
         }
+
+        fun formatMemberSince(
+            days: Long,
+            context: Context,
+        ): String = profileService.formatMemberSince(days, context)
     }

@@ -72,9 +72,6 @@ fun HouseholdSettingsScreen(
     val addUserByIdSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val context = LocalContext.current
-    val errorText = stringResource(R.string.user_not_found)
-    val householdErrorText = stringResource(R.string.household_not_found)
-    val successText = stringResource(R.string.user_added)
 
     FreshKeeperTheme {
         Scaffold(
@@ -135,7 +132,6 @@ fun HouseholdSettingsScreen(
                                         viewModel.joinHouseholdById(
                                             householdId,
                                             context,
-                                            householdErrorText,
                                         )
                                     })
                                 }
@@ -183,8 +179,6 @@ fun HouseholdSettingsScreen(
                     viewModel.addUserById(
                         userId,
                         context,
-                        errorText,
-                        successText,
                     )
                 }
             }
