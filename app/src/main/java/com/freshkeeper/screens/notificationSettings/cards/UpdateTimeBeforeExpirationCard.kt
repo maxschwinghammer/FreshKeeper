@@ -60,7 +60,7 @@ fun UpdateTimeBeforeExpirationCard(
                     .fillMaxWidth()
                     .padding(16.dp),
         ) {
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.weight(1f).padding(end = 10.dp)) {
                 Text(text = stringResource(R.string.select_time_before_expiration))
             }
             Image(
