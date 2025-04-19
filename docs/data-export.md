@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Datenexport in FreshKeeper
+title: Datenexport
 permalink: /data-export/
 ---
 
