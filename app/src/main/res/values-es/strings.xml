@@ -47,7 +47,6 @@
     <string name="profile_email">Correo electrónico: %1$s</string>
     <string name="update">Actualizar</string>
     <string name="or">o</string>
-    <string name="waste_reduction">Porcentaje de reducción del desperdicio</string>
     <string name="most_wasted_food_items">Alimentos más desperdiciados</string>
     <string name="total_food_waste">Cantidad total de desperdicio de alimentos</string>
     <string name="average_food_waste">Desperdicio promedio de alimentos por día</string>
@@ -491,5 +490,6 @@
     <string name="activity_user_joined">%1$s se unió al hogar</string>
     <string name="cancel_membership">Cancelar membresía</string>
     <string name="cancel_membership_description">Tu membresía será cancelada. Perderás todas las funciones premium al final de tu plan actual.</string>
+    <string name="no_food_waste">Aún no has desechado ningún alimento</string>
 
 </resources>

@@ -233,32 +233,45 @@ class HouseholdServiceImpl
             allItems: List<FoodItem>,
         ): Statistics {
             val totalWaste = expired.size
-            val firstDiscard = expired.minOfOrNull { it.discardTimestamp ?: it.expiryTimestamp }
-            val daysSpan =
+            val discardTimestamps = expired.mapNotNull { it.discardTimestamp }
+            val firstDiscard: Long? = discardTimestamps.minOrNull()
+            val daysSpan: Long =
                 (
                     (
                         System.currentTimeMillis() -
                             (firstDiscard ?: System.currentTimeMillis())
-                    ) / 86_400_000
+                    ) /
+                        86_400_000L
                 ).coerceAtLeast(1L)
-            val averageWaste = totalWaste.toFloat() / 30L
-            val wasteDays =
-                expired
-                    .map {
-                        (it.discardTimestamp ?: it.expiryTimestamp) / 86_400_000L
-                    }.toSet()
-            val daysWithoutWaste =
-                (0L until minOf(daysSpan, 30L)).count { day ->
-                    !wasteDays.contains(System.currentTimeMillis() / 86_400_000L - day)
+            val periodDays: Int = minOf(daysSpan, 30L).toInt()
+            val averageWaste: Float = totalWaste.toFloat() / 30L
+            val currentEpochDay: Long = System.currentTimeMillis() / 86_400_000L
+            val wasteDays: Set<Long> =
+                discardTimestamps
+                    .map { it / 86_400_000L }
+                    .toSet()
+
+            val daysWithoutWaste: Int =
+                if (wasteDays.isEmpty()) {
+                    periodDays
+                } else {
+                    (0 until periodDays).count { delta ->
+                        val day = currentEpochDay - delta
+                        !wasteDays.contains(day)
+                    }
                 }
-            val itemCounts = expired.groupingBy { it.id }.eachCount()
-            val topIds =
-                itemCounts.entries
+            val mostWastedItems: List<Pair<FoodItem, Int>> =
+                expired
+                    .groupingBy { it.name }
+                    .eachCount()
+                    .entries
                     .sortedByDescending { it.value }
                     .take(3)
-                    .map { it.key }
-                    .toSet()
-            val mostWastedItems = topIds.mapNotNull { id -> expired.find { it.id == id } }
+                    .mapNotNull { (name, count) ->
+                        expired.find { it.name == name }?.let { item ->
+                            item to count
+                        }
+                    }
             val usedItemsPercentage =
                 (
                     (
@@ -268,8 +281,13 @@ class HouseholdServiceImpl
                             .toFloat() / allItems.size.coerceAtLeast(1)
                     ) * 100
                 ).toInt()
-            val catCounts = expired.groupingBy { it.category }.eachCount()
-            val mostWastedCategory = catCounts.maxByOrNull { it.value }?.key.orEmpty()
+            val mostWastedCategory =
+                expired
+                    .groupingBy { it.category }
+                    .eachCount()
+                    .maxByOrNull { it.value }
+                    ?.key
+                    .orEmpty()
             val discardedDates =
                 allItems
                     .filter { it.thrownAway && it.discardTimestamp != null }
@@ -280,7 +298,6 @@ class HouseholdServiceImpl
                 averageWaste = averageWaste,
                 daysWithoutWaste = daysWithoutWaste,
                 mostWastedItems = mostWastedItems,
-                wasteReduction = 0,
                 usedItemsPercentage = usedItemsPercentage,
                 mostWastedCategory = mostWastedCategory,
                 discardedDates = discardedDates,

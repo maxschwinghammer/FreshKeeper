@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.household
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -49,10 +50,9 @@ fun StatisticsSection(navController: NavController) {
     val viewModel: HouseholdViewModel = hiltViewModel()
 
     val totalWaste by viewModel.totalWaste.observeAsState(0)
-    val averageWaste by viewModel.averageWaste.observeAsState(0f)
+    val averageWaste by viewModel.averageWaste.observeAsState(0)
     val daysWithoutWaste by viewModel.daysWithoutWaste.observeAsState(0)
     val mostWastedItems by viewModel.mostWastedItems.observeAsState(emptyList())
-    val wasteReduction by viewModel.wasteReduction.observeAsState(0)
     val usedItemsPercentage by viewModel.usedItemsPercentage.observeAsState(0)
     val mostWastedCategory by viewModel.mostWastedCategory.observeAsState("N/A")
 
@@ -97,22 +97,46 @@ fun StatisticsSection(navController: NavController) {
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text =
-                    stringResource(R.string.total_food_waste) + ": $totalWaste " +
-                        stringResource(R.string.items),
-                color = TextColor,
-                fontSize = 14.sp,
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text =
-                    stringResource(R.string.average_food_waste) +
-                        ": ${"%.2f".format(averageWaste)} " +
-                        stringResource(R.string.items),
-                color = TextColor,
-                fontSize = 14.sp,
-            )
+            if (totalWaste > 0) {
+                Text(
+                    text =
+                        stringResource(R.string.total_food_waste) + ": " + totalWaste + " " +
+                            stringResource(R.string.items),
+                    color = TextColor,
+                    fontSize = 14.sp,
+                )
+            } else {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Image(
+                        modifier = Modifier.size(14.dp),
+                        contentDescription = null,
+                        painter = painterResource(R.drawable.check),
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text =
+                            stringResource(
+                                R.string.no_food_waste,
+                            ),
+                        color = TextColor,
+                        fontSize = 14.sp,
+                    )
+                }
+            }
+            if (totalWaste > 0) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text =
+                        stringResource(R.string.average_food_waste) +
+                            ": ${"%.2f".format(averageWaste)} " +
+                            stringResource(R.string.items),
+                    color = TextColor,
+                    fontSize = 14.sp,
+                )
+            }
             Spacer(modifier = Modifier.height(4.dp))
             Text(
                 text =
@@ -122,49 +146,61 @@ fun StatisticsSection(navController: NavController) {
                 fontSize = 14.sp,
             )
             Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = stringResource(R.string.most_wasted_food_items) + ":",
-                color = TextColor,
-                fontSize = 14.sp,
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            mostWastedItems.forEach { (item, count) ->
-                Row(
-                    modifier =
-                        Modifier
-                            .padding(bottom = 8.dp)
-                            .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                ) {
-                    Box(
+            if (totalWaste > 0) {
+                Text(
+                    text = stringResource(R.string.most_wasted_food_items) + ":",
+                    color = TextColor,
+                    fontSize = 14.sp,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                mostWastedItems.forEach { (item, count) ->
+                    Row(
                         modifier =
                             Modifier
-                                .clip(RoundedCornerShape(topStart = 10.dp, bottomStart = 10.dp))
-                                .weight(1f)
-                                .background(WhiteColor)
-                                .padding(horizontal = 10.dp, vertical = 2.dp),
+                                .padding(bottom = 8.dp)
+                                .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        if (item != null) {
+                        Box(
+                            modifier =
+                                Modifier
+                                    .clip(
+                                        RoundedCornerShape(
+                                            topStart = 10.dp,
+                                            bottomStart = 10.dp,
+                                        ),
+                                    ).weight(1f)
+                                    .background(WhiteColor)
+                                    .padding(
+                                        horizontal = 10.dp,
+                                        vertical = 2.dp,
+                                    ),
+                        ) {
                             Text(
-                                text = item,
+                                text = item.name,
                                 style = MaterialTheme.typography.labelLarge,
                                 color = ComponentBackgroundColor,
                                 maxLines = 1,
                             )
                         }
-                    }
-                    Box(
-                        modifier =
-                            Modifier
-                                .clip(RoundedCornerShape(topEnd = 10.dp, bottomEnd = 10.dp))
-                                .weight(1f)
-                                .background(GreyColor)
-                                .padding(horizontal = 10.dp, vertical = 2.dp),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        if (count != null) {
+                        Box(
+                            modifier =
+                                Modifier
+                                    .clip(
+                                        RoundedCornerShape(
+                                            topEnd = 10.dp,
+                                            bottomEnd = 10.dp,
+                                        ),
+                                    ).weight(1f)
+                                    .background(GreyColor)
+                                    .padding(
+                                        horizontal = 10.dp,
+                                        vertical = 2.dp,
+                                    ),
+                            contentAlignment = Alignment.Center,
+                        ) {
                             Text(
-                                text = count,
+                                text = count.toString(),
                                 style = MaterialTheme.typography.labelLarge,
                                 color = TextColor,
                                 maxLines = 1,
@@ -172,23 +208,24 @@ fun StatisticsSection(navController: NavController) {
                         }
                     }
                 }
+                Text(
+                    text =
+                        stringResource(R.string.used_items_percentage) +
+                            " " + usedItemsPercentage + "%",
+                    color = TextColor,
+                    fontSize = 14.sp,
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+
+                val categoryRes = categoryMap[mostWastedCategory] ?: R.string.other
+                Text(
+                    text =
+                        stringResource(R.string.most_wasted_category) + ": " +
+                            stringResource(categoryRes),
+                    color = TextColor,
+                    fontSize = 14.sp,
+                )
             }
-            Text(
-                text =
-                    stringResource(R.string.used_items_percentage) +
-                        " " + usedItemsPercentage + "%",
-                color = TextColor,
-                fontSize = 14.sp,
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            val categoryRes = categoryMap[mostWastedCategory] ?: R.string.other
-            Text(
-                text =
-                    stringResource(R.string.most_wasted_category) + ": " +
-                        stringResource(categoryRes),
-                color = TextColor,
-                fontSize = 14.sp,
-            )
         }
     }
     Spacer(modifier = Modifier.height(20.dp))

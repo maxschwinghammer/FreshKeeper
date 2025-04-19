@@ -128,25 +128,23 @@ fun NotificationsScreen(navController: NavHostController) {
                                                 RoundedCornerShape(10.dp),
                                             ).padding(16.dp),
                                 ) {
-                                    Column {
-                                        Row(
-                                            verticalAlignment = Alignment.CenterVertically,
-                                            modifier = Modifier.fillMaxWidth(),
-                                        ) {
-                                            Image(
-                                                modifier = Modifier.size(25.dp),
-                                                contentDescription = null,
-                                                painter = painterResource(R.drawable.check),
-                                            )
-                                            Spacer(modifier = Modifier.width(16.dp))
-                                            Text(
-                                                text =
-                                                    stringResource(
-                                                        R.string.no_pending_notifications,
-                                                    ),
-                                                color = TextColor,
-                                            )
-                                        }
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.fillMaxWidth(),
+                                    ) {
+                                        Image(
+                                            modifier = Modifier.size(25.dp),
+                                            contentDescription = null,
+                                            painter = painterResource(R.drawable.check),
+                                        )
+                                        Spacer(modifier = Modifier.width(16.dp))
+                                        Text(
+                                            text =
+                                                stringResource(
+                                                    R.string.no_pending_notifications,
+                                                ),
+                                            color = TextColor,
+                                        )
                                     }
                                 }
                             }

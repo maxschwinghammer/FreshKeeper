@@ -62,7 +62,6 @@ fun StatisticsScreen(navController: NavHostController) {
             householdViewModel.averageWaste.observeAsState(0f).value,
             householdViewModel.daysWithoutWaste.observeAsState(0).value,
             householdViewModel.mostWastedItems.observeAsState(emptyList()).value,
-            householdViewModel.wasteReduction.observeAsState(0).value,
             householdViewModel.usedItemsPercentage.observeAsState(0).value,
             householdViewModel.mostWastedCategory.observeAsState("N/A").value,
             householdViewModel.discardedDates.observeAsState(emptyList()).value,

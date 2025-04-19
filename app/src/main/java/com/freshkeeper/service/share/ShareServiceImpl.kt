@@ -9,15 +9,18 @@ import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -31,6 +34,7 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -117,22 +121,48 @@ class ShareServiceImpl
                                 fontWeight = FontWeight.Bold,
                                 modifier = Modifier.padding(bottom = 10.dp),
                             )
-                            Text(
-                                text =
-                                    stringResource(R.string.total_food_waste) + ": " +
-                                        statistics.totalWaste + " " +
-                                        stringResource(R.string.items),
-                                color = TextColor,
-                                fontSize = 14.sp,
-                            )
-                            Text(
-                                text =
-                                    stringResource(R.string.average_food_waste) + ": ${"%.2f"
-                                        .format(statistics.averageWaste)} " +
-                                        stringResource(R.string.items),
-                                color = TextColor,
-                                fontSize = 14.sp,
-                            )
+                            if (statistics.totalWaste > 0) {
+                                Text(
+                                    text =
+                                        stringResource(R.string.total_food_waste) + ": " +
+                                            statistics.totalWaste + " " +
+                                            stringResource(R.string.items),
+                                    color = TextColor,
+                                    fontSize = 14.sp,
+                                )
+                            } else {
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.fillMaxWidth(),
+                                ) {
+                                    Image(
+                                        modifier = Modifier.size(14.dp),
+                                        contentDescription = null,
+                                        painter = painterResource(R.drawable.check),
+                                    )
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text =
+                                            stringResource(
+                                                R.string.no_food_waste,
+                                            ),
+                                        color = TextColor,
+                                        fontSize = 14.sp,
+                                    )
+                                }
+                            }
+                            if (statistics.totalWaste > 0) {
+                                Text(
+                                    text =
+                                        stringResource(R.string.average_food_waste) + ": ${
+                                            "%.2f"
+                                                .format(statistics.averageWaste)
+                                        } " +
+                                            stringResource(R.string.items),
+                                    color = TextColor,
+                                    fontSize = 14.sp,
+                                )
+                            }
                             Text(
                                 text =
                                     stringResource(R.string.days_without_waste) + ": " +
@@ -141,54 +171,52 @@ class ShareServiceImpl
                                 color = TextColor,
                                 fontSize = 14.sp,
                             )
-                            if (statistics.mostWastedItems.isNotEmpty()) {
-                                Text(
-                                    text = stringResource(R.string.most_wasted_food_items) + ":",
-                                    color = TextColor,
-                                    fontSize = 14.sp,
-                                )
-                                statistics.mostWastedItems.forEach { (item, count) ->
-                                    Row(
-                                        modifier = Modifier.padding(bottom = 8.dp).fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween,
-                                    ) {
-                                        Box(
-                                            modifier =
-                                                Modifier
-                                                    .clip(
-                                                        RoundedCornerShape(
-                                                            topStart = 10.dp,
-                                                            bottomStart = 10.dp,
-                                                        ),
-                                                    ).weight(1f)
-                                                    .background(WhiteColor)
-                                                    .padding(horizontal = 10.dp, vertical = 2.dp),
+                            if (statistics.totalWaste > 0) {
+                                if (statistics.mostWastedItems.isNotEmpty()) {
+                                    Text(
+                                        text = stringResource(R.string.most_wasted_food_items) + ":",
+                                        color = TextColor,
+                                        fontSize = 14.sp,
+                                    )
+                                    statistics.mostWastedItems.forEach { (item, count) ->
+                                        Row(
+                                            modifier = Modifier.padding(bottom = 8.dp).fillMaxWidth(),
+                                            horizontalArrangement = Arrangement.SpaceBetween,
                                         ) {
-                                            if (item != null) {
+                                            Box(
+                                                modifier =
+                                                    Modifier
+                                                        .clip(
+                                                            RoundedCornerShape(
+                                                                topStart = 10.dp,
+                                                                bottomStart = 10.dp,
+                                                            ),
+                                                        ).weight(1f)
+                                                        .background(WhiteColor)
+                                                        .padding(horizontal = 10.dp, vertical = 2.dp),
+                                            ) {
                                                 Text(
-                                                    text = item,
+                                                    text = item.name,
                                                     style = MaterialTheme.typography.labelLarge,
                                                     color = ComponentBackgroundColor,
                                                     maxLines = 1,
                                                 )
                                             }
-                                        }
-                                        Box(
-                                            modifier =
-                                                Modifier
-                                                    .clip(
-                                                        RoundedCornerShape(
-                                                            topEnd = 10.dp,
-                                                            bottomEnd = 10.dp,
-                                                        ),
-                                                    ).weight(1f)
-                                                    .background(GreyColor)
-                                                    .padding(horizontal = 10.dp, vertical = 2.dp),
-                                            contentAlignment = Alignment.Center,
-                                        ) {
-                                            if (count != null) {
+                                            Box(
+                                                modifier =
+                                                    Modifier
+                                                        .clip(
+                                                            RoundedCornerShape(
+                                                                topEnd = 10.dp,
+                                                                bottomEnd = 10.dp,
+                                                            ),
+                                                        ).weight(1f)
+                                                        .background(GreyColor)
+                                                        .padding(horizontal = 10.dp, vertical = 2.dp),
+                                                contentAlignment = Alignment.Center,
+                                            ) {
                                                 Text(
-                                                    text = count,
+                                                    text = count.toString(),
                                                     style = MaterialTheme.typography.labelLarge,
                                                     color = TextColor,
                                                     maxLines = 1,
@@ -197,24 +225,24 @@ class ShareServiceImpl
                                         }
                                     }
                                 }
+                                Text(
+                                    text =
+                                        stringResource(R.string.used_items_percentage) + " " +
+                                            statistics.usedItemsPercentage + "%",
+                                    color = TextColor,
+                                    fontSize = 14.sp,
+                                )
+                                val categoryRes =
+                                    categoryMap[statistics.mostWastedCategory]
+                                        ?: R.string.other
+                                Text(
+                                    text =
+                                        stringResource(R.string.most_wasted_category) +
+                                            ": " + stringResource(categoryRes),
+                                    color = TextColor,
+                                    fontSize = 14.sp,
+                                )
                             }
-                            Text(
-                                text =
-                                    stringResource(R.string.used_items_percentage) + " " +
-                                        statistics.usedItemsPercentage + "%",
-                                color = TextColor,
-                                fontSize = 14.sp,
-                            )
-                            val categoryRes =
-                                categoryMap[statistics.mostWastedCategory]
-                                    ?: R.string.other
-                            Text(
-                                text =
-                                    stringResource(R.string.most_wasted_category) +
-                                        ": " + stringResource(categoryRes),
-                                color = TextColor,
-                                fontSize = 14.sp,
-                            )
                         }
                     }
                 }

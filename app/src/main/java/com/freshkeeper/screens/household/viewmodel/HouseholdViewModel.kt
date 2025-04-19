@@ -37,11 +37,8 @@ class HouseholdViewModel
         private val _daysWithoutWaste = MutableLiveData<Int>()
         val daysWithoutWaste: LiveData<Int> = _daysWithoutWaste
 
-        private val _mostWastedItems = MutableLiveData<List<FoodItem>>()
-        val mostWastedItems: LiveData<List<FoodItem>> = _mostWastedItems
-
-        private val _wasteReduction = MutableLiveData<Int>()
-        val wasteReduction: LiveData<Int> = _wasteReduction
+        private val _mostWastedItems = MutableLiveData<List<Pair<FoodItem, Int>>>()
+        val mostWastedItems: LiveData<List<Pair<FoodItem, Int>>> = _mostWastedItems
 
         private val _usedItemsPercentage = MutableLiveData<Int>()
         val usedItemsPercentage: LiveData<Int> = _usedItemsPercentage
@@ -106,7 +103,6 @@ class HouseholdViewModel
                 _averageWaste.value = stats.averageWaste
                 _daysWithoutWaste.value = stats.daysWithoutWaste
                 _mostWastedItems.value = stats.mostWastedItems
-                _wasteReduction.value = stats.wasteReduction
                 _usedItemsPercentage.value = stats.usedItemsPercentage
                 _mostWastedCategory.value = stats.mostWastedCategory
                 _discardedDates.value = stats.discardedDates
