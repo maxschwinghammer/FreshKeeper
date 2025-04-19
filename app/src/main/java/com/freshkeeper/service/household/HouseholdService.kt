@@ -12,6 +12,8 @@ import kotlinx.coroutines.CoroutineScope
 interface HouseholdService {
     suspend fun getHousehold(onResult: (Household) -> Unit)
 
+    suspend fun getHouseholdId(): String?
+
     suspend fun getHouseholdId(onResult: (String) -> Unit)
 
     suspend fun updateHouseholdName(newName: String)
@@ -74,6 +76,11 @@ interface HouseholdService {
     suspend fun joinHouseholdById(
         householdId: String,
         onSuccess: (Household) -> Unit,
+    )
+
+    suspend fun logUserActivity(
+        householdId: String,
+        type: String,
     )
 
     suspend fun updateHouseholdType(

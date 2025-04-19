@@ -103,22 +103,27 @@ fun HelpScreen(navController: NavHostController) {
                         fontWeight = FontWeight.Bold,
                         color = TextColor,
                     )
-                    LazyColumn(
-                        state = listState,
-                        modifier = Modifier.fillMaxWidth(),
+                    Box(
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .weight(1f),
                     ) {
-                        itemsIndexed(faqList) { index, (question, answer) ->
-                            FAQAccordion(
-                                question = question,
-                                answer = answer,
-                                isExpanded = expandedIndex == index,
-                                onClick = {
-                                    expandedIndex = if (expandedIndex == index) null else index
-                                },
-                            )
+                        LazyColumn(
+                            state = listState,
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            itemsIndexed(faqList) { index, (question, answer) ->
+                                FAQAccordion(
+                                    question = question,
+                                    answer = answer,
+                                    isExpanded = expandedIndex == index,
+                                    onClick = {
+                                        expandedIndex = if (expandedIndex == index) null else index
+                                    },
+                                )
+                            }
                         }
-                    }
-                    Box(modifier = Modifier.fillMaxWidth()) {
                         if (showUpperTransition) {
                             UpperTransition()
                         }
@@ -130,7 +135,6 @@ fun HelpScreen(navController: NavHostController) {
                     Column(
                         modifier =
                             Modifier
-                                .weight(1f)
                                 .fillMaxWidth()
                                 .background(ComponentBackgroundColor, RoundedCornerShape(10.dp))
                                 .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp))

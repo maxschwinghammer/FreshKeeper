@@ -127,7 +127,7 @@ fun SignInScreen(
                     }
                     Spacer(Modifier.padding(20.dp))
                     TextButton(
-                        onClick = { navController.navigate("signUp") },
+                        onClick = { navController.navigate("signUp") { popUpTo(0) { inclusive = true } } },
                         border = BorderStroke(1.dp, AccentTurquoiseColor),
                         modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
                     ) {

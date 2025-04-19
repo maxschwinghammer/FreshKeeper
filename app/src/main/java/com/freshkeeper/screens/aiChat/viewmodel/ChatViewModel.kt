@@ -1,7 +1,9 @@
 package com.freshkeeper.screens.aiChat.viewmodel
 
+import android.content.Context
 import android.os.Build
 import androidx.lifecycle.viewModelScope
+import com.freshkeeper.R
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.screens.aiChat.ChatMessage
 import com.freshkeeper.screens.aiChat.ChatUiState
@@ -24,18 +26,13 @@ class ChatViewModel(
 
     private val chat = generativeModel.startChat()
 
-    fun initializeTexts(
-        welcomeText: String,
-        roleText: String,
-        productsText: String,
-        languageText: String,
-    ) {
-        products = productsText
-        language = languageText
+    fun initializeTexts(context: Context) {
+        products = context.getString(R.string.current_food_items)
+        language = context.getString(R.string.answer_in)
 
         _uiState.value.addMessage(
             ChatMessage(
-                text = roleText,
+                text = context.getString(R.string.ai_memory_block),
                 participant = Participant.USER,
                 isPending = false,
             ),
@@ -43,7 +40,7 @@ class ChatViewModel(
 
         _uiState.value.addMessage(
             ChatMessage(
-                text = welcomeText,
+                text = context.getString(R.string.welcome_text),
                 participant = Participant.MODEL,
                 isPending = false,
             ),
@@ -57,7 +54,7 @@ class ChatViewModel(
         _uiState.value.addMessage(
             ChatMessage(
                 text = userMessage,
-                participant = Participant.MODEL,
+                participant = Participant.USER,
                 isPending = true,
             ),
         )

@@ -35,14 +35,10 @@ class HomeViewModel
 //        private val _isMember = MutableLiveData<Boolean>()
 //        val isMember: LiveData<Boolean> = _isMember
 
-        private val _householdId = MutableLiveData<String>()
-        val householdId: LiveData<String> = _householdId
-
         init {
             launchCatching {
                 getFoodItems()
 //                checkMembershipStatus()
-                getHouseholdId()
             }
         }
 
@@ -51,30 +47,26 @@ class HomeViewModel
 //            _isMember.value = status
 //        }
 
-        private suspend fun getFoodItems() {
-            try {
-                val foodItems = householdService.getFoodItems()
-                _allFoodItems.value = foodItems
-                _expiringSoonItems.value =
-                    foodItems
-                        .filter { it.daysDifference in 1..30 }
-                        .sortedBy { it.expiryTimestamp }
-                _expiredItems.value =
-                    foodItems
-                        .filter { it.daysDifference < 1 }
-                        .sortedByDescending { it.expiryTimestamp }
-            } catch (e: Exception) {
-                Log.e("HomeViewModel", "Error loading food items from Firestore", e)
-            }
-        }
-
-        private fun getHouseholdId() {
+        private fun getFoodItems() {
             launchCatching {
-                householdService.getHouseholdId(
-                    onResult = { householdId ->
-                        _householdId.value = householdId
-                    },
-                )
+                try {
+                    _allFoodItems.value = emptyList()
+                    _expiringSoonItems.value = emptyList()
+                    _expiredItems.value = emptyList()
+
+                    val foodItems = householdService.getFoodItems()
+                    _allFoodItems.value = foodItems
+                    _expiringSoonItems.value =
+                        foodItems
+                            .filter { it.daysDifference in 1..30 }
+                            .sortedBy { it.expiryTimestamp }
+                    _expiredItems.value =
+                        foodItems
+                            .filter { it.daysDifference < 1 }
+                            .sortedByDescending { it.expiryTimestamp }
+                } catch (e: Exception) {
+                    Log.e("HomeViewModel", "Error loading food items from Firestore", e)
+                }
             }
         }
 
@@ -91,7 +83,7 @@ class HomeViewModel
 
         fun addProduct(
             productName: String,
-            barcode: String,
+            barcode: String?,
             expiryTimestamp: Long,
             quantity: Int,
             unit: String,
@@ -99,7 +91,6 @@ class HomeViewModel
             category: String,
             image: String?,
             imageUrl: String,
-            householdId: String,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
         ) {
@@ -114,7 +105,6 @@ class HomeViewModel
                     category,
                     image,
                     imageUrl,
-                    householdId,
                     coroutineScope,
                     { newItem ->
                         _allFoodItems.value = (_allFoodItems.value ?: emptyList()) + newItem

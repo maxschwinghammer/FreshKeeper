@@ -104,6 +104,7 @@ class HouseholdSettingsViewModel
         fun leaveHousehold() {
             launchCatching {
                 householdService.leaveHousehold()
+                _household.value = Household()
             }
         }
 

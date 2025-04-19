@@ -64,9 +64,7 @@ fun ResetPasswordCard(
                 Button(
                     onClick = {
                         viewModel.onResetPasswordClick {
-                            navController.navigate("signIn") {
-                                popUpTo(0)
-                            }
+                            navController.navigate("signIn") { popUpTo(0) { inclusive = true } }
                         }
                         showResetPasswordDialog = false
                     },

@@ -103,29 +103,34 @@ val reverseHouseholdTypeMap =
 val drawableMap =
     mapOf(
         "user_joined" to R.drawable.user_joined,
+        "user_left" to R.drawable.leave,
         "product_added" to R.drawable.plus,
         "edit" to R.drawable.edit,
         "name" to R.drawable.edit,
         "consumed" to R.drawable.remove,
         "thrown_away" to R.drawable.trash,
-        "quantity" to R.drawable.update,
+        "quantity_increased" to R.drawable.update,
+        "quantity_decreased" to R.drawable.update,
         "expiry" to R.drawable.expiry,
         "storage" to R.drawable.inventory_filled,
         "category" to R.drawable.category,
+        "default" to R.drawable.edit,
     )
 
 val activityTypeMap =
     mapOf(
+        "user_joined" to R.string.activity_user_joined,
+        "user_left" to R.string.activity_user_left,
+        "product_added" to R.string.activity_added,
+        "edit" to R.string.activity_edited,
+        "name" to R.string.activity_name_changed,
         "consumed" to R.string.activity_consumed,
         "thrown_away" to R.string.activity_thrown_away,
-        "name" to R.string.activity_name_changed,
         "quantity_increased" to R.string.activity_quantity_increased,
         "quantity_decreased" to R.string.activity_quantity_decreased,
         "expiry" to R.string.activity_expiry_changed,
         "storage" to R.string.activity_storage_changed,
         "category" to R.string.activity_category_changed,
-        "edit" to R.string.activity_edited,
-        "product_added" to R.string.activity_added,
         "default" to R.string.activity_default,
     )
 

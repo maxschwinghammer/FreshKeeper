@@ -1,19 +1,21 @@
 package com.freshkeeper.screens.inventory.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodItemPicture
 import com.freshkeeper.model.ProductData
 import com.freshkeeper.screens.AppViewModel
-import com.freshkeeper.service.household.HouseholdService
 import com.freshkeeper.service.inventory.InventoryService
 import com.freshkeeper.service.product.ProductService
 import com.freshkeeper.service.productDetails.ProductDetailsService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import javax.inject.Inject
+import kotlin.collections.joinToString
 
 @HiltViewModel
 class InventoryViewModel
@@ -22,7 +24,6 @@ class InventoryViewModel
         private val inventoryService: InventoryService,
         private val productService: ProductService,
         private val productDetailsService: ProductDetailsService,
-        private val householdService: HouseholdService,
     ) : AppViewModel() {
         private val _foodItems = MutableLiveData<List<FoodItem>>()
         val foodItems: LiveData<List<FoodItem>> = _foodItems
@@ -60,9 +61,6 @@ class InventoryViewModel
         private val _otherItems = MutableLiveData<List<FoodItem>>(emptyList())
         val otherItems: LiveData<List<FoodItem>> = _otherItems
 
-        private val _householdId = MutableLiveData<String>()
-        val householdId: LiveData<String> = _householdId
-
         init {
             getStorageLocationItems("fridge", _fridgeItems)
             getStorageLocationItems("cupboard", _cupboardItems)
@@ -74,36 +72,35 @@ class InventoryViewModel
             getStorageLocationItems("pantry", _pantryItems)
             getStorageLocationItems("fruit_basket", _fruitBasketItems)
             getStorageLocationItems("other", _otherItems)
-            getAllFoodItems()
-            getHouseholdId()
         }
 
-        private fun getHouseholdId() {
-            launchCatching {
-                householdService.getHouseholdId(
-                    onResult = { householdId ->
-                        _householdId.value = householdId
-                    },
-                )
-            }
-        }
-
-        private fun getAllFoodItems() {
+        fun getAllFoodItems(context: Context) {
             launchCatching {
                 inventoryService.getAllFoodItems(
                     onResult = { items ->
                         _foodItems.value = items
-                        updateItemList(items)
+                        _itemList.value =
+                            items.joinToString(separator = ", ") {
+                                val expiryText =
+                                    if (it.daysDifference < 0) {
+                                        context.getString(
+                                            R.string.expired_text,
+                                            -it.daysDifference,
+                                        )
+                                    } else {
+                                        context.getString(
+                                            R.string.expires_in_text,
+                                            it.daysDifference,
+                                        )
+                                    }
+                                "${it.name} (${it.quantity} ${it.unit}, $expiryText)"
+                            }
                     },
                     onFailure = {
                         Log.e("InventoryViewModel", "Error loading all food items")
                     },
                 )
             }
-        }
-
-        private fun updateItemList(foodItems: List<FoodItem>) {
-            _itemList.value = foodItems.joinToString(separator = ", ") { it.name }
         }
 
         private fun getStorageLocationItems(
@@ -151,7 +148,7 @@ class InventoryViewModel
 
         fun addProduct(
             productName: String,
-            barcode: String,
+            barcode: String?,
             expiryTimestamp: Long,
             quantity: Int,
             unit: String,
@@ -159,7 +156,6 @@ class InventoryViewModel
             category: String,
             image: String?,
             imageUrl: String,
-            householdId: String,
             coroutineScope: CoroutineScope,
             onSuccess: () -> Unit,
         ) {
@@ -174,7 +170,6 @@ class InventoryViewModel
                     category,
                     image,
                     imageUrl,
-                    householdId,
                     coroutineScope,
                     onSuccess = { newItem ->
                         _foodItems.value = (_foodItems.value ?: emptyList()) + newItem

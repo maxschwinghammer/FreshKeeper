@@ -86,9 +86,9 @@ class GoogleAccountServiceImpl
                 val promptInfo =
                     BiometricPrompt.PromptInfo
                         .Builder()
-                        .setTitle("Biometric authentication")
-                        .setSubtitle("Please authenticate yourself to continue")
-                        .setNegativeButtonText("Cancel")
+                        .setTitle(context.getString(R.string.biometric_auth_title))
+                        .setSubtitle(context.getString(R.string.biometric_auth_subtitle))
+                        .setNegativeButtonText(context.getString(R.string.cancel))
                         .build()
                 biometricPrompt.authenticate(promptInfo)
             }
@@ -99,44 +99,60 @@ class GoogleAccountServiceImpl
             displayName: String,
             profilePictureUrl: String?,
         ) {
-            val membership = Membership()
-            firestore
-                .collection("memberships")
-                .document(userId)
-                .set(membership)
-                .addOnSuccessListener {
-                    if (profilePictureUrl != null) {
-                        val profilePictureData =
-                            ProfilePicture(
-                                image = profilePictureUrl,
-                                type = "url",
-                            )
-                        firestore
-                            .collection("profilePictures")
-                            .document(userId)
-                            .set(profilePictureData)
-                            .addOnSuccessListener { saveUserDocument(userId, email, displayName) }
-                            .addOnFailureListener { }
-                        val notificationSettings =
-                            NotificationSettings(
-                                dailyNotificationTime = LocalTime.of(12, 0).toString(),
-                                timeBeforeExpiration = 2,
-                                dailyReminders = false,
-                                foodAdded = false,
-                                householdChanges = false,
-                                foodExpiring = false,
-                                tips = false,
-                                statistics = false,
-                            )
-                        firestore
-                            .collection("notificationSettings")
-                            .document(userId)
-                            .set(notificationSettings)
-                            .addOnFailureListener { }
-                    } else {
-                        saveUserDocument(userId, email, displayName)
+            val usersRef = firestore.collection("users").document(userId)
+            val membershipRef = firestore.collection("memberships").document(userId)
+            val profilePicRef = firestore.collection("profilePictures").document(userId)
+            val notificationRef = firestore.collection("notificationSettings").document(userId)
+
+            usersRef.get().addOnSuccessListener { userSnapshot ->
+                if (!userSnapshot.exists()) {
+                    val user =
+                        User(
+                            id = userId,
+                            email = email,
+                            displayName = displayName,
+                            createdAt = System.currentTimeMillis(),
+                            provider = "google",
+                        )
+                    usersRef.set(user)
+
+                    membershipRef.get().addOnSuccessListener { membershipSnapshot ->
+                        if (!membershipSnapshot.exists()) {
+                            membershipRef.set(Membership())
+                        }
                     }
-                }.addOnFailureListener { }
+
+                    notificationRef.get().addOnSuccessListener { notifSnapshot ->
+                        if (!notifSnapshot.exists()) {
+                            val notificationSettings =
+                                NotificationSettings(
+                                    dailyNotificationTime = LocalTime.of(12, 0).toString(),
+                                    timeBeforeExpiration = 2,
+                                    dailyReminders = false,
+                                    foodAdded = false,
+                                    householdChanges = false,
+                                    foodExpiring = false,
+                                    tips = false,
+                                    statistics = false,
+                                )
+                            notificationRef.set(notificationSettings)
+                        }
+                    }
+
+                    if (!profilePictureUrl.isNullOrEmpty()) {
+                        profilePicRef.get().addOnSuccessListener { profilePicSnapshot ->
+                            if (!profilePicSnapshot.exists()) {
+                                val profilePicture =
+                                    ProfilePicture(
+                                        image = profilePictureUrl,
+                                        type = "url",
+                                    )
+                                profilePicRef.set(profilePicture)
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         override fun saveUserDocument(

@@ -488,8 +488,11 @@
     <string name="activity_storage_changed">%1$s alterou o local de armazenamento de %2$s</string>
     <string name="activity_category_changed">%1$s alterou a categoria de %2$s</string>
     <string name="activity_user_joined">%1$s entrou na casa</string>
+    <string name="activity_user_left">%1$s saiu da casa</string>
     <string name="cancel_membership">Cancelar assinatura</string>
     <string name="cancel_membership_description">Sua assinatura será cancelada. Você perderá todas as funções premium ao final do seu plano atual.</string>
     <string name="no_food_waste">Você ainda não descartou nenhum alimento</string>
+    <string name="expired_text">vencido há %1$d dias</string>
+    <string name="expires_in_text">vence em %1$d dias</string>
 
 </resources>

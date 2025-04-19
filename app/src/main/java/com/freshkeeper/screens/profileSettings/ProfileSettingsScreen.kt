@@ -135,7 +135,9 @@ fun ProfileSettingsScreen(
                                                 RoundedCornerShape(10.dp),
                                             ),
                                 ) {
-                                    navController.navigate("signIn")
+                                    navController.navigate("signIn") {
+                                        popUpTo(0) { inclusive = true }
+                                    }
                                 }
                             } else {
                                 EmailCard(viewModel, navController, user)
@@ -154,13 +156,15 @@ fun ProfileSettingsScreen(
                                 SignOutCard {
                                     viewModel.onSignOutClick {
                                         navController.navigate("signIn") {
-                                            popUpTo(0)
+                                            popUpTo(0) { inclusive = true }
                                         }
                                     }
                                 }
                                 RemoveAccountCard {
                                     viewModel.onDeleteAccountClick()
-                                    navController.navigate("signUp")
+                                    navController.navigate("signUp") {
+                                        popUpTo(0) { inclusive = true }
+                                    }
                                 }
                             }
                         }

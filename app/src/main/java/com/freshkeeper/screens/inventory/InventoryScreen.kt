@@ -38,6 +38,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -49,6 +50,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -92,9 +94,8 @@ fun InventoryScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
 //    val homeViewModel: HomeViewModel = hiltViewModel()
 
-    val householdId by viewModel.householdId.observeAsState("")
-    var scannedBarcode by remember { mutableStateOf("") }
-    var recognizedFoodName by remember { mutableStateOf("") }
+    var scannedBarcode by remember { mutableStateOf<String?>(null) }
+    var recognizedFoodName by remember { mutableStateOf<String?>(null) }
     var scannedExpiryDate by remember { mutableLongStateOf(System.currentTimeMillis()) }
 //    val isMember by homeViewModel.isMember.observeAsState()
 
@@ -133,6 +134,11 @@ fun InventoryScreen(navController: NavHostController) {
     val labelMap = categoryMap + storageLocationMap
 
     fun getLabel(key: String): Int? = labelMap[key]
+
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        viewModel.getAllFoodItems(context)
+    }
 
     FreshKeeperTheme {
         Scaffold(
@@ -443,7 +449,6 @@ fun InventoryScreen(navController: NavHostController) {
                             category,
                             image,
                             imageUrl,
-                            householdId,
                             coroutineScope,
                         ) { coroutineScope.launch { manualInputSheetState.hide() } }
                     },

@@ -74,7 +74,6 @@ fun LeaveHouseholdCard(onLeaveHouseholdClick: () -> Unit) {
                             contentColor = TextColor,
                         ),
                     shape = RoundedCornerShape(20.dp),
-                    border = BorderStroke(1.dp, ComponentStrokeColor),
                 ) {
                     Text(text = stringResource(R.string.leave_household))
                 }

@@ -54,8 +54,6 @@ interface AccountService {
 
     suspend fun sendEmailVerification()
 
-    suspend fun getHouseholdId(): String
-
     suspend fun updateProfilePicture(base64Image: String)
 
     suspend fun getProfilePicture(userId: String): ProfilePicture?

@@ -494,8 +494,11 @@
     <string name="activity_storage_changed">%1$s changed the storage location of %2$s</string>
     <string name="activity_category_changed">%1$s changed the category of %2$s</string>
     <string name="activity_user_joined">%1$s joined the household</string>
+    <string name="activity_user_left">%1$s left the household</string>
     <string name="cancel_membership">Cancel membership</string>
     <string name="cancel_membership_description">Your membership will be canceled. You will lose all premium functions at the end of your current plan.</string>
     <string name="no_food_waste">You haven\'t disposed of any food yet</string>
+    <string name="expired_text">expired %1$d days ago</string>
+    <string name="expires_in_text">expires in %1$d days</string>
 
 </resources>

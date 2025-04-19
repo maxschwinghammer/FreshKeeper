@@ -62,7 +62,7 @@ fun LandingPageScreen(navController: NavHostController) {
     val containerSize = remember { mutableStateOf(IntSize.Zero) }
 
     fun onComplete() {
-        navController.navigate("signUp")
+        navController.navigate("signUp") { popUpTo(0) { inclusive = true } }
     }
 
     val totalDuration = 5_000L

@@ -1,6 +1,5 @@
 package com.freshkeeper.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,7 +28,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -66,7 +64,6 @@ import com.freshkeeper.ui.theme.BottomNavBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.FreshKeeperTheme
 import com.freshkeeper.ui.theme.TextColor
-import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -76,9 +73,8 @@ fun HomeScreen(navController: NavHostController) {
     val viewModel: HomeViewModel = hiltViewModel()
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
 
-    val householdId by viewModel.householdId.observeAsState("")
-    var scannedBarcode by remember { mutableStateOf("") }
-    var recognizedFoodName by remember { mutableStateOf("") }
+    var scannedBarcode by remember { mutableStateOf<String?>(null) }
+    var recognizedFoodName by remember { mutableStateOf<String?>(null) }
     var scannedExpiryDate by remember { mutableLongStateOf(System.currentTimeMillis()) }
     var foodItem by remember { mutableStateOf<FoodItem?>(null) }
 //    val isMember by viewModel.isMember.observeAsState()
@@ -99,16 +95,6 @@ fun HomeScreen(navController: NavHostController) {
     val showTransition by remember {
         derivedStateOf {
             listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0
-        }
-    }
-
-    LaunchedEffect(Unit) {
-        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.w("Token", "Fetching FCM registration token failed", task.exception)
-            } else {
-                Log.d("Token", task.result)
-            }
         }
     }
 
@@ -372,7 +358,6 @@ fun HomeScreen(navController: NavHostController) {
                             category,
                             image,
                             imageUrl,
-                            householdId,
                             coroutineScope,
                         ) { coroutineScope.launch { manualInputSheetState.hide() } }
                     },

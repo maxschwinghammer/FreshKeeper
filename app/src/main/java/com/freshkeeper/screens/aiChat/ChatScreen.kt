@@ -18,6 +18,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -45,14 +46,11 @@ fun ChatScreen(navController: NavHostController) {
     val itemList by inventoryViewModel.itemList.observeAsState("")
     val chatViewModel: ChatViewModel = viewModel(factory = GenerativeViewModelFactory)
     val chatUiState by chatViewModel.uiState.collectAsState()
-
-    val welcomeText = stringResource(R.string.welcome_text)
-    val roleText = stringResource(R.string.ai_memory_block)
-    val productsText = stringResource(R.string.current_food_items)
-    val languageText = stringResource(R.string.answer_in)
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        chatViewModel.initializeTexts(welcomeText, roleText, productsText, languageText)
+        inventoryViewModel.getAllFoodItems(context)
+        chatViewModel.initializeTexts(context)
     }
 
     FreshKeeperTheme {

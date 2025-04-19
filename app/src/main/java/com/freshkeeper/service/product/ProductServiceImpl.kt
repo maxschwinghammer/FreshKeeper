@@ -7,13 +7,11 @@ import com.freshkeeper.model.FoodItemPicture
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.User
 import com.freshkeeper.service.account.AccountService
+import com.freshkeeper.service.household.HouseholdService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.ZoneId
@@ -24,23 +22,25 @@ class ProductServiceImpl
     @Inject
     constructor(
         private val accountService: AccountService,
+        private val householdService: HouseholdService,
     ) : ProductService {
         val firestore = FirebaseFirestore.getInstance()
         val auth = FirebaseAuth.getInstance()
         val coroutineScope = CoroutineScope(Dispatchers.IO)
 
-        private var _user = MutableStateFlow<User?>(null)
-        val user: StateFlow<User?> get() = _user.asStateFlow()
+        var user: User = User()
+        var householdId: String? = null
 
         init {
             coroutineScope.launch {
-                _user.value = accountService.getUserObject()
+                user = accountService.getUserObject()
+                householdId = householdService.getHouseholdId()
             }
         }
 
         override suspend fun addProduct(
             productName: String,
-            barcode: String,
+            barcode: String?,
             expiryTimestamp: Long,
             quantity: Int,
             unit: String,
@@ -48,13 +48,10 @@ class ProductServiceImpl
             category: String,
             image: String?,
             imageUrl: String?,
-            householdId: String,
             coroutineScope: CoroutineScope,
             onSuccess: (FoodItem) -> Unit,
             onFailure: (Exception) -> Unit,
         ) {
-            val currentUser = _user.value ?: return
-
             val currentDate = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDate()
             val expiryDate = Instant.ofEpochMilli(expiryTimestamp).atZone(ZoneId.systemDefault()).toLocalDate()
             val daysDifference = ChronoUnit.DAYS.between(currentDate, expiryDate).toInt()
@@ -70,7 +67,7 @@ class ProductServiceImpl
                         val foodItem =
                             FoodItem(
                                 barcode = barcode,
-                                userId = currentUser.id,
+                                userId = user.id,
                                 householdId = householdId,
                                 name = productName,
                                 expiryTimestamp = expiryTimestamp,
@@ -92,7 +89,7 @@ class ProductServiceImpl
                                     .update("id", documentReference.id)
                                     .addOnSuccessListener {
                                         coroutineScope.launch {
-                                            if (currentUser.householdId != null) {
+                                            if (user.householdId != null) {
                                                 logActivity(
                                                     foodItem.copy(id = documentReference.id),
                                                     productName,
@@ -119,7 +116,7 @@ class ProductServiceImpl
                         val foodItem =
                             FoodItem(
                                 barcode = barcode,
-                                userId = currentUser.id,
+                                userId = user.id,
                                 householdId = householdId,
                                 name = productName,
                                 expiryTimestamp = expiryTimestamp,
@@ -141,7 +138,7 @@ class ProductServiceImpl
                                     .update("id", documentReference.id)
                                     .addOnSuccessListener {
                                         coroutineScope.launch {
-                                            if (currentUser.householdId != null) {
+                                            if (user.householdId != null) {
                                                 logActivity(
                                                     foodItem.copy(id = documentReference.id),
                                                     productName,
@@ -162,7 +159,7 @@ class ProductServiceImpl
                 val foodItem =
                     FoodItem(
                         barcode = barcode,
-                        userId = currentUser.id,
+                        userId = user.id,
                         householdId = householdId,
                         name = productName,
                         expiryTimestamp = expiryTimestamp,
@@ -183,7 +180,7 @@ class ProductServiceImpl
                             .update("id", documentReference.id)
                             .addOnSuccessListener {
                                 coroutineScope.launch {
-                                    if (currentUser.householdId != null) {
+                                    if (user.householdId != null) {
                                         logActivity(
                                             foodItem.copy(id = documentReference.id),
                                             productName,
@@ -240,8 +237,6 @@ class ProductServiceImpl
             coroutineScope: CoroutineScope,
             onSuccess: (FoodItem) -> Unit,
         ) {
-            val currentUser = _user.value ?: return
-
             firestore
                 .collection("foodItems")
                 .whereEqualTo("id", foodItem.id)
@@ -270,10 +265,10 @@ class ProductServiceImpl
                         document.reference
                             .update(updates)
                             .addOnSuccessListener {
-                                if (currentUser.householdId != null) {
+                                if (user.householdId != null) {
                                     firestore
                                         .collection("households")
-                                        .document(currentUser.householdId)
+                                        .document(user.householdId!!)
                                         .get()
                                         .addOnSuccessListener { householdDoc ->
                                             val household =
@@ -331,7 +326,10 @@ class ProductServiceImpl
                                                             expiryTimestamp = expiryTimestamp,
                                                             consumed = isConsumedChecked,
                                                             thrownAway = isThrownAwayChecked,
-                                                            daysDifference = ChronoUnit.DAYS.between(currentDate, expiryDate).toInt(),
+                                                            daysDifference =
+                                                                ChronoUnit.DAYS
+                                                                    .between(currentDate, expiryDate)
+                                                                    .toInt(),
                                                         )
                                                     logActivity(
                                                         updatedFoodItem,
@@ -365,9 +363,6 @@ class ProductServiceImpl
             oldName: String?,
             oldQuantity: Int?,
         ) {
-            val currentUser = _user.value ?: return
-            val householdId = accountService.getHouseholdId()
-
             val resolvedType =
                 when (activityType) {
                     "quantity" -> {
@@ -382,10 +377,10 @@ class ProductServiceImpl
 
             val activity =
                 Activity(
-                    userId = currentUser.id,
+                    userId = user.id,
                     householdId = householdId,
                     type = resolvedType,
-                    userName = currentUser.displayName!!,
+                    userName = user.displayName!!,
                     timestamp = System.currentTimeMillis(),
                     oldProductName = oldName ?: "",
                     productName = productName,

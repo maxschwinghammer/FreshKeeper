@@ -202,7 +202,7 @@ fun EmailSignUpScreen(
                     }
                     Spacer(Modifier.padding(8.dp))
                     TextButton(
-                        onClick = { navController.navigate("signIn") },
+                        onClick = { navController.navigate("signIn") { popUpTo(0) { inclusive = true } } },
                         modifier = Modifier.padding(horizontal = 16.dp),
                     ) {
                         Text(

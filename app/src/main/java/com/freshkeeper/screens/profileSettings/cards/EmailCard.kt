@@ -116,7 +116,7 @@ fun EmailCard(
                 Button(
                     onClick = {
                         viewModel.onChangeEmailClick(newEmail)
-                        navController.navigate("signIn")
+                        navController.navigate("signIn") { popUpTo(0) { inclusive = true } }
                         showChangeEmailDialog = false
                     },
                     colors =

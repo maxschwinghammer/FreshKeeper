@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.core.content.FileProvider
 import com.freshkeeper.R
 import com.freshkeeper.model.Activity
@@ -193,6 +194,7 @@ class AccountServiceImpl
         override suspend fun signOut() {
             auth.signOut()
             FirebaseMessaging.getInstance().deleteToken()
+            (context as? ComponentActivity)?.viewModelStore?.clear()
         }
 
         override suspend fun changeEmail(newEmail: String) {
@@ -309,8 +311,6 @@ class AccountServiceImpl
                     isAnonymous = this.isAnonymous,
                     isEmailVerified = this.isEmailVerified,
                     isBiometricEnabled = false,
-                    createdAt = 0,
-                    householdId = "",
                 )
             }
 
@@ -343,20 +343,6 @@ class AccountServiceImpl
             } catch (e: Exception) {
                 Log.e("AccountServiceImpl", "Failed to send email verification", e)
                 throw e
-            }
-        }
-
-        override suspend fun getHouseholdId(): String {
-            val currentUser = auth.currentUser ?: return ""
-
-            val userRef = firestore.collection("users").document(currentUser.uid)
-            return try {
-                val documentSnapshot = userRef.get().await()
-                val householdId = documentSnapshot.getString("householdId")
-                householdId.orEmpty()
-            } catch (e: Exception) {
-                Log.e("AccountServiceImpl", "Error fetching householdId for user", e)
-                ""
             }
         }
 

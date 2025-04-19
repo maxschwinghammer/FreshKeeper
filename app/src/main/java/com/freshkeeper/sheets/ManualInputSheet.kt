@@ -80,9 +80,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun ManualInputSheet(
     sheetState: SheetState,
-    barcode: String,
+    barcode: String?,
     scannedExpiryDate: Long,
-    recognizedFoodName: String,
+    recognizedFoodName: String?,
     onFetchProductDataFromBarcode: (
         barcode: String,
         onSuccess: (ProductData) -> Unit,
@@ -90,7 +90,7 @@ fun ManualInputSheet(
     ) -> Unit,
     onAddProduct: (
         productName: String,
-        barcode: String,
+        barcode: String?,
         expiryTimestamp: Long,
         quantity: Int,
         unit: String,
@@ -114,7 +114,7 @@ fun ManualInputSheet(
     var showImageComposable by remember { mutableStateOf(false) }
 
     LaunchedEffect(barcode) {
-        if (barcode.isNotEmpty()) {
+        if (barcode?.isNotEmpty() == true) {
             onFetchProductDataFromBarcode(
                 barcode,
                 { data ->
@@ -131,7 +131,7 @@ fun ManualInputSheet(
                 },
                 { e -> Log.e("ManualInputSheet", "Error fetching product data", e) },
             )
-        } else if (recognizedFoodName.isNotBlank()) {
+        } else if (recognizedFoodName?.isNotBlank() == true) {
             productName = recognizedFoodName
         }
     }

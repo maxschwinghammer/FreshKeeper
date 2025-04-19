@@ -7,7 +7,7 @@ import kotlinx.coroutines.CoroutineScope
 interface ProductService {
     suspend fun addProduct(
         productName: String,
-        barcode: String,
+        barcode: String?,
         expiryTimestamp: Long,
         quantity: Int,
         unit: String,
@@ -15,7 +15,6 @@ interface ProductService {
         category: String,
         image: String?,
         imageUrl: String?,
-        householdId: String,
         coroutineScope: CoroutineScope,
         onSuccess: (FoodItem) -> Unit,
         onFailure: (Exception) -> Unit,

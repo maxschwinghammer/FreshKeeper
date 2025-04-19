@@ -11,6 +11,7 @@ import com.freshkeeper.model.Member
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.Statistics
 import com.freshkeeper.model.User
+import com.freshkeeper.service.account.AccountService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,27 +30,37 @@ class HouseholdServiceImpl
     @Inject
     constructor(
         @ApplicationContext private val context: Context,
+        private val accountService: AccountService,
     ) : HouseholdService {
         private val firestore = FirebaseFirestore.getInstance()
         private val userId = FirebaseAuth.getInstance().currentUser?.uid
         private var householdId: String? = null
 
+        val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+        var user: User = User()
+
         init {
-            fetchHouseholdId()
+            coroutineScope.launch {
+                householdId = getHouseholdId()
+                user = accountService.getUserObject()
+            }
         }
 
-        private fun fetchHouseholdId() {
-            if (userId == null) return
+        override suspend fun getHouseholdId(): String? {
+            if (userId != null) {
+                val doc =
+                    firestore
+                        .collection("users")
+                        .document(userId)
+                        .get()
+                        .await()
+                householdId = doc.getString("householdId")
 
-            firestore
-                .collection("users")
-                .document(userId)
-                .get()
-                .addOnSuccessListener { document ->
-                    householdId = document.getString("householdId")
-                }.addOnFailureListener {
-                    Log.e("HouseholdServiceImpl", "Failed to fetch household ID")
-                }
+                return householdId
+            } else {
+                return null
+            }
         }
 
         override suspend fun getHousehold(onResult: (Household) -> Unit) {
@@ -423,21 +434,38 @@ class HouseholdServiceImpl
 
         override suspend fun leaveHousehold() {
             try {
-                householdId?.let {
-                    firestore
-                        .collection("households")
-                        .document(it)
-                        .update("users", FieldValue.arrayRemove(userId))
-                        .await()
+                val batch = firestore.batch()
+
+                householdId?.let { householdId ->
+                    val householdRef =
+                        firestore
+                            .collection("households")
+                            .document(householdId)
+                    batch.update(householdRef, "users", FieldValue.arrayRemove(userId))
                 }
 
-                if (userId != null) {
-                    firestore
-                        .collection("users")
-                        .document(userId)
-                        .update("householdId", null)
-                        .await()
+                userId?.let { userId ->
+                    val userRef =
+                        firestore
+                            .collection("users")
+                            .document(userId)
+                    batch.update(userRef, "householdId", null)
                 }
+
+                userId?.let { userId ->
+                    val querySnapshot =
+                        firestore
+                            .collection("foodItems")
+                            .whereEqualTo("userId", userId)
+                            .get()
+                            .await()
+                    for (doc in querySnapshot.documents) {
+                        batch.update(doc.reference, "householdId", null)
+                    }
+                }
+
+                batch.commit().await()
+                householdId?.let { logUserActivity(it, "user_left") }
             } catch (e: Exception) {
                 Log.e("HouseholdService", "Error when leaving the household", e)
             }
@@ -614,36 +642,44 @@ class HouseholdServiceImpl
                     Toast
                         .makeText(
                             context,
-                            context.getString(R.string.user_not_found),
+                            context.getString(R.string.household_not_found),
                             Toast.LENGTH_SHORT,
                         ).show()
                     return
                 }
 
-                firestore
-                    .collection("households")
-                    .document(householdId)
-                    .update("users", FieldValue.arrayUnion(userId))
-                    .await()
+                val batch = firestore.batch()
 
-                if (userId != null) {
-                    firestore
-                        .collection("users")
-                        .document(userId)
-                        .update("householdId", householdId)
-                        .await()
+                userId?.let { uid ->
+                    val userRef = firestore.collection("users").document(uid)
+                    batch.update(userRef, "householdId", householdId)
                 }
 
-                val joinedHousehold = householdSnapshot.toObject(Household::class.java)
-                if (joinedHousehold != null) {
-                    onSuccess(joinedHousehold)
+                val householdRef = firestore.collection("households").document(householdId)
+                batch.update(householdRef, "users", FieldValue.arrayUnion(userId))
+
+                userId?.let { uid ->
+                    val itemsSnapshot =
+                        firestore
+                            .collection("foodItems")
+                            .whereEqualTo("userId", uid)
+                            .get()
+                            .await()
+
+                    for (doc in itemsSnapshot.documents) {
+                        batch.update(doc.reference, "householdId", householdId)
+                    }
                 }
+
+                batch.commit().await()
+
+                logUserActivity(householdId, "user_joined")
+
+                householdSnapshot
+                    .toObject(Household::class.java)
+                    ?.let(onSuccess)
             } catch (e: Exception) {
-                Log.e(
-                    "HouseholdService",
-                    "Error joining household with ID: $householdId",
-                    e,
-                )
+                Log.e("HouseholdService", "Error joining household with ID: $householdId", e)
                 Toast
                     .makeText(
                         context,
@@ -651,6 +687,27 @@ class HouseholdServiceImpl
                         Toast.LENGTH_SHORT,
                     ).show()
             }
+        }
+
+        override suspend fun logUserActivity(
+            householdId: String,
+            type: String,
+        ) {
+            val activity =
+                Activity(
+                    userId = user.id,
+                    householdId = householdId,
+                    type = type,
+                    userName = user.displayName ?: "",
+                    timestamp = System.currentTimeMillis(),
+                )
+            firestore
+                .collection("activities")
+                .add(activity)
+                .await()
+                .also { ref ->
+                    ref.update("id", ref.id)
+                }
         }
 
         override suspend fun updateHouseholdType(
