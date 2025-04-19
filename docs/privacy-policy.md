@@ -4,7 +4,7 @@ title: Datenschutzerklärung
 permalink: /privacy-policy/
 ---
 
-Zuletzt aktualisiert: 24.03.2025
+Zuletzt aktualisiert: 19.04.2025
 
 ### 1. Verantwortliche Stelle
 
@@ -70,7 +70,7 @@ Ihre personenbezogenen Daten werden ausschließlich für die interne Verwaltung 
 
 ### 6. Verwendung von Cookies und ähnlichen Technologien
 
-Unsere App setzt Cookies und vergleichbare Technologien ein, um die Funktionalität sowie die Benutzerfreundlichkeit sicherzustellen. Diese Technologien speichern unter anderem Ihre Präferenzen und unterstützen uns dabei, die App sicher und effizient zu betreiben. Es erfolgt keine Erhebung personenbezogener Daten zu externen Marketingzwecken ohne Ihre ausdrückliche Einwilligung.
+Unsere App setzt Cookies und vergleichbare Technologien ein, um die Funktionalität sowie die Benutzerfreundlichkeit sicherzustellen. Diese Technologien speichern unter anderem Ihre Präferenzen und unterstützen uns dabei, die App sicher und effizient zu betreiben.
 
 ### 7. Datensicherheit
 
@@ -94,13 +94,13 @@ Sie haben in Bezug auf Ihre personenbezogenen Daten die folgenden Rechte, deren 
   Sollten Ihre Daten unrichtig oder unvollständig sein, haben Sie das Recht auf Berichtigung.
 
 - **Recht auf Löschung (Art. 17 DSGVO):**  
-  Sie können unter bestimmten Voraussetzungen die Löschung Ihrer personenbezogenen Daten verlangen.
+  Sie können unter bestimmten Voraussetzungen die Löschung Ihrer personenbezogenen Daten verlangen. Unter [Account löschen](https://freshkeeper.de/delete-account/) finden Sie eine Anleitung zur Kontolöschung.
 
 - **Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO):**  
   Sie haben das Recht, die Verarbeitung Ihrer Daten in bestimmten Fällen einschränken zu lassen.
 
 - **Recht auf Datenübertragbarkeit (Art. 20 DSGVO):**  
-  Sie können verlangen, dass Sie Ihre personenbezogenen Daten in einem strukturierten, gängigen und maschinenlesbaren Format erhalten.
+  Sie können verlangen, dass Sie Ihre personenbezogenen Daten in einem strukturierten, gängigen und maschinenlesbaren Format erhalten. Unter [Datenexport](https://freshkeeper.de/data-export/) finden Sie eine Anleitung zum Export ihrer Daten.
 
 - **Widerspruchsrecht (Art. 21 DSGVO):**  
   Sie können der Verarbeitung Ihrer Daten widersprechen, wenn diese auf berechtigten Interessen beruht.
