@@ -21,9 +21,13 @@ Klicke auf den **"Konto löschen"-Button**.
 **5. Bestätigung:**  
 Ein Bestätigungsdialog erscheint. Bestätige die Löschung deines Kontos, um den Vorgang abzuschließen.
 
+---
+
 **Falls du keinen Zugriff auf dein Konto hast:**  
 - **Passwort zurücksetzen:** Du kannst dein Passwort im Login-Bereich zurücksetzen, um wieder Zugriff auf dein Konto zu erhalten.  
 - **E-Mail zur Kontolöschung senden:** Sende eine E-Mail an **info@freshkeeper.de** mit der Bitte, dein Konto und alle damit verbundenen Daten zu löschen.
+
+---
 
 **Welche Daten werden gelöscht:**  
 - Dein Benutzerkonto  
