@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Kontolöschung in FreshKeeper
+title: Kontolöschung
 permalink: /delete-account/
 ---
 
