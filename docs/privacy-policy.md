@@ -94,7 +94,7 @@ Sie haben in Bezug auf Ihre personenbezogenen Daten die folgenden Rechte, deren 
   Sollten Ihre Daten unrichtig oder unvollständig sein, haben Sie das Recht auf Berichtigung.
 
 - **Recht auf Löschung (Art. 17 DSGVO):**  
-  Sie können unter bestimmten Voraussetzungen die Löschung Ihrer personenbezogenen Daten verlangen. Unter [Account löschen](https://freshkeeper.de/delete-account/) finden Sie eine Anleitung zur Kontolöschung.
+  Sie können unter bestimmten Voraussetzungen die Löschung Ihrer personenbezogenen Daten verlangen. Unter [Kontolöschung](https://freshkeeper.de/delete-account/) finden Sie eine Anleitung zur Löschung Ihres Kontos.
 
 - **Recht auf Einschränkung der Verarbeitung (Art. 18 DSGVO):**  
   Sie haben das Recht, die Verarbeitung Ihrer Daten in bestimmten Fällen einschränken zu lassen.
