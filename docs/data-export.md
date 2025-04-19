@@ -4,7 +4,7 @@ title: Datenexport
 permalink: /data-export/
 ---
 
-### Um deine Daten aus FreshKeeper zu exportieren, folge bitte den unten stehenden Schritten:
+#### Um deine Daten aus FreshKeeper zu exportieren, folge bitte den unten stehenden Schritten:
 
 **1. Anmeldung:**  
 Melde dich in deinem **FreshKeeper**-Konto an.
@@ -23,7 +23,7 @@ Bestätige den Exportvorgang. Deine Daten werden daraufhin direkt als **JSON-Dat
 
 ---
 
-### Inhalt der exportierten JSON-Datei:
+#### Inhalt der exportierten JSON-Datei:
 
 Die heruntergeladene Datei enthält folgende Daten:
 - Benutzerkonto 
@@ -35,7 +35,7 @@ Die heruntergeladene Datei enthält folgende Daten:
 
 ---
 
-**Falls du keinen Zugriff auf dein Konto hast:**  
+#### Falls du keinen Zugriff auf dein Konto hast:
 - **Passwort zurücksetzen:** Du kannst dein Passwort im Login-Bereich zurücksetzen, um wieder Zugriff auf dein Konto zu erhalten.  
 - **E-Mail-Anfrage:** Sende eine E-Mail an **info@freshkeeper.de** mit der Bitte, dein Konto und alle damit verbundenen Daten zu löschen.  
   *Ein direkter Datenexport ist ohne Anmeldung nicht möglich.*
