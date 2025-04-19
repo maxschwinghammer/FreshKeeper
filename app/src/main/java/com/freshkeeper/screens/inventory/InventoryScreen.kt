@@ -95,7 +95,7 @@ fun InventoryScreen(navController: NavHostController) {
     val householdId by viewModel.householdId.observeAsState("")
     var scannedBarcode by remember { mutableStateOf("") }
     var recognizedFoodName by remember { mutableStateOf("") }
-    var expiryDate by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    var scannedExpiryDate by remember { mutableLongStateOf(System.currentTimeMillis()) }
 //    val isMember by homeViewModel.isMember.observeAsState()
 
     val coroutineScope = rememberCoroutineScope()
@@ -130,7 +130,6 @@ fun InventoryScreen(navController: NavHostController) {
     }
 
     var searchQuery by remember { mutableStateOf("") }
-
     val labelMap = categoryMap + storageLocationMap
 
     fun getLabel(key: String): Int? = labelMap[key]
@@ -393,9 +392,9 @@ fun InventoryScreen(navController: NavHostController) {
             if (barcodeSheetState.isVisible) {
                 BarcodeScannerSheet(
                     sheetState = barcodeSheetState,
-                    onBarcodeScanned = { barcode, date ->
+                    onBarcodeScanned = { barcode, expiryDate ->
                         scannedBarcode = barcode
-                        expiryDate = date
+                        scannedExpiryDate = expiryDate
                         coroutineScope.launch { manualInputSheetState.show() }
                     },
                 )
@@ -416,7 +415,7 @@ fun InventoryScreen(navController: NavHostController) {
                 ManualInputSheet(
                     sheetState = manualInputSheetState,
                     barcode = scannedBarcode,
-                    expiryTimestamp = expiryDate,
+                    scannedExpiryDate = scannedExpiryDate,
                     recognizedFoodName = recognizedFoodName,
                     onFetchProductDataFromBarcode = { barcode, onSuccess, onFailure ->
                         coroutineScope.launch {
@@ -426,7 +425,7 @@ fun InventoryScreen(navController: NavHostController) {
                     onAddProduct = {
                         name,
                         barcode,
-                        expiry,
+                        expiryTimestamp,
                         qty,
                         unit,
                         storage,
@@ -437,7 +436,7 @@ fun InventoryScreen(navController: NavHostController) {
                         viewModel.addProduct(
                             name,
                             barcode,
-                            expiry,
+                            expiryTimestamp,
                             qty,
                             unit,
                             storage,
@@ -467,7 +466,7 @@ fun InventoryScreen(navController: NavHostController) {
                             unit,
                             storageLocation,
                             category,
-                            expiryDate,
+                            expiryTimestamp,
                             isConsumedChecked,
                             isThrownAwayChecked,
                             ->
@@ -478,7 +477,7 @@ fun InventoryScreen(navController: NavHostController) {
                                 unit,
                                 storageLocation,
                                 category,
-                                expiryDate,
+                                expiryTimestamp,
                                 isConsumedChecked,
                                 isThrownAwayChecked,
                                 coroutineScope,

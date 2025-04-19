@@ -152,7 +152,7 @@ class InventoryViewModel
         fun addProduct(
             productName: String,
             barcode: String,
-            expiryDate: Long,
+            expiryTimestamp: Long,
             quantity: Int,
             unit: String,
             storageLocation: String,
@@ -167,7 +167,7 @@ class InventoryViewModel
                 productService.addProduct(
                     productName,
                     barcode,
-                    expiryDate,
+                    expiryTimestamp,
                     quantity,
                     unit,
                     storageLocation,
@@ -226,7 +226,7 @@ class InventoryViewModel
             unit: String,
             storageLocation: String,
             category: String,
-            expiryDate: Long,
+            expiryTimestamp: Long,
             isConsumedChecked: Boolean,
             isThrownAwayChecked: Boolean,
             coroutineScope: CoroutineScope,
@@ -240,20 +240,70 @@ class InventoryViewModel
                     unit,
                     storageLocation,
                     category,
-                    expiryDate,
+                    expiryTimestamp,
                     isConsumedChecked,
                     isThrownAwayChecked,
                     coroutineScope,
                     onSuccess = { updatedItem ->
-                        _foodItems.value =
-                            _foodItems.value?.map { currentItem ->
-                                if (currentItem.id == updatedItem.id) updatedItem else currentItem
-                            }
+                        val oldLoc = foodItem.storageLocation
+                        val newLoc = updatedItem.storageLocation
 
-                        updateStorageLists(updatedItem)
+                        if (oldLoc != newLoc) {
+                            getListByLocation(oldLoc)?.value =
+                                getListByLocation(oldLoc)
+                                    ?.value
+                                    ?.filterNot { it.id == updatedItem.id }
+                            getListByLocation(newLoc)?.value =
+                                (getListByLocation(newLoc)?.value ?: emptyList()) + updatedItem
+                        } else {
+                            updateStorageLists(updatedItem)
+                        }
+
+                        if (updatedItem.consumed || updatedItem.thrownAway) {
+                            _foodItems.value = _foodItems.value?.filterNot { it.id == updatedItem.id }
+                            removeFromStorageLists(updatedItem)
+                        } else {
+                            _foodItems.value =
+                                _foodItems.value?.map { currentItem ->
+                                    if (currentItem.id == updatedItem.id) updatedItem else currentItem
+                                }
+                            updateStorageLists(updatedItem)
+                        }
                         onSuccess()
                     },
                 )
+            }
+        }
+
+        private fun getListByLocation(loc: String): MutableLiveData<List<FoodItem>>? =
+            when (loc) {
+                "fridge" -> _fridgeItems
+                "cupboard" -> _cupboardItems
+                "freezer" -> _freezerItems
+                "counter_top" -> _counterTopItems
+                "cellar" -> _cellarItems
+                "bread_box" -> _breadBoxItems
+                "spice_rack" -> _spiceRackItems
+                "pantry" -> _pantryItems
+                "fruit_basket" -> _fruitBasketItems
+                "other" -> _otherItems
+                else -> null
+            }
+
+        private fun removeFromStorageLists(deleted: FoodItem) {
+            listOf(
+                _fridgeItems,
+                _cupboardItems,
+                _freezerItems,
+                _counterTopItems,
+                _cellarItems,
+                _breadBoxItems,
+                _spiceRackItems,
+                _pantryItems,
+                _fruitBasketItems,
+                _otherItems,
+            ).forEach { liveDataList ->
+                liveDataList.value = liveDataList.value?.filterNot { it.id == deleted.id }
             }
         }
 

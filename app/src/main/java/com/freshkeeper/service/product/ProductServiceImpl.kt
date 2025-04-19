@@ -15,6 +15,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
 class ProductServiceImpl
@@ -51,12 +54,18 @@ class ProductServiceImpl
             onFailure: (Exception) -> Unit,
         ) {
             val currentUser = _user.value ?: return
+
+            val currentDate = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDate()
+            val expiryDate = Instant.ofEpochMilli(expiryTimestamp).atZone(ZoneId.systemDefault()).toLocalDate()
+            val daysDifference = ChronoUnit.DAYS.between(currentDate, expiryDate).toInt()
+
             if (!image.isNullOrEmpty()) {
                 val foodItemPicture = FoodItemPicture(image = image, type = "base64")
                 firestore
                     .collection("foodItemPictures")
                     .add(foodItemPicture)
                     .addOnSuccessListener { pictureRef ->
+
                         val pictureId = pictureRef.id
                         val foodItem =
                             FoodItem(
@@ -90,7 +99,12 @@ class ProductServiceImpl
                                                     "product_added",
                                                 )
                                             }
-                                            onSuccess(foodItem.copy(id = documentReference.id))
+                                            onSuccess(
+                                                foodItem.copy(
+                                                    id = documentReference.id,
+                                                    daysDifference = daysDifference,
+                                                ),
+                                            )
                                         }
                                     }.addOnFailureListener { e -> onFailure(e) }
                             }.addOnFailureListener { e -> onFailure(e) }
@@ -134,7 +148,12 @@ class ProductServiceImpl
                                                     "product_added",
                                                 )
                                             }
-                                            onSuccess(foodItem.copy(id = documentReference.id))
+                                            onSuccess(
+                                                foodItem.copy(
+                                                    id = documentReference.id,
+                                                    daysDifference = daysDifference,
+                                                ),
+                                            )
                                         }
                                     }.addOnFailureListener { e -> onFailure(e) }
                             }.addOnFailureListener { e -> onFailure(e) }
@@ -171,7 +190,12 @@ class ProductServiceImpl
                                             "product_added",
                                         )
                                     }
-                                    onSuccess(foodItem.copy(id = documentReference.id))
+                                    onSuccess(
+                                        foodItem.copy(
+                                            id = documentReference.id,
+                                            daysDifference = daysDifference,
+                                        ),
+                                    )
                                 }
                             }.addOnFailureListener { e -> onFailure(e) }
                     }.addOnFailureListener { e -> onFailure(e) }
@@ -210,7 +234,7 @@ class ProductServiceImpl
             unit: String,
             storageLocation: String,
             category: String,
-            expiryDate: Long,
+            expiryTimestamp: Long,
             isConsumedChecked: Boolean,
             isThrownAwayChecked: Boolean,
             coroutineScope: CoroutineScope,
@@ -232,7 +256,7 @@ class ProductServiceImpl
                                 "unit" to unit,
                                 "storageLocation" to storageLocation,
                                 "category" to category,
-                                "expiryTimestamp" to expiryDate,
+                                "expiryTimestamp" to expiryTimestamp,
                                 "consumed" to isConsumedChecked,
                                 "thrownAway" to isThrownAwayChecked,
                             )
@@ -267,7 +291,7 @@ class ProductServiceImpl
                                                     if (foodItem.quantity != quantity) {
                                                         changedFields.add("quantity")
                                                     }
-                                                    if (foodItem.expiryTimestamp != expiryDate) {
+                                                    if (foodItem.expiryTimestamp != expiryTimestamp) {
                                                         changedFields.add("expiry")
                                                     }
                                                     if (foodItem.storageLocation != storageLocation) {
@@ -284,20 +308,39 @@ class ProductServiceImpl
                                                                 changedFields.first()
                                                             else -> "edit"
                                                         }
-                                                    logActivity(
+
+                                                    val currentDate =
+                                                        Instant
+                                                            .ofEpochMilli(
+                                                                System.currentTimeMillis(),
+                                                            ).atZone(ZoneId.systemDefault())
+                                                            .toLocalDate()
+                                                    val expiryDate =
+                                                        Instant
+                                                            .ofEpochMilli(
+                                                                expiryTimestamp,
+                                                            ).atZone(ZoneId.systemDefault())
+                                                            .toLocalDate()
+                                                    val updatedFoodItem =
                                                         foodItem.copy(
                                                             name = productName,
                                                             quantity = quantity,
-                                                            expiryTimestamp = expiryDate,
+                                                            unit = unit,
                                                             storageLocation = storageLocation,
                                                             category = category,
-                                                        ),
+                                                            expiryTimestamp = expiryTimestamp,
+                                                            consumed = isConsumedChecked,
+                                                            thrownAway = isThrownAwayChecked,
+                                                            daysDifference = ChronoUnit.DAYS.between(currentDate, expiryDate).toInt(),
+                                                        )
+                                                    logActivity(
+                                                        updatedFoodItem,
                                                         productName,
                                                         activityType,
                                                         oldName = foodItem.name,
                                                         oldQuantity = foodItem.quantity,
                                                     )
-                                                    onSuccess(foodItem)
+                                                    onSuccess(updatedFoodItem)
                                                 }
                                             }
                                         }.addOnFailureListener { e ->

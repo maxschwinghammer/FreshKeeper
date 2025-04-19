@@ -81,7 +81,7 @@ import kotlinx.coroutines.launch
 fun ManualInputSheet(
     sheetState: SheetState,
     barcode: String,
-    expiryTimestamp: Long,
+    scannedExpiryDate: Long,
     recognizedFoodName: String,
     onFetchProductDataFromBarcode: (
         barcode: String,
@@ -91,7 +91,7 @@ fun ManualInputSheet(
     onAddProduct: (
         productName: String,
         barcode: String,
-        expiryDate: Long,
+        expiryTimestamp: Long,
         quantity: Int,
         unit: String,
         storageLocation: String,
@@ -103,12 +103,12 @@ fun ManualInputSheet(
     val context = LocalContext.current
 
     var productName by remember { mutableStateOf("") }
-    var expiryDate by remember { mutableLongStateOf(expiryTimestamp) }
     var quantity by remember { mutableStateOf("") }
     val unit = remember { mutableStateOf("") }
     var imageUrl by remember { mutableStateOf("") }
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var productData by remember { mutableStateOf<ProductData?>(null) }
+    var expiryTimestamp by remember { mutableLongStateOf(scannedExpiryDate) }
 
     var showAddImageButton by remember { mutableStateOf(true) }
     var showImageComposable by remember { mutableStateOf(false) }
@@ -275,10 +275,10 @@ fun ManualInputSheet(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     ExpiryDatePicker(
-                        expiryDate = expiryDate,
+                        expiryTimestamp = expiryTimestamp,
                         onDateChange = { newDate ->
                             if (newDate != null) {
-                                expiryDate = newDate
+                                expiryTimestamp = newDate
                             }
                         },
                     )
@@ -404,7 +404,7 @@ fun ManualInputSheet(
                             ).show()
                         return@Button
                     }
-                    if (expiryDate == 0L) {
+                    if (expiryTimestamp == 0L) {
                         Toast
                             .makeText(
                                 context,
@@ -442,7 +442,7 @@ fun ManualInputSheet(
                         onAddProduct(
                             productName,
                             barcode,
-                            expiryDate,
+                            expiryTimestamp,
                             quantity.toInt(),
                             unit.value,
                             storageLocation.value,

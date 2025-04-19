@@ -79,7 +79,7 @@ fun HomeScreen(navController: NavHostController) {
     val householdId by viewModel.householdId.observeAsState("")
     var scannedBarcode by remember { mutableStateOf("") }
     var recognizedFoodName by remember { mutableStateOf("") }
-    var expiryDate by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    var scannedExpiryDate by remember { mutableLongStateOf(System.currentTimeMillis()) }
     var foodItem by remember { mutableStateOf<FoodItem?>(null) }
 //    val isMember by viewModel.isMember.observeAsState()
     val allFoodItems by viewModel.allFoodItems.observeAsState(emptyList())
@@ -324,7 +324,7 @@ fun HomeScreen(navController: NavHostController) {
                     sheetState = barcodeSheetState,
                     onBarcodeScanned = { barcode, date ->
                         scannedBarcode = barcode
-                        expiryDate = date
+                        scannedExpiryDate = date
                         coroutineScope.launch { manualInputSheetState.show() }
                     },
                 )
@@ -344,7 +344,7 @@ fun HomeScreen(navController: NavHostController) {
                 ManualInputSheet(
                     sheetState = manualInputSheetState,
                     barcode = scannedBarcode,
-                    expiryTimestamp = expiryDate,
+                    scannedExpiryDate = scannedExpiryDate,
                     recognizedFoodName = recognizedFoodName,
                     onFetchProductDataFromBarcode = { barcode, onSuccess, onFailure ->
                         coroutineScope.launch {
@@ -395,7 +395,7 @@ fun HomeScreen(navController: NavHostController) {
                             unit,
                             storageLocation,
                             category,
-                            expiryDate,
+                            expiryTimestamp,
                             isConsumedChecked,
                             isThrownAwayChecked,
                             ->
@@ -406,7 +406,7 @@ fun HomeScreen(navController: NavHostController) {
                                 unit,
                                 storageLocation,
                                 category,
-                                expiryDate,
+                                expiryTimestamp,
                                 isConsumedChecked,
                                 isThrownAwayChecked,
                                 coroutineScope,

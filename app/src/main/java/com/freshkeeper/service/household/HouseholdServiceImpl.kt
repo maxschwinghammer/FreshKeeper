@@ -358,12 +358,10 @@ class HouseholdServiceImpl
                     .get()
                     .await()
 
-            val currentTimestamp = System.currentTimeMillis()
             return documents.mapNotNull { doc ->
                 doc.toObject(FoodItem::class.java).apply {
-                    val currentDate = Instant.ofEpochMilli(currentTimestamp).atZone(ZoneId.systemDefault()).toLocalDate()
+                    val currentDate = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDate()
                     val expiryDate = Instant.ofEpochMilli(expiryTimestamp).atZone(ZoneId.systemDefault()).toLocalDate()
-
                     daysDifference = ChronoUnit.DAYS.between(currentDate, expiryDate).toInt()
                 }
             }

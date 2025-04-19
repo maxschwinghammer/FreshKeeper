@@ -8,7 +8,6 @@ import com.freshkeeper.model.FoodItemPicture
 import com.freshkeeper.model.ProductData
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.service.household.HouseholdService
-import com.freshkeeper.service.membership.MembershipService
 import com.freshkeeper.service.product.ProductService
 import com.freshkeeper.service.productDetails.ProductDetailsService
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +19,7 @@ class HomeViewModel
     @Inject
     constructor(
         private val householdService: HouseholdService,
-        private val membershipService: MembershipService,
+//        private val membershipService: MembershipService,
         private val productService: ProductService,
         private val productDetailsService: ProductDetailsService,
     ) : AppViewModel() {
@@ -33,8 +32,8 @@ class HomeViewModel
         private val _expiredItems = MutableLiveData<List<FoodItem>>()
         val expiredItems: LiveData<List<FoodItem>> = _expiredItems
 
-        private val _isMember = MutableLiveData<Boolean>()
-        val isMember: LiveData<Boolean> = _isMember
+//        private val _isMember = MutableLiveData<Boolean>()
+//        val isMember: LiveData<Boolean> = _isMember
 
         private val _householdId = MutableLiveData<String>()
         val householdId: LiveData<String> = _householdId
@@ -42,15 +41,15 @@ class HomeViewModel
         init {
             launchCatching {
                 getFoodItems()
-                checkMembershipStatus()
+//                checkMembershipStatus()
                 getHouseholdId()
             }
         }
 
-        private suspend fun checkMembershipStatus() {
-            val status = membershipService.isMember()
-            _isMember.value = status
-        }
+//        private suspend fun checkMembershipStatus() {
+//            val status = membershipService.isMember()
+//            _isMember.value = status
+//        }
 
         private suspend fun getFoodItems() {
             try {
@@ -93,7 +92,7 @@ class HomeViewModel
         fun addProduct(
             productName: String,
             barcode: String,
-            expiryDate: Long,
+            expiryTimestamp: Long,
             quantity: Int,
             unit: String,
             storageLocation: String,
@@ -108,7 +107,7 @@ class HomeViewModel
                 productService.addProduct(
                     productName,
                     barcode,
-                    expiryDate,
+                    expiryTimestamp,
                     quantity,
                     unit,
                     storageLocation,
@@ -119,6 +118,11 @@ class HomeViewModel
                     coroutineScope,
                     { newItem ->
                         _allFoodItems.value = (_allFoodItems.value ?: emptyList()) + newItem
+                        if (newItem.daysDifference in 1..30) {
+                            _expiringSoonItems.value = (_expiringSoonItems.value ?: emptyList()) + newItem
+                        } else if (newItem.daysDifference < 1) {
+                            _expiredItems.value = (_expiredItems.value ?: emptyList()) + newItem
+                        }
                         onSuccess()
                     },
                     { e ->
@@ -135,7 +139,7 @@ class HomeViewModel
             unit: String,
             storageLocation: String,
             category: String,
-            expiryDate: Long,
+            expiryTimestamp: Long,
             isConsumedChecked: Boolean,
             isThrownAwayChecked: Boolean,
             coroutineScope: CoroutineScope,
@@ -149,7 +153,7 @@ class HomeViewModel
                     unit,
                     storageLocation,
                     category,
-                    expiryDate,
+                    expiryTimestamp,
                     isConsumedChecked,
                     isThrownAwayChecked,
                     coroutineScope,
@@ -162,20 +166,33 @@ class HomeViewModel
         }
 
         private fun updateItem(updatedItem: FoodItem) {
-            _allFoodItems.value =
-                _allFoodItems.value?.map {
-                    if (it.id == updatedItem.id) updatedItem else it
-                }
+            if (updatedItem.consumed || updatedItem.thrownAway) {
+                removeItem(updatedItem)
+            } else {
+                _allFoodItems.value =
+                    _allFoodItems.value
+                        ?.map { if (it.id == updatedItem.id) updatedItem else it }
 
-            _expiringSoonItems.value =
-                _expiringSoonItems.value?.map {
-                    if (it.id == updatedItem.id) updatedItem else it
-                }
+                _expiringSoonItems.value =
+                    _expiringSoonItems.value
+                        ?.filterNot { it.id == updatedItem.id }
+                _expiredItems.value =
+                    _expiredItems.value
+                        ?.filterNot { it.id == updatedItem.id }
 
-            _expiredItems.value =
-                _expiredItems.value?.map {
-                    if (it.id == updatedItem.id) updatedItem else it
+                val daysDiff = updatedItem.daysDifference
+                if (daysDiff in 1..30) {
+                    _expiringSoonItems.value = (_expiringSoonItems.value ?: emptyList()) + updatedItem
+                } else if (daysDiff < 1) {
+                    _expiredItems.value = (_expiredItems.value ?: emptyList()) + updatedItem
                 }
+            }
+        }
+
+        private fun removeItem(deleted: FoodItem) {
+            _allFoodItems.value = _allFoodItems.value?.filterNot { it.id == deleted.id }
+            _expiringSoonItems.value = _expiringSoonItems.value?.filterNot { it.id == deleted.id }
+            _expiredItems.value = _expiredItems.value?.filterNot { it.id == deleted.id }
         }
 
         fun getFoodItemPicture(

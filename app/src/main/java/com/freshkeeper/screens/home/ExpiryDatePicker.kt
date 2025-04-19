@@ -41,12 +41,18 @@ import java.util.Locale
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun ExpiryDatePicker(
-    expiryDate: Long?,
+    expiryTimestamp: Long?,
     onDateChange: (Long?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var selectedDate by remember {
-        mutableLongStateOf(if ((expiryDate ?: 0L) <= 0L) System.currentTimeMillis() else expiryDate!!)
+        mutableLongStateOf(
+            if ((expiryTimestamp ?: 0L) <= 0L) {
+                System.currentTimeMillis()
+            } else {
+                expiryTimestamp!!
+            },
+        )
     }
     var showModal by remember { mutableStateOf(false) }
     val currentDate = System.currentTimeMillis()

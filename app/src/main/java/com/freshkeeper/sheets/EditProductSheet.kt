@@ -91,7 +91,7 @@ fun EditProductSheet(
         unit: String,
         storageLocation: String,
         category: String,
-        expiryDate: Long,
+        expiryTimestamp: Long,
         isConsumedChecked: Boolean,
         isThrownAwayChecked: Boolean,
     ) -> Unit,
@@ -107,7 +107,7 @@ fun EditProductSheet(
     val selectedStorageLocation = storageLocationMap[storageLocation.value] ?: R.string.fridge
     val selectedCategory = categoryMap[category.value] ?: R.string.dairy_goods
 
-    var expiryDate by remember { mutableLongStateOf(foodItem.expiryTimestamp) }
+    var expiryTimestamp by remember { mutableLongStateOf(foodItem.expiryTimestamp) }
     var foodItemPicture by remember { mutableStateOf<FoodItemPicture?>(null) }
 
     val coroutineScope = rememberCoroutineScope()
@@ -266,10 +266,10 @@ fun EditProductSheet(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     ExpiryDatePicker(
-                        expiryDate = expiryDate,
+                        expiryTimestamp = expiryTimestamp,
                         onDateChange = { newDate ->
                             if (newDate != null) {
-                                expiryDate = newDate
+                                expiryTimestamp = newDate
                             }
                         },
                     )
@@ -441,7 +441,7 @@ fun EditProductSheet(
                             unit.value,
                             storageLocation.value,
                             category.value,
-                            expiryDate,
+                            expiryTimestamp,
                             isConsumedChecked,
                             isThrownAwayChecked,
                         )

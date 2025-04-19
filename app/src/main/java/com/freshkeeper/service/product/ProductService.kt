@@ -34,7 +34,7 @@ interface ProductService {
         unit: String,
         storageLocation: String,
         category: String,
-        expiryDate: Long,
+        expiryTimestamp: Long,
         isConsumedChecked: Boolean,
         isThrownAwayChecked: Boolean,
         coroutineScope: CoroutineScope,
