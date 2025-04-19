@@ -39,14 +39,14 @@ class InventoryViewModel
         private val _freezerItems = MutableLiveData<List<FoodItem>>(emptyList())
         val freezerItems: LiveData<List<FoodItem>> = _freezerItems
 
-        private val _countertopItems = MutableLiveData<List<FoodItem>>(emptyList())
-        val countertopItems: LiveData<List<FoodItem>> = _countertopItems
+        private val _counterTopItems = MutableLiveData<List<FoodItem>>(emptyList())
+        val counterTopItems: LiveData<List<FoodItem>> = _counterTopItems
 
         private val _cellarItems = MutableLiveData<List<FoodItem>>(emptyList())
         val cellarItems: LiveData<List<FoodItem>> = _cellarItems
 
-        private val _bakeryItems = MutableLiveData<List<FoodItem>>(emptyList())
-        val bakeryItems: LiveData<List<FoodItem>> = _bakeryItems
+        private val _breadBoxItems = MutableLiveData<List<FoodItem>>(emptyList())
+        val breadBoxItems: LiveData<List<FoodItem>> = _breadBoxItems
 
         private val _spiceRackItems = MutableLiveData<List<FoodItem>>(emptyList())
         val spiceRackItems: LiveData<List<FoodItem>> = _spiceRackItems
@@ -67,9 +67,9 @@ class InventoryViewModel
             getStorageLocationItems("fridge", _fridgeItems)
             getStorageLocationItems("cupboard", _cupboardItems)
             getStorageLocationItems("freezer", _freezerItems)
-            getStorageLocationItems("counter_top", _countertopItems)
+            getStorageLocationItems("counter_top", _counterTopItems)
             getStorageLocationItems("cellar", _cellarItems)
-            getStorageLocationItems("bread_box", _bakeryItems)
+            getStorageLocationItems("bread_box", _breadBoxItems)
             getStorageLocationItems("spice_rack", _spiceRackItems)
             getStorageLocationItems("pantry", _pantryItems)
             getStorageLocationItems("fruit_basket", _fruitBasketItems)
@@ -119,12 +119,12 @@ class InventoryViewModel
                             "fridge" -> _fridgeItems.value = items
                             "cupboard" -> _cupboardItems.value = items
                             "freezer" -> _freezerItems.value = items
-                            "countertop" -> _countertopItems.value = items
+                            "counter_top" -> _counterTopItems.value = items
                             "cellar" -> _cellarItems.value = items
-                            "bakery" -> _bakeryItems.value = items
-                            "spiceRack" -> _spiceRackItems.value = items
+                            "bread_box" -> _breadBoxItems.value = items
+                            "spice_rack" -> _spiceRackItems.value = items
                             "pantry" -> _pantryItems.value = items
-                            "fruitBasket" -> _fruitBasketItems.value = items
+                            "fruit_basket" -> _fruitBasketItems.value = items
                             "other" -> _otherItems.value = items
                         }
                     },
@@ -188,22 +188,22 @@ class InventoryViewModel
                             "freezer" ->
                                 _freezerItems.value =
                                     (_freezerItems.value ?: emptyList()) + newItem
-                            "counter_top", "countertop" ->
-                                _countertopItems.value =
-                                    (_countertopItems.value ?: emptyList()) + newItem
+                            "counter_top" ->
+                                _counterTopItems.value =
+                                    (_counterTopItems.value ?: emptyList()) + newItem
                             "cellar" ->
                                 _cellarItems.value =
                                     (_cellarItems.value ?: emptyList()) + newItem
-                            "bread_box", "bakery" ->
-                                _bakeryItems.value =
-                                    (_bakeryItems.value ?: emptyList()) + newItem
-                            "spice_rack", "spiceRack" ->
+                            "bread_box" ->
+                                _breadBoxItems.value =
+                                    (_breadBoxItems.value ?: emptyList()) + newItem
+                            "spice_rack" ->
                                 _spiceRackItems.value =
                                     (_spiceRackItems.value ?: emptyList()) + newItem
                             "pantry" ->
                                 _pantryItems.value =
                                     (_pantryItems.value ?: emptyList()) + newItem
-                            "fruit_basket", "fruitBasket" ->
+                            "fruit_basket" ->
                                 _fruitBasketItems.value =
                                     (_fruitBasketItems.value ?: emptyList()) + newItem
                             "other" ->
@@ -263,9 +263,9 @@ class InventoryViewModel
                     _fridgeItems,
                     _cupboardItems,
                     _freezerItems,
-                    _countertopItems,
+                    _counterTopItems,
                     _cellarItems,
-                    _bakeryItems,
+                    _breadBoxItems,
                     _spiceRackItems,
                     _pantryItems,
                     _fruitBasketItems,

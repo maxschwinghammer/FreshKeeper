@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.FreshKeeper" parent="android:Theme.Material.Light.NoActionBar">
+    <style name="Theme.FreshKeeper" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:statusBarColor">#121316</item>
     </style>
+
+    <style name="ThemeOverlay.App.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="android:background">@color/greyBackground</item>
+        <item name="materialAlertDialogTitleTextStyle">@style/TextAppearance.App.Dialog.Title</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/TextAppearance.App.Dialog.Body</item>
+        <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.OutlinedButton</item>
+        <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.Corner.Medium</item>
+    </style>
+
+    <style name="TextAppearance.App.Dialog.Title"
+        parent="@style/MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TextAppearance.App.Dialog.Body"
+        parent="@style/MaterialAlertDialog.MaterialComponents.Body.Text">
+        <item name="android:textColor">@color/textPrimary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <color name="accentTurquoise">#00D9CD</color>
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="greyBackground">#1B1B1B</color>
 </resources>

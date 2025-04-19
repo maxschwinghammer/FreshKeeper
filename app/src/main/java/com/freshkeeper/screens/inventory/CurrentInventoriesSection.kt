@@ -42,9 +42,9 @@ fun CurrentInventoriesSection(
     val fridgeItems by viewModel.fridgeItems.observeAsState(emptyList())
     val cupboardItems by viewModel.cupboardItems.observeAsState(emptyList())
     val freezerItems by viewModel.freezerItems.observeAsState(emptyList())
-    val countertopItems by viewModel.countertopItems.observeAsState(emptyList())
+    val counterTopItems by viewModel.counterTopItems.observeAsState(emptyList())
     val cellarItems by viewModel.cellarItems.observeAsState(emptyList())
-    val bakeryItems by viewModel.bakeryItems.observeAsState(emptyList())
+    val breadBoxItems by viewModel.breadBoxItems.observeAsState(emptyList())
     val spiceRackItems by viewModel.spiceRackItems.observeAsState(emptyList())
     val pantryItems by viewModel.pantryItems.observeAsState(emptyList())
     val fruitBasketItems by viewModel.fruitBasketItems.observeAsState(emptyList())
@@ -55,9 +55,9 @@ fun CurrentInventoriesSection(
             Triple(stringResource(R.string.fridge), R.drawable.fridge, fridgeItems),
             Triple(stringResource(R.string.cupboard), R.drawable.cupboard, cupboardItems),
             Triple(stringResource(R.string.freezer), R.drawable.freezer, freezerItems),
-            Triple(stringResource(R.string.counter_top), R.drawable.counter_top, countertopItems),
+            Triple(stringResource(R.string.counter_top), R.drawable.counter_top, counterTopItems),
             Triple(stringResource(R.string.cellar), R.drawable.cellar, cellarItems),
-            Triple(stringResource(R.string.bread_box), R.drawable.bread_box, bakeryItems),
+            Triple(stringResource(R.string.bread_box), R.drawable.bread_box, breadBoxItems),
             Triple(stringResource(R.string.spice_rack), R.drawable.spice_rack, spiceRackItems),
             Triple(stringResource(R.string.pantry), R.drawable.pantry, pantryItems),
             Triple(stringResource(R.string.fruit_basket), R.drawable.fruit_basket, fruitBasketItems),

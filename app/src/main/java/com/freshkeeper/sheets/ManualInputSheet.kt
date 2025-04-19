@@ -1,6 +1,5 @@
 package com.freshkeeper.sheets
 
-import android.app.AlertDialog
 import android.content.ContentValues
 import android.graphics.Bitmap
 import android.net.Uri
@@ -73,6 +72,7 @@ import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 @Suppress("ktlint:standard:function-naming")
@@ -195,8 +195,7 @@ fun ManualInputSheet(
         cameraLauncher: ManagedActivityResultLauncher<Void?, Bitmap?>,
     ) {
         val options = arrayOf(takePhoto, selectFromGallery, cancel)
-        AlertDialog
-            .Builder(context)
+        MaterialAlertDialogBuilder(context, R.style.ThemeOverlay_App_Dialog_Alert)
             .setTitle(addImage)
             .setItems(options) { _, which ->
                 when (which) {
@@ -303,9 +302,10 @@ fun ManualInputSheet(
                                             arrayOf(changeImage, deleteImage, cancel)
                                         }
 
-                                    AlertDialog
-                                        .Builder(context)
-                                        .setTitle(productImage)
+                                    MaterialAlertDialogBuilder(
+                                        context,
+                                        R.style.ThemeOverlay_App_Dialog_Alert,
+                                    ).setTitle(productImage)
                                         .setItems(options) { _, which ->
                                             when (which) {
                                                 0 ->
