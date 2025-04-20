@@ -2,6 +2,41 @@ package com.freshkeeper.service
 
 import com.freshkeeper.R
 
+val storageLocations =
+    listOf(
+        R.string.fridge,
+        R.string.cupboard,
+        R.string.freezer,
+        R.string.counter_top,
+        R.string.cellar,
+        R.string.bread_box,
+        R.string.spice_rack,
+        R.string.pantry,
+        R.string.fruit_basket,
+        R.string.other,
+    )
+val categories =
+    listOf(
+        R.string.dairy_goods,
+        R.string.vegetables,
+        R.string.fruits,
+        R.string.meat,
+        R.string.fish,
+        R.string.frozen_goods,
+        R.string.spices,
+        R.string.bread,
+        R.string.confectionery,
+        R.string.drinks,
+        R.string.pasta,
+        R.string.canned_goods,
+        R.string.candy,
+        R.string.groats,
+        R.string.sauces,
+        R.string.pet_food,
+        R.string.child_food,
+        R.string.other,
+    )
+
 val storageLocationMap =
     mapOf(
         "fridge" to R.string.fridge,

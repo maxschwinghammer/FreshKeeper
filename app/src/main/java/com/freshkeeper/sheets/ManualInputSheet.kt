@@ -110,8 +110,50 @@ fun ManualInputSheet(
     var productData by remember { mutableStateOf<ProductData?>(null) }
     var expiryTimestamp by remember { mutableLongStateOf(scannedExpiryDate) }
 
+    val nameToCategoryMap =
+        remember {
+            context.assets
+                .open("name_category_mapping.csv")
+                .bufferedReader()
+                .useLines { lines ->
+                    lines
+                        .drop(1)
+                        .mapNotNull { line ->
+                            line.split(",").takeIf { it.size == 2 }?.let { (n, c) ->
+                                n.trim().lowercase() to c.trim().lowercase()
+                            }
+                        }.toMap()
+                }
+        }
+    val defaultCategoryKey = "dairy_goods"
+
     var showAddImageButton by remember { mutableStateOf(true) }
     var showImageComposable by remember { mutableStateOf(false) }
+    val category = remember { mutableStateOf("dairy_goods") }
+    val storageLocation = remember { mutableStateOf("fridge") }
+    val coroutineScope = rememberCoroutineScope()
+
+    val selectedStorageLocation = storageLocationMap[storageLocation.value] ?: R.string.fridge
+    val selectedCategory = categoryMap[category.value] ?: R.string.fish
+
+    val takePhoto = stringResource(R.string.take_photo)
+    val selectFromGallery = stringResource(R.string.select_from_gallery)
+    val productImage = stringResource(R.string.product_image)
+    val addImage = stringResource(R.string.add_image)
+    val changeImage = stringResource(R.string.change_image)
+    val deleteImage = stringResource(R.string.delete_image)
+    val cancel = stringResource(R.string.cancel)
+
+    fun mapCategory(name: String) {
+        Log.d("ManualInputSheet", "Name: $name")
+        val key = name.trim().lowercase()
+        if (key.isNotEmpty() && category.value == defaultCategoryKey) {
+            nameToCategoryMap[key]?.let { cat ->
+                Log.d("ManualInputSheet", "Category: $cat")
+                category.value = cat
+            }
+        }
+    }
 
     LaunchedEffect(barcode) {
         if (barcode?.isNotEmpty() == true) {
@@ -122,6 +164,7 @@ fun ManualInputSheet(
                     Log.d("ManualInputSheet", "Product data: $productData")
 
                     productName = data.name ?: ""
+                    mapCategory(productName)
                     quantity = data.quantity ?: ""
                     unit.value = data.unit ?: ""
                     imageUrl = data.imageUrl ?: ""
@@ -133,6 +176,7 @@ fun ManualInputSheet(
             )
         } else if (recognizedFoodName?.isNotBlank() == true) {
             productName = recognizedFoodName
+            mapCategory(productName)
         }
     }
 
@@ -174,21 +218,6 @@ fun ManualInputSheet(
                 }
             }
         }
-
-    val storageLocation = remember { mutableStateOf("fridge") }
-    val category = remember { mutableStateOf("dairy_goods") }
-    val coroutineScope = rememberCoroutineScope()
-
-    val selectedStorageLocation = storageLocationMap[storageLocation.value] ?: R.string.fridge
-    val selectedCategory = categoryMap[category.value] ?: R.string.dairy_goods
-
-    val takePhoto = stringResource(R.string.take_photo)
-    val selectFromGallery = stringResource(R.string.select_from_gallery)
-    val productImage = stringResource(R.string.product_image)
-    val addImage = stringResource(R.string.add_image)
-    val changeImage = stringResource(R.string.change_image)
-    val deleteImage = stringResource(R.string.delete_image)
-    val cancel = stringResource(R.string.cancel)
 
     fun showImagePicker(
         galleryLauncher: ManagedActivityResultLauncher<String, Uri?>,
@@ -260,7 +289,10 @@ fun ManualInputSheet(
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(),
                         value = productName,
-                        onValueChange = { productName = it },
+                        onValueChange = {
+                            productName = it
+                            mapCategory(it)
+                        },
                         label = { Text(stringResource(R.string.product_name)) },
                         colors =
                             OutlinedTextFieldDefaults.colors(
@@ -382,6 +414,7 @@ fun ManualInputSheet(
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            Log.d("ManualInputSheet", "Selected category: $selectedCategory")
             DropdownMenu(
                 selectedCategory,
                 onSelect = { selectedCategory ->

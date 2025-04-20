@@ -29,6 +29,7 @@ import com.freshkeeper.model.Household
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
+import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.screens.householdSettings.viewmodel.HouseholdSettingsViewModel
 import com.freshkeeper.screens.notifications.viewmodel.NotificationsViewModel
 import com.freshkeeper.sheets.AddUserByIdSheet
@@ -44,6 +45,7 @@ import com.freshkeeper.ui.theme.TextColor
 fun HouseholdScreen(navController: NavHostController) {
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
     val householdSettingsViewModel: HouseholdSettingsViewModel = hiltViewModel()
+    val householdViewModel: HouseholdViewModel = hiltViewModel()
 
     val household by householdSettingsViewModel.household.collectAsState(initial = Household())
 
@@ -96,10 +98,10 @@ fun HouseholdScreen(navController: NavHostController) {
                                     navController,
                                     inviteSheetState,
                                     onCreateHouseholdClick = { name, type ->
-                                        householdSettingsViewModel.createHousehold(name, type)
+                                        householdViewModel.createHousehold(name, type)
                                     },
                                     onJoinHouseholdClick = { householdId ->
-                                        householdSettingsViewModel.joinHouseholdById(
+                                        householdViewModel.joinHouseholdById(
                                             householdId,
                                         )
                                     },

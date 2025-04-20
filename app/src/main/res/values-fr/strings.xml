@@ -479,7 +479,7 @@
     <string name="activity_consumed">%1$s a consommé %2$s</string>
     <string name="activity_thrown_away">%1$s a jeté %2$s</string>
     <string name="activity_edited">%1$s a modifié le produit %2$s</string>
-    <string name="activity_added">%1$s a ajouté : %2$s</string>
+    <string name="activity_added">%1$s a ajouté %2$s</string>
     <string name="activity_default">%1$s a effectué une activité sur %2$s</string>
     <string name="activity_name_changed">%1$s a renommé le produit de %3$s en %2$s</string>
     <string name="activity_quantity_increased">%1$s a augmenté la quantité de %2$s</string>

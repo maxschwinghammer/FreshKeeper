@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,7 +20,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -29,8 +29,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
+import com.freshkeeper.service.categories
 import com.freshkeeper.service.categoryReverseMap
 import com.freshkeeper.service.storageLocationReverseMap
+import com.freshkeeper.service.storageLocations
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
@@ -46,43 +48,9 @@ fun DropdownMenu(
     label: String,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedIdState by remember { mutableIntStateOf(selectedId) }
-    val selected = stringResource(id = selectedIdState)
-
-    val storageLocations =
-        listOf(
-            R.string.fridge,
-            R.string.cupboard,
-            R.string.freezer,
-            R.string.counter_top,
-            R.string.cellar,
-            R.string.bread_box,
-            R.string.spice_rack,
-            R.string.pantry,
-            R.string.fruit_basket,
-            R.string.other,
-        )
-    val categories =
-        listOf(
-            R.string.dairy_goods,
-            R.string.vegetables,
-            R.string.fruits,
-            R.string.meat,
-            R.string.fish,
-            R.string.frozen_goods,
-            R.string.spices,
-            R.string.bread,
-            R.string.confectionery,
-            R.string.drinks,
-            R.string.pasta,
-            R.string.canned_goods,
-            R.string.candy,
-            R.string.groats,
-            R.string.sauces,
-            R.string.pet_food,
-            R.string.child_food,
-            R.string.other,
-        )
+    val selectedIdState = selectedId
+    val selected = stringResource(id = selectedId)
+    Log.d("DropdownMenu", "Selected: $selected")
 
     val options =
         when (type) {
@@ -163,7 +131,6 @@ fun DropdownMenu(
                         }
                     },
                     onClick = {
-                        selectedIdState = option
                         onSelect(option)
                         expanded = false
                     },

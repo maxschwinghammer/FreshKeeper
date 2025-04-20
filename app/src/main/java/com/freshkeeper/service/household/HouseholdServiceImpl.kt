@@ -34,7 +34,6 @@ class HouseholdServiceImpl
     ) : HouseholdService {
         private val firestore = FirebaseFirestore.getInstance()
         private val userId = FirebaseAuth.getInstance().currentUser?.uid
-        private var householdId: String? = null
 
         val coroutineScope = CoroutineScope(Dispatchers.IO)
 
@@ -42,7 +41,6 @@ class HouseholdServiceImpl
 
         init {
             coroutineScope.launch {
-                householdId = getHouseholdId()
                 user = accountService.getUserObject()
             }
         }
@@ -55,9 +53,8 @@ class HouseholdServiceImpl
                         .document(userId)
                         .get()
                         .await()
-                householdId = doc.getString("householdId")
 
-                return householdId
+                return doc.getString("householdId")
             } else {
                 return null
             }
@@ -67,17 +64,17 @@ class HouseholdServiceImpl
             if (userId == null) {
                 return
             }
+            val householdId = getHouseholdId()
 
             firestore
                 .collection("users")
                 .document(userId)
                 .get()
                 .addOnSuccessListener { document ->
-                    householdId = document.getString("householdId")
                     if (householdId != null) {
                         firestore
                             .collection("households")
-                            .document(householdId!!)
+                            .document(householdId)
                             .get()
                             .addOnSuccessListener { householdDoc ->
                                 val household = householdDoc.toObject(Household::class.java)
@@ -89,27 +86,13 @@ class HouseholdServiceImpl
                 }
         }
 
-        override suspend fun getHouseholdId(onResult: (String) -> Unit) {
-            if (userId == null) {
-                return
-            }
-
-            firestore
-                .collection("users")
-                .document(userId)
-                .get()
-                .addOnSuccessListener { document ->
-                    householdId = document.getString("householdId")
-                    householdId?.let { onResult(it) }
-                }
-        }
-
         override suspend fun updateHouseholdName(newName: String) {
+            val householdId = getHouseholdId()
             if (householdId != null) {
                 CoroutineScope(Dispatchers.IO).launch {
                     firestore
                         .collection("households")
-                        .document(householdId!!)
+                        .document(householdId)
                         .update("name", newName)
                         .await()
                 }
@@ -123,6 +106,7 @@ class HouseholdServiceImpl
             onFailure: (Exception) -> Unit,
         ) {
             val coroutineScope = CoroutineScope(Dispatchers.Main)
+            val householdId = getHouseholdId()
 
             householdId?.let {
                 firestore
@@ -197,6 +181,7 @@ class HouseholdServiceImpl
             onResult: (List<Activity>?) -> Unit,
             onFailure: (Exception) -> Unit,
         ) {
+            val householdId = getHouseholdId()
             val query =
                 if (householdId != null) {
                     firestore.collection("activities").whereEqualTo(
@@ -218,8 +203,9 @@ class HouseholdServiceImpl
                 }.addOnFailureListener(onFailure)
         }
 
-        override suspend fun getExpiredProducts(): List<FoodItem> =
-            firestore
+        override suspend fun getExpiredProducts(): List<FoodItem> {
+            val householdId = getHouseholdId()
+            return firestore
                 .collection("foodItems")
                 .whereEqualTo(
                     if (householdId != null) "householdId" else "userId",
@@ -228,9 +214,11 @@ class HouseholdServiceImpl
                 .get()
                 .await()
                 .map { it.toObject(FoodItem::class.java) }
+        }
 
-        override suspend fun getAllFoodItems(): List<FoodItem> =
-            firestore
+        override suspend fun getAllFoodItems(): List<FoodItem> {
+            val householdId = getHouseholdId()
+            return firestore
                 .collection("foodItems")
                 .whereEqualTo(
                     if (householdId != null) "householdId" else "userId",
@@ -238,6 +226,7 @@ class HouseholdServiceImpl
                 ).get()
                 .await()
                 .map { it.toObject(FoodItem::class.java) }
+        }
 
         override suspend fun calculateStatistics(
             expired: List<FoodItem>,
@@ -245,32 +234,25 @@ class HouseholdServiceImpl
         ): Statistics {
             val totalWaste = expired.size
             val discardTimestamps = expired.mapNotNull { it.discardTimestamp }
-            val firstDiscard: Long? = discardTimestamps.minOrNull()
-            val daysSpan: Long =
-                (
-                    (
-                        System.currentTimeMillis() -
-                            (firstDiscard ?: System.currentTimeMillis())
-                    ) /
-                        86_400_000L
-                ).coerceAtLeast(1L)
-            val periodDays: Int = minOf(daysSpan, 30L).toInt()
             val averageWaste: Float = totalWaste.toFloat() / 30L
-            val currentEpochDay: Long = System.currentTimeMillis() / 86_400_000L
-            val wasteDays: Set<Long> =
+
+            val periodDays = 30
+            val now = System.currentTimeMillis()
+            val currentEpochDay = now / 86_400_000L
+
+            val wasteDaysLast30: Set<Long> =
                 discardTimestamps
                     .map { it / 86_400_000L }
-                    .toSet()
+                    .filter { day ->
+                        day in (currentEpochDay - (periodDays - 1))..currentEpochDay
+                    }.toSet()
 
             val daysWithoutWaste: Int =
-                if (wasteDays.isEmpty()) {
-                    periodDays
-                } else {
-                    (0 until periodDays).count { delta ->
-                        val day = currentEpochDay - delta
-                        !wasteDays.contains(day)
-                    }
+                (0 until periodDays).count { delta ->
+                    val day = currentEpochDay - delta
+                    day !in wasteDaysLast30
                 }
+
             val mostWastedItems: List<Pair<FoodItem, Int>> =
                 expired
                     .groupingBy { it.name }
@@ -349,6 +331,7 @@ class HouseholdServiceImpl
         }
 
         override suspend fun getFoodItems(): List<FoodItem> {
+            val householdId = getHouseholdId()
             val query =
                 if (householdId != null) {
                     firestore.collection("foodItems").whereEqualTo(
@@ -435,6 +418,7 @@ class HouseholdServiceImpl
         override suspend fun leaveHousehold() {
             try {
                 val batch = firestore.batch()
+                val householdId = getHouseholdId()
 
                 householdId?.let { householdId ->
                     val householdRef =
@@ -472,6 +456,7 @@ class HouseholdServiceImpl
         }
 
         override suspend fun deleteHousehold(onSuccess: () -> Unit) {
+            val householdId = getHouseholdId()
             try {
                 householdId?.let {
                     firestore
@@ -560,6 +545,7 @@ class HouseholdServiceImpl
         }
 
         override suspend fun addProducts() {
+            val householdId = getHouseholdId()
             try {
                 val foodItemsQuerySnapshot =
                     firestore
@@ -584,6 +570,7 @@ class HouseholdServiceImpl
             userId: String,
             onSuccess: (User) -> Unit,
         ) {
+            val householdId = getHouseholdId()
             try {
                 val batch = firestore.batch()
                 val userRef = firestore.collection("users").document(userId)
@@ -721,6 +708,7 @@ class HouseholdServiceImpl
             try {
                 val batch = firestore.batch()
                 var updatedUsers = users
+                val householdId = getHouseholdId()
 
                 when (newType) {
                     "Single household" -> {

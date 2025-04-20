@@ -58,6 +58,7 @@ fun ChatScreen(navController: NavHostController) {
             bottomBar = {
                 Column {
                     MessageInput(
+                        listState = listState,
                         onSendMessage = { inputText ->
                             chatViewModel.sendMessage(inputText, itemList)
                         },

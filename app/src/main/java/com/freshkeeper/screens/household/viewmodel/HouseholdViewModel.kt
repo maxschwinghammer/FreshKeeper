@@ -111,9 +111,6 @@ class HouseholdViewModel
 
         private fun getHousehold() {
             launchCatching {
-                _household.value = null
-                _isInHousehold.value = false
-
                 householdService.getHousehold(
                     onResult = { household ->
                         _household.value = household
@@ -126,9 +123,6 @@ class HouseholdViewModel
 
         private fun getHouseholdData() {
             launchCatching {
-                _members.value = null
-                _activities.value = null
-
                 householdService.getMembers(
                     onResult = { _members.value = it },
                     onFailure = { Log.e("HouseholdViewModel", "Error loading members") },
@@ -146,5 +140,35 @@ class HouseholdViewModel
                 onSuccess = { _activities.value = _activities.value?.filter { it != activity } },
                 onFailure = { Log.e("HouseholdViewModel", "Error removing activity") },
             )
+        }
+
+        fun createHousehold(
+            name: String,
+            type: String,
+        ) {
+            launchCatching {
+                householdService.createHousehold(
+                    name,
+                    type,
+                    onSuccess = { household ->
+                        _household.value = household
+                        _isInHousehold.value = true
+                        getHouseholdData()
+                    },
+                )
+            }
+        }
+
+        fun joinHouseholdById(householdId: String) {
+            launchCatching {
+                householdService.joinHouseholdById(
+                    householdId,
+                    onSuccess = { joinedHousehold ->
+                        _household.value = joinedHousehold
+                        _isInHousehold.value = true
+                        getHouseholdData()
+                    },
+                )
+            }
         }
     }

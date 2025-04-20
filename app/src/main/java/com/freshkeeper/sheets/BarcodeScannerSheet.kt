@@ -63,6 +63,7 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.concurrent.Executors
 
 @OptIn(ExperimentalGetImage::class)
 @kotlin.OptIn(ExperimentalMaterial3Api::class)
@@ -76,6 +77,7 @@ fun BarcodeScannerSheet(
 //    var camera: Camera? by remember { mutableStateOf(null) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
 //    val cameraPermissionRequestCode = 101
     var isBarcodeScanned by remember { mutableStateOf(false) }
     val isExpiryDateScanned by remember { mutableStateOf(false) }
@@ -84,10 +86,17 @@ fun BarcodeScannerSheet(
     val coroutineScope = rememberCoroutineScope()
     val manualInputSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
+    val barcodeImageAnalysisRef = remember { mutableStateOf<ImageAnalysis?>(null) }
+    val textImageAnalysisRef = remember { mutableStateOf<ImageAnalysis?>(null) }
+
+    val cameraExecutor = remember { Executors.newSingleThreadExecutor() }
+    val cameraProvider = remember { ProcessCameraProvider.getInstance(context) }
+
     ModalBottomSheet(
         onDismissRequest = {
             coroutineScope.launch {
 //                camera?.cameraControl?.enableTorch(!isFlashOn)
+                cameraProvider.get().unbindAll()
                 sheetState.hide()
             }
         },
@@ -210,91 +219,123 @@ fun BarcodeScannerSheet(
 //                                )
 
                                 val barcodeImageAnalysis =
-                                    ImageAnalysis.Builder().build().also { it ->
-                                        it.setAnalyzer(
-                                            ContextCompat
-                                                .getMainExecutor(context),
-                                        ) { imageProxy ->
-                                            val mediaImage = imageProxy.image
-                                            if (mediaImage != null) {
-                                                val inputImage =
-                                                    InputImage.fromMediaImage(
-                                                        mediaImage,
-                                                        imageProxy.imageInfo.rotationDegrees,
-                                                    )
-                                                val scanner =
-                                                    BarcodeScanning.getClient(barcodeScannerOptions)
-                                                scanner
-                                                    .process(inputImage)
-                                                    .addOnSuccessListener { barcodes ->
-                                                        for (barcode in barcodes) {
-                                                            val rawValue = barcode.rawValue
-                                                            rawValue?.let {
-                                                                scannedBarcode = it
-                                                                isBarcodeScanned = true
+                                    ImageAnalysis
+                                        .Builder()
+                                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                                        .setImageQueueDepth(1)
+                                        .build()
+                                        .also { it ->
+                                            it.setAnalyzer(cameraExecutor) { imageProxy ->
+                                                val mediaImage = imageProxy.image
+                                                if (mediaImage != null) {
+                                                    val inputImage =
+                                                        InputImage.fromMediaImage(
+                                                            mediaImage,
+                                                            imageProxy.imageInfo.rotationDegrees,
+                                                        )
+                                                    val scanner =
+                                                        BarcodeScanning.getClient(barcodeScannerOptions)
+                                                    scanner
+                                                        .process(inputImage)
+                                                        .addOnSuccessListener(cameraExecutor) { barcodes ->
+                                                            for (barcode in barcodes) {
+                                                                val rawValue = barcode.rawValue
+                                                                rawValue?.let {
+                                                                    scannedBarcode = it
+                                                                    isBarcodeScanned = true
+                                                                }
                                                             }
+                                                        }.addOnFailureListener { e ->
+                                                            e.printStackTrace()
+                                                        }.addOnCompleteListener(cameraExecutor) {
+                                                            imageProxy.close()
                                                         }
-                                                    }.addOnFailureListener { e ->
-                                                        e.printStackTrace()
-                                                    }.addOnCompleteListener {
-                                                        imageProxy.close()
-                                                    }
+                                                }
                                             }
                                         }
-                                    }
+                                barcodeImageAnalysisRef.value = barcodeImageAnalysis
 
                                 val textRecognizer =
                                     TextRecognition.getClient(
                                         TextRecognizerOptions.Builder().build(),
                                     )
                                 val textImageAnalysis =
-                                    ImageAnalysis.Builder().build().also {
-                                        it.setAnalyzer(
-                                            ContextCompat
-                                                .getMainExecutor(context),
-                                        ) { imageProxy ->
-                                            val mediaImage = imageProxy.image
-                                            if (mediaImage != null && isBarcodeScanned) {
-                                                val inputImage =
-                                                    InputImage
-                                                        .fromMediaImage(
-                                                            mediaImage,
-                                                            imageProxy.imageInfo.rotationDegrees,
-                                                        )
-                                                textRecognizer
-                                                    .process(inputImage)
-                                                    .addOnSuccessListener { visionText ->
-                                                        if (visionText.text.isNotEmpty()) {
-                                                            coroutineScope.launch {
-                                                                var isFullDateFound = false
+                                    ImageAnalysis
+                                        .Builder()
+                                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                                        .setImageQueueDepth(1)
+                                        .build()
+                                        .also {
+                                            it.setAnalyzer(cameraExecutor) { imageProxy ->
+                                                val mediaImage = imageProxy.image
+                                                if (mediaImage != null && isBarcodeScanned) {
+                                                    val inputImage =
+                                                        InputImage
+                                                            .fromMediaImage(
+                                                                mediaImage,
+                                                                imageProxy.imageInfo.rotationDegrees,
+                                                            )
+                                                    textRecognizer
+                                                        .process(inputImage)
+                                                        .addOnSuccessListener { visionText ->
+                                                            if (visionText.text.isNotEmpty()) {
+                                                                coroutineScope.launch {
+                                                                    var isFullDateFound = false
 
-                                                                val timeoutMillis = 3000L
-                                                                val startTime =
-                                                                    System.currentTimeMillis()
+                                                                    val timeoutMillis = 3000L
+                                                                    val startTime =
+                                                                        System.currentTimeMillis()
 
-                                                                val fullMhdRegex =
-                                                                    """\b(0?[1-9]|[12]\d|3[01])[-/.](0?[1-9]|1[0-2])[-/.](20\d{2}|[2-9]\d)\b"""
-                                                                        .toRegex()
+                                                                    val fullMhdRegex =
+                                                                        """\b(0?[1-9]|[12]\d|3[01])[-/.](0?[1-9]|1[0-2])[-/.](20\d{2}|[2-9]\d)\b"""
+                                                                            .toRegex()
 
-                                                                val monthYearRegex =
-                                                                    """\b(0?[1-9]|1[0-2])[-/.](20\d{2}|[2-9]\d)\b"""
-                                                                        .toRegex()
+                                                                    val monthYearRegex =
+                                                                        """\b(0?[1-9]|1[0-2])[-/.](20\d{2}|[2-9]\d)\b"""
+                                                                            .toRegex()
 
-                                                                while (!isFullDateFound &&
-                                                                    (
-                                                                        System.currentTimeMillis() -
-                                                                            startTime < timeoutMillis
-                                                                    )
-                                                                ) {
-                                                                    val matches =
-                                                                        fullMhdRegex.findAll(
-                                                                            visionText.text,
+                                                                    while (!isFullDateFound &&
+                                                                        (
+                                                                            System.currentTimeMillis() -
+                                                                                startTime < timeoutMillis
                                                                         )
-                                                                    if (matches.any()) {
-                                                                        for (match in matches) {
+                                                                    ) {
+                                                                        val matches =
+                                                                            fullMhdRegex.findAll(
+                                                                                visionText.text,
+                                                                            )
+                                                                        if (matches.any()) {
+                                                                            for (match in matches) {
+                                                                                if (isValidDate(match.value)) {
+                                                                                    isFullDateFound =
+                                                                                        true
+                                                                                    expiryTimestamp =
+                                                                                        convertToUnixTimestamp(
+                                                                                            match.value,
+                                                                                        )
+                                                                                    onBarcodeScanned(
+                                                                                        scannedBarcode,
+                                                                                        expiryTimestamp,
+                                                                                    )
+                                                                                    coroutineScope.launch {
+                                                                                        manualInputSheetState
+                                                                                            .show()
+                                                                                        sheetState.hide()
+                                                                                    }
+                                                                                    break
+                                                                                }
+                                                                            }
+                                                                        }
+
+                                                                        delay(500L)
+                                                                    }
+
+                                                                    if (!isFullDateFound) {
+                                                                        val monthYearMatches =
+                                                                            monthYearRegex
+                                                                                .findAll(visionText.text)
+                                                                        for (match in monthYearMatches) {
                                                                             if (isValidDate(match.value)) {
-                                                                                isFullDateFound =
-                                                                                    true
                                                                                 expiryTimestamp =
                                                                                     convertToUnixTimestamp(
                                                                                         match.value,
@@ -304,52 +345,26 @@ fun BarcodeScannerSheet(
                                                                                     expiryTimestamp,
                                                                                 )
                                                                                 coroutineScope.launch {
-                                                                                    manualInputSheetState
-                                                                                        .show()
+                                                                                    manualInputSheetState.show()
                                                                                     sheetState.hide()
                                                                                 }
                                                                                 break
                                                                             }
                                                                         }
                                                                     }
-
-                                                                    delay(500L)
-                                                                }
-
-                                                                if (!isFullDateFound) {
-                                                                    val monthYearMatches =
-                                                                        monthYearRegex
-                                                                            .findAll(visionText.text)
-                                                                    for (match in monthYearMatches) {
-                                                                        if (isValidDate(match.value)) {
-                                                                            expiryTimestamp =
-                                                                                convertToUnixTimestamp(
-                                                                                    match.value,
-                                                                                )
-                                                                            onBarcodeScanned(
-                                                                                scannedBarcode,
-                                                                                expiryTimestamp,
-                                                                            )
-                                                                            coroutineScope.launch {
-                                                                                manualInputSheetState.show()
-                                                                                sheetState.hide()
-                                                                            }
-                                                                            break
-                                                                        }
-                                                                    }
                                                                 }
                                                             }
+                                                        }.addOnFailureListener { e ->
+                                                            e.printStackTrace()
+                                                        }.addOnCompleteListener {
+                                                            imageProxy.close()
                                                         }
-                                                    }.addOnFailureListener { e ->
-                                                        e.printStackTrace()
-                                                    }.addOnCompleteListener {
-                                                        imageProxy.close()
-                                                    }
-                                            } else {
-                                                imageProxy.close()
+                                                } else {
+                                                    imageProxy.close()
+                                                }
                                             }
                                         }
-                                    }
+                                textImageAnalysisRef.value = textImageAnalysis
 
                                 try {
                                     cameraProvider.unbindAll()
@@ -394,6 +409,8 @@ fun BarcodeScannerSheet(
                                 .align(Alignment.BottomCenter)
                                 .padding(bottom = 20.dp),
                         onClick = {
+                            textImageAnalysisRef.value?.clearAnalyzer()
+                            barcodeImageAnalysisRef.value?.clearAnalyzer()
                             onBarcodeScanned(scannedBarcode, 0L)
                             coroutineScope.launch {
                                 manualInputSheetState.show()

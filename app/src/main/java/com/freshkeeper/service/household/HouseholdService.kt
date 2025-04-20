@@ -14,8 +14,6 @@ interface HouseholdService {
 
     suspend fun getHouseholdId(): String?
 
-    suspend fun getHouseholdId(onResult: (String) -> Unit)
-
     suspend fun updateHouseholdName(newName: String)
 
     suspend fun getMembers(
