@@ -109,7 +109,7 @@ fun NameInputScreen(
                     TextField(
                         value = name,
                         onValueChange = { newName ->
-                            if (newName.matches("^[A-Za-z ]*$".toRegex())) {
+                            if (newName.matches("^[\\p{L} ]*$".toRegex())) {
                                 name = newName
                             }
                         },
@@ -147,30 +147,10 @@ fun NameInputScreen(
                     }
                     Button(
                         onClick = {
-                            skipName = true
-                            navController.navigate("selectProfilePicture") {
-                                launchSingleTop = true
-                            }
-                        },
-                        colors =
-                            ButtonDefaults.buttonColors(
-                                containerColor = WhiteColor,
-                            ),
-                        modifier = Modifier.fillMaxWidth().padding(16.dp, 0.dp),
-                    ) {
-                        Text(
-                            text = stringResource(R.string.skip),
-                            fontSize = 16.sp,
-                            color = ComponentBackgroundColor,
-                        )
-                    }
-                    Spacer(Modifier.padding(6.dp))
-                    Button(
-                        onClick = {
                             showError = true
                             if (!skipName &&
                                 name.length >= 3 &&
-                                name.matches("^[A-Za-z ]+$".toRegex())
+                                name.matches("^[\\p{L} ]*$".toRegex())
                             ) {
                                 if (userId != null) {
                                     profileViewModel.updateDisplayName(name)
@@ -189,6 +169,26 @@ fun NameInputScreen(
                     ) {
                         Text(
                             text = stringResource(R.string.continue_text),
+                            fontSize = 16.sp,
+                            color = ComponentBackgroundColor,
+                        )
+                    }
+                    Spacer(Modifier.padding(6.dp))
+                    Button(
+                        onClick = {
+                            skipName = true
+                            navController.navigate("selectProfilePicture") {
+                                launchSingleTop = true
+                            }
+                        },
+                        colors =
+                            ButtonDefaults.buttonColors(
+                                containerColor = WhiteColor,
+                            ),
+                        modifier = Modifier.fillMaxWidth().padding(16.dp, 0.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.skip),
                             fontSize = 16.sp,
                             color = ComponentBackgroundColor,
                         )

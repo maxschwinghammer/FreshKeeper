@@ -1,6 +1,5 @@
 package com.freshkeeper.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -50,7 +49,6 @@ fun DropdownMenu(
     var expanded by remember { mutableStateOf(false) }
     val selectedIdState = selectedId
     val selected = stringResource(id = selectedId)
-    Log.d("DropdownMenu", "Selected: $selected")
 
     val options =
         when (type) {

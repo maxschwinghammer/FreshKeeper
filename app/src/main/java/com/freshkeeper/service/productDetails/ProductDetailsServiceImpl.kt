@@ -58,9 +58,8 @@ class ProductDetailsServiceImpl
                                 return@withContext null
                             }
                             val body = response.body.string()
-                            val apiResponse = gson.fromJson(body, ApiResponse::class.java)
+                            val product = gson.fromJson(body, ApiResponse::class.java).product
 
-                            val product = apiResponse.apiProduct
                             val nutriments =
                                 product.nutriments?.let {
                                     Nutriments(
@@ -120,6 +119,7 @@ class ProductDetailsServiceImpl
                                     organic = product.labelsTags?.contains("en:organic"),
                                     nutriments = nutriments,
                                 )
+
                             docRef.set(productDetails).await()
                             return@withContext productDetails
                         }
@@ -133,49 +133,6 @@ class ProductDetailsServiceImpl
                         return@withContext null
                     }
                 }
-            }
-        }
-
-        override suspend fun fetchAndSaveProductDetails(barcode: String) {
-            return withContext(Dispatchers.IO) {
-                val docRef = firestore.collection("productDetails").document(barcode)
-                if (docRef.get().await().exists()) return@withContext
-                val url = "https://world.openfoodfacts.org/api/v3/product/$barcode.json"
-                val request = Request.Builder().url(url).build()
-                val response = client.newCall(request).execute()
-                if (!response.isSuccessful) return@withContext
-                val body = response.body.string()
-
-                val apiResponse = gson.fromJson(body, ApiResponse::class.java)
-
-                val product = apiResponse.apiProduct
-                val nutriments =
-                    product.nutriments?.let { it ->
-                        Nutriments(
-                            energyKcal = it.energyKcal?.takeIf { it.isFinite() } ?: 0.0,
-                            fat = it.fat?.takeIf { it.isFinite() } ?: 0.0,
-                            carbohydrates = it.carbohydrates?.takeIf { it.isFinite() } ?: 0.0,
-                            sugars = it.sugars?.takeIf { it.isFinite() } ?: 0.0,
-                            fiber = it.fiber?.takeIf { it.isFinite() } ?: 0.0,
-                            proteins = it.proteins?.takeIf { it.isFinite() } ?: 0.0,
-                            salt = it.salt?.takeIf { it.isFinite() } ?: 0.0,
-                        )
-                    }
-
-                val productDetails =
-                    ProductDetails(
-                        productName = product.productName,
-                        brand = product.brands,
-                        nutriScore = product.nutriscoreGrade,
-                        ingredients = product.ingredientsText,
-                        labels = product.labelsTags,
-                        vegan = product.labelsTags?.contains("en:vegan"),
-                        vegetarian = product.labelsTags?.contains("en:vegetarian"),
-                        organic = product.labelsTags?.contains("en:organic"),
-                        nutriments = nutriments,
-                    )
-
-                docRef.set(productDetails).await()
             }
         }
 

@@ -145,11 +145,9 @@ fun ManualInputSheet(
     val cancel = stringResource(R.string.cancel)
 
     fun mapCategory(name: String) {
-        Log.d("ManualInputSheet", "Name: $name")
         val key = name.trim().lowercase()
         if (key.isNotEmpty() && category.value == defaultCategoryKey) {
             nameToCategoryMap[key]?.let { cat ->
-                Log.d("ManualInputSheet", "Category: $cat")
                 category.value = cat
             }
         }
@@ -161,7 +159,6 @@ fun ManualInputSheet(
                 barcode,
                 { data ->
                     productData = data
-                    Log.d("ManualInputSheet", "Product data: $productData")
 
                     productName = data.name ?: ""
                     mapCategory(productName)
@@ -414,7 +411,6 @@ fun ManualInputSheet(
 
             Spacer(modifier = Modifier.height(8.dp))
 
-            Log.d("ManualInputSheet", "Selected category: $selectedCategory")
             DropdownMenu(
                 selectedCategory,
                 onSelect = { selectedCategory ->

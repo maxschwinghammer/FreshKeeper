@@ -5,7 +5,6 @@
           \"include\": \"https://signin.freshkeeper.de/.well-known/assetlinks.json\"
         }]
     </string>
-    <string name="webClientId" translatable="false">38219986067-vha0jgf2kvnku636sfccddil52ncu02i.apps.googleusercontent.com</string>
     <string name="overview">Overview</string>">
     <string name="current_inventories">Current inventories</string>">
     <string name="household">Household</string>

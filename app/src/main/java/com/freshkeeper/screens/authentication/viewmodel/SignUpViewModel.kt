@@ -130,14 +130,14 @@ class SignUpViewModel
                 kotlinx.coroutines.delay(3000)
             }
             navController.navigate("nameInput") { launchSingleTop = true }
-            val enableBiometric = askForBiometricActivation(context)
-            saveBiometricPreference(context, enableBiometric)
-            if (enableBiometric) {
-                val authenticated = authenticateBiometric(context, activity)
-                if (!authenticated) {
-                    Log.e("SignUp", "Biometric authentication failed")
-                }
-            }
+//            val enableBiometric = askForBiometricActivation(context)
+//            saveBiometricPreference(context, enableBiometric)
+//            if (enableBiometric) {
+//                val authenticated = authenticateBiometric(context, activity)
+//                if (!authenticated) {
+//                    Log.e("SignUp", "Biometric authentication failed")
+//                }
+//            }
         }
 
         private fun saveBiometricPreference(

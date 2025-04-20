@@ -229,6 +229,17 @@ class AccountServiceImpl
                 val userId = user.id
 
                 if (userId.isNotEmpty()) {
+                    if (user.householdId != null) {
+                        val householdRef =
+                            firestore.collection("households").document(user.householdId)
+                        val householdDoc = householdRef.get().await()
+                        if (householdDoc.exists()) {
+                            val usersList = householdDoc.get("users") as? List<Any?> ?: emptyList()
+                            val updatedUsersList = usersList.filter { it != userId }
+                            householdRef.update("users", updatedUsersList).await()
+                        }
+                    }
+
                     firestore
                         .collection("profilePictures")
                         .document(userId)
@@ -247,7 +258,35 @@ class AccountServiceImpl
                         .delete()
                         .await()
 
-                    deleteLinkedDocuments(userId)
+                    firestore
+                        .collection("households")
+                        .whereEqualTo("ownerId", userId)
+                        .get()
+                        .await()
+                        .documents
+                        .forEach { household ->
+                            firestore
+                                .collection("households")
+                                .document(household.id)
+                                .delete()
+                                .await()
+                        }
+
+                    listOf("foodItems", "activities").forEach { collection ->
+                        firestore
+                            .collection(collection)
+                            .whereEqualTo("userId", userId)
+                            .get()
+                            .await()
+                            .documents
+                            .forEach { document ->
+                                firestore
+                                    .collection(collection)
+                                    .document(document.id)
+                                    .delete()
+                                    .await()
+                            }
+                    }
 
                     firestore
                         .collection("users")
@@ -255,53 +294,14 @@ class AccountServiceImpl
                         .delete()
                         .await()
 
-                    auth.signOut()
                     currentUser?.delete()?.await()
+                    auth.signOut()
                 }
             } catch (e: FirebaseAuthRecentLoginRequiredException) {
                 Log.e("AccountServiceImpl", "User needs to reauthenticate", e)
             } catch (e: Exception) {
                 Log.e("AccountServiceImpl", "Error deleting account", e)
                 throw e
-            }
-        }
-
-        private suspend fun deleteLinkedDocuments(userId: String) {
-            val householdDocuments =
-                firestore
-                    .collection("households")
-                    .whereEqualTo("ownerId", userId)
-                    .get()
-                    .await()
-
-            householdDocuments.documents.forEach { household ->
-                firestore
-                    .collection("households")
-                    .document(household.id)
-                    .delete()
-                    .await()
-            }
-
-            val collections =
-                listOf(
-                    "foodItems",
-                    "activities",
-                )
-            collections.forEach { collection ->
-                val documents =
-                    firestore
-                        .collection(collection)
-                        .whereEqualTo("userId", userId)
-                        .get()
-                        .await()
-
-                documents.documents.forEach { document ->
-                    firestore
-                        .collection(collection)
-                        .document(document.id)
-                        .delete()
-                        .await()
-                }
             }
         }
 

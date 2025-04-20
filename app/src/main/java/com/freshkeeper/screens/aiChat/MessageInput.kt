@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -42,7 +41,6 @@ import com.freshkeeper.ui.theme.TextColor
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun MessageInput(
-    listState: LazyListState,
     onSendMessage: (String) -> Unit,
     resetScroll: () -> Unit = {},
     chatMessages: List<ChatMessage>,
@@ -59,7 +57,7 @@ fun MessageInput(
         )
 
     Spacer(modifier = Modifier.height(8.dp))
-    LazyRow(state = listState, modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)) {
+    LazyRow(modifier = Modifier.fillMaxWidth().padding(horizontal = 10.dp)) {
         items(suggestions) { suggestion ->
             ElevatedCard(
                 onClick = {
