@@ -3,15 +3,18 @@ package com.freshkeeper.screens.home.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodItemPicture
 import com.freshkeeper.model.ProductData
 import com.freshkeeper.screens.AppViewModel
+import com.freshkeeper.service.account.AccountService
 import com.freshkeeper.service.household.HouseholdService
 import com.freshkeeper.service.product.ProductService
 import com.freshkeeper.service.productDetails.ProductDetailsService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,6 +24,7 @@ class HomeViewModel
         private val householdService: HouseholdService,
 //        private val membershipService: MembershipService,
         private val productService: ProductService,
+        private val accountService: AccountService,
         private val productDetailsService: ProductDetailsService,
     ) : AppViewModel() {
         private val _allFoodItems = MutableLiveData<List<FoodItem>>()
@@ -42,18 +46,29 @@ class HomeViewModel
             }
         }
 
+        init {
+            viewModelScope.launch {
+                accountService.logoutEvents.collect {
+                    clearData()
+                }
+            }
+        }
+
 //        private suspend fun checkMembershipStatus() {
 //            val status = membershipService.isMember()
 //            _isMember.value = status
 //        }
 
+        fun clearData() {
+            _allFoodItems.value = emptyList()
+            _expiringSoonItems.value = emptyList()
+            _expiredItems.value = emptyList()
+            Log.d("HomeViewModel", "Data cleared")
+        }
+
         private fun getFoodItems() {
             launchCatching {
                 try {
-                    _allFoodItems.value = emptyList()
-                    _expiringSoonItems.value = emptyList()
-                    _expiredItems.value = emptyList()
-
                     val foodItems = householdService.getFoodItems()
                     _allFoodItems.value = foodItems
                     _expiringSoonItems.value =

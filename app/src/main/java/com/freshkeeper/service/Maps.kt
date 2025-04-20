@@ -103,6 +103,7 @@ val reverseHouseholdTypeMap =
 val drawableMap =
     mapOf(
         "user_joined" to R.drawable.user_joined,
+        "user_added" to R.drawable.user_joined,
         "user_left" to R.drawable.leave,
         "product_added" to R.drawable.plus,
         "edit" to R.drawable.edit,
@@ -120,6 +121,7 @@ val drawableMap =
 val activityTypeMap =
     mapOf(
         "user_joined" to R.string.activity_user_joined,
+        "user_added" to R.string.activity_user_added,
         "user_left" to R.string.activity_user_left,
         "product_added" to R.string.activity_added,
         "edit" to R.string.activity_edited,

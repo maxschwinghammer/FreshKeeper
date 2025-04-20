@@ -111,6 +111,9 @@ class HouseholdViewModel
 
         private fun getHousehold() {
             launchCatching {
+                _household.value = null
+                _isInHousehold.value = false
+
                 householdService.getHousehold(
                     onResult = { household ->
                         _household.value = household
@@ -123,6 +126,9 @@ class HouseholdViewModel
 
         private fun getHouseholdData() {
             launchCatching {
+                _members.value = null
+                _activities.value = null
+
                 householdService.getMembers(
                     onResult = { _members.value = it },
                     onFailure = { Log.e("HouseholdViewModel", "Error loading members") },

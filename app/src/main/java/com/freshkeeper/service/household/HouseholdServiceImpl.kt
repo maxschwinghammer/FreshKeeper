@@ -465,7 +465,7 @@ class HouseholdServiceImpl
                 }
 
                 batch.commit().await()
-                householdId?.let { logUserActivity(it, "user_left") }
+                householdId?.let { logUserActivity(user, it, "user_left") }
             } catch (e: Exception) {
                 Log.e("HouseholdService", "Error when leaving the household", e)
             }
@@ -584,46 +584,47 @@ class HouseholdServiceImpl
             userId: String,
             onSuccess: (User) -> Unit,
         ) {
-            val userSnapshot =
-                firestore
-                    .collection("users")
-                    .document(userId)
-                    .get()
-                    .await()
+            try {
+                val batch = firestore.batch()
+                val userRef = firestore.collection("users").document(userId)
+                val householdRef = firestore.collection("households").document(householdId ?: "")
 
-            if (!userSnapshot.exists()) {
-                Toast.makeText(context, context.getString(R.string.user_not_found), Toast.LENGTH_SHORT).show()
-                return
-            }
+                val userSnapshot = userRef.get().await()
+                val user =
+                    userSnapshot.toObject(User::class.java)
+                        ?: throw IllegalArgumentException("User mit ID $userId nicht gefunden")
 
-            val user = userSnapshot.toObject(User::class.java)
+                batch.update(
+                    householdRef,
+                    "users",
+                    FieldValue.arrayUnion(userId),
+                )
+                batch.update(
+                    userRef,
+                    "householdId",
+                    householdId,
+                )
 
-            if (user != null) {
-                householdId?.let {
-                    firestore
-                        .collection("households")
-                        .document(it)
-                        .update("users", FieldValue.arrayUnion(user.id))
-                        .await()
-                }
-            }
+                batch.commit().await()
 
-            firestore
-                .collection("users")
-                .document(userId)
-                .update("householdId", householdId)
-                .await()
-
-            if (user != null) {
                 onSuccess(user)
-            }
+                householdId?.let { logUserActivity(user, it, "user_added") }
 
-            Toast
-                .makeText(
-                    context,
-                    context.getString(R.string.user_added),
-                    Toast.LENGTH_SHORT,
-                ).show()
+                Toast
+                    .makeText(
+                        context,
+                        context.getString(R.string.user_added),
+                        Toast.LENGTH_SHORT,
+                    ).show()
+            } catch (e: Exception) {
+                Log.e("HouseholdService", "Error when adding the user", e)
+                Toast
+                    .makeText(
+                        context,
+                        context.getString(R.string.user_not_found),
+                        Toast.LENGTH_SHORT,
+                    ).show()
+            }
         }
 
         override suspend fun joinHouseholdById(
@@ -673,7 +674,7 @@ class HouseholdServiceImpl
 
                 batch.commit().await()
 
-                logUserActivity(householdId, "user_joined")
+                logUserActivity(user, householdId, "user_joined")
 
                 householdSnapshot
                     .toObject(Household::class.java)
@@ -690,6 +691,7 @@ class HouseholdServiceImpl
         }
 
         override suspend fun logUserActivity(
+            user: User,
             householdId: String,
             type: String,
         ) {

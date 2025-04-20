@@ -30,6 +30,8 @@ import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import java.io.File
@@ -48,6 +50,9 @@ class AccountServiceImpl
     ) : AccountService {
         private val auth: FirebaseAuth = Firebase.auth
         private val firestore = Firebase.firestore
+
+        private val _logoutEvents = MutableSharedFlow<Unit>(replay = 0)
+        override val logoutEvents: SharedFlow<Unit> = _logoutEvents
 
         init {
             val languageCode = Locale.getDefault().language
@@ -195,6 +200,7 @@ class AccountServiceImpl
             auth.signOut()
             FirebaseMessaging.getInstance().deleteToken()
             (context as? ComponentActivity)?.viewModelStore?.clear()
+            _logoutEvents.emit(Unit)
         }
 
         override suspend fun changeEmail(newEmail: String) {

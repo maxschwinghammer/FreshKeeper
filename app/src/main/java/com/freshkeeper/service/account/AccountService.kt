@@ -3,9 +3,11 @@ package com.freshkeeper.service.account
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 
 interface AccountService {
     val currentUser: Flow<User?>
+    val logoutEvents: SharedFlow<Unit>
 
     fun hasUser(): Boolean
 

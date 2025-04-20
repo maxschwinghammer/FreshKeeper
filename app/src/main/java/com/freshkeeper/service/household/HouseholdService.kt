@@ -79,6 +79,7 @@ interface HouseholdService {
     )
 
     suspend fun logUserActivity(
+        user: User,
         householdId: String,
         type: String,
     )
