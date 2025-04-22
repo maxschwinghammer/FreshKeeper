@@ -144,10 +144,13 @@ fun ManualInputSheet(
 
     fun mapCategory(name: String) {
         val key = name.trim().lowercase()
-        if (key.isNotEmpty() && category.value == defaultCategory) {
-            nameToCategoryMap[key]?.let { cat ->
-                category.value = cat
-            }
+        if (key.isNotEmpty()) {
+            category.value = nameToCategoryMap.entries
+                .find { key.contains(it.key) }
+                ?.value
+                ?: defaultCategory
+        } else {
+            category.value = defaultCategory
         }
     }
 
