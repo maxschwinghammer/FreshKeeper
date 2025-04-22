@@ -450,6 +450,7 @@ fun InventoryScreen(navController: NavHostController) {
                             image,
                             imageUrl,
                             coroutineScope,
+                            context,
                         ) { coroutineScope.launch { manualInputSheetState.hide() } }
                     },
                 )

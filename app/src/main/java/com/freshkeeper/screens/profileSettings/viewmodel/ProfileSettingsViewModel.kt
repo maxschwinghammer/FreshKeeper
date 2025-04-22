@@ -1,10 +1,16 @@
 package com.freshkeeper.screens.profileSettings.viewmodel
 
+import android.content.Context
+import androidx.biometric.BiometricPrompt
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
+import com.freshkeeper.R
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.service.account.AccountService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,6 +21,7 @@ class ProfileSettingsViewModel
     @Inject
     constructor(
         private val accountService: AccountService,
+        @ApplicationContext private val context: Context,
     ) : AppViewModel() {
         private val _user = MutableStateFlow(User())
         val user: StateFlow<User> = _user.asStateFlow()
@@ -22,9 +29,13 @@ class ProfileSettingsViewModel
         private val _profilePicture = MutableStateFlow<ProfilePicture?>(null)
         val profilePicture: StateFlow<ProfilePicture?> = _profilePicture.asStateFlow()
 
+        private val _isBiometricEnabled = MutableStateFlow(false)
+        val isBiometricEnabled: StateFlow<Boolean> = _isBiometricEnabled.asStateFlow()
+
         init {
             launchCatching {
                 _user.value = accountService.getUserObject()
+                _isBiometricEnabled.value = accountService.getBiometricEnabled()
                 getProfilePicture()
             }
         }
@@ -85,6 +96,56 @@ class ProfileSettingsViewModel
         fun downloadUserData(userId: String) {
             launchCatching {
                 accountService.downloadUserData(userId)
+            }
+        }
+
+        fun onBiometricSwitchChanged(
+            isChecked: Boolean,
+            activity: FragmentActivity?,
+        ) {
+            if (!isChecked) {
+                launchCatching {
+                    accountService.updateBiometricEnabled(false)
+                    _isBiometricEnabled.value = false
+                }
+            } else {
+                activity?.let {
+                    val executor = ContextCompat.getMainExecutor(context)
+                    val biometricPrompt =
+                        BiometricPrompt(
+                            it,
+                            executor,
+                            object : BiometricPrompt.AuthenticationCallback() {
+                                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                                    launchCatching {
+                                        accountService.updateBiometricEnabled(true)
+                                        _isBiometricEnabled.value = true
+                                    }
+                                }
+
+                                override fun onAuthenticationFailed() {
+                                    _isBiometricEnabled.value = false
+                                }
+
+                                override fun onAuthenticationError(
+                                    errorCode: Int,
+                                    errString: CharSequence,
+                                ) {
+                                    _isBiometricEnabled.value = false
+                                }
+                            },
+                        )
+
+                    val promptInfo =
+                        BiometricPrompt.PromptInfo
+                            .Builder()
+                            .setTitle(context.getString(R.string.biometric_auth_title))
+                            .setSubtitle(context.getString(R.string.biometric_auth_subtitle))
+                            .setNegativeButtonText(context.getString(R.string.cancel))
+                            .build()
+
+                    biometricPrompt.authenticate(promptInfo)
+                }
             }
         }
     }

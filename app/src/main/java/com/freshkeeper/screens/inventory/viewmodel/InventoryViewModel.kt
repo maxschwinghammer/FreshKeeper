@@ -157,6 +157,7 @@ class InventoryViewModel
             image: String?,
             imageUrl: String,
             coroutineScope: CoroutineScope,
+            context: Context,
             onSuccess: () -> Unit,
         ) {
             launchCatching {
@@ -171,6 +172,7 @@ class InventoryViewModel
                     image,
                     imageUrl,
                     coroutineScope,
+                    context,
                     onSuccess = { newItem ->
                         _foodItems.value = (_foodItems.value ?: emptyList()) + newItem
                         when (newItem.storageLocation) {

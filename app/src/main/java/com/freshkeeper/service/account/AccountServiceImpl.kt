@@ -6,6 +6,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.core.content.FileProvider
+import androidx.core.content.edit
 import com.freshkeeper.R
 import com.freshkeeper.model.Activity
 import com.freshkeeper.model.DownloadableUserData
@@ -567,5 +568,25 @@ class AccountServiceImpl
                 }.addOnFailureListener { e ->
                     Log.e("SignUp", "Error when creating the membership: ${e.message}", e)
                 }
+        }
+
+        override suspend fun updateBiometricEnabled(isEnabled: Boolean) {
+            val currentUser = auth.currentUser
+            if (currentUser != null) {
+                val userId = currentUser.uid
+                val userRef = firestore.collection("users").document(userId)
+                try {
+                    userRef.update("isBiometricEnabled", isEnabled).await()
+                    val prefs =
+                        context.getSharedPreferences(
+                            "user_preferences",
+                            Context.MODE_PRIVATE,
+                        )
+                    prefs.edit { putBoolean("biometric_enabled", isEnabled) }
+                } catch (e: Exception) {
+                    Log.e("AccountServiceImpl", "Error updating biometric status", e)
+                    throw e
+                }
+            }
         }
     }

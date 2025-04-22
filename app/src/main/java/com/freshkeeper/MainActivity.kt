@@ -3,6 +3,7 @@ package com.freshkeeper
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
@@ -30,9 +31,13 @@ import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.Firebase
+import com.google.firebase.appcheck.appCheck
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.initialize
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 import java.util.Locale
 
 @AndroidEntryPoint
@@ -58,8 +63,27 @@ class MainActivity : FragmentActivity() {
             capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)
     }
 
+    private fun copyCsvFromAssets(context: Context) {
+        val assetManager = context.assets
+        val inputStream = assetManager.open("name_category_mapping.csv")
+        val outputFile = File(context.filesDir, "name_category_mapping.csv")
+        if (!outputFile.exists()) {
+            inputStream.use { input ->
+                outputFile.outputStream().use { output ->
+                    input.copyTo(output)
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        Firebase.initialize(context = this)
+        Firebase.appCheck.installAppCheckProviderFactory(
+            PlayIntegrityAppCheckProviderFactory.getInstance(),
+        )
+
         super.onCreate(savedInstanceState)
+        copyCsvFromAssets(this)
 
         val channel =
             NotificationChannel(

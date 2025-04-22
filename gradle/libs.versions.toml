@@ -2,7 +2,7 @@
 accompanistFlowlayout = "0.36.0"
 accompanistPagerVersion = "0.36.0"
 activityCompose = "1.10.1"
-agp = "8.9.1"
+agp = "8.9.2"
 androidImageCropper = "4.6.0"
 androidxCredentials = "1.5.0"
 #noinspection GradleDependency
@@ -78,6 +78,7 @@ com-google-android-play-review-ktx2 = { module = "com.google.android.play:review
 com-google-android-play-review2 = { module = "com.google.android.play:review", version.ref = "comGoogleAndroidPlayReview" }
 com-journeyapps-zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "journeyappsZxingAndroidEmbedded" }
 commonmark-commonmark = { module = "org.commonmark:commonmark", version.ref = "commonmarkVersion" }
+firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore", version.ref = "firebaseFirestore" }
 firebase-inappmessaging-display = { module = "com.google.firebase:firebase-inappmessaging-display", version.ref = "firebaseInAppMessagingDisplay" }

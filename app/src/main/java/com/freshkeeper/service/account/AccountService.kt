@@ -66,4 +66,6 @@ interface AccountService {
         userId: String,
         email: String,
     )
+
+    suspend fun updateBiometricEnabled(isEnabled: Boolean)
 }

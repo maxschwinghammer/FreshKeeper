@@ -74,6 +74,7 @@ import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
+import java.io.File
 
 @Suppress("ktlint:standard:function-naming")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,20 +113,17 @@ fun ManualInputSheet(
 
     val nameToCategoryMap =
         remember {
-            context.assets
-                .open("name_category_mapping.csv")
-                .bufferedReader()
-                .useLines { lines ->
-                    lines
-                        .drop(1)
-                        .mapNotNull { line ->
-                            line.split(",").takeIf { it.size == 2 }?.let { (n, c) ->
-                                n.trim().lowercase() to c.trim().lowercase()
-                            }
-                        }.toMap()
-                }
+            val csvFile = File(context.filesDir, "name_category_mapping.csv")
+            csvFile.bufferedReader().useLines { lines ->
+                lines
+                    .mapNotNull { line ->
+                        line.split(",").takeIf { it.size == 2 }?.let { (n, c) ->
+                            n.trim().lowercase() to c.trim().lowercase()
+                        }
+                    }.toMap()
+            }
         }
-    val defaultCategoryKey = "dairy_goods"
+    val defaultCategory = "dairy_goods"
 
     var showAddImageButton by remember { mutableStateOf(true) }
     var showImageComposable by remember { mutableStateOf(false) }
@@ -146,7 +144,7 @@ fun ManualInputSheet(
 
     fun mapCategory(name: String) {
         val key = name.trim().lowercase()
-        if (key.isNotEmpty() && category.value == defaultCategoryKey) {
+        if (key.isNotEmpty() && category.value == defaultCategory) {
             nameToCategoryMap[key]?.let { cat ->
                 category.value = cat
             }
@@ -159,13 +157,11 @@ fun ManualInputSheet(
                 barcode,
                 { data ->
                     productData = data
-
                     productName = data.name ?: ""
                     mapCategory(productName)
                     quantity = data.quantity ?: ""
                     unit.value = data.unit ?: ""
                     imageUrl = data.imageUrl ?: ""
-
                     showImageComposable = true
                     showAddImageButton = false
                 },
@@ -414,7 +410,7 @@ fun ManualInputSheet(
             DropdownMenu(
                 selectedCategory,
                 onSelect = { selectedCategory ->
-                    category.value = categoryReverseMap[selectedCategory] ?: "dairy_goods"
+                    category.value = categoryReverseMap[selectedCategory] ?: defaultCategory
                 },
                 "categories",
                 stringResource(R.string.category),
@@ -442,7 +438,10 @@ fun ManualInputSheet(
                             ).show()
                         return@Button
                     }
-                    if (quantity.isBlank() || quantity.toIntOrNull() == null || quantity.toInt() <= 0) {
+                    if (quantity.isBlank() ||
+                        quantity.toIntOrNull() == null ||
+                        quantity.toInt() <= 0
+                    ) {
                         Toast
                             .makeText(
                                 context,

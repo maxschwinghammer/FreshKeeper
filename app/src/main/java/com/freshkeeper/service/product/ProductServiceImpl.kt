@@ -1,5 +1,6 @@
 package com.freshkeeper.service.product
 
+import android.content.Context
 import android.util.Log
 import com.freshkeeper.model.Activity
 import com.freshkeeper.model.FoodItem
@@ -13,6 +14,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.File
 import java.time.Instant
 import java.time.ZoneId
 import java.time.temporal.ChronoUnit
@@ -49,6 +52,7 @@ class ProductServiceImpl
             image: String?,
             imageUrl: String?,
             coroutineScope: CoroutineScope,
+            context: Context,
             onSuccess: (FoodItem) -> Unit,
             onFailure: (Exception) -> Unit,
         ) {
@@ -96,6 +100,7 @@ class ProductServiceImpl
                                                     "product_added",
                                                 )
                                             }
+                                            appendToCsv(productName, foodItem.category, context)
                                             onSuccess(
                                                 foodItem.copy(
                                                     id = documentReference.id,
@@ -145,6 +150,7 @@ class ProductServiceImpl
                                                     "product_added",
                                                 )
                                             }
+                                            appendToCsv(productName, foodItem.category, context)
                                             onSuccess(
                                                 foodItem.copy(
                                                     id = documentReference.id,
@@ -187,6 +193,7 @@ class ProductServiceImpl
                                             "product_added",
                                         )
                                     }
+                                    appendToCsv(productName, foodItem.category, context)
                                     onSuccess(
                                         foodItem.copy(
                                             id = documentReference.id,
@@ -196,6 +203,14 @@ class ProductServiceImpl
                                 }
                             }.addOnFailureListener { e -> onFailure(e) }
                     }.addOnFailureListener { e -> onFailure(e) }
+            }
+        }
+
+        override suspend fun appendToCsv(productName: String, category: String, context: Context) {
+            withContext(Dispatchers.IO) {
+                val csvFile = File(context.filesDir, "name_category_mapping.csv")
+                val line = "$productName,$category\n"
+                csvFile.appendText(line)
             }
         }
 

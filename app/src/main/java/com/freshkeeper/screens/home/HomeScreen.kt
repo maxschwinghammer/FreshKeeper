@@ -39,6 +39,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -97,6 +98,8 @@ fun HomeScreen(navController: NavHostController) {
             listState.firstVisibleItemIndex > 0 || listState.firstVisibleItemScrollOffset > 0
         }
     }
+
+    val context = LocalContext.current
 
     FreshKeeperTheme {
         Scaffold(
@@ -359,6 +362,7 @@ fun HomeScreen(navController: NavHostController) {
                             image,
                             imageUrl,
                             coroutineScope,
+                            context,
                         ) { coroutineScope.launch { manualInputSheetState.hide() } }
                     },
                 )

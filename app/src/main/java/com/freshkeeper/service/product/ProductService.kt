@@ -1,5 +1,6 @@
 package com.freshkeeper.service.product
 
+import android.content.Context
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodItemPicture
 import kotlinx.coroutines.CoroutineScope
@@ -16,9 +17,12 @@ interface ProductService {
         image: String?,
         imageUrl: String?,
         coroutineScope: CoroutineScope,
+        context: Context,
         onSuccess: (FoodItem) -> Unit,
         onFailure: (Exception) -> Unit,
     )
+
+    suspend fun appendToCsv(productName: String, category: String, context: Context)
 
     fun getFoodItemPicture(
         imageId: String,

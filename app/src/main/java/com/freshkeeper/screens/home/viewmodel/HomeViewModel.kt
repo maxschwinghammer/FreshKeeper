@@ -1,5 +1,6 @@
 package com.freshkeeper.screens.home.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -107,6 +108,7 @@ class HomeViewModel
             image: String?,
             imageUrl: String,
             coroutineScope: CoroutineScope,
+            context: Context,
             onSuccess: () -> Unit,
         ) {
             launchCatching {
@@ -121,6 +123,7 @@ class HomeViewModel
                     image,
                     imageUrl,
                     coroutineScope,
+                    context,
                     { newItem ->
                         _allFoodItems.value = (_allFoodItems.value ?: emptyList()) + newItem
                         if (newItem.daysDifference in 1..30) {
