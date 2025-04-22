@@ -108,44 +108,47 @@ class ProfileSettingsViewModel
                     accountService.updateBiometricEnabled(false)
                     _isBiometricEnabled.value = false
                 }
-            } else {
-                activity?.let {
-                    val executor = ContextCompat.getMainExecutor(context)
-                    val biometricPrompt =
-                        BiometricPrompt(
-                            it,
-                            executor,
-                            object : BiometricPrompt.AuthenticationCallback() {
-                                override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
-                                    launchCatching {
-                                        accountService.updateBiometricEnabled(true)
-                                        _isBiometricEnabled.value = true
-                                    }
+                return
+            }
+
+            activity?.let {
+                val executor = ContextCompat.getMainExecutor(context)
+                val biometricPrompt =
+                    BiometricPrompt(
+                        it,
+                        executor,
+                        object : BiometricPrompt.AuthenticationCallback() {
+                            override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
+                                launchCatching {
+                                    accountService.updateBiometricEnabled(true)
+                                    _isBiometricEnabled.value = true
                                 }
+                            }
 
-                                override fun onAuthenticationFailed() {
-                                    _isBiometricEnabled.value = false
-                                }
+                            override fun onAuthenticationFailed() {
+                                _isBiometricEnabled.value = false
+                            }
 
-                                override fun onAuthenticationError(
-                                    errorCode: Int,
-                                    errString: CharSequence,
-                                ) {
-                                    _isBiometricEnabled.value = false
-                                }
-                            },
-                        )
+                            override fun onAuthenticationError(
+                                errorCode: Int,
+                                errString: CharSequence,
+                            ) {
+                                _isBiometricEnabled.value = false
+                            }
+                        },
+                    )
 
-                    val promptInfo =
-                        BiometricPrompt.PromptInfo
-                            .Builder()
-                            .setTitle(context.getString(R.string.biometric_auth_title))
-                            .setSubtitle(context.getString(R.string.biometric_auth_subtitle))
-                            .setNegativeButtonText(context.getString(R.string.cancel))
-                            .build()
+                val promptInfo =
+                    BiometricPrompt.PromptInfo
+                        .Builder()
+                        .setTitle(context.getString(R.string.biometric_auth_title))
+                        .setSubtitle(context.getString(R.string.biometric_auth_subtitle))
+                        .setNegativeButtonText(context.getString(R.string.cancel))
+                        .build()
 
-                    biometricPrompt.authenticate(promptInfo)
-                }
+                biometricPrompt.authenticate(promptInfo)
+            } ?: run {
+                _isBiometricEnabled.value = false
             }
         }
     }

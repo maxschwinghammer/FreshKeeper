@@ -1,767 +1,2130 @@
+Acai Beeren,fruits
+Acai Marmelade,canned_goods
+Acai-Joghurt,dairy_goods
+Acai-Marmelade,canned_goods
+Acai-Pulver,confectionery
+Ackersalat,vegetables
+Agar-Agar,other
+Algen Sauce,sauces
+Algen,vegetables
+Algenbl�tter,canned_goods
+Algen-Dip,sauces
+Algen�l,sauces
+Algenpaste,sauces
+Algensalat,vegetables
 Amaranth,groats
+Amaranthmehl,groats
+Ananas P�ree,child_food
 Ananas,fruits
+Ananascreme,sauces
+Ananaskonfit�re,canned_goods
+Ananassaft,drinks
+Ananasstücke,canned_goods
+Anchovis,fish
+Anis Kekse,confectionery
+Anis,spices
+Anisbonbons,candy
+Anispl�tzchen,confectionery
+Anissamen,spices
+Apfel P�ree,child_food
 Apfel,fruits
+Apfelchips,confectionery
+Apfelgelee,canned_goods
+Apfelkompott,canned_goods
+Apfelkompott,child_food
+Apfelmarmelade,canned_goods
+Apfelmus,canned_goods
+Apfelringe,confectionery
 Apfelsaft,drinks
+Aprikose,fruits
+Aprikosen Creme,sauces
+Aprikosen Saft,drinks
+Aprikosen-Dip,sauces
+Aprikosenjoghurt,dairy_goods
+Aprikosenkonfit�re,canned_goods
+Aprikosenlik�r,drinks
+Aprikosenmarmelade,canned_goods
+Aprikosenpudding,dairy_goods
+Aprikosenp�ree,child_food
+Aprikosensaft,drinks
 Aquarienfutter,pet_food
+Aromatee,drinks
+Aroniabeeren,fruits
+Artischocken Creme,sauces
+Artischocken,vegetables
+Artischockencreme,sauces
+Artischocken-Dip,sauces
+Artischockenherzen,canned_goods
+Artischockensalat,canned_goods
+Asia Suppe,canned_goods
+Asia-Gem�semix,frozen_goods
+Asia-Gem�sesuppe,canned_goods
+Asia-Nudelsuppe,canned_goods
+Asiatische Nudeln,pasta
+Asia-Wok-Gem�se,frozen_goods
 Aubergine,vegetables
+Auberginen Creme,sauces
+Auberginen So�e,sauces
+Auberginencreme,sauces
+Auberginen-Dip,sauces
+Auberginen-Dressing,sauces
+Auberginenmus,child_food
+Auberginenpaste,sauces
+Auberginenp�ree,child_food
+Auberginensalat,canned_goods
+Auberginenscheiben,frozen_goods
+Austern,fish
+Avocado,fruits
+Avocadocreme,sauces
+Avocado�l,sauces
+Bärlauchbutter,dairy_goods
+Béchamelsauce,sauces
+Büffelmozzarella,dairy_goods
+Baby Bananenmus,child_food
+Baby-Apfelmus,child_food
+Baby-Birnenmus,child_food
 Babybrei,child_food
+Babykarotten,vegetables
 Babykeks,child_food
 Babykost,child_food
+Baby-Mangop�ree,child_food
 Babyteig,child_food
+Backcamembert,frozen_goods
+Backerbsen,groats
 Backfisch,frozen_goods
+Backmischung Keks,confectionery
+Backmischung,bread
+Backmischung-Brot,bread
+Backmischung-Kuchen,confectionery
+Backpulver,spices
 Baguette,bread
+Baiser Kuchen,confectionery
+Baiser,confectionery
+Baiser-Kekse,confectionery
+Baiser-Muffin,confectionery
+Baiser-Torte,confectionery
+Balsamico Essig,sauces
+Balsamico-Creme,sauces
+Balsamico-Dressing,sauces
+Balsamico-Essig,sauces
+Balsamico-Sauce,sauces
+Bambus Sprossen,canned_goods
+Bambussprossen,canned_goods
+Bambussprossen,vegetables
+Bambussprossen-Dip,sauces
+Bambussprossensalat,canned_goods
 Banane,fruits
+Bananenbrot,bread
+Bananenchips,confectionery
+Barbecue So�e,sauces
+Barbecue-Dip,sauces
+Barbecue-Gew�rz,spices
+Barbecue-Rippchen,meat
 Barbecuesauce,sauces
+Barbecue-W�rstchen,meat
+B�rlauch So�e,sauces
+B�rlauch,spices
+B�rlauch-Dip,sauces
+B�rlauchpaste,sauces
+B�rlauchpesto,sauces
 Barsch,fish
+Basilikum Sauce,sauces
 Basilikum,spices
+Basilikumcreme,sauces
+Basilikum�l,sauces
+Basilikumpaste,sauces
+Basmati Reis,groats
+Basmatireis,groats
 Bauernbrot,bread
+Beeren Joghurt,dairy_goods
+Beeren Saft,drinks
+Beeren-Dip,sauces
+Beerenjoghurt,dairy_goods
+Beerenkonfit�re,canned_goods
+Beerenlik�r,drinks
+Beerenmarmelade,canned_goods
+Beerenmischung,frozen_goods
 Beerenmix (TK),frozen_goods
+Beerenmuffin,frozen_goods
+Beerenm�sli,child_food
+Beerenpudding,dairy_goods
+Beerenp�ree,child_food
+Bergk�se,dairy_goods
 Bier,drinks
+Bierwurst,meat
+Bio Apfel,fruits
+Bio Hafer,groats
+Bio Mais,canned_goods
+Bio Zucchini,vegetables
+Bio-Apfelmus,canned_goods
+Bio-Birnen,fruits
+Bio-Blaubeeren,fruits
+Bio-Brokkoli,vegetables
+Bio-Buchweizen,groats
+Bio-Dinkel,groats
+Bio-Eier,dairy_goods
+Bio-Gurken,vegetables
+Bio-Haferflocken,groats
+Bio-Honig,confectionery
+Bio-Karotten,vegetables
+Bio-Kartoffeln,vegetables
+Bio-K�rbiskerne,groats
+Bio-Linsen,groats
+Bio-Mandeln,confectionery
+Bio-Milch,dairy_goods
+Bio-M�hren,vegetables
+Bio-Paprika,vegetables
+Bio-Tomaten,canned_goods
+Bio-Tomatenmark,canned_goods
+Birkensaft,drinks
+Birkenzucker,confectionery
 Birne,fruits
+Birnen Creme,sauces
+Birnen So�e,sauces
+Birnen-Dip,sauces
+Birnengelee,canned_goods
+Birnenkompott,canned_goods
+Birnenmarmelade,canned_goods
+Birnenpudding,dairy_goods
+Birnenp�ree,child_food
+Birnensaft,drinks
+Birnensirup,drinks
+Bisonfleisch,meat
+Bittermandelöl,sauces
+Bitterorangenmarmelade,canned_goods
+Blätterteig,frozen_goods
+Bl�tterteig Pl�tzchen,confectionery
+Bl�tterteiggeb�ck,confectionery
+Bl�tterteigkuchen,confectionery
+Bl�tterteigpizza,frozen_goods
+Blattspinat,vegetables
+Blaubeer Saft,drinks
 Blaubeeren (TK),frozen_goods
+Blaubeerkuchen,confectionery
+Blaubeerlik�r,drinks
+Blaubeermarmelade,canned_goods
+Blaubeerpudding,dairy_goods
+Blaubeersaft,drinks
+Blumenkohl Creme,sauces
+Blumenkohl Suppe,canned_goods
 Blumenkohl,vegetables
+Blumenkohlcreme,sauces
+Blumenkohldip,sauces
+Blumenkohl-Dip,sauces
+Blumenkohl-Paste,sauces
+Blumenkohlröschen,frozen_goods
+Blumenkohlreis,groats
+Blumenkohlsuppe,canned_goods
+Blutwurst,meat
+Bockk�se,dairy_goods
+Bockshornklee,spices
+Bockwurst,meat
+Bohnen Creme,sauces
 Bohnen,vegetables
+Bohnenchips,confectionery
+Bohnendip,sauces
+Bohnenkaffee,drinks
+Bohnenkraut,spices
+Bohnenmus,child_food
+Bohnenpüree,child_food
+Bohnenpaste,sauces
+Bohnensuppe,canned_goods
 Bonbons,confectionery
-Braten,meat
-Bratwurst,meat
-Brokkoli,vegetables
-Brownies,confectionery
+Bouillon,canned_goods
 Brötchen,bread
+Bratapfel,fruits
+Bratapfelkonfit�re,canned_goods
+Braten So�e,sauces
+Braten,meat
+Bratensauce,sauces
+Bratensoße,sauces
+Bratfisch,frozen_goods
+Bratkartoffeln,frozen_goods
+Bratwurst So�e,sauces
+Bratwurst,meat
+Bratwurst-Dip,sauces
+Bratwurstkonserve,canned_goods
+Bratwurst-Paste,sauces
+Bratwurstpastete,canned_goods
+Bratwurstso�e,sauces
+Brezel,bread
+Brezen Keks,confectionery
+Brezenbrot,bread
+Brezenkr�cker,confectionery
+Brezenmuffin,confectionery
+Brezensticks,confectionery
+Brie-Käse,dairy_goods
+Brioche Pl�tzchen,confectionery
+Brioche,bread
+Brioche-Brot,bread
+Brioche-Kuchen,confectionery
+Brioche-Muffin,confectionery
+Brokkoli Creme,sauces
+Brokkoli,vegetables
+Brokkolicremesuppe,canned_goods
+Brokkoli-Dip,sauces
+Brokkolip�ree,child_food
+Brokkoli-Röschen,frozen_goods
+Brokkolisalat,canned_goods
+Brombeer Saft,drinks
+Brombeeren,fruits
+Brombeerkonfit�re,canned_goods
+Brombeermarmelade,canned_goods
+Brombeerpudding,dairy_goods
+Brombeertee,drinks
+Brotgew�rz,spices
+Brownies,confectionery
+Brunnenkresse,vegetables
+Buchweizen Keks,confectionery
 Buchweizen,groats
+Buchweizenbrot,bread
+Buchweizenflocken,groats
+Buchweizenmehl,groats
+Buchweizenpasta,pasta
+B�ffel Creme,dairy_goods
+B�ffeljoghurt,dairy_goods
+B�ffelk�se,dairy_goods
+B�ffelmascarpone,dairy_goods
+B�ffelmilch,dairy_goods
 Bulgur,groats
+Bulgursalat,canned_goods
+Butter Pl�tzchen,confectionery
 Butter,dairy_goods
-Béchamelsauce,sauces
+Butterbrot,bread
+Buttercroissant,bread
+Buttergemüse,frozen_goods
+Butterkaramell,confectionery
+Butterkeks Kakao,confectionery
+Butterkekse,confectionery
+Butterkeks-Mix,confectionery
+Butterkeks-Schoko,confectionery
+Butterkuchen,confectionery
+Buttermilch,dairy_goods
+Butternussk�rbis,vegetables
+Butterpl�tzchen,confectionery
+Camembert light,dairy_goods
 Camembert,dairy_goods
 Cannelloni,pasta
+Cantuccini Keks,confectionery
+Cantuccini,confectionery
+Cantuccini-Mandel,confectionery
+Cantuccini-Mix,confectionery
+Cantuccini-Nuss,confectionery
+Cappuccino Pulver,drinks
+Cappuccino,drinks
+Cappuccino-Kekse,confectionery
+Cappuccino-Pulver,drinks
+Cashew Creme,sauces
+Cashew-Dip,sauces
+Cashewkerne ger�stet,confectionery
+Cashewkerne,confectionery
+Cashewmus,sauces
+Cayenne Pfeffer,spices
+Cayenne-Dip,sauces
+Cayennepfeffer,spices
+Cayenne-Sauce,sauces
+Cevapcici,meat
+Chai-Tee,drinks
+Champignon So�e,sauces
+Champignoncremesuppe,canned_goods
+Champignon-Dip,sauces
+Champignonpaste,sauces
+Champignons,vegetables
+Cheddar-Käse,dairy_goods
+Cheddar-Sauce,sauces
+Chia Pl�tzchen,confectionery
+Chia Saft,drinks
+Chia-Brot,bread
+Chia-Joghurt,dairy_goods
+Chia-Kekse,confectionery
+Chia-Kuchen,confectionery
+Chia-Mix,groats
+Chia-M�sli,child_food
+Chia-Pudding,dairy_goods
+Chia-Pudding-Mix,confectionery
+Chiasamen,groats
+Chia-Samen,groats
 Chicken Nuggets,frozen_goods
+Chicor�e,vegetables
 Chili con Carne,canned_goods
+Chili So�e,sauces
 Chili,spices
+Chiliöl,sauces
+Chilibohnen,canned_goods
+Chili-Dip,sauces
+Chiliflocken,spices
+Chili-Ketchup,sauces
+Chili-Knoblauch-�l,sauces
+Chili�l,sauces
+Chilipaste,sauces
+Chili-Pulver,spices
 Chilisauce,sauces
+Chilischoten So�e,sauces
+Chilischoten,vegetables
+Chilischoten-Dip,sauces
+Chilischoten-Paste,sauces
+Chinakohl Suppe,canned_goods
+Chinakohl,vegetables
+Chinakohl-Dip,vegetables
+Chinakohlsalat,vegetables
+Chips Barbecue,confectionery
+Chips Curry,confectionery
+Chips Meersalz,confectionery
+Chips Paprika,confectionery
+Chips Salz,confectionery
+Chips,confectionery
+Chorizo Schinken,meat
+Chorizo,meat
+Chorizo-Salami,meat
+Chorizo-Wurst,meat
 Ciabatta,bread
+Cidre,drinks
+Clementine,fruits
+Clementinen Saft,drinks
+Clementinenmarmelade,canned_goods
+Clementinensaft,drinks
 Cola,drinks
 Cola-Bonbons,candy
 Cookies,confectionery
 Couscous,groats
 Couscous,pasta
+Couscoussalat,canned_goods
+Crème fraîche,dairy_goods
+Cranberries,fruits
+Cranberry Creme,sauces
+Cranberry Saft,drinks
+Cranberry-Dip,sauces
+Cranberry-Kekse,confectionery
+Cranberry-Konfit�re,canned_goods
+Cranberry-Marmelade,canned_goods
+Cranberry-Paste,sauces
+Cranberry-Pudding,dairy_goods
+Cranberrysaft,drinks
+Cranberry-Saft,drinks
+Cranberrysauce,sauces
+Cr�me Br�l�e,confectionery
+Creme Fraiche,dairy_goods
+Cr�me-Caramel,dairy_goods
+Cr�me-Fra�che-Dip,sauces
+Cr�me-Fra�che-Sauce,sauces
+Cremiger Dip,sauces
+Cremiger Frischkäse,dairy_goods
+Cremiger Joghurt,dairy_goods
+Cremiger K�se,dairy_goods
 Croissant,confectionery
+Croutons,bread
 Cupcakes,confectionery
+Curry Pulver,spices
+Curry-Gewürz,spices
+Curry-Ketchup,sauces
+Curry-Kokos-So�e,sauces
+Curry-Mix,spices
+Curry-Paste,sauces
+Curryreis,groats
 Currysauce,sauces
 Currysoße,sauces
 Currywurst,meat
+Dönerfleisch,meat
+Dörrpflaumen,fruits
+Datteln,fruits
+Dattelsirup,sauces
 Dill,spices
+Dinkel Nudeln,pasta
+Dinkel Pl�tzchen,confectionery
+Dinkel,groats
 Dinkelbrot,bread
+Dinkelbr�tchen,bread
+Dinkelcracker,confectionery
 Dinkelgrütze,groats
+Dinkelgrie�,groats
+Dinkelkekse,confectionery
+Dinkelkissen,bread
+Dinkelkuchen,confectionery
+Dinkelmehl,bread
+Dinkelpasta,pasta
+Dinkelvollkorn Keks,confectionery
+Dinkelvollkornbrot,bread
+Dinkelvollkornbr�tchen,bread
+Dinkelvollkornflocken,groats
+Dinkelvollkornkeks,confectionery
+Dinkelvollkornmehl,bread
+Dinkelvollkornpasta,pasta
 Dipsauce,sauces
 Donuts,confectionery
+D�rr�pfel,fruits
+D�rrbirne,fruits
+D�rrbirnen,fruits
+D�rrfleisch,meat
+D�rrfr�chte,fruits
+Dorsch Creme,sauces
+Dorschfilet,fish
+Dorschleber,canned_goods
+Dorschpastete,canned_goods
+Dorschrogen,canned_goods
+Dosen Kiwi,canned_goods
+Dosen Mango,canned_goods
+Dosenananas,canned_goods
+Dosenaprikosen,canned_goods
+Dosenbirnen,canned_goods
+Dosenkaki,canned_goods
+Dosenkirschen,canned_goods
+Dosenlychee,canned_goods
+Dosenmandarinen,canned_goods
+Dosenmaracuja,canned_goods
+Dosenpapaya,canned_goods
+Dosenpfirsiche,canned_goods
+Drachenfrucht,fruits
+Drachenfruchtp�ree,canned_goods
+Dulce de Leche,confectionery
+Edamame,vegetables
+Edamer,dairy_goods
+Eierkuchenmischung,other
+Eierlikör,drinks
+Eierlik�r Creme,sauces
+Eierlik�r Kuchen,confectionery
+Eierlik�rbonbons,candy
+Eierlik�rcreme,sauces
+Eierlik�rkeks,confectionery
+Eierlik�rkuchen,confectionery
+Eierlik�rpralinen,confectionery
+Eiernudeln,pasta
+Eisbergsalat Creme,sauces
+Eisbergsalat,vegetables
+Eisbergsalat-Dressing,sauces
+Eisbergsalat-Mix,vegetables
+Eisbergsalat-Sauce,sauces
 Eiscreme,frozen_goods
+Eismeer Fisch,fish
+Eismeer-Dip,sauces
+Eismeerforelle,fish
+Eismeerkrabben,fish
+Eismeersalmon,fish
+Eistee Apfel,drinks
+Eistee Limette,drinks
+Eistee Mango,drinks
+Eistee Pfirsich,drinks
+Eistee Zitrone,drinks
 Eistee,drinks
+Eiswaffel,confectionery
+Eiweißbrot,bread
+Emmentaler,dairy_goods
+Endivie,vegetables
+Endivien Suppe,canned_goods
+Endivien-Dip,sauces
+Endivienp�ree,child_food
+Endiviensalat,vegetables
+Entenbrust,meat
+Entenleber,meat
 Erbsen (TK),frozen_goods
 Erbsen,canned_goods
 Erbsen,vegetables
+Erbsenp�ree,child_food
+Erbsensuppe,canned_goods
+Erdbeer Creme,sauces
+Erdbeer Saft,drinks
 Erdbeerbonbons,candy
+Erdbeercreme,dairy_goods
+Erdbeer-Dip,sauces
+Erdbeeren,fruits
+Erdbeerjoghurt,dairy_goods
+Erdbeerlik�r,drinks
+Erdbeermarmelade,canned_goods
+Erdbeermilch,drinks
+Erdbeerpaste,sauces
+Erdbeerp�ree,child_food
+Erdbeersirup,drinks
+Erdbeersorbet,frozen_goods
+Erdmandel Creme,sauces
+Erdmandelmus,sauces
+Erdmandeln,groats
+Erdmandel�l,sauces
+Erdmandelpaste,sauces
+Erdnüsse,confectionery
+Erdnussöl,sauces
+Erdnussbutter,sauces
+Erdnussmus,sauces
+Espresso Bohnen,drinks
+Espresso,drinks
+Espressobohnen,drinks
+Espresso-Kapseln,drinks
+Espresso-Mix,drinks
+Espresso-Pulver,drinks
+Fajita-Gew�rz,spices
+Falafel Kugeln,frozen_goods
+Falafel,frozen_goods
+Falafel-B�llchen,frozen_goods
+Falafel-Dip,sauces
+Falafel-Mix,canned_goods
+Falafel-Patties,frozen_goods
+Farfalle,pasta
 Farfalline,pasta
+Faschiertes Huhn,meat
+Faschiertes Rind,meat
+Faschiertes Schwein,meat
+Faschiertes,meat
+Feigen,fruits
+Feigenbrot,bread
+Feldsalat,vegetables
+Fenchel Saft,drinks
+Fenchel So�e,sauces
 Fenchel,vegetables
+Fenchelcreme,sauces
+Fenchel-Dip,sauces
+Fenchelhonig,confectionery
+Fenchelknolle,vegetables
+Fenchel-Mix,spices
+Fenchelpaste,sauces
+Fenchelpulver,spices
+Fenchelsamen,spices
+Fencheltee,drinks
+Feta light,dairy_goods
+Feta Sauce,sauces
 Feta,dairy_goods
+Feta-Creme,dairy_goods
+Feta-Dip,dairy_goods
+Feta-Käse,dairy_goods
+Feta-Salat,dairy_goods
+Feta-W�rfel,dairy_goods
 Filetsteak,meat
+Fisch So�e,sauces
 Fischbrei,child_food
+Fisch-Dip,sauces
 Fischfutter,pet_food
+Fischkonserve,canned_goods
+Fischpastete,canned_goods
+Fischsauce,sauces
 Fischstäbchen,frozen_goods
+Fischsuppe,canned_goods
+Fladen,pasta
+Fladenbrot Kr�uter,bread
+Fladenbrot K�rbis,bread
+Fladenbrot Sesam,bread
+Fladenbrot Vollkorn,bread
 Fladenbrot,bread
+Fladenbrot-Mix,bread
+Fleisch Creme,sauces
 Fleischbrei,child_food
+Fleisch-Dip,sauces
+Fleischk�se,meat
+Fleischkroketten,frozen_goods
+Fleischpastete,canned_goods
+Fleischsalat,canned_goods
+Fleischtomaten,vegetables
 Flunder,fish
 Focaccia,bread
+Fondue,dairy_goods
 Forelle,fish
-Frischkäse,dairy_goods
-Fruchtgummi,candy
-Fruchtpüree,child_food
+Forellenfilet,fish
 Früchtekompott,canned_goods
+Frühlingsquark,dairy_goods
+Frühlingsrollen,frozen_goods
+Frische Ananas,fruits
+Frische Datteln,fruits
+Frische Feigen,fruits
+Frische Granat�pfel,fruits
+Frische Kakis,fruits
+Frische Kirschen,fruits
+Frische Litschis,fruits
+Frische Maracujas,fruits
+Frische Papaya,fruits
+Frische Pasta Ricotta,pasta
+Frische Pasta,canned_goods
+Frische Pasta,pasta
+Frische Pasta-K�se,pasta
+Frische Pasta-Mix,pasta
+Frische Physalis,fruits
+Frischkäse,dairy_goods
+Frischkäse-Dip,dairy_goods
+Frucht Keks,confectionery
+Frucht Saft,drinks
+Fruchtcocktail,canned_goods
+Fr�chtetee,drinks
+Fruchtgummi,candy
+Fruchtgummib�rchen,candy
+Fruchtjoghurt,dairy_goods
+Fruchtjoghurt-Mix,dairy_goods
+Fruchtmuffin,confectionery
+Fruchtm�sli,child_food
+Fruchtpüree,child_food
+Fruchtquark,dairy_goods
+Fruchtsaft,drinks
+Fruchtsaft-Mix,drinks
+Fruchtsirup,drinks
+Fruchtsmoothie,drinks
+Fruchtsorbet,frozen_goods
+Fr�hlingskr�uter,spices
+Fr�hlingsrollen So�e,sauces
+Fr�hlingsrollen-Dip,sauces
+Fr�hlingsrollen-Paste,sauces
+Fr�hlingsrollen-Sauce,sauces
+Fr�hlingszwiebel Suppe,canned_goods
+Fr�hlingszwiebel-Dip,sauces
+Fr�hlingszwiebeln,vegetables
+Fr�hlingszwiebel-Sauce,sauces
 Fusilli,pasta
+Gänsebrust,meat
+Ganseleberpastete,canned_goods
+Gansepastete,canned_goods
+Ganseschinken,meat
+Ganseschmalz Creme,sauces
+Ganseschmalz,sauces
+Garnelen Creme,sauces
 Garnelen,fish
+Garnelen-Dip,sauces
+Garnelenpaste,sauces
+Garnelenringe,frozen_goods
+Garnelen-Sauce,sauces
+Gartenkresse,vegetables
+Geflügelwurst,meat
+Gefl�gelfleisch,meat
+Gemüsebrühe,canned_goods
 Gemüsebrei,child_food
+Gemüsechips,confectionery
+Gemüselasagne,frozen_goods
 Gemüsemix,canned_goods
+Gemüsesaft,drinks
+Gem�se Creme,sauces
+Gem�se Kuchen,frozen_goods
+Gem�se So�e,sauces
+Gem�sebratling,frozen_goods
+Gem�sebratwurst,meat
+Gem�secremesuppe,canned_goods
+Gem�securry,canned_goods
+Gem�se-Dip,sauces
+Gem�se-Dressing,sauces
+Gem�sekroketten,frozen_goods
+Gem�sepfannkuchen,frozen_goods
+Gem�sepizza,frozen_goods
+Gem�sep�ree,child_food
+Gem�sesalat,canned_goods
+Gem�sespie�e,frozen_goods
+Gem�setortilla,frozen_goods
+Ger�ucherte Forelle,fish
+Ger�ucherte Makrele,fish
+Ger�ucherter Fisch,fish
+Ger�ucherter K�se,dairy_goods
+Ger�ucherter Tofu,meat
+Ger�stete Cashews,confectionery
+Ger�stete Erdn�sse,confectionery
+Ger�stete Haseln�sse,confectionery
+Ger�stete Kerne,groats
+Ger�stete Kichererbsen,confectionery
+Ger�stete K�rbiskerne,groats
+Ger�stete Mandeln,confectionery
+Ger�stete N�sse,confectionery
+Ger�stete Sesamkerne,groats
+Ger�stete Sonnenblumenkerne,groats
 Gerste,groats
+Gerstenbrot,bread
 Gerstenflocken,groats
+Gewürzgurken,canned_goods
+Gewürznelken,spices
+Gew�rz So�e,sauces
+Gew�rzdressing,sauces
+Gew�rzmischung,spices
+Gew�rzpaste,sauces
+Gew�rzreis,groats
+Gew�rzsalz,spices
+Ghee,dairy_goods
 Gin,drinks
-Glasnudeln,pasta
+Ginger Saft,drinks
+Ginger-Ale,drinks
+Ginger-Bier,drinks
+Ginger-Tee,drinks
+Ginsengtee,drinks
 Gläschenkost,child_food
+Glasnudel Suppe,canned_goods
+Glasnudel-Dip,sauces
+Glasnudeln,pasta
+Glasnudelsalat,canned_goods
+Glasnudel-Sauce,sauces
+Glasnudel-Suppe,canned_goods
+Gnocchi alla Romana,pasta
+Gnocchi K�se,frozen_goods
+Gnocchi,canned_goods
 Gnocchi,pasta
+Gnocchi-Ricotta,frozen_goods
+Gnocchi-Spinat,frozen_goods
+Goji Saft,drinks
+Goji-Beeren,fruits
+Goji-Konfit�re,canned_goods
+Goji-Marmelade,canned_goods
+Goji-Tee,drinks
 Goldfischfutter,pet_food
+Gorgonzola,dairy_goods
 Gouda Käse,dairy_goods
+Gouda,dairy_goods
+Grüner Tee,drinks
+Granatapfel,fruits
+Granatapfelsaft,drinks
+Granola,confectionery
+Grapefruit,fruits
+Grapefruitsaft,drinks
+Graved Lachs,fish
 Grieß,groats
+Grießbrei,dairy_goods
+Griechischer Dip,sauces
+Griechischer Joghurt,dairy_goods
+Griechischer K�se,dairy_goods
+Griechischer Paste,sauces
+Griechischer Salat,canned_goods
+Grie� Pl�tzchen,confectionery
+Grie�kuchen,confectionery
+Grie�muffin,confectionery
+Grie�pudding,dairy_goods
+Grillgemüse,frozen_goods
+Grillgem�se,vegetables
+Grillkäse,dairy_goods
+Grillsoße,sauces
+Grillso�e BBQ,sauces
+Grillso�e Senf,sauces
+Grillso�e-Mix,sauces
+Grillso�e-Senf,sauces
+Grillwürstchen,meat
+Gr�nkern Keks,confectionery
+Gr�nkern,groats
+Gr�nkernbrot,bread
+Gr�nkernflocken,groats
+Gr�nkernpasta,pasta
+Gr�nkohl Suppe,canned_goods
+Gr�nkohl,vegetables
+Gr�nkohlchips,confectionery
+Gr�nkohl-Dip,sauces
+Gr�nkohlsuppe,canned_goods
+Guacamole,sauces
+Guarkernmehl,groats
+Guaven Creme,sauces
+Guaven,fruits
+Guavenmarmelade,canned_goods
+Guavenp�ree,child_food
+Guavensaft,drinks
+Gulaschsuppe,canned_goods
 Gummibärchen,confectionery
 Gummibärli,candy
+Gummischlangen,candy
 Gurke,vegetables
+Gurken Creme,sauces
+Gurken Saft,drinks
+Gurken-Dip,sauces
+Gurken-Dressing,sauces
+Gurkenjoghurt,sauces
+Gurken-Mix,sauces
+Gurkenmus,child_food
+Gurkenpaste,sauces
+Gurkenrelish,sauces
+Gurkensticks,vegetables
+Gurkenwasser,drinks
 Gyros,meat
+Hähnchenbrust,meat
+Hähnchenschenkel,meat
+Hühnerbrühe,canned_goods
+Hühnerfilet,meat
+Hühnersuppe,canned_goods
+Hüttenkäse,dairy_goods
+Hackbraten,meat
+Hackfleisch So�e,sauces
+Hackfleisch,meat
+Hackfleischb�llchen,meat
+Hackfleisch-Dip,sauces
+Hackfleischpastete,canned_goods
+Hackfleischso�e,canned_goods
+Hafer Pl�tzchen,confectionery
+Hafer So�e,sauces
 Haferbrei,child_food
+Haferbr�tchen,bread
+Hafercreme,dairy_goods
+Hafer-Dip,sauces
+Haferdrink,drinks
+Haferdrinks,dairy_goods
 Haferflocken,groats
+Haferkekse,confectionery
 Haferkleie,groats
+Haferkuchen,confectionery
+Hafermilch,drinks
+Haferpudding,dairy_goods
 Haferschrot,groats
+Hagebutten Saft,drinks
+Hagebutten,fruits
+Hagebuttenjoghurt,dairy_goods
+Hagebuttenkonfit�re,canned_goods
+Hagebuttenmark,canned_goods
+Hagebuttenmarmelade,canned_goods
+Hagebuttenpudding,dairy_goods
+Hagebuttenpulver,confectionery
+Hagebuttentee,drinks
+H�hnchen Creme,sauces
+H�hnchen Suppe,canned_goods
+H�hnchen-Dip,sauces
+H�hnchenfl�gel,meat
+H�hnchenkeule,meat
+H�hnchenkeulen,meat
+H�hnchenleber,meat
+H�hnchenpaste,canned_goods
+H�hnchenpastete,canned_goods
+H�hnchensalat,canned_goods
+H�hnchenschenkel,meat
+H�hnchenspie�e,meat
+Hakka-Nudeln,pasta
+Halbfester Dip,dairy_goods
+Halbfester Joghurt,dairy_goods
+Halbfester K�se,dairy_goods
+Halbfester Schnittkäse,dairy_goods
+Halloumi,dairy_goods
+Haltbare Butter,dairy_goods
+Haltbare Creme,dairy_goods
+Haltbare Joghurt,dairy_goods
+Haltbare Milch,dairy_goods
+Haltbare Sahne,dairy_goods
+Halva,confectionery
 Hamsterfutter,pet_food
+Hanf�l,sauces
+Hanfsamen,groats
+Harissa So�e,sauces
+Harissa,sauces
+Harissa-Dip,sauces
+Harissa-Paste,sauces
+Hartk�se,dairy_goods
+Harzer Käse,dairy_goods
+Harzer Roller,dairy_goods
+Haselnüsse,confectionery
+Haselnuss Keks,confectionery
+Haselnusscreme,sauces
+Haselnuss-Dip,sauces
+Haselnusskuchen,confectionery
+Haselnussmus,sauces
+Hausmacher Wurst,meat
 Hecht,fish
+Hefe Pl�tzchen,confectionery
+Hefeextrakt,sauces
+Hefegeb�ck,confectionery
+Hefekuchen,confectionery
+Hefeweizen,drinks
+Hefezopf,bread
+Heidelbeer Saft,drinks
+Heidelbeer-Dip,sauces
+Heidelbeeren,fruits
+Heidelbeerjoghurt,dairy_goods
+Heidelbeerkonfit�re,canned_goods
+Heidelbeerlik�r,drinks
+Hering,filet,fish
 Hering,fish
+Heringssalat,canned_goods
+Heringstopf,canned_goods
+Hibiskus Saft,drinks
+Hibiskuslik�r,drinks
+Hibiskusmarmelade,canned_goods
+Hibiskustee,drinks
+Himbeer Joghurt,dairy_goods
+Himbeercreme,sauces
+Himbeereis,frozen_goods
 Himbeeren (TK),frozen_goods
+Himbeerlik�r,drinks
+Himbeermarmelade,canned_goods
+Himbeerpudding,dairy_goods
+Himbeersaft,drinks
+Himbeersirup,drinks
+Hirschfleisch,meat
+Hirse Keks,confectionery
 Hirse,groats
+Hirsebrei,groats
+Hirsebrot,bread
+Hirseflocken,groats
+Hirsegrie�,groats
+Hirsepasta,pasta
+Hokkaido Suppe,canned_goods
+Hokkaido-Dip,sauces
+Hokkaido-K�rbis,vegetables
+Hokkaidok�rbissuppe,canned_goods
+Hokkaido-Salat,vegetables
 Hollandaise,sauces
+Holl�ndische Sauce,sauces
+Holunderblütentee,drinks
+Honig Keks,confectionery
+Honigkuchen,confectionery
 Honigmelone,fruits
+Honigmuffin,confectionery
+Honigpl�tzchen,confectionery
+Honigsenf,sauces
 Hot Sauce,sauces
 Hotdogbrötchen,bread
-Hunde-Kauknochen,pet_food
+H�hner So�e,sauces
+H�hner-Dip,sauces
+H�hnerfrikassee,canned_goods
+H�hnerherzen,meat
+H�hnerleber,meat
+H�hnermagen,meat
+H�hnernuggets,frozen_goods
+H�hnerpastete,canned_goods
+H�hnerschenkel,meat
+H�hnertopf,canned_goods
+Hummer So�e,sauces
+Hummer,fish
+Hummercreme,sauces
+Hummer-Dip,sauces
+Hummerpaste,sauces
+Hummus,canned_goods
+Hummus-Dip,sauces
 Hundefutter,pet_food
-Hähnchenbrust,meat
-Hüttenkäse,dairy_goods
+Hunde-Kauknochen,pet_food
+Ingwer Saft,drinks
+Ingwer,spices
+Ingwerbonbons,candy
+Ingwerlik�r,drinks
+Ingwermarmelade,canned_goods
+Ingwer�l,sauces
+Ingwerpaste,sauces
+Ingwersaft,drinks
+Ingwertee,drinks
+Italienische Kr�uter,spices
+Italienischer Dip,sauces
+Italienischer K�se,dairy_goods
+Italienischer Salat,canned_goods
+Italienischer Schinken,meat
+Jakobsmuscheln,fish
+Jalape�o Creme,sauces
+Jalape�o-Chips,confectionery
+Jalape�o-Dip,sauces
+Jalape�o-Konserve,canned_goods
+Jalapenos,canned_goods
+Jalape�o-Sauce,sauces
+Jasminreis,groats
+Jasmintee,drinks
 Jelly Beans,candy
+Joghurt mit Frucht,dairy_goods
+Joghurt natur,dairy_goods
 Joghurt,dairy_goods
+Johannisbeer Saft,drinks
+Johannisbeercreme,sauces
+Johannisbeeren,fruits
+Johannisbeerlik�r,drinks
+Johannisbeermarmelade,canned_goods
+Johannisbeersaft,drinks
+Käsefondue,dairy_goods
+Käse-Sahne-Torte,confectionery
+Käsesauce,sauces
+Körnerbrot,bread
+Kürbis,vegetables
+Kürbiscremesuppe,canned_goods
+Kürbiskerne,confectionery
+Kürbiskerne,groats
+Kabanossi,meat
 Kabeljau,fish
+Kabeljaufilet,fish
 Kaffee,drinks
+Kaffeebohnen,drinks
+Kaffeelik�r,drinks
+Kaffeepulver,drinks
+Kaisergemüse,frozen_goods
+Kaiserschmarrn,confectionery
+Kakao Pl�tzchen,confectionery
+Kakao,drinks
+Kakaobohnen,confectionery
+Kakaocreme,sauces
+Kakaokuchen,confectionery
+Kakaonibs,confectionery
+Kakaopudding,dairy_goods
+Kakaopulver,confectionery
+Kaki,fruits
+Kalbs So�e,sauces
+Kalbsbraten,meat
+Kalbs-Dip,sauces
+Kalbsfleisch,meat
+Kalbshaxe,meat
+Kalbsleber,meat
+Kalbsleberwurst,meat
+Kalbsnierenbraten,meat
+Kalbsr�cken,meat
+Kalbsschnitzel,meat
+Kalbsschulter,meat
+Kalbssuppe,canned_goods
+Kamillentee,drinks
+Kamut Keks,confectionery
+Kamut,groats
+Kamutbrot,bread
+Kamutflocken,groats
+Kamutpasta,pasta
+Kandierte Fr�chte,confectionery
+Kandierte Ingwerst�cke,confectionery
+Kandierte N�sse,confectionery
+Kandierte Orangenschale,confectionery
+Kandierte Zitronenschale,confectionery
 Kaninchenfutter,pet_food
+Kapern,sauces
 Karamell,confectionery
+Karamellbonbons,candy
+Karamellcreme,dairy_goods
+Kardamom,spices
 Karotte,vegetables
+Karottenp�ree,child_food
 Karpfen,fish
 Kartoffelbrei,child_food
+Kartoffelchips,confectionery
+Kartoffelkl��e,frozen_goods
+Kartoffelkn�del,frozen_goods
+Kartoffelmehl,groats
+Kartoffelpüree,child_food
+Kartoffelsalat,canned_goods
+Kartoffelsticks,confectionery
+Kartoffelsuppe,canned_goods
+K�se Pl�tzchen,confectionery
+K�se Suppe,canned_goods
+K�sebrot,bread
+K�secracker,confectionery
+K�se-Croissant,confectionery
+K�se-Dip,sauces
+K�sekuchen,confectionery
+K�se-Muffin,confectionery
+K�seplatte,dairy_goods
+K�sesalat,canned_goods
+K�sesp�tzle,frozen_goods
+K�sesp�tzle,pasta
+K�sesuppe,canned_goods
+K�setorte,confectionery
+Kasseler,meat
+Kastanien,vegetables
 Katzenfutter,pet_food
 Katzenleckerlies,pet_food
+Katzenzungen,candy
 Kaubonbons,candy
 Kaugummi,candy
+Kaviar,fish
 Kefir,dairy_goods
+Kefirk�rner,dairy_goods
 Kekse,confectionery
+Kerne-Mix,groats
 Ketchup,sauces
+Kichererbsen So�e,sauces
 Kichererbsen,canned_goods
+Kichererbsendip,sauces
+Kichererbsenmehl,groats
+Kichererbsenmus,child_food
+Kichererbsenpüree,child_food
+Kichererbsenpaste,sauces
+Kichererbsensalat,canned_goods
 Kidneybohnen,canned_goods
+Kidneybohnenp�ree,child_food
+Kidneybohnensalat,canned_goods
 Kinderjoghurt,child_food
 Kindermüsli,child_food
 Kinderpunsch,child_food
 Kindertee,child_food
+Kirsch Saft,drinks
 Kirsche,fruits
+Kirschenkonfit�re,canned_goods
 Kirschkonfitüre,canned_goods
+Kirschlik�r,drinks
+Kirschpudding,dairy_goods
+Kirschsaft,drinks
+Kirschtomaten,vegetables
+Kirschtorte,confectionery
 Kiwi,fruits
-Knoblauchsoße,sauces
+Kiwisaft,drinks
 Knäckebrot,bread
+Knödel,frozen_goods
+Kn�ckebrot,bread
+Knoblauch Creme,sauces
+Knoblauch,spices
+Knoblauchöl,sauces
+Knoblauchbaguette,bread
+Knoblauchbrot,bread
+Knoblauchbutter,dairy_goods
+Knoblauchcreme,sauces
+Knoblauchdip,sauces
+Knoblauch-Dressing,sauces
+Knoblauchpaste,sauces
+Knoblauchpulver,spices
+Knoblauchsoße,sauces
+Knuspermüsli,child_food
+Kochschinken,meat
 Kohl,vegetables
+Kohlrabi,vegetables
+Kokos Saft,drinks
+Kokosöl,sauces
+Kokoschips,confectionery
+Kokoscreme,sauces
+Kokos-Dip,sauces
+Kokosdrink,drinks
+Kokosjoghurt,dairy_goods
+Kokosmehl,groats
 Kokosmilch,canned_goods
+Kokosnuss Joghurt,dairy_goods
+Kokosnusscreme,sauces
+Kokosnussjoghurt,dairy_goods
+Kokosnussmilch,canned_goods
+Kokosraspel,confectionery
+Kokosschokolade,candy
+Kokoswasser,drinks
+Kokosyoghurt,dairy_goods
+K�nigsberger Klopse,canned_goods
+Koriander Creme,sauces
 Koriander,spices
+Korianderbl�tter,spices
+Korianderdip,sauces
+Korianderpaste,sauces
+Korianderpulver,spices
+Koriandersamen,spices
+Koriandersauce,sauces
+Kräcker,confectionery
+Kräuterbutter,dairy_goods
+Kräutertee,drinks
 Krabben,fish
+Kr�uter So�e,sauces
+Kr�uterlik�r,drinks
+Kr�utermischung,spices
+Kr�uterpaste,sauces
+Kr�uterquark,dairy_goods
+Kr�utersalz,spices
+Kr�uterseitling,vegetables
 Kreuzkümmel,spices
+Kreuzk�mmelpulver,spices
+Krokant Keks,confectionery
+Krokant,confectionery
+Krokantbonbons,candy
+Krokantkuchen,confectionery
+Krokantpralinen,confectionery
+Krustentiere,fish
+K�rbiskern So�e,sauces
+K�rbiskernbrot,bread
+K�rbiskerncreme,sauces
+K�rbiskern-Dip,sauces
+K�rbiskern�l,sauces
+K�rbis�l,sauces
+K�rbissuppe,canned_goods
 Kurkuma,spices
-Körnerbrot,bread
-Kürbis,vegetables
+Löffelbiskuits,confectionery
+Löwenzahnsalat,vegetables
+Lachs So�e,sauces
+Lachscreme,dairy_goods
+Lachs-Dip,sauces
+Lachs-Dressing,sauces
 Lachsfilet,fish
 Lachsfleisch,canned_goods
+Lachsmousse,dairy_goods
+Lachsschinken,meat
+Lachssteak,fish
+Lakritz Keks,confectionery
 Lakritz,confectionery
+Lakritzbonbons,candy
+Lakritzcreme,sauces
 Lakritzdragees,candy
+Lakritzkonfekt,candy
+Lakritzpudding,dairy_goods
 Lakritzschnecken,candy
+Lamm So�e,sauces
+Lammbraten,meat
+Lamm-Dip,sauces
+Lammfilet,meat
+Lammfleisch,meat
+Lammhackfleisch,meat
+Lammkeule,meat
+Lammkotelett,meat
+Lammr�cken,meat
+Lammschenkel,meat
+Lammwurst,meat
+Landj�ger,meat
+Langusten,fish
 Lasagneplatten,pasta
 Lauch,vegetables
+Lauchcremesuppe,canned_goods
+Laugen Pl�tzchen,confectionery
+Laugenbrezel,bread
+Laugenbr�tchen,bread
+Laugenmuffin,confectionery
+Laugenstange,bread
+Laugenstangen,bread
+Leber So�e,sauces
+Leber,meat
+Leber-Dip,sauces
+Leberkäse,meat
+Leberkn�del,canned_goods
+Leberpastete,canned_goods
 Leberwurst,meat
+Leberwurstkonserve,canned_goods
+Lebkuchen,confectionery
+Leinsamen,groats
+Leinsamen�l,sauces
 Lende,meat
 Limette,fruits
+Limettenpulver,spices
+Limettensaft,drinks
 Limonade,drinks
+Limonen Saft,drinks
+Limonen,fruits
+Limonencreme,sauces
+Limonendip,sauces
+Limonensauce,sauces
+Limonensirup,drinks
+Linguine,pasta
+Linse,groats
+Linsen So�e,sauces
+Linsen-Dip,sauces
+Linsenmehl,groats
+Linsenmus,child_food
+Linsenpaste,sauces
+Linsenp�ree,child_food
+Linsensuppe,canned_goods
+Litschis,fruits
 Lorbeerblatt,spices
+L�wenzahn Saft,drinks
+L�wenzahnhonig,confectionery
+L�wenzahnkonfit�re,canned_goods
+L�wenzahnpaste,sauces
+L�wenzahntee,drinks
 Lutschbonbons,candy
+Lychee,fruits
+Lyoner,meat
+Möhren,vegetables
+Möhrengemüse (TK),frozen_goods
+Möhrenpüree,child_food
+Müsli,child_food
+Müsli-Riegel,confectionery
+Macadamia Keks,confectionery
+Macadamia-Kekse,confectionery
+Macadamia-Kuchen,confectionery
+Macadamianüsse,confectionery
+Macadamia-N�sse,confectionery
+Macadamia�l,sauces
+Macarons,confectionery
 Maccheroni,pasta
+Mais So�e,sauces
 Mais,canned_goods
 Maisbrot,bread
+Maiscreme,sauces
 Maisgrieß,groats
+Maiskeim�l,sauces
+Maiskolben,vegetables
+Maiskuchen,confectionery
+Maismehl,groats
+Maispaste,sauces
+Maispuffer,frozen_goods
+Maisst�rke,groats
 Makrele,fish
+Makrelenfilet,fish
 Mandarine,fruits
+Mandel Pl�tzchen,confectionery
+Mandelcreme,sauces
+Mandelkekse,confectionery
+Mandelkuchen,confectionery
+Mandelmehl,groats
+Mandelmilch,drinks
+Mandelmuffin,confectionery
+Mandelmus,sauces
+Mandel�l,sauces
+Mandelsplitter,confectionery
+Mango Saft,drinks
 Mango,fruits
+Mango-Chutney,sauces
+Mangocreme,sauces
+Mangodip,sauces
+Mangold,vegetables
+Mangomarmelade,canned_goods
+Mangop�ree,child_food
+Mangosaft,drinks
 Mangosalsa,canned_goods
+Maracuja Creme,sauces
+Maracuja,fruits
+Maracujajoghurt,dairy_goods
+Maracujamarmelade,canned_goods
+Maracujapudding,dairy_goods
+Maracujasaft,drinks
+Margarine,dairy_goods
+Marinade,sauces
+Marinara-Soße,sauces
+Marinierte Artischocken,canned_goods
+Marinierte Gurken,canned_goods
+Marinierte Oliven,canned_goods
+Marinierte Paprika,canned_goods
+Marinierte Tomaten,canned_goods
+Maronen So�e,sauces
+Maronen,vegetables
+Maronencreme,confectionery
+Maronen-Dip,sauces
+Maronenp�ree,child_food
+Maronensuppe,canned_goods
 Marshmallows,confectionery
+Marzipan,confectionery
+Marzipankartoffeln,confectionery
 Mascarpone,dairy_goods
+Mascarpone-Creme,dairy_goods
+Matcha Pl�tzchen,confectionery
+Matcha-Kekse,confectionery
+Matcha-Muffin,confectionery
+Matcha-Pulver,confectionery
+Matcha-Tee,drinks
+Matjesfilet,fish
+Maultaschen Suppe,canned_goods
+Maultaschen,pasta
 Mayonnaise,sauces
+Meeressalz,spices
+Meerrettich Creme,sauces
+Meerrettich,sauces
+Meerrettichcreme,sauces
+Meerrettich-Dip,sauces
+Meerrettichpaste,sauces
+Meerrettichsauce,sauces
 Meerschweinchenfutter,pet_food
+Mehltype 1050,bread
+Mehltype 1600,bread
+Mehltype 405,bread
+Mehltype 550,bread
+Melissentee,drinks
 Melone,fruits
+Melonenkerne,groats
 Mentholbonbons,candy
 Mett,meat
 Mie-Nudeln,pasta
 Milch,dairy_goods
+Milchbrötchen,bread
+Milchmixgetränk,drinks
 Milchnahrung,child_food
+Milchreis,dairy_goods
+Milchreis,groats
+Milchschokolade,confectionery
+Milchshake,drinks
 Milde Suppe,child_food
+Mineralwasser mit Geschmack,drinks
 Mineralwasser,drinks
+Minestrone,canned_goods
+Mini Pl�tzchen,confectionery
+Mini-K�se,dairy_goods
+Mini-Kuchen,confectionery
+Mini-Mozzarella,dairy_goods
+Mini-Muffin,confectionery
+Mini-Pizza,frozen_goods
+Minze,spices
+Mirabellen,fruits
+Mohn Pl�tzchen,confectionery
+Mohnbrötchen,bread
+Mohnbr�tchen,bread
+Mohnkeks,confectionery
+Mohnkuchen,confectionery
+Mohnsamen,groats
+Mohnstrudel,confectionery
 Mortadella,meat
+Mozzarella di Bufala,dairy_goods
+Mozzarella light,dairy_goods
 Mozzarella,dairy_goods
 Muffins,confectionery
+Mungobohnen So�e,sauces
+Mungobohnen,groats
+Mungobohnen,vegetables
+Mungobohnen-Dip,sauces
+Mungobohnenpaste,sauces
+Mungobohnensalat,canned_goods
 Muscheln,fish
 Muskat,spices
-Möhrengemüse (TK),frozen_goods
+Muskatnuss,spices
+Natur Joghurt,dairy_goods
+Naturjoghurt,dairy_goods
+Naturk�se,dairy_goods
+Naturpudding,dairy_goods
+Naturreis,groats
 Nektarine,fruits
+Nektarinen,fruits
 Nelken,spices
 Nougat,confectionery
+Nougatcreme,sauces
+Nudelauflauf,pasta
+Nudelsalat,pasta
+Nuss Pl�tzchen,confectionery
+Nussbutter,sauces
+Nusskrokant,confectionery
+Nusskuchen,confectionery
+Nussmischung,confectionery
+Nussmuffin,confectionery
+Nuss-Nougat-Creme,sauces
+Obazda,dairy_goods
+Obst Saft,drinks
+Obst-Dip,sauces
+Obstgummis,candy
+Obstkonfit�re,canned_goods
+Obstkuchen,confectionery
 Obstpastillen,candy
+Obstsalat,canned_goods
+Oliven So�e,sauces
 Oliven,canned_goods
+Olivenöl,sauces
+Olivenbrot,bread
+Oliven-Dip,sauces
+Oliven-Dressing,sauces
+Oliven�l,sauces
+Olivenpaste,sauces
 Orange,fruits
+Orangen Saft,drinks
+Orangencreme,sauces
+Orangenkonfit�re,canned_goods
+Orangenlik�r,drinks
+Orangenmarmelade,canned_goods
+Orangenpudding,dairy_goods
 Orangensaft,drinks
 Oregano,spices
 Orzo,pasta
+Oster Pl�tzchen,confectionery
+Osterbrot,bread
+Ostereier,candy
+Osterkonfekt,candy
+Osterkuchen,confectionery
+Pak Choi Suppe,canned_goods
+Pak Choi,vegetables
+Pak-Choi-Dip,sauces
+Pak-Choi-Salat,vegetables
+Pak-Choi-Suppe,canned_goods
+Palmherzen,vegetables
+Pancetta Creme,sauces
+Pancetta,meat
+Pancetta-Dip,sauces
+Pancettaschinken,meat
+Pancetta-Wurst,meat
+Panettone,bread
+Paniermehl,bread
 Papaya,fruits
+Papayakerne,groats
+Papayastücke,fruits
+Paprika So�e,sauces
 Paprika,vegetables
+Paprikacreme,sauces
+Paprikadip,sauces
+Paprikamarmelade,canned_goods
+Paprikapaste,sauces
 Paprikapulver,spices
+Paprikasalami,meat
+Paprikaschoten,vegetables
+Paran�sse,confectionery
+Parmaschinken,meat
+Parmesan Creme,sauces
+Parmesan,dairy_goods
+Parmesan-Chips,confectionery
+Parmesan-Dip,sauces
+Parmesank�se,dairy_goods
+Parmesan-Sauce,sauces
+Passionsfrucht,fruits
+Passionsfruchtsaft,drinks
+Pastinaken,vegetables
+Pekannüsse,confectionery
+Pekannuss Keks,confectionery
+Pekannusscreme,sauces
+Pekannuss-Dip,sauces
+Pekannusskuchen,confectionery
+Pekannussmus,sauces
+Pekannuss�l,sauces
+Pellkartoffeln,vegetables
 Penne,pasta
+Peperoni,vegetables
+Pesto Basilico,sauces
+Pesto Basilikum,sauces
+Pesto Rosmarin,sauces
+Pesto Rosso,sauces
+Pesto Verde,sauces
 Pesto,sauces
+Pesto-Oregano,sauces
 Petersilie,spices
+Petersilienwurzel,vegetables
 Pfeffer,spices
+Pfefferminz Saft,drinks
+Pfefferminzbonbons,candy
+Pfefferminzdip,sauces
+Pfefferminze,spices
+Pfefferminzlik�r,drinks
+Pfefferminzsirup,drinks
+Pfefferminztee,drinks
+Pfefferoni,vegetables
+Pfeffersauce,sauces
 Pferdefutter,pet_food
+Pfifferlinge,vegetables
+Pfirsich Saft,drinks
 Pfirsich,fruits
+Pfirsichcreme,sauces
+Pfirsichjoghurt,dairy_goods
+Pfirsichlik�r,drinks
+Pfirsichmarmelade,canned_goods
+Pfirsichpudding,dairy_goods
+Pfirsichsaft,drinks
+Pflaumen Saft,drinks
+Pflaumen,fruits
+Pflaumencreme,sauces
+Pflaumen-Dip,sauces
+Pflaumenjoghurt,dairy_goods
+Pflaumenmus,canned_goods
+Pflaumensaft,drinks
+Pflaumenwein,drinks
+Pils Bier,drinks
+Pils,drinks
+Pils-Bier,drinks
+Pilsener,drinks
+Pils-Mix,drinks
 Pilze,canned_goods
+Pilzragout,canned_goods
+Pinienkerne,groats
+Pistazien Keks,confectionery
+Pistazien,confectionery
+Pistazien-Dip,sauces
+Pistazienkuchen,confectionery
+Pistazienmus,sauces
+Pistazien�l,sauces
+Pistazienpaste,sauces
 Pita,bread
+Pizzagew�rz,spices
+Pizzak�se,dairy_goods
 Pizzasauce,sauces
+Pizzateig,bread
+Pizzateig,canned_goods
 Polenta,groats
 Pommes Frites,frozen_goods
+Pommes,frozen_goods
+Porree,vegetables
+Porridge Hafer,groats
+Porridge,groats
+Porridge-Hafer,groats
+Porridge-Mischung,groats
+Porridge-Mix,groats
+Portulak,vegetables
 Pralinen,confectionery
+Preiselbeer Saft,drinks
+Preiselbeercreme,sauces
+Preiselbeeren,canned_goods
+Preiselbeeren,fruits
+Preiselbeerjoghurt,dairy_goods
+Preiselbeersaft,drinks
+Preiselbeersauce,sauces
 Prosecco,drinks
+Pudding,dairy_goods
+Puten So�e,sauces
 Putenbrust,meat
+Puten-Dip,sauces
+Putenfilet,meat
+Putenhackfleisch,meat
+Putenkeule,meat
+Putenleber,meat
+Putenpastete,canned_goods
+Putensteak,meat
+Putenwurst,meat
+Quark Keks,confectionery
+Quark mit Kräutern,dairy_goods
 Quark,dairy_goods
+Quarkauflauf,dairy_goods
+Quarkb�llchen,confectionery
+Quarkcreme,dairy_goods
+Quark-Dip,dairy_goods
+Quarkkuchen,confectionery
+Quarktorte,confectionery
+Quetschbeutel,child_food
+Quinoa Keks,confectionery
 Quinoa,groats
+Quinoa-Brot,bread
+Quinoa-Flocken,groats
+Quinoa-Pasta,pasta
+Quinoa-Salat,canned_goods
+Quitten,fruits
+Räucherlachs,fish
+Rösti,frozen_goods
+Raclettek�se,dairy_goods
+Radicchio,vegetables
+Radieschen So�e,sauces
 Radieschen,vegetables
+Radieschen-Dip,sauces
+Radieschenpaste,sauces
+Radieschensalat,vegetables
+Radieschensprossen,vegetables
+Rahmso�e,sauces
+Rahmspinat,frozen_goods
 Ramen,pasta
+Raps�l,sauces
+R�ucherfisch,fish
+R�ucherforelle,fish
+R�ucherlachs Creme,sauces
+R�ucherlachscreme,dairy_goods
+R�ucherlachs-Dip,sauces
+R�uchertofu,meat
+Reibekäse,dairy_goods
+Reis So�e,sauces
 Reis,groats
 Reisbrei,child_food
+Reiscreme,dairy_goods
+Reisdrink,drinks
+Reisflocken,groats
+Reisnudeln,pasta
+Reispapier,pasta
+Reispaste,sauces
+Reissirup,sauces
+Reiswaffel Kakao,confectionery
+Reiswaffel-Mix,confectionery
+Reiswaffeln,confectionery
+Reiswaffel-Schoko,confectionery
+Reiswaffel-Vanille,confectionery
 Reptilienfutter,pet_food
+Rettich,vegetables
+Rhabarber Saft,drinks
+Rhabarber,fruits
+Rhabarber,vegetables
+Rhabarber-Dip,sauces
+Rhabarberkompott,canned_goods
+Rhabarbermarmelade,canned_goods
+Rhabarbersaft,drinks
 Ricotta,dairy_goods
 Rigatoni,pasta
+Rinder So�e,sauces
+Rinderbouillon,canned_goods
+Rinderbraten,meat
+Rinderbrust,meat
+Rinder-Dip,sauces
+Rinderfilet,meat
 Rinderhack,meat
+Rinderhackfleisch,meat
+Rinderleber,meat
+Rindermark,meat
+Rinderpastete,canned_goods
+Rinderrouladen,meat
+Rindersaft,drinks
 Rindersteak,meat
+Rindersuppe,canned_goods
+Rindertalg,dairy_goods
+Rinderzunge,meat
+Rindfleischsuppe,canned_goods
 Rippchen,meat
+Risottoreis,groats
+Roggen Pl�tzchen,confectionery
 Roggenbrot,bread
+Roggenbr�tchen,bread
+Roggenflocken,groats
+Roggenmehl,bread
+Roggenmuffin,confectionery
+Roggenvollkornbrot,bread
+Rohkost,vegetables
+Rohrohrzucker,confectionery
+Rohrzucker Sirup,confectionery
+Rohrzucker,confectionery
+Rohrzuckerkaramell,confectionery
+Rohrzuckerpaste,sauces
+Rohrzuckersirup,confectionery
+Rohschinken,meat
+Rohwurst,meat
+Rollgerste,groats
+Romana-Salat,vegetables
+Rooibos Saft,drinks
+Rooibos-Creme,drinks
+Rooibos-Mango,drinks
+Rooibos-Tee,drinks
+Rooibos-Vanille,drinks
+Roquefort,dairy_goods
+Rosenkohl,vegetables
+Rosinen,confectionery
+Rosmarin So�e,sauces
 Rosmarin,spices
+Rosmarinbrot,bread
+Rosmarin-Dip,sauces
+Rosmarinkartoffeln,vegetables
+Rosmarin�l,sauces
+Rosmarinpaste,sauces
+Rotbarsch,fish
+Rote Bete So�e,sauces
 Rote Bete,vegetables
+Rote Grütze,canned_goods
+Rote Linsen,groats
+Rote Paprika,vegetables
+Rote-Bete-Dip,sauces
+Rote-Bete-Paste,sauces
+Rote-Bete-Salat,canned_goods
+Rotkohl,canned_goods
+Rotwein So�e,sauces
+Rotwein,drinks
+Rotweindressing,sauces
+Rotweinessig,sauces
+Rotweinlik�r,drinks
+Rotweinsauce,sauces
+R�benkraut,sauces
+R�bensirup,sauces
+Rucola So�e,sauces
+Rucola,vegetables
+Rucola-Dip,sauces
+Rucola-Dressing,sauces
+Rucolapesto,sauces
+Rucolasalat,vegetables
+Rucola-Salat,vegetables
 Rum,drinks
-Rösti,frozen_goods
+Rumpsteak,meat
+Russisch Brot,confectionery
+Süßigkeitenmix,candy
+Süßkartoffel,vegetables
+Süßkartoffeln,vegetables
+Süßkartoffelpüree,child_food
+Süßstoff,other
+Safran,spices
+Sago,groats
 Sahne,dairy_goods
+Sahnejoghurt,dairy_goods
+Sahnepudding,confectionery
 Salami,meat
+Salat So�e,sauces
+Salatcreme,sauces
+Salat-Dip,sauces
+Salatdressing,sauces
+Salatgurke,vegetables
+Salatkr�uter,spices
+Salatso�e,sauces
+Salbeitee,drinks
+Salsa So�e,sauces
 Salsa,sauces
+Salsacreme,sauces
+Salsa-Dip,sauces
+Salsadressing,sauces
+Salsasauce,sauces
 Salz,spices
+Sambal Oelek,sauces
 Sardellen,canned_goods
+Sardinen in Öl,canned_goods
 Sardinen,fish
+Sauerkraut,canned_goods
+Sauerrahm,dairy_goods
+Sauerteig Brot,bread
+Sauerteigbrot Vollkorn,bread
 Sauerteigbrot,bread
+Sauerteigkuchen,confectionery
+Sauerteigmischung,bread
+Sauerteigstarter,bread
+Saure Bonbons,candy
+Schafmilchkäse,dairy_goods
+Schafskäse,dairy_goods
 Schildkrötenfutter,pet_food
+Schinken So�e,sauces
 Schinken,meat
+Schinken-Dip,sauces
+Schinkenpastete,canned_goods
+Schinkenwurst,meat
 Schlagsahne,dairy_goods
+Schlemmerfilet,frozen_goods
 Schmand,dairy_goods
+Schmelzkäse,dairy_goods
 Schnittlauch,spices
+Schoko Creme,sauces
+Schoko Pl�tzchen,confectionery
+Schokobr�tchen,bread
+Schokocreme,sauces
+Schokocreme-Dip,sauces
+Schokocroissant,confectionery
+Schoko-Croissant,confectionery
+Schokodip,sauces
 Schokoeis,frozen_goods
+Schokokekse,confectionery
+Schokokuchen,confectionery
+Schokokuchenmischung,confectionery
 Schokolade,confectionery
+Schokoladenkekse,confectionery
+Schokoladenmousse,dairy_goods
 Schokolinsen,candy
+Schokomuffin,confectionery
+Schokom�sli,child_food
+Schokopaste,sauces
+Schokopudding,dairy_goods
 Scholle,fish
+Schwarzbrot,bread
+Schwarzer Pfeffer,spices
+Schwarzer Tee,drinks
+Schwarzkümmel,spices
+Schwarztee Saft,drinks
+Schwarztee,drinks
+Schwarztee-Mix,drinks
+Schwarztee-Vanille,drinks
+Schweine So�e,sauces
+Schweinebraten,meat
+Schweine-Dip,sauces
+Schweinefilet,meat
 Schweinekotelett,meat
+Schweinepastete,canned_goods
+Schweiner�cken,meat
+Schweineschnitzel,meat
 Seehecht,fish
 Seelachs,fish
+Seelachsfilet,fish
 Sekt,drinks
 Sellerie,vegetables
 Senf,sauces
+Senfsoße,sauces
+Sesam So�e,sauces
+Sesamöl,sauces
+Sesambrot,bread
+Sesamcracker,confectionery
+Sesam-Dip,sauces
+Sesam-Paste,sauces
+Sesamriegel,confectionery
 Skyr,dairy_goods
 Soba,pasta
+Soja So�e,sauces
+Sojabohnen,canned_goods
+Sojacreme,dairy_goods
+Soja-Dip,sauces
+Soja-Dressing,sauces
+Sojadrink,dairy_goods
 Sojaflocken,groats
+Sojajoghurt,dairy_goods
+Sojamilch Kakao,drinks
+Sojamilch Vanille,drinks
+Sojamilch,drinks
+Sojamilch-Mix,drinks
+Sojamilch-Schoko,drinks
+Soja-Paste,sauces
 Sojasauce,sauces
+Sojaschnetzel,meat
+Sojasprossen,vegetables
+Sonnenblumenkerne,groats
+Sorbet Apfel,frozen_goods
+Sorbet Himbeere,frozen_goods
+Sorbet Mango,frozen_goods
+Sorbet Pfirsich,frozen_goods
+Sorbet Zitrone,frozen_goods
+Sour Cream,sauces
+Sour-Cream-Dip,sauces
+Sour-Cream-Sauce,sauces
+Spätzle,canned_goods
+Spätzle,pasta
 Spaetzle,pasta
+Spaghetti So�e,sauces
+Spaghetti Vollkorn,pasta
 Spaghetti,pasta
+Spaghetti-Kr�uter,pasta
+Spaghetti-Mix,pasta
+Spaghetti-So�e,canned_goods
+Spargel So�e,sauces
+Spargel,vegetables
+Spargelcreme,sauces
+Spargelcremesuppe,canned_goods
+Spargeldip,sauces
+Spargelpaste,sauces
+Spargelsuppe,canned_goods
 Speck,meat
+Speiseeis,frozen_goods
+Speisequark Creme,dairy_goods
+Speisequark,dairy_goods
+Speisequark-Dip,dairy_goods
+Speisequark-Kr�uter,dairy_goods
+Spekulatius,confectionery
 Spinat (TK),frozen_goods
+Spinat So�e,sauces
 Spinat,vegetables
-Süßigkeitenmix,candy
+Spinatcreme,sauces
+Spinat-Dip,sauces
+Spinat-Dressing,sauces
+Spinatlasagne,frozen_goods
+Spinatnudeln,pasta
+Spinatpüree,child_food
+Spitzpaprika,vegetables
+Sprotten So�e,sauces
+Sprotten,fish
+Sprotten-Creme,sauces
+Sprotten-Dip,sauces
+Sprottenfilet,canned_goods
+Sprottenpaste,canned_goods
+Stachelbeeren,fruits
+Steak,meat
+Steinpilze,vegetables
+Stollen Pl�tzchen,confectionery
+Stollen,confectionery
+Stollenkonfekt,confectionery
+Stollenkuchen,confectionery
+Stollenmuffin,confectionery
+Streichkäse,dairy_goods
+Studentenfutter,confectionery
+Suppengrün,vegetables
+Sushi,frozen_goods
+S��kartoffel So�e,sauces
+S��kartoffelchips,confectionery
+S��kartoffel-Dip,sauces
+S��kartoffel-Paste,sauces
+S��kartoffelp�ree,child_food
+S��kirsch Saft,drinks
+S��kirsch-Dip,sauces
+S��kirschen,fruits
+S��kirschenkonfit�re,canned_goods
+S��kirschmarmelade,canned_goods
+Tafelwasser,drinks
 Tagliatelle,pasta
+Tahin So�e,sauces
+Tahin,sauces
+Tahin-Creme,sauces
+Tahin-Dip,sauces
+Tahini,sauces
+Tahin-Joghurt,dairy_goods
+Tahin-Paste,sauces
+Tahin-Pudding,dairy_goods
+Tapenade,sauces
+Tapioka Keks,confectionery
+Tapiokakuchen,confectionery
+Tapiokamehl,groats
+Tapiokapaste,sauces
+Tapiokapudding,dairy_goods
 Tartarensauce,sauces
 Taubenfutter,pet_food
+Tee Fr�chte,drinks
 Tee,drinks
+Tee-Fr�chte,drinks
+Tee-Kr�uter,drinks
+Tee-Mischung,drinks
+Tee-Mix,drinks
 Teigtaschen (TK),frozen_goods
 Thunfisch,canned_goods
 Thunfisch,fish
+Thunfischsalat,canned_goods
 Thymian,spices
 Tiefkühlgemüse,frozen_goods
 Tiefkühlpizza,frozen_goods
 Tierfutter,pet_food
+Tilsiter Creme,sauces
+Tilsiter K�se,dairy_goods
+Tilsiter,dairy_goods
+Tilsiter-Dip,dairy_goods
+Tilsiter-Paste,dairy_goods
 Tintenfisch,fish
 Toastbrot,bread
 Toffee,confectionery
 Toffifee,candy
+Tofu,meat
 Tomate,vegetables
+Tomaten So�e,sauces
 Tomaten,canned_goods
+Tomatencreme,sauces
+Tomatencremesuppe,canned_goods
+Tomatendip,sauces
+Tomaten-Dip,sauces
+Tomatenmark,canned_goods
+Tomatenpesto,sauces
+Tomatensaft,drinks
+Tomatensalat,canned_goods
+Tomatensalat,vegetables
 Tomatensauce,sauces
+Tomatensuppe,canned_goods
+Topinambur,vegetables
+Tortellini,pasta
+Tortelloni K�se,pasta
+Tortelloni Ricotta,pasta
+Tortelloni,pasta
+Tortelloni-K�se,pasta
+Tortelloni-Spinat,pasta
 Traube,fruits
+Trauben,fruits
+Traubenkern So�e,sauces
+Traubenkern-Dip,sauces
+Traubenkern�l,sauces
+Traubenkernpaste,sauces
+Traubensaft Rot,drinks
 Traubensaft,drinks
+Trinkschokolade,drinks
+Truthahn So�e,sauces
+Truthahnbraten,meat
+Truthahn-Dip,sauces
+Truthahnfilet,meat
+Truthahnpastete,canned_goods
+Truthahnschnitzel,meat
 Udon,pasta
+Vanille Keks,confectionery
+Vanillecreme,dairy_goods
+Vanille-Dip,sauces
 Vanilleeis,frozen_goods
+Vanillejoghurt,dairy_goods
+Vanillemuffin,confectionery
+Vanillepudding,dairy_goods
+Vanillesauce,sauces
+Vanillesoße,dairy_goods
+Vegane Creme,sauces
+Vegane Mayonnaise,sauces
+Vegane Paste,sauces
+Vegane So�e,sauces
+Vegane Wurst,meat
 Vodka,drinks
 Vogelfutter,pet_food
 Vogelsamen,pet_food
+Vollkorn Pl�tzchen,confectionery
+Vollkornbaguette,bread
 Vollkornbrot,bread
+Vollkorncracker,confectionery
+Vollkornkeks,confectionery
+Vollkornmuffin,confectionery
+Vollkornnudeln,groats
+Vollkornnudeln,pasta
+Wachteleier,canned_goods
 Waffel,confectionery
 Waffeln (TK),frozen_goods
+Waldbeer Saft,drinks
+Waldbeer-Dip,sauces
+Waldbeeren,fruits
+Waldbeerjoghurt,dairy_goods
+Waldbeermarmelade,canned_goods
+Waldbeerpudding,dairy_goods
+Waldfrüchte,frozen_goods
+Waldpilze,vegetables
+Walnüsse,confectionery
 Wasser,drinks
 Wassermelone,fruits
+Weißbrot,bread
+Weißkohl,vegetables
+Weißwein,drinks
+Weißwurst,meat
 Wein,drinks
+Weinbergpfirsich,fruits
+Weintrauben,fruits
+Wei�e Bohnen,canned_goods
+Wei�e Schokolade,confectionery
+Wei�e Schokolinsen,candy
+Wei�e-Bohnen-Dip,sauces
+Wei�e-Bohnen-Paste,sauces
+Wei�e-Schokoladencreme,sauces
+Wei�e-Schokoladenkekse,confectionery
+Weizenbrot K�rbis,bread
 Weizenbrot,bread
+Weizenbrot-Mix,bread
+Weizenbrot-Vollkorn,bread
+Weizengrie�,groats
+Weizenvollkornmehl,bread
 Wellensittichfutter,pet_food
 Wheatberries,groats
 Whiskey,drinks
-Ziegenkäse,dairy_goods
-Zimt,spices
-Zitrone,fruits
-Zitronenbonbons,candy
-Zitronenschokolade,candy
-Zucchini,vegetables
-Zuckerstange,candy
-Zuckerwatte,confectionery
-Zwiebelbrot,bread
-Avocado,fruits
-Basmati Reis,groats
-Bio-Honig,confectionery
-Bohnenkaffee,drinks
-Bratensoße,sauces
-Büffelmozzarella,dairy_goods
-Chia-Samen,groats
-Dinkelmehl,bread
-Entenbrust,meat
-Erdnussbutter,sauces
-Espresso,drinks
-Feta-Käse,dairy_goods
-Forellenfilet,fish
-Fruchtsaft,drinks
-Geflügelwurst,meat
-Gemüsebrühe,canned_goods
-Gewürzgurken,canned_goods
-Grillsoße,sauces
-Hagebuttentee,drinks
-Hirseflocken,groats
-Honigmelone,fruits
-Hühnerbrühe,canned_goods
-Ingwer,spices
-Joghurt natur,dairy_goods
-Kaffeebohnen,drinks
-Kakaopulver,confectionery
-Kartoffelpüree,child_food
-Käse-Sahne-Torte,confectionery
-Kichererbsenmehl,groats
-Kirschtomaten,vegetables
-Kokosöl,sauces
-Kürbiskerne,groats
-Lachssteak,fish
-Leinsamen,groats
-Limettensaft,drinks
-Mandelmilch,drinks
-Mango-Chutney,sauces
-Marzipan,confectionery
-Maultaschen,pasta
-Meerrettich,sauces
-Melissentee,drinks
-Milchreis,groats
-Minze,spices
-Möhren,vegetables
-Müsli,child_food
-Nudelsalat,pasta
-Olivenöl,sauces
-Orangensaft,drinks
-Paprikaschoten,vegetables
-Parmesan,dairy_goods
-Pesto Rosso,sauces
-Pflaumen,fruits
-Putenfilet,meat
-Quark mit Kräutern,dairy_goods
-Radieschen,vegetables
-Rinderfilet,meat
-Roggenmehl,bread
-Rosinen,confectionery
-Rucola,vegetables
-Sahnepudding,confectionery
-Salatdressing,sauces
-Sardinen in Öl,canned_goods
-Schafskäse,dairy_goods
-Schlagsahne,dairy_goods
-Schokoladenkekse,confectionery
-Schwarzer Tee,drinks
-Sesamöl,sauces
-Sojamilch,drinks
-Spargel,vegetables
-Spätzle,pasta
-Spinat,vegetables
-Steak,meat
-Streichkäse,dairy_goods
-Süßkartoffel,vegetables
-Tafelwasser,drinks
-Tee,drinks
-Thunfischsalat,canned_goods
-Tofu,meat
-Tomatenmark,canned_goods
-Trauben,fruits
-Vanillejoghurt,dairy_goods
-Vollkornnudeln,pasta
-Walnüsse,confectionery
-Weißbrot,bread
-Weißwein,drinks
 Wirsing,vegetables
-Zitronensaft,drinks
-Zucker,confectionery
-Zwiebeln,vegetables
-Artischocken,vegetables
-Asiatische Nudeln,pasta
-Backpulver,spices
-Baiser,confectionery
-Balsamico-Essig,sauces
-Bananenchips,confectionery
-Beerenjoghurt,dairy_goods
-Bio-Eier,dairy_goods
-Bio-Milch,dairy_goods
-Bittermandelöl,sauces
-Blaubeermarmelade,canned_goods
-Bockwurst,meat
-Bohnensuppe,canned_goods
-Brezel,bread
-Brie-Käse,dairy_goods
-Brokkoli-Röschen,frozen_goods
-Cashewkerne,confectionery
-Cheddar-Käse,dairy_goods
-Chili-Pulver,spices
-Chips,confectionery
-Cranberry-Saft,drinks
-Crème fraîche,dairy_goods
-Curry-Paste,sauces
-Datteln,fruits
-Drachenfrucht,fruits
-Erdnussöl,sauces
-Falafel,frozen_goods
-Feigen,fruits
-Fruchtcocktail,canned_goods
-Frühlingsrollen,frozen_goods
-Gänsebrust,meat
-Gemüsesaft,drinks
-Gorgonzola,dairy_goods
-Grüner Tee,drinks
-Guacamole,sauces
-Hähnchenschenkel,meat
-Haferdrink,drinks
-Hanfsamen,groats
-Haselnüsse,confectionery
-Heidelbeeren,fruits
-Himbeermarmelade,canned_goods
-Hühnersuppe,canned_goods
-Ingwertee,drinks
-Jalapenos,canned_goods
-Kalbsleber,meat
-Karamellbonbons,candy
-Kartoffelchips,confectionery
-Käsesauce,sauces
-Knoblauch,spices
-Knoblauchöl,sauces
-Kokoschips,confectionery
-Koriandersamen,spices
-Kräuterbutter,dairy_goods
-Kräutertee,drinks
-Kürbiscremesuppe,canned_goods
-Lammkotelett,meat
-Leberkäse,meat
-Lebkuchen,confectionery
-Linguine,pasta
-Macadamianüsse,confectionery
-Maracuja,fruits
-Meeressalz,spices
-Milchschokolade,confectionery
-Möhrenpüree,child_food
-Nussmischung,confectionery
-Olivenpaste,sauces
-Pistazien,confectionery
-Rhabarber,vegetables
-Rinderbraten,meat
-Rote Linsen,groats
-Safran,spices
-Salbeitee,drinks
-Schokocroissant,confectionery
-Sojabohnen,canned_goods
-Süßkartoffelpüree,child_food
-Tahin,sauces
-Tortellini,pasta
-Vanillesauce,sauces
-Weintrauben,fruits
-Ziegenmilch,dairy_goods
-Zimtstangen,spices
-Ananasstücke,canned_goods
-Apfelkompott,child_food
-Aprikosenmarmelade,canned_goods
-Avocado,fruits
-Baguette,bread
-Balsamico-Essig,sauces
-Basilikum,spices
-Beerenmuffin,frozen_goods
-Birkensaft,drinks
-Bohnenpüree,child_food
-Buchweizen,groats
-Camembert,dairy_goods
-Chiliöl,sauces
-Dinkelbrot,bread
-Erdbeermilch,drinks
-Fenchel,vegetables
-Forellenfilet,fish
-Frischkäse-Dip,dairy_goods
-Geflügelwurst,meat
-Gewürznelken,spices
-Granola,confectionery
-Grapefruit,fruits
-Hagebuttenmarmelade,canned_goods
-Hefezopf,bread
-Hering,filet,fish
-Himbeersaft,drinks
-Hirse,groats
-Holunderblütentee,drinks
-Hummus,canned_goods
-Kakaopulver,confectionery
-Kardamom,spices
-Käsefondue,dairy_goods
-Kichererbsenpüree,child_food
-Kiwi,fruits
-Knödel,frozen_goods
-Kokosmilch,canned_goods
-Kürbiskerne,confectionery
-Lachsfilet,fish
-Limonensirup,drinks
-Lychee,fruits
-Mandelkekse,confectionery
-Mangold,vegetables
-Marinara-Soße,sauces
-Mascarpone,dairy_goods
-Minestrone,canned_goods
-Mohnbrötchen,bread
-Muskatnuss,spices
-Nektarinen,fruits
-Olivenöl,sauces
-Papayastücke,fruits
-Pfefferminztee,drinks
-Pfirsichjoghurt,dairy_goods
-Pflaumen,fruits
-Putenbrust,meat
-Quinoa,groats
-Radicchio,vegetables
-Rahmspinat,frozen_goods
-Reisnudeln,pasta
-Rinderleber,meat
-Rosmarin,spices
-Rotwein,drinks
-Sardellen,canned_goods
-Sauerrahm,dairy_goods
-Schwarzkümmel,spices
-Senfsoße,sauces
-Sojasprossen,vegetables
-Spargelcremesuppe,canned_goods
-Spinatpüree,child_food
-Sprotten,fish
-Stachelbeeren,fruits
-Tagliatelle,pasta
-Thymian,spices
-Tomatensuppe,canned_goods
-Traubensaft,drinks
-Vanillejoghurt,dairy_goods
-Wachteleier,canned_goods
-Waldfrüchte,frozen_goods
-Zuckermelone,fruits
-Zuckerschoten,vegetables
-Crème fraîche,dairy_goods
-Curry-Gewürz,spices
-Datteln,fruits
-Dinkelkekse,confectionery
-Dönerfleisch,meat
-Edamer,dairy_goods
-Eiweißbrot,bread
-Erdbeeren,fruits
-Erdnüsse,confectionery
-Feldsalat,vegetables
-Feigen,fruits
-Fruchtquark,dairy_goods
-Gemüsechips,confectionery
-Granatapfel,fruits
-Graved Lachs,fish
-Grillgemüse,frozen_goods
-Gulaschsuppe,canned_goods
-Gummischlangen,candy
-Hackbraten,meat
-Hagebuttenmark,canned_goods
-Halloumi,dairy_goods
-Harzer Käse,dairy_goods
-Haselnüsse,confectionery
-Heidelbeeren,fruits
-Heringssalat,canned_goods
-Himbeermarmelade,canned_goods
-Hirschfleisch,meat
-Hühnerfilet,meat
-Ingwertee,drinks
-Italienischer Salat,canned_goods
-Jasminreis,groats
-Joghurt mit Frucht,dairy_goods
-Johannisbeeren,fruits
-Kabanossi,meat
-Kaisergemüse,frozen_goods
-Kakao,drinks
-Kaki,fruits
-Kalbsfleisch,meat
-Karamellcreme,dairy_goods
-Kartoffelchips,confectionery
-Kartoffelsalat,canned_goods
-Kartoffelsuppe,canned_goods
-Kasseler,meat
-Kerne-Mix,groats
-Kidneybohnensalat,canned_goods
-Kirschsaft,drinks
-Kiwisaft,drinks
-Knuspermüsli,child_food
-Kokosraspel,confectionery
-Kokosschokolade,candy
-Kräcker,confectionery
-Kräuterbutter,dairy_goods
-Kräutertee,drinks
-Kürbiscremesuppe,canned_goods
-Lauchcremesuppe,canned_goods
-Leberkäse,meat
-Limonen,fruits
-Linse,groats
-Linsensuppe,canned_goods
-Litschis,fruits
-Löffelbiskuits,confectionery
-Löwenzahnsalat,vegetables
-Mandelmus,sauces
-Mandelsplitter,confectionery
-Mangosaft,drinks
-Maracujasaft,drinks
-Marzipankartoffeln,confectionery
-Maultaschen Suppe,canned_goods
-Milchbrötchen,bread
-Milchmixgetränk,drinks
-Mini-Pizza,frozen_goods
-Mohnbrötchen,bread
-Mozzarella light,dairy_goods
-Müsli-Riegel,confectionery
-Nougatcreme,sauces
-Nussmischung,confectionery
-Obazda,dairy_goods
-Obstsalat,canned_goods
-Orangenmarmelade,canned_goods
-Paprikasalami,meat
-Parmaschinken,meat
-Passionsfrucht,fruits
-Pekannüsse,confectionery
-Pfefferminzbonbons,candy
-Pfifferlinge,vegetables
-Pfirsichsaft,drinks
-Pistazien,confectionery
-Pizzateig,canned_goods
-Pudding,dairy_goods
-Quetschbeutel,child_food
-Rahmspinat,frozen_goods
-Räucherlachs,fish
-Reibekäse,dairy_goods
-Rhabarber,fruits
-Rinderbraten,meat
-Rosenkohl,vegetables
-Rote Grütze,canned_goods
-Rotkohl,canned_goods
-Rucolasalat,vegetables
-Russisch Brot,confectionery
-Salatgurke,vegetables
-Sambal Oelek,sauces
-Sauerrahm,dairy_goods
-Saure Bonbons,candy
-Sauerkraut,canned_goods
-Schafmilchkäse,dairy_goods
-Schlemmerfilet,frozen_goods
-Schmelzkäse,dairy_goods
-Schoko-Croissant,confectionery
-Schokoladenmousse,dairy_goods
-Schweinebraten,meat
-Schweineschnitzel,meat
-Seelachsfilet,fish
-Sesamriegel,confectionery
-Sonnenblumenkerne,groats
-Sojadrink,dairy_goods
-Sojajoghurt,dairy_goods
-Spätzle,canned_goods
-Spekulatius,confectionery
-Spinatlasagne,frozen_goods
-Spitzpaprika,vegetables
-Steinpilze,vegetables
-Streichkäse,dairy_goods
-Studentenfutter,confectionery
-Sushi,frozen_goods
-Suppengrün,vegetables
-Süßkartoffeln,vegetables
-Süßstoff,other
-Tahini,sauces
-Tapenade,sauces
-Thymian,spices
-Tofu,meat
-Tomatenpesto,sauces
-Tomatensalat,canned_goods
-Tomatensaft,drinks
-Topinambur,vegetables
-Trinkschokolade,drinks
-Truthahnfilet,meat
-Vanillejoghurt,dairy_goods
-Vanillesoße,dairy_goods
-Vollkornbrot,bread
-Vollkornnudeln,groats
-Waldbeeren,fruits
-Waldpilze,vegetables
-Walnüsse,confectionery
-Weinbergpfirsich,fruits
-Weißbrot,bread
-Weißkohl,vegetables
-Weißwurst,meat
-Wirsing,vegetables
+Wurst So�e,sauces
+Wurst-Dip,sauces
+Wurstkonserve,canned_goods
+Wurstpastete,canned_goods
 Wurstsalat,canned_goods
+Wurstsuppe,canned_goods
 Zanderfilet,fish
 Zartbitterschokolade,candy
 Zaziki,sauces
+Ziegenfrischk�se,dairy_goods
+Ziegenjoghurt,dairy_goods
 Ziegenkäse,dairy_goods
+Ziegenk�se Creme,dairy_goods
+Ziegenk�se-Dip,dairy_goods
+Ziegenk�se-Paste,dairy_goods
+Ziegenmilch,dairy_goods
 Zimt,spices
-Zitronensorbet,frozen_goods
+Zimtstangen,spices
+Zitrone,fruits
+Zitronen Saft,drinks
+Zitronenbonbons,candy
+Zitronencreme,sauces
+Zitronenkuchen,confectionery
+Zitronenmarmelade,canned_goods
+Zitronenpaste,sauces
 Zitronensaft,drinks
+Zitronenschokolade,candy
+Zitronensorbet,frozen_goods
+Zitronentee,drinks
+Zucchini So�e,sauces
+Zucchini,vegetables
+Zucchini-Dip,sauces
+Zucchini-Nudeln,pasta
+Zucchini-Paste,sauces
 Zucchinipuffer,frozen_goods
+Zucchini-Salat,canned_goods
+Zucker,confectionery
+Zuckermelone,fruits
+Zuckerschoten,vegetables
+Zuckerstange,candy
+Zuckerwatte,confectionery
+Zwetschgen Saft,drinks
 Zwetschgen,fruits
+Zwetschgen-Dip,sauces
+Zwetschgenkompott,canned_goods
+Zwetschgenkuchen,confectionery
+Zwetschgenlik�r,drinks
 Zwiebelbrot,bread
+Zwiebeln,vegetables
 Zwiebelringe,frozen_goods
 Zwiebelwurst,meat
-Aprikosensaft,drinks
-Auberginencreme,sauces
-Backcamembert,frozen_goods
-Backerbsen,groats
-Bärlauchbutter,dairy_goods
-Basilikum,spices
-Beerenmischung,frozen_goods
-Birnensaft,drinks
-Blätterteig,frozen_goods
-Blumenkohlröschen,frozen_goods
-Bockwurst,meat
-Bratkartoffeln,frozen_goods
-Brioche,bread
-Buttergemüse,frozen_goods
-Butterkekse,confectionery
-Cantuccini,confectionery
-Cashewkerne,confectionery
-Champignoncremesuppe,canned_goods
-Chia-Pudding,dairy_goods
-Chiliflocken,spices
-Chiliöl,sauces
-Cranberrysaft,drinks
-Cremiger Frischkäse,dairy_goods
-Dill,spices
-Dinkelvollkornbrot,bread
-Dörrpflaumen,fruits
-Eierlikör,drinks
-Eisbergsalat,vegetables
-Eismeerforelle,fish
-Eistee,drinks
-Erbsensuppe,canned_goods
-Erdbeersorbet,frozen_goods
-Faschiertes,meat
-Fenchel,vegetables
-Fencheltee,drinks
-Feta light,dairy_goods
-Fischstäbchen,frozen_goods
-Fladenbrot,bread
-Frische Pasta,canned_goods
-Frühlingsquark,dairy_goods
-Fruchtjoghurt,dairy_goods
-Gemüselasagne,frozen_goods
-Gnocchi,canned_goods
-Griechischer Joghurt,dairy_goods
-Grießbrei,dairy_goods
-Grillkäse,dairy_goods
-Grillwürstchen,meat
-Gurkensticks,vegetables
-Haferdrinks,dairy_goods
-Haferflocken,groats
-Halbfester Schnittkäse,dairy_goods
