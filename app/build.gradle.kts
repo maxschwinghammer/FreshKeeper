@@ -22,7 +22,7 @@ android {
         minSdk = 26
         //noinspection OldTargetApi
         targetSdk = 35
-        versionCode = 10
+        versionCode = 11
         versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -35,10 +35,12 @@ android {
 
         val rawApiKey = properties.getProperty("API_KEY") ?: ""
         val apiKey = rawApiKey.trim('"')
+        @Suppress("UnstableApiUsage")
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
 
         val rawPassword = properties.getProperty("EMAIL_PASSWORD") ?: ""
         val emailPassword = rawPassword.trim('"')
+        @Suppress("UnstableApiUsage")
         buildConfigField("String", "EMAIL_PASSWORD", "\"$emailPassword\"")
     }
 
@@ -52,6 +54,7 @@ android {
         getByName("release") {
             @Suppress("UnstableApiUsage")
             isMinifyEnabled = false
+            @Suppress("UnstableApiUsage")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
