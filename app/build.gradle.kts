@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 import java.util.Properties
 
 plugins {
@@ -26,7 +28,6 @@ android {
         versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        @Suppress("UnstableApiUsage")
         manifestPlaceholders["appAuthRedirectScheme"] = "com.freshkeeper"
 
         val keystoreFile = project.rootProject.file("app/keys.properties")
@@ -35,16 +36,13 @@ android {
 
         val rawApiKey = properties.getProperty("API_KEY") ?: ""
         val apiKey = rawApiKey.trim('"')
-        @Suppress("UnstableApiUsage")
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
 
         val rawPassword = properties.getProperty("EMAIL_PASSWORD") ?: ""
         val emailPassword = rawPassword.trim('"')
-        @Suppress("UnstableApiUsage")
         buildConfigField("String", "EMAIL_PASSWORD", "\"$emailPassword\"")
     }
 
-    @Suppress("UnstableApiUsage")
     buildFeatures.apply {
         buildConfig = true
         compose = true
@@ -52,9 +50,7 @@ android {
 
     buildTypes {
         getByName("release") {
-            @Suppress("UnstableApiUsage")
             isMinifyEnabled = false
-            @Suppress("UnstableApiUsage")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -68,9 +64,13 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
-    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.5"
+    }
+    packagingOptions {
+        resources {
+            pickFirsts += "META-INF/DEPENDENCIES"
+        }
     }
 }
 
@@ -83,8 +83,6 @@ kapt {
 }
 
 dependencies {
-    implementation(libs.google.api.services.androidpublisher)
-    implementation(libs.google.auth.library.oauth2.http)
     implementation(libs.android.image.cropper)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.activity.compose)
@@ -138,6 +136,8 @@ dependencies {
     implementation(libs.googleid)
     implementation(libs.google.accompanist.pager)
     implementation(libs.google.accompanist.pager.indicators)
+    implementation(libs.google.api.services.androidpublisher)
+    implementation(libs.google.auth.library.oauth2.http)
     implementation(libs.google.core)
     implementation(libs.google.firebase.analytics)
     implementation(libs.gson)
