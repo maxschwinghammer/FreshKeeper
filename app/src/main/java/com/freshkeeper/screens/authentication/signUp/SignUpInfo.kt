@@ -27,12 +27,7 @@ fun SignUpInfo() {
             append(stringResource(R.string.sign_up_info_1) + " ")
 
             pushStyle(SpanStyle(color = AccentTurquoiseColor))
-            withLink(
-                LinkAnnotation.Url(
-                    url =
-                        "https://github.com/maxschwinghammer/FreshKeeper/blob/master/terms-of-service.md",
-                ),
-            ) {
+            withLink(LinkAnnotation.Url(url = "https://freshkeeper.de/terms-of-service/")) {
                 append(stringResource(R.string.terms_of_service))
             }
 
@@ -40,12 +35,7 @@ fun SignUpInfo() {
             append(" " + stringResource(R.string.sign_up_info_2) + " ")
 
             pushStyle(SpanStyle(color = AccentTurquoiseColor))
-            withLink(
-                LinkAnnotation.Url(
-                    url =
-                        "https://github.com/maxschwinghammer/FreshKeeper/blob/master/privacy-policy.md",
-                ),
-            ) {
+            withLink(LinkAnnotation.Url(url = "https://freshkeeper.de/privacy-policy/")) {
                 append(stringResource(R.string.privacy_policy))
             }
         }
