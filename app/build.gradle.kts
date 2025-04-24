@@ -67,11 +67,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.5"
     }
-    packagingOptions {
-        resources {
-            pickFirsts += "META-INF/DEPENDENCIES"
-        }
-    }
 }
 
 kapt {
@@ -137,7 +132,6 @@ dependencies {
     implementation(libs.google.accompanist.pager)
     implementation(libs.google.accompanist.pager.indicators)
     implementation(libs.google.api.services.androidpublisher)
-    implementation(libs.google.auth.library.oauth2.http)
     implementation(libs.google.core)
     implementation(libs.google.firebase.analytics)
     implementation(libs.gson)
