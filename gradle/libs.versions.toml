@@ -29,7 +29,6 @@ firebaseMessaging = "24.1.1"
 firebaseInAppMessagingDisplay = "21.0.2"
 generativeai = "0.9.0"
 googleApiServicesAndroidpublisher = "v3-rev142-1.25.0"
-googleAuthLibraryOauth2Http = "1.25.0"
 googleCore = "3.5.3"
 googleServicesVersion = "4.4.2"
 gson = "2.12.1"
@@ -80,6 +79,7 @@ com-google-android-play-review-ktx2 = { module = "com.google.android.play:review
 com-google-android-play-review2 = { module = "com.google.android.play:review", version.ref = "comGoogleAndroidPlayReview" }
 com-journeyapps-zxing-android-embedded = { module = "com.journeyapps:zxing-android-embedded", version.ref = "journeyappsZxingAndroidEmbedded" }
 commonmark-commonmark = { module = "org.commonmark:commonmark", version.ref = "commonmarkVersion" }
+firebase-appcheck-debug = { module = "com.google.firebase:firebase-appcheck-debug" }
 firebase-appcheck-playintegrity = { module = "com.google.firebase:firebase-appcheck-playintegrity" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-firestore = { module = "com.google.firebase:firebase-firestore", version.ref = "firebaseFirestore" }
@@ -92,7 +92,6 @@ gms-play-services-mlkit-image-labeling = { module = "com.google.android.gms:play
 google-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPagerVersion" }
 google-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistPagerVersion" }
 google-api-services-androidpublisher = { module = "com.google.apis:google-api-services-androidpublisher", version.ref = "googleApiServicesAndroidpublisher" }
-google-auth-library-oauth2-http = { module = "com.google.auth:google-auth-library-oauth2-http", version.ref = "googleAuthLibraryOauth2Http" }
 google-core = { module = "com.google.zxing:core", version.ref = "googleCore" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

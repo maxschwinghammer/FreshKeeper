@@ -28,6 +28,7 @@ android {
         versionName = "1.0.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        @Suppress("UnstableApiUsage")
         manifestPlaceholders["appAuthRedirectScheme"] = "com.freshkeeper"
 
         val keystoreFile = project.rootProject.file("app/keys.properties")
@@ -36,13 +37,16 @@ android {
 
         val rawApiKey = properties.getProperty("API_KEY") ?: ""
         val apiKey = rawApiKey.trim('"')
+        @Suppress("UnstableApiUsage")
         buildConfigField("String", "API_KEY", "\"$apiKey\"")
 
         val rawPassword = properties.getProperty("EMAIL_PASSWORD") ?: ""
         val emailPassword = rawPassword.trim('"')
+        @Suppress("UnstableApiUsage")
         buildConfigField("String", "EMAIL_PASSWORD", "\"$emailPassword\"")
     }
 
+    @Suppress("UnstableApiUsage")
     buildFeatures.apply {
         buildConfig = true
         compose = true
@@ -50,7 +54,9 @@ android {
 
     buildTypes {
         getByName("release") {
+            @Suppress("UnstableApiUsage")
             isMinifyEnabled = false
+            @Suppress("UnstableApiUsage")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -64,6 +70,7 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+    @Suppress("UnstableApiUsage")
     composeOptions {
         kotlinCompilerExtensionVersion = "1.4.5"
     }
@@ -116,6 +123,7 @@ dependencies {
     implementation(libs.firebase.appcheck.playintegrity)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.appcheck.debug)
     implementation(libs.firebase.common.ktx)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.firestore)
@@ -131,7 +139,6 @@ dependencies {
     implementation(libs.googleid)
     implementation(libs.google.accompanist.pager)
     implementation(libs.google.accompanist.pager.indicators)
-    implementation(libs.google.api.services.androidpublisher)
     implementation(libs.google.core)
     implementation(libs.google.firebase.analytics)
     implementation(libs.gson)

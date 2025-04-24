@@ -363,7 +363,8 @@ fun HomeScreen(navController: NavHostController) {
                             imageUrl,
                             coroutineScope,
                             context,
-                        ) { coroutineScope.launch { manualInputSheetState.hide() } }
+                            onSuccess = { coroutineScope.launch { manualInputSheetState.hide() } },
+                        )
                     },
                 )
             }
@@ -400,9 +401,7 @@ fun HomeScreen(navController: NavHostController) {
                                 isThrownAwayChecked,
                                 coroutineScope,
                                 onSuccess = {
-                                    coroutineScope.launch {
-                                        editProductSheetState.hide()
-                                    }
+                                    coroutineScope.launch { editProductSheetState.hide() }
                                 },
                             )
                         },
