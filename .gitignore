@@ -19,3 +19,4 @@ keys.properties
 app/google-services.json
 app/keys.properties
 google-services.json
+app/service-account.json

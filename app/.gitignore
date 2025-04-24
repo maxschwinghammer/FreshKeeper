@@ -3,4 +3,6 @@ keys.properties
 /keys.properties
 /build
 app/google-services.json
+app/service-account.json
 google-services.json
+service-account.json

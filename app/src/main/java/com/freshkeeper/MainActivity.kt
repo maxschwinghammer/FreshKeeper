@@ -29,6 +29,7 @@ import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.appupdate.AppUpdateOptions
 import com.google.android.play.core.install.model.AppUpdateType
+import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.Firebase
 import com.google.firebase.appcheck.appCheck
@@ -143,17 +144,25 @@ class MainActivity : FragmentActivity() {
 
     override fun onResume() {
         super.onResume()
-        appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
-                appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
-            ) {
-                appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo,
-                    updateResultLauncher,
-                    AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
-                )
+
+        appUpdateManager.appUpdateInfo
+            .addOnSuccessListener { info ->
+                if ((
+                        info.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE &&
+                            info.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
+                    ) ||
+                    info.updateAvailability() ==
+                    UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
+                ) {
+                    appUpdateManager.startUpdateFlowForResult(
+                        info,
+                        updateResultLauncher,
+                        AppUpdateOptions.newBuilder(AppUpdateType.IMMEDIATE).build(),
+                    )
+                } else if (info.installStatus() == InstallStatus.DOWNLOADED) {
+                    appUpdateManager.completeUpdate()
+                }
             }
-        }
     }
 
     private fun saveLanguageToPreferences(languageCode: String) {

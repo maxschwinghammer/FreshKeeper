@@ -83,8 +83,8 @@ kapt {
 }
 
 dependencies {
-    implementation(libs.tensorflow.lite)
-    implementation(libs.generativeai)
+    implementation(libs.google.api.services.androidpublisher)
+    implementation(libs.google.auth.library.oauth2.http)
     implementation(libs.android.image.cropper)
     implementation(libs.accompanist.flowlayout)
     implementation(libs.androidx.activity.compose)
@@ -132,6 +132,7 @@ dependencies {
     implementation(libs.firebase.messaging.ktx)
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.perf)
+    implementation(libs.generativeai)
     implementation(libs.gms.google.services)
     implementation(libs.gms.play.services.mlkit.image.labeling)
     implementation(libs.googleid)
@@ -155,6 +156,7 @@ dependencies {
     implementation(libs.play.services.identity)
     implementation(libs.play.services.mlkit.text.recognition)
     implementation(libs.play.services.mlkit.text.recognition.common)
+    implementation(libs.tensorflow.lite)
     implementation(libs.text.recognition)
     implementation(platform(libs.androidx.compose.bom))
     implementation(platform(libs.firebase.bom))
