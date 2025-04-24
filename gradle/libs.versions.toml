@@ -28,7 +28,6 @@ firebaseFirestore = "25.1.4"
 firebaseMessaging = "24.1.1"
 firebaseInAppMessagingDisplay = "21.0.2"
 generativeai = "0.9.0"
-googleApiServicesAndroidpublisher = "v3-rev142-1.25.0"
 googleCore = "3.5.3"
 googleServicesVersion = "4.4.2"
 gson = "2.12.1"
@@ -91,7 +90,6 @@ gms-google-services = { module = "com.google.gms:google-services", version.ref =
 gms-play-services-mlkit-image-labeling = { module = "com.google.android.gms:play-services-mlkit-image-labeling", version.ref = "playServicesMlkitImageLabelingVersion" }
 google-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPagerVersion" }
 google-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistPagerVersion" }
-google-api-services-androidpublisher = { module = "com.google.apis:google-api-services-androidpublisher", version.ref = "googleApiServicesAndroidpublisher" }
 google-core = { module = "com.google.zxing:core", version.ref = "googleCore" }
 google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gson" }

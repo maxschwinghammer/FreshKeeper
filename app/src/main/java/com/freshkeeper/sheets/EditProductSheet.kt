@@ -123,7 +123,11 @@ fun EditProductSheet(
     }
 
     ModalBottomSheet(
-        onDismissRequest = { coroutineScope.launch { sheetState.hide() } },
+        onDismissRequest = {
+            if (sheetState.isVisible) {
+                coroutineScope.launch { sheetState.hide() }
+            }
+        },
         sheetState = sheetState,
         containerColor = ComponentBackgroundColor,
     ) {

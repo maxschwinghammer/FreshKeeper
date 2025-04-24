@@ -13,9 +13,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
@@ -32,7 +30,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ManagePremiumSheet(
-    managePremiumSheetState: SheetState,
+    sheetState: SheetState,
     membership: Membership,
     onCancelPremium: () -> Unit,
     onChangePlan: () -> Unit,
@@ -41,8 +39,12 @@ fun ManagePremiumSheet(
 
     FreshKeeperTheme {
         ModalBottomSheet(
-            onDismissRequest = { coroutineScope.launch { managePremiumSheetState.hide() } },
-            sheetState = managePremiumSheetState,
+            onDismissRequest = {
+                if (sheetState.isVisible) {
+                    coroutineScope.launch { sheetState.hide() }
+                }
+            },
+            sheetState = sheetState,
             containerColor = ComponentBackgroundColor,
         ) {
             Column(

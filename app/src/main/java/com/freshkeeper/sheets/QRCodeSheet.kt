@@ -33,14 +33,18 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun QRCodeSheet(qrCodeSheetState: SheetState) {
+fun QRCodeSheet(sheetState: SheetState) {
     val inviteLink = "https://example.com/invite"
     val qrCodeBitmap = remember { generateQRCode(inviteLink) }
     val coroutineScope = rememberCoroutineScope()
 
     ModalBottomSheet(
-        onDismissRequest = { coroutineScope.launch { qrCodeSheetState.hide() } },
-        sheetState = qrCodeSheetState,
+        onDismissRequest = {
+            if (sheetState.isVisible) {
+                coroutineScope.launch { sheetState.hide() }
+            }
+        },
+        sheetState = sheetState,
         containerColor = ComponentBackgroundColor,
     ) {
         Column(

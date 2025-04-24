@@ -30,15 +30,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun InviteSheet(
     qrCodeSheetState: SheetState,
-    inviteSheetState: SheetState,
+    sheetState: SheetState,
     addUserByIdSheetState: SheetState,
     householdId: String,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    LaunchedEffect(inviteSheetState.isVisible) {
-        if (inviteSheetState.isVisible) {
+    LaunchedEffect(sheetState.isVisible) {
+        if (sheetState.isVisible) {
             coroutineScope.launch {
                 qrCodeSheetState.hide()
             }
@@ -47,8 +47,12 @@ fun InviteSheet(
 
     FreshKeeperTheme {
         ModalBottomSheet(
-            onDismissRequest = { coroutineScope.launch { inviteSheetState.hide() } },
-            sheetState = inviteSheetState,
+            onDismissRequest = {
+                if (sheetState.isVisible) {
+                    coroutineScope.launch { sheetState.hide() }
+                }
+            },
+            sheetState = sheetState,
             containerColor = ComponentBackgroundColor,
         ) {
             Column(
@@ -97,7 +101,7 @@ fun InviteSheet(
                     iconId = R.drawable.invite,
                     onClick = {
                         coroutineScope.launch {
-                            inviteSheetState.hide()
+                            sheetState.hide()
                             addUserByIdSheetState.show()
                         }
                     },

@@ -61,8 +61,8 @@ fun FoodRecognitionSheet(
 
     ModalBottomSheet(
         onDismissRequest = {
-            coroutineScope.launch {
-                sheetState.hide()
+            if (sheetState.isVisible) {
+                coroutineScope.launch { sheetState.hide() }
             }
         },
         sheetState = sheetState,

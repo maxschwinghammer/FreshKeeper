@@ -42,7 +42,7 @@ import kotlinx.coroutines.launch
 )
 @Composable
 fun FilterSheet(
-    filterSheetState: SheetState,
+    sheetState: SheetState,
     foodItems: List<FoodItem>,
     selectedCategories: List<String>,
     selectedStorageLocations: List<String>,
@@ -64,8 +64,12 @@ fun FilterSheet(
 
     FreshKeeperTheme {
         ModalBottomSheet(
-            onDismissRequest = { coroutineScope.launch { filterSheetState.hide() } },
-            sheetState = filterSheetState,
+            onDismissRequest = {
+                if (sheetState.isVisible) {
+                    coroutineScope.launch { sheetState.hide() }
+                }
+            },
+            sheetState = sheetState,
             containerColor = ComponentBackgroundColor,
         ) {
             Column(
@@ -183,7 +187,7 @@ fun FilterSheet(
                 }
 
                 Button(
-                    onClick = { coroutineScope.launch { filterSheetState.hide() } },
+                    onClick = { coroutineScope.launch { sheetState.hide() } },
                     colors = ButtonDefaults.buttonColors(containerColor = AccentTurquoiseColor),
                     modifier =
                         Modifier

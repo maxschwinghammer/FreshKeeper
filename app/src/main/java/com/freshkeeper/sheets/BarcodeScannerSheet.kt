@@ -95,7 +95,9 @@ fun BarcodeScannerSheet(
             coroutineScope.launch {
 //                camera?.cameraControl?.enableTorch(!isFlashOn)
                 cameraProvider.get().unbindAll()
-                sheetState.hide()
+                if (sheetState.isVisible) {
+                    sheetState.hide()
+                }
             }
         },
         sheetState = sheetState,

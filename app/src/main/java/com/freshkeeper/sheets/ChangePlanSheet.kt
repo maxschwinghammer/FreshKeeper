@@ -30,7 +30,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChangePlanSheet(
-    changePlanSheetState: SheetState,
+    sheetState: SheetState,
     membership: Membership,
     onChangePlan: () -> Unit,
 ) {
@@ -38,8 +38,12 @@ fun ChangePlanSheet(
 
     FreshKeeperTheme {
         ModalBottomSheet(
-            onDismissRequest = { coroutineScope.launch { changePlanSheetState.hide() } },
-            sheetState = changePlanSheetState,
+            onDismissRequest = {
+                if (sheetState.isVisible) {
+                    coroutineScope.launch { sheetState.hide() }
+                }
+            },
+            sheetState = sheetState,
             containerColor = ComponentBackgroundColor,
         ) {
             Column(

@@ -499,7 +499,7 @@ fun InventoryScreen(navController: NavHostController) {
 
             if (filterSheetState.isVisible) {
                 FilterSheet(
-                    filterSheetState = filterSheetState,
+                    sheetState = filterSheetState,
                     foodItems = items,
                     selectedCategories = selectedCategories,
                     selectedStorageLocations = selectedStorageLocations,

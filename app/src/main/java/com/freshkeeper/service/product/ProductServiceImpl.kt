@@ -206,7 +206,11 @@ class ProductServiceImpl
             }
         }
 
-        override suspend fun appendToCsv(productName: String, category: String, context: Context) {
+        override suspend fun appendToCsv(
+            productName: String,
+            category: String,
+            context: Context,
+        ) {
             withContext(Dispatchers.IO) {
                 val csvFile = File(context.filesDir, "name_category_mapping.csv")
                 val line = "$productName,$category\n"
@@ -280,6 +284,35 @@ class ProductServiceImpl
                         document.reference
                             .update(updates)
                             .addOnSuccessListener {
+                                val currentDate =
+                                    Instant
+                                        .ofEpochMilli(
+                                            System.currentTimeMillis(),
+                                        ).atZone(ZoneId.systemDefault())
+                                        .toLocalDate()
+                                val expiryDate =
+                                    Instant
+                                        .ofEpochMilli(
+                                            expiryTimestamp,
+                                        ).atZone(ZoneId.systemDefault())
+                                        .toLocalDate()
+                                val updatedFoodItem =
+                                    foodItem.copy(
+                                        name = productName,
+                                        quantity = quantity,
+                                        unit = unit,
+                                        storageLocation = storageLocation,
+                                        category = category,
+                                        expiryTimestamp = expiryTimestamp,
+                                        consumed = isConsumedChecked,
+                                        thrownAway = isThrownAwayChecked,
+                                        daysDifference =
+                                            ChronoUnit.DAYS
+                                                .between(currentDate, expiryDate)
+                                                .toInt(),
+                                    )
+                                onSuccess(updatedFoodItem)
+
                                 if (user.householdId != null) {
                                     firestore
                                         .collection("households")
@@ -318,34 +351,6 @@ class ProductServiceImpl
                                                                 changedFields.first()
                                                             else -> "edit"
                                                         }
-
-                                                    val currentDate =
-                                                        Instant
-                                                            .ofEpochMilli(
-                                                                System.currentTimeMillis(),
-                                                            ).atZone(ZoneId.systemDefault())
-                                                            .toLocalDate()
-                                                    val expiryDate =
-                                                        Instant
-                                                            .ofEpochMilli(
-                                                                expiryTimestamp,
-                                                            ).atZone(ZoneId.systemDefault())
-                                                            .toLocalDate()
-                                                    val updatedFoodItem =
-                                                        foodItem.copy(
-                                                            name = productName,
-                                                            quantity = quantity,
-                                                            unit = unit,
-                                                            storageLocation = storageLocation,
-                                                            category = category,
-                                                            expiryTimestamp = expiryTimestamp,
-                                                            consumed = isConsumedChecked,
-                                                            thrownAway = isThrownAwayChecked,
-                                                            daysDifference =
-                                                                ChronoUnit.DAYS
-                                                                    .between(currentDate, expiryDate)
-                                                                    .toInt(),
-                                                        )
                                                     logActivity(
                                                         updatedFoodItem,
                                                         productName,
@@ -353,7 +358,6 @@ class ProductServiceImpl
                                                         oldName = foodItem.name,
                                                         oldQuantity = foodItem.quantity,
                                                     )
-                                                    onSuccess(updatedFoodItem)
                                                 }
                                             }
                                         }.addOnFailureListener { e ->

@@ -37,15 +37,19 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddUserByIdSheet(
-    addUserByIdSheetState: SheetState,
+    sheetState: SheetState,
     onAddUser: (String) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     var userId by remember { mutableStateOf("") }
 
     ModalBottomSheet(
-        onDismissRequest = { coroutineScope.launch { addUserByIdSheetState.hide() } },
-        sheetState = addUserByIdSheetState,
+        onDismissRequest = {
+            if (sheetState.isVisible) {
+                coroutineScope.launch { sheetState.hide() }
+            }
+        },
+        sheetState = sheetState,
         containerColor = ComponentBackgroundColor,
     ) {
         Column(
@@ -81,7 +85,7 @@ fun AddUserByIdSheet(
                 onClick = {
                     if (userId.isNotEmpty()) {
                         onAddUser(userId)
-                        coroutineScope.launch { addUserByIdSheetState.hide() }
+                        coroutineScope.launch { sheetState.hide() }
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),

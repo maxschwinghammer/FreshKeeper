@@ -166,7 +166,9 @@ class HomeViewModel
                     isThrownAwayChecked,
                     coroutineScope,
                     onSuccess = { updatedItem ->
+                        Log.d("UpdateProduct", "Update erfolgreich")
                         updateItem(updatedItem)
+                        Log.d("UpdateProduct", "Update erfolgreich, schließe Sheet")
                         onSuccess()
                     },
                 )
