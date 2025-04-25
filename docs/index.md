@@ -9,7 +9,7 @@ title: FreshKeeper
 
 <div align="left" style="margin-bottom: 16px;">
     <a href="https://play.google.com/store/apps/details?id=com.freshkeeper">
-      <img src="https://github.com/user-attachments/assets/04b829bc-c29d-4739-9c5d-530c13aecd26" width="150" height="150" alt="logo-transparent" />
+      <img src="https://github.com/user-attachments/assets/c1f4b929-77e9-4901-b917-f86b343e7e62" width="150" height="150" alt="logo-transparent" />
     </a>
 </div>
 
