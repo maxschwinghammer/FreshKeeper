@@ -29,7 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.screens.profile.viewmodel.ProfileViewModel
-import com.freshkeeper.service.convertBase64ToBitmap
+import com.freshkeeper.service.PictureConverter
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.TextColor
@@ -41,6 +41,7 @@ fun ProfileCard(
     profilePicture: ProfilePicture?,
 ) {
     val profileViewModel: ProfileViewModel = hiltViewModel()
+    val pictureConverter = PictureConverter()
 
     val memberSince =
         profileViewModel.memberSinceDays.collectAsState().value.let {
@@ -74,7 +75,7 @@ fun ProfileCard(
                             "base64" -> {
                                 val decodedImage =
                                     it.image?.let { it1 ->
-                                        convertBase64ToBitmap(it1)
+                                        pictureConverter.convertBase64ToBitmap(it1)
                                     }
                                 if (decodedImage != null) {
                                     Image(

@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
+import com.freshkeeper.service.languages
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -44,16 +45,6 @@ fun ChangeLanguageCard(
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedLanguage by remember { mutableStateOf(currentLanguage) }
-
-    val languages =
-        listOf(
-            "de" to R.drawable.flag_germany,
-            "en" to R.drawable.flag_usa,
-            "es" to R.drawable.flag_spain,
-            "fr" to R.drawable.flag_france,
-            "it" to R.drawable.flag_italy,
-            "pt" to R.drawable.flag_portugal,
-        )
 
     val languageDisplayName =
         mapOf(

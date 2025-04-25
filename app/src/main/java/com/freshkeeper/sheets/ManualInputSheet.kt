@@ -61,10 +61,9 @@ import com.freshkeeper.model.ProductData
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
+import com.freshkeeper.service.PictureConverter
 import com.freshkeeper.service.categoryMap
 import com.freshkeeper.service.categoryReverseMap
-import com.freshkeeper.service.compressImage
-import com.freshkeeper.service.convertBitmapToBase64
 import com.freshkeeper.service.storageLocationMap
 import com.freshkeeper.service.storageLocationReverseMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -110,6 +109,8 @@ fun ManualInputSheet(
     var imageUri by remember { mutableStateOf<Uri?>(null) }
     var productData by remember { mutableStateOf<ProductData?>(null) }
     var expiryTimestamp by remember { mutableLongStateOf(scannedExpiryDate) }
+
+    val pictureConverter = PictureConverter()
 
     val nameToCategoryMap =
         remember {
@@ -470,8 +471,8 @@ fun ManualInputSheet(
                     coroutineScope.launch {
                         val image =
                             imageUri?.let { uri ->
-                                compressImage(uri, context)?.let { bitmap ->
-                                    convertBitmapToBase64(bitmap)
+                                pictureConverter.compressImage(uri, context)?.let { bitmap ->
+                                    pictureConverter.convertBitmapToBase64(bitmap)
                                 }
                             }
                         onAddProduct(

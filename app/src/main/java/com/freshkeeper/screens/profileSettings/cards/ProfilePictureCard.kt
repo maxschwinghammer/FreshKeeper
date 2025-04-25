@@ -23,9 +23,7 @@ import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.freshkeeper.R
 import com.freshkeeper.model.ProfilePicture
-import com.freshkeeper.service.compressImage
-import com.freshkeeper.service.convertBase64ToBitmap
-import com.freshkeeper.service.convertBitmapToBase64
+import com.freshkeeper.service.PictureConverter
 import com.freshkeeper.service.cropImage.CropImageContract
 import com.freshkeeper.service.cropImage.CropImageContractOptions
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -37,6 +35,7 @@ fun ProfilePictureCard(
     profilePicture: StateFlow<ProfilePicture?>,
     onProfilePictureUpdated: (String) -> Unit,
 ) {
+    val pictureConverter = PictureConverter()
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     val context = LocalContext.current
     val profilePic = profilePicture.collectAsState()
@@ -45,7 +44,7 @@ fun ProfilePictureCard(
             profilePic.value?.type == "url" && profilePic.value?.image != null ->
                 rememberAsyncImagePainter(profilePic.value!!.image)
             profilePic.value?.image != null -> {
-                val bmp = profilePic.value!!.image?.let { convertBase64ToBitmap(it) }
+                val bmp = profilePic.value!!.image?.let { pictureConverter.convertBase64ToBitmap(it) }
                 bmp?.let { BitmapPainter(it.asImageBitmap()) }
             }
             else -> painterResource(R.drawable.profile)
@@ -58,9 +57,9 @@ fun ProfilePictureCard(
                 if (result.isSuccessful) {
                     val croppedImageUri = result.uriContent
                     croppedImageUri?.let {
-                        val compressedBitmap = compressImage(it, context)
+                        val compressedBitmap = pictureConverter.compressImage(it, context)
                         compressedBitmap?.let { bitmap ->
-                            val base64String = convertBitmapToBase64(bitmap)
+                            val base64String = pictureConverter.convertBitmapToBase64(bitmap)
                             onProfilePictureUpdated(base64String)
                         }
                     }

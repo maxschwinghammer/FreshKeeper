@@ -59,7 +59,7 @@ import com.freshkeeper.R
 import com.freshkeeper.model.Member
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
-import com.freshkeeper.service.convertBase64ToBitmap
+import com.freshkeeper.service.PictureConverter
 import com.freshkeeper.service.householdTypeMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
@@ -81,6 +81,7 @@ fun MembersSection(
     onDeleteProducts: () -> Unit,
     isStory: Boolean = false,
 ) {
+    val pictureConverter = PictureConverter()
     val viewModel: HouseholdViewModel = hiltViewModel()
     val inventoryViewModel: InventoryViewModel = hiltViewModel()
 
@@ -220,7 +221,7 @@ fun MembersSection(
                                         "base64" -> {
                                             val decodedImage =
                                                 it.image?.let { it1 ->
-                                                    convertBase64ToBitmap(
+                                                    pictureConverter.convertBase64ToBitmap(
                                                         it1,
                                                     )
                                                 }

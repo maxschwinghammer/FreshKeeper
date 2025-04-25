@@ -56,10 +56,10 @@ import com.freshkeeper.model.FoodItemPicture
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
+import com.freshkeeper.service.PictureConverter
 import com.freshkeeper.service.categoryMap
 import com.freshkeeper.service.categoryReverseMap
 import com.freshkeeper.service.categoryTips
-import com.freshkeeper.service.convertBase64ToBitmap
 import com.freshkeeper.service.storageLocationMap
 import com.freshkeeper.service.storageLocationReverseMap
 import com.freshkeeper.ui.theme.AccentGreenColor
@@ -96,6 +96,7 @@ fun EditProductSheet(
         isThrownAwayChecked: Boolean,
     ) -> Unit,
 ) {
+    val pictureConverter = PictureConverter()
     var productName by remember { mutableStateOf(foodItem.name) }
     var quantity by remember { mutableStateOf(foodItem.quantity.toString()) }
     val unit = remember { mutableStateOf(foodItem.unit) }
@@ -283,7 +284,7 @@ fun EditProductSheet(
                     if (foodItemPicture!!.type == "base64") {
                         val decodedImage =
                             foodItemPicture!!.image?.let { image ->
-                                convertBase64ToBitmap(image)
+                                pictureConverter.convertBase64ToBitmap(image)
                             }
                         if (decodedImage != null) {
                             Box(
@@ -451,10 +452,15 @@ fun EditProductSheet(
                         )
                     }
                 },
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth().height(48.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
             ) {
-                Text(stringResource(R.string.save_changes), color = ComponentBackgroundColor)
+                Text(
+                    stringResource(R.string.save_changes),
+                    color = ComponentBackgroundColor,
+                    maxLines = 1,
+                    softWrap = false,
+                )
             }
         }
     }

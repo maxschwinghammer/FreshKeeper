@@ -44,8 +44,7 @@ import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.freshkeeper.R
 import com.freshkeeper.screens.profileSettings.viewmodel.ProfileSettingsViewModel
-import com.freshkeeper.service.compressImage
-import com.freshkeeper.service.convertBitmapToBase64
+import com.freshkeeper.service.PictureConverter
 import com.freshkeeper.service.cropImage.CropImageContract
 import com.freshkeeper.service.cropImage.CropImageContractOptions
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -59,6 +58,7 @@ import com.freshkeeper.ui.theme.WhiteColor
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun SelectProfilePictureScreen(navController: NavHostController) {
+    val pictureConverter = PictureConverter()
     var selectedImageUri by remember { mutableStateOf<Uri?>(null) }
     var showError by remember { mutableStateOf(false) }
     val profileSettingsViewModel: ProfileSettingsViewModel = hiltViewModel()
@@ -79,10 +79,10 @@ fun SelectProfilePictureScreen(navController: NavHostController) {
                 if (result.isSuccessful) {
                     val croppedImageUri = result.uriContent
                     croppedImageUri?.let {
-                        val compressedBitmap = compressImage(it, context)
+                        val compressedBitmap = pictureConverter.compressImage(it, context)
                         compressedBitmap?.let { bitmap ->
                             bitmapState = bitmap
-                            val base64String = convertBitmapToBase64(bitmap)
+                            val base64String = pictureConverter.convertBitmapToBase64(bitmap)
                             profileSettingsViewModel.updateProfilePicture(base64String)
                         }
                     }

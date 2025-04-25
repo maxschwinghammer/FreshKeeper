@@ -11,7 +11,7 @@ class Activity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            FreshKeeperApp { languageCode ->
+            FreshKeeper { languageCode ->
                 updateLocale(languageCode)
             }
         }
@@ -22,6 +22,7 @@ class Activity : ComponentActivity() {
         Locale.setDefault(locale)
         val config = resources.configuration
         config.setLocale(locale)
+        @Suppress("DEPRECATION")
         resources.updateConfiguration(config, resources.displayMetrics)
         recreate()
     }

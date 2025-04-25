@@ -188,3 +188,13 @@ val notificationSwitchMap =
         R.string.tips to "tips",
         R.string.statistics to "statistics",
     )
+
+val languages =
+    listOf(
+        "de" to R.drawable.flag_germany,
+        "en" to R.drawable.flag_usa,
+        "es" to R.drawable.flag_spain,
+        "fr" to R.drawable.flag_france,
+        "it" to R.drawable.flag_italy,
+        "pt" to R.drawable.flag_portugal,
+    )
