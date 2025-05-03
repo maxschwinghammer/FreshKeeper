@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="Theme.FreshKeeper" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@color/bottomNavBackground</item>
     </style>
 
     <style name="ThemeOverlay.App.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
@@ -26,4 +27,5 @@
     <color name="accentTurquoise">#00D9CD</color>
     <color name="textPrimary">#FFFFFF</color>
     <color name="greyBackground">#1B1B1B</color>
+    <color name="bottomNavBackground">#1B1B1B</color>
 </resources>

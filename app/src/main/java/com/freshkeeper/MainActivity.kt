@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -34,6 +35,7 @@ class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
+        WindowCompat.setDecorFitsSystemWindows(window, false)
         Firebase.initialize(context = this)
         if (BuildConfig.DEBUG) {
             Firebase.appCheck.installAppCheckProviderFactory(
