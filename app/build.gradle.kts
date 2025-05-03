@@ -87,6 +87,7 @@ kapt {
 dependencies {
     implementation(libs.android.image.cropper)
     implementation(libs.accompanist.flowlayout)
+    implementation(libs.accompanist.systemuicontroller)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.biometric)
     implementation(libs.androidx.credentials)

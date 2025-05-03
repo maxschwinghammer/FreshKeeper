@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -32,6 +33,7 @@ class MainActivity : FragmentActivity() {
     private val currentUserId = Firebase.auth.currentUser?.uid
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         Firebase.initialize(context = this)
         if (BuildConfig.DEBUG) {
             Firebase.appCheck.installAppCheckProviderFactory(

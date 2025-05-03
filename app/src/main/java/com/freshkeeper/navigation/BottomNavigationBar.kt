@@ -1,7 +1,11 @@
 package com.freshkeeper.navigation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -12,6 +16,7 @@ import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -36,6 +41,7 @@ import com.freshkeeper.ui.theme.BottomNavIconColor
 import com.freshkeeper.ui.theme.RedColor
 import com.freshkeeper.ui.theme.TextColor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun BottomNavigationBar(
@@ -50,6 +56,11 @@ fun BottomNavigationBar(
 
     val badgeCount by notificationsViewModel.badgeCount.collectAsState()
     val hasNotifications by notificationsViewModel.hasNews.collectAsState()
+
+    val navBarPadding =
+        WindowInsets.navigationBars
+            .asPaddingValues()
+            .calculateBottomPadding()
 
     val barItems =
         remember {
@@ -95,7 +106,10 @@ fun BottomNavigationBar(
 
     NavigationBar(
         containerColor = BottomNavBackgroundColor,
-        modifier = Modifier.height(65.dp),
+        modifier =
+            Modifier
+                .height(60.dp + navBarPadding)
+                .navigationBarsPadding(),
     ) {
         barItems.forEachIndexed { index, barItem ->
             NavigationBarItem(

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Theme.FreshKeeper" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:statusBarColor">#121316</item>
+    <style name="Theme.FreshKeeper" parent="Theme.MaterialComponents.DayNight.NoActionBar">
     </style>
 
     <style name="ThemeOverlay.App.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">

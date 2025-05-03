@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -130,6 +131,7 @@ fun LandingPageScreen(navController: NavHostController) {
                 modifier =
                     Modifier
                         .fillMaxWidth()
+                        .systemBarsPadding()
                         .padding(5.dp),
                 stepCount = stepCount,
                 stepDuration = 5_000,
@@ -145,6 +147,7 @@ fun LandingPageScreen(navController: NavHostController) {
                 modifier =
                     Modifier
                         .fillMaxSize()
+                        .systemBarsPadding()
                         .padding(16.dp),
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.CenterHorizontally,
