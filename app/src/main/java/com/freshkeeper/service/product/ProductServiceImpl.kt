@@ -3,8 +3,10 @@ package com.freshkeeper.service.product
 import android.content.Context
 import android.util.Log
 import com.freshkeeper.model.Activity
+import com.freshkeeper.model.EventType
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodItemPicture
+import com.freshkeeper.model.FoodStatus
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.User
 import com.freshkeeper.service.account.AccountService
@@ -79,8 +81,7 @@ class ProductServiceImpl
                                 unit = unit,
                                 storageLocation = storageLocation,
                                 category = category,
-                                consumed = false,
-                                thrownAway = false,
+                                status = FoodStatus.ACTIVE,
                                 imageId = pictureId,
                             )
                         firestore
@@ -97,7 +98,7 @@ class ProductServiceImpl
                                                 logActivity(
                                                     foodItem.copy(id = documentReference.id),
                                                     productName,
-                                                    "product_added",
+                                                    EventType.PRODUCT_ADDED,
                                                 )
                                             }
                                             appendToCsv(productName, foodItem.category, context)
@@ -129,8 +130,7 @@ class ProductServiceImpl
                                 unit = unit,
                                 storageLocation = storageLocation,
                                 category = category,
-                                consumed = false,
-                                thrownAway = false,
+                                status = FoodStatus.ACTIVE,
                                 imageId = pictureId,
                             )
                         firestore
@@ -147,7 +147,7 @@ class ProductServiceImpl
                                                 logActivity(
                                                     foodItem.copy(id = documentReference.id),
                                                     productName,
-                                                    "product_added",
+                                                    EventType.PRODUCT_ADDED,
                                                 )
                                             }
                                             appendToCsv(productName, foodItem.category, context)
@@ -173,8 +173,7 @@ class ProductServiceImpl
                         unit = unit,
                         storageLocation = storageLocation,
                         category = category,
-                        consumed = false,
-                        thrownAway = false,
+                        status = FoodStatus.ACTIVE,
                     )
                 firestore
                     .collection("foodItems")
@@ -190,7 +189,7 @@ class ProductServiceImpl
                                         logActivity(
                                             foodItem.copy(id = documentReference.id),
                                             productName,
-                                            "product_added",
+                                            EventType.PRODUCT_ADDED,
                                         )
                                     }
                                     appendToCsv(productName, foodItem.category, context)
@@ -304,8 +303,14 @@ class ProductServiceImpl
                                         storageLocation = storageLocation,
                                         category = category,
                                         expiryTimestamp = expiryTimestamp,
-                                        consumed = isConsumedChecked,
-                                        thrownAway = isThrownAwayChecked,
+                                        status =
+                                            if (isConsumedChecked) {
+                                                FoodStatus.CONSUMED
+                                            } else if (isThrownAwayChecked) {
+                                                FoodStatus.THROWN_AWAY
+                                            } else {
+                                                FoodStatus.ACTIVE
+                                            },
                                         daysDifference =
                                             ChronoUnit.DAYS
                                                 .between(currentDate, expiryDate)
@@ -327,29 +332,31 @@ class ProductServiceImpl
                                                 household.type != "Single household"
                                             ) {
                                                 coroutineScope.launch {
-                                                    val changedFields = mutableListOf<String>()
+                                                    val changedFields = mutableListOf<EventType>()
                                                     if (foodItem.name != productName) {
-                                                        changedFields.add("name")
+                                                        changedFields.add(EventType.NAME)
                                                     }
                                                     if (foodItem.quantity != quantity) {
-                                                        changedFields.add("quantity")
+                                                        changedFields.add(EventType.QUANTITY)
                                                     }
                                                     if (foodItem.expiryTimestamp != expiryTimestamp) {
-                                                        changedFields.add("expiry")
+                                                        changedFields.add(EventType.EXPIRY)
                                                     }
                                                     if (foodItem.storageLocation != storageLocation) {
-                                                        changedFields.add("storage")
+                                                        changedFields.add(EventType.STORAGE)
                                                     }
                                                     if (foodItem.category != category) {
-                                                        changedFields.add("category")
+                                                        changedFields.add(EventType.CATEGORY)
                                                     }
                                                     val activityType =
                                                         when {
-                                                            isConsumedChecked -> "consumed"
-                                                            isThrownAwayChecked -> "thrown_away"
+                                                            isConsumedChecked ->
+                                                                EventType.CONSUMED
+                                                            isThrownAwayChecked ->
+                                                                EventType.THROWN_AWAY
                                                             changedFields.size == 1 ->
                                                                 changedFields.first()
-                                                            else -> "edit"
+                                                            else -> EventType.EDIT
                                                         }
                                                     logActivity(
                                                         updatedFoodItem,
@@ -378,17 +385,17 @@ class ProductServiceImpl
         override suspend fun logActivity(
             foodItem: FoodItem,
             productName: String,
-            activityType: String,
+            activityType: EventType,
             oldName: String?,
             oldQuantity: Int?,
         ) {
             val resolvedType =
                 when (activityType) {
-                    "quantity" -> {
+                    EventType.QUANTITY -> {
                         if (oldQuantity != null && foodItem.quantity > oldQuantity) {
-                            "quantity_increased"
+                            EventType.QUANTITY_INCREASED
                         } else {
-                            "quantity_decreased"
+                            EventType.QUANTITY_DECREASED
                         }
                     }
                     else -> activityType
@@ -401,7 +408,15 @@ class ProductServiceImpl
                     type = resolvedType,
                     userName = user.displayName!!,
                     timestamp = System.currentTimeMillis(),
-                    oldProductName = oldName ?: "",
+                    oldProductName =
+                        if (
+                            (resolvedType == EventType.NAME || resolvedType == EventType.EDIT) &&
+                            !oldName.isNullOrBlank()
+                        ) {
+                            oldName
+                        } else {
+                            null
+                        },
                     productName = productName,
                 )
 

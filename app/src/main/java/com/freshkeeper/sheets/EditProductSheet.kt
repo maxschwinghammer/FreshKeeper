@@ -53,6 +53,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodItemPicture
+import com.freshkeeper.model.FoodStatus
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
@@ -102,8 +103,8 @@ fun EditProductSheet(
     val unit = remember { mutableStateOf(foodItem.unit) }
     val storageLocation = remember { mutableStateOf(foodItem.storageLocation) }
     val category = remember { mutableStateOf(foodItem.category) }
-    var isConsumedChecked by remember { mutableStateOf(foodItem.consumed) }
-    var isThrownAwayChecked by remember { mutableStateOf(foodItem.thrownAway) }
+    var isConsumedChecked by remember { mutableStateOf(foodItem.status == FoodStatus.CONSUMED) }
+    var isThrownAwayChecked by remember { mutableStateOf(foodItem.status == FoodStatus.THROWN_AWAY) }
 
     val selectedStorageLocation = storageLocationMap[storageLocation.value] ?: R.string.fridge
     val selectedCategory = categoryMap[category.value] ?: R.string.dairy_goods

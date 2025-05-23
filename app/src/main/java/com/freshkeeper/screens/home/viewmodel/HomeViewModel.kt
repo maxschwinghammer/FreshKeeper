@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodItemPicture
+import com.freshkeeper.model.FoodStatus
 import com.freshkeeper.model.ProductData
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.service.account.AccountService
@@ -176,7 +177,9 @@ class HomeViewModel
         }
 
         private fun updateItem(updatedItem: FoodItem) {
-            if (updatedItem.consumed || updatedItem.thrownAway) {
+            if (updatedItem.status == FoodStatus.CONSUMED ||
+                updatedItem.status == FoodStatus.THROWN_AWAY
+            ) {
                 removeItem(updatedItem)
             } else {
                 _allFoodItems.value =

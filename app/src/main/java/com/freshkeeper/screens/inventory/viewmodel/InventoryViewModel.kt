@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodItemPicture
+import com.freshkeeper.model.FoodStatus
 import com.freshkeeper.model.ProductData
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.service.inventory.InventoryService
@@ -256,13 +257,23 @@ class InventoryViewModel
                             updateStorageLists(updatedItem)
                         }
 
-                        if (updatedItem.consumed || updatedItem.thrownAway) {
-                            _foodItems.value = _foodItems.value?.filterNot { it.id == updatedItem.id }
+                        if (updatedItem.status == FoodStatus.CONSUMED ||
+                            updatedItem.status == FoodStatus.THROWN_AWAY
+                        ) {
+                            _foodItems.value =
+                                _foodItems.value?.filterNot {
+                                    it.id ==
+                                        updatedItem.id
+                                }
                             removeFromStorageLists(updatedItem)
                         } else {
                             _foodItems.value =
                                 _foodItems.value?.map { currentItem ->
-                                    if (currentItem.id == updatedItem.id) updatedItem else currentItem
+                                    if (currentItem.id == updatedItem.id) {
+                                        updatedItem
+                                    } else {
+                                        currentItem
+                                    }
                                 }
                             updateStorageLists(updatedItem)
                         }

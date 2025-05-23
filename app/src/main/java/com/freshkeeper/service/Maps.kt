@@ -1,6 +1,7 @@
 package com.freshkeeper.service
 
 import com.freshkeeper.R
+import com.freshkeeper.model.EventType
 
 val storageLocations =
     listOf(
@@ -137,38 +138,38 @@ val reverseHouseholdTypeMap =
 
 val drawableMap =
     mapOf(
-        "user_joined" to R.drawable.user_joined,
-        "user_added" to R.drawable.user_joined,
-        "user_left" to R.drawable.leave,
-        "product_added" to R.drawable.plus,
-        "edit" to R.drawable.edit,
-        "name" to R.drawable.edit,
-        "consumed" to R.drawable.remove,
-        "thrown_away" to R.drawable.trash,
-        "quantity_increased" to R.drawable.update,
-        "quantity_decreased" to R.drawable.update,
-        "expiry" to R.drawable.expiry,
-        "storage" to R.drawable.inventory_filled,
-        "category" to R.drawable.category,
-        "default" to R.drawable.edit,
+        EventType.USER_JOINED to R.drawable.user_joined,
+        EventType.USER_ADDED to R.drawable.user_joined,
+        EventType.USER_LEFT to R.drawable.leave,
+        EventType.PRODUCT_ADDED to R.drawable.plus,
+        EventType.EDIT to R.drawable.edit,
+        EventType.NAME to R.drawable.edit,
+        EventType.CONSUMED to R.drawable.remove,
+        EventType.THROWN_AWAY to R.drawable.trash,
+        EventType.QUANTITY_INCREASED to R.drawable.update,
+        EventType.QUANTITY_DECREASED to R.drawable.update,
+        EventType.EXPIRY to R.drawable.expiry,
+        EventType.STORAGE to R.drawable.inventory_filled,
+        EventType.CATEGORY to R.drawable.category,
+        EventType.DEFAULT to R.drawable.edit,
     )
 
 val activityTypeMap =
     mapOf(
-        "user_joined" to R.string.activity_user_joined,
-        "user_added" to R.string.activity_user_added,
-        "user_left" to R.string.activity_user_left,
-        "product_added" to R.string.activity_added,
-        "edit" to R.string.activity_edited,
-        "name" to R.string.activity_name_changed,
-        "consumed" to R.string.activity_consumed,
-        "thrown_away" to R.string.activity_thrown_away,
-        "quantity_increased" to R.string.activity_quantity_increased,
-        "quantity_decreased" to R.string.activity_quantity_decreased,
-        "expiry" to R.string.activity_expiry_changed,
-        "storage" to R.string.activity_storage_changed,
-        "category" to R.string.activity_category_changed,
-        "default" to R.string.activity_default,
+        EventType.USER_JOINED to R.string.activity_user_joined,
+        EventType.USER_ADDED to R.string.activity_user_added,
+        EventType.USER_LEFT to R.string.activity_user_left,
+        EventType.PRODUCT_ADDED to R.string.activity_added,
+        EventType.EDIT to R.string.activity_edited,
+        EventType.NAME to R.string.activity_name_changed,
+        EventType.CONSUMED to R.string.activity_consumed,
+        EventType.THROWN_AWAY to R.string.activity_thrown_away,
+        EventType.QUANTITY_INCREASED to R.string.activity_quantity_increased,
+        EventType.QUANTITY_DECREASED to R.string.activity_quantity_decreased,
+        EventType.EXPIRY to R.string.activity_expiry_changed,
+        EventType.STORAGE to R.string.activity_storage_changed,
+        EventType.CATEGORY to R.string.activity_category_changed,
+        EventType.DEFAULT to R.string.activity_default,
     )
 
 val householdTypeMap =

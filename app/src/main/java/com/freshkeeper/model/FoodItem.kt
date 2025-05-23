@@ -1,5 +1,7 @@
 package com.freshkeeper.model
 
+import com.google.firebase.firestore.Exclude
+
 data class FoodItem(
     val id: String? = null,
     val barcode: String? = null,
@@ -12,10 +14,9 @@ data class FoodItem(
     val unit: String,
     val storageLocation: String,
     val category: String,
-    val consumed: Boolean,
-    val thrownAway: Boolean,
+    val status: FoodStatus,
     val imageId: String? = null,
-    @Transient var daysDifference: Int = 0,
+    @get:Exclude @set:Exclude @Transient var daysDifference: Int = 0,
     val nutriments: Nutriments? = null,
     val nutriScore: String? = null,
 ) {
@@ -31,8 +32,7 @@ data class FoodItem(
         "",
         "",
         "",
-        false,
-        false,
+        FoodStatus.ACTIVE,
         null,
         0,
         Nutriments(),

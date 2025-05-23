@@ -5,7 +5,9 @@ import android.util.Log
 import android.widget.Toast
 import com.freshkeeper.R
 import com.freshkeeper.model.Activity
+import com.freshkeeper.model.EventType
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.FoodStatus
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.Member
 import com.freshkeeper.model.ProfilePicture
@@ -269,8 +271,7 @@ class HouseholdServiceImpl
                 (
                     (
                         allItems
-                            .count
-                            { !it.thrownAway }
+                            .count { it.status != FoodStatus.THROWN_AWAY }
                             .toFloat() / allItems.size.coerceAtLeast(1)
                     ) * 100
                 ).toInt()
@@ -283,7 +284,7 @@ class HouseholdServiceImpl
                     .orEmpty()
             val discardedDates =
                 allItems
-                    .filter { it.thrownAway && it.discardTimestamp != null }
+                    .filter { it.status == FoodStatus.THROWN_AWAY && it.discardTimestamp != null }
                     .mapNotNull { it.discardTimestamp }
 
             return Statistics(
@@ -347,8 +348,7 @@ class HouseholdServiceImpl
 
             val documents =
                 query
-                    .whereEqualTo("consumed", false)
-                    .whereEqualTo("thrownAway", false)
+                    .whereEqualTo("status", FoodStatus.ACTIVE)
                     .get()
                     .await()
 
@@ -449,7 +449,7 @@ class HouseholdServiceImpl
                 }
 
                 batch.commit().await()
-                householdId?.let { logUserActivity(user, it, "user_left") }
+                householdId?.let { logUserActivity(user, it, EventType.USER_LEFT) }
             } catch (e: Exception) {
                 Log.e("HouseholdService", "Error when leaving the household", e)
             }
@@ -595,7 +595,7 @@ class HouseholdServiceImpl
                 batch.commit().await()
 
                 onSuccess(user)
-                householdId?.let { logUserActivity(user, it, "user_added") }
+                householdId?.let { logUserActivity(user, it, EventType.USER_ADDED) }
 
                 Toast
                     .makeText(
@@ -661,7 +661,7 @@ class HouseholdServiceImpl
 
                 batch.commit().await()
 
-                logUserActivity(user, householdId, "user_joined")
+                logUserActivity(user, householdId, EventType.USER_JOINED)
 
                 householdSnapshot
                     .toObject(Household::class.java)
@@ -680,7 +680,7 @@ class HouseholdServiceImpl
         override suspend fun logUserActivity(
             user: User,
             householdId: String,
-            type: String,
+            type: EventType,
         ) {
             val activity =
                 Activity(

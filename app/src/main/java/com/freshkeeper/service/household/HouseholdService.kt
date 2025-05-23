@@ -1,6 +1,7 @@
 package com.freshkeeper.service.household
 
 import com.freshkeeper.model.Activity
+import com.freshkeeper.model.EventType
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.Member
@@ -79,7 +80,7 @@ interface HouseholdService {
     suspend fun logUserActivity(
         user: User,
         householdId: String,
-        type: String,
+        type: EventType,
     )
 
     suspend fun updateHouseholdType(

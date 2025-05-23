@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.freshkeeper.model.Activity
+import com.freshkeeper.model.EventType
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
 import com.freshkeeper.model.Member
@@ -69,7 +70,7 @@ class HouseholdViewModel
                     Activity(
                         id = "1",
                         userId = "1",
-                        type = "thrown_away",
+                        type = EventType.THROWN_AWAY,
                         userName = "Tim",
                         productName = "Chips",
                         timestamp = System.currentTimeMillis(),
@@ -77,7 +78,7 @@ class HouseholdViewModel
                     Activity(
                         id = "2",
                         userId = "2",
-                        type = "product_added",
+                        type = EventType.PRODUCT_ADDED,
                         userName = "Emma",
                         productName = "Eier",
                         timestamp = System.currentTimeMillis(),
@@ -85,7 +86,7 @@ class HouseholdViewModel
                     Activity(
                         id = "3",
                         userId = "3",
-                        type = "consumed",
+                        type = EventType.CONSUMED,
                         userName = "Paul",
                         productName = "Milch",
                         timestamp = System.currentTimeMillis(),

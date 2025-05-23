@@ -13,6 +13,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.FoodStatus
 import com.freshkeeper.screens.inventory.StorageLocation
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,8 +33,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
             FoodItem(
@@ -45,8 +45,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
             FoodItem(
@@ -58,8 +57,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
             FoodItem(
@@ -71,8 +69,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
             FoodItem(
@@ -84,8 +81,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
         )
@@ -101,8 +97,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
             FoodItem(
@@ -114,8 +109,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
             FoodItem(
@@ -127,8 +121,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
             FoodItem(
@@ -140,8 +133,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
             FoodItem(
@@ -153,8 +145,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
         )
@@ -170,8 +161,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
             FoodItem(
@@ -183,8 +173,7 @@ fun Story2() {
                 quantity = 2,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
             FoodItem(
@@ -196,8 +185,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
         )
@@ -213,8 +201,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
             FoodItem(
@@ -226,8 +213,7 @@ fun Story2() {
                 quantity = 1,
                 unit = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
                 daysDifference = 10,
             ),
         )

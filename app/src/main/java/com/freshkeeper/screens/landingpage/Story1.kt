@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.FoodStatus
 import com.freshkeeper.screens.home.FoodList
 import java.util.Calendar
 
@@ -40,8 +41,7 @@ fun Story1() {
                 unit = "",
                 storageLocation = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
             ),
             FoodItem(
                 id = "5",
@@ -54,8 +54,7 @@ fun Story1() {
                 unit = "",
                 storageLocation = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
             ),
             FoodItem(
                 id = "4",
@@ -68,8 +67,7 @@ fun Story1() {
                 unit = "",
                 storageLocation = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
             ),
             FoodItem(
                 id = "1",
@@ -82,8 +80,7 @@ fun Story1() {
                 unit = "",
                 storageLocation = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
             ),
             FoodItem(
                 id = "2",
@@ -96,8 +93,7 @@ fun Story1() {
                 unit = "",
                 storageLocation = "",
                 category = "",
-                consumed = false,
-                thrownAway = false,
+                status = FoodStatus.ACTIVE,
             ),
         )
 
@@ -114,8 +110,7 @@ fun Story1() {
                 unit = "",
                 storageLocation = "",
                 category = "",
-                consumed = false,
-                thrownAway = true,
+                status = FoodStatus.THROWN_AWAY,
             ),
             FoodItem(
                 id = "8",
@@ -128,8 +123,7 @@ fun Story1() {
                 unit = "",
                 storageLocation = "",
                 category = "",
-                consumed = true,
-                thrownAway = false,
+                status = FoodStatus.CONSUMED,
             ),
             FoodItem(
                 id = "6",
@@ -142,8 +136,7 @@ fun Story1() {
                 unit = "",
                 storageLocation = "",
                 category = "",
-                consumed = false,
-                thrownAway = true,
+                status = FoodStatus.THROWN_AWAY,
             ),
             FoodItem(
                 id = "9",
@@ -156,8 +149,7 @@ fun Story1() {
                 unit = "",
                 storageLocation = "",
                 category = "",
-                consumed = false,
-                thrownAway = true,
+                status = FoodStatus.THROWN_AWAY,
             ),
             FoodItem(
                 id = "7",
@@ -170,8 +162,7 @@ fun Story1() {
                 unit = "",
                 storageLocation = "",
                 category = "",
-                consumed = false,
-                thrownAway = true,
+                status = FoodStatus.THROWN_AWAY,
             ),
         )
 

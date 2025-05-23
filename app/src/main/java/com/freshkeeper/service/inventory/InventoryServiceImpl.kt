@@ -2,6 +2,7 @@ package com.freshkeeper.service.inventory
 
 import androidx.lifecycle.MutableLiveData
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.FoodStatus
 import com.freshkeeper.service.household.HouseholdService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -38,8 +39,7 @@ class InventoryServiceImpl
                 }
 
             query
-                .whereEqualTo("consumed", false)
-                .whereEqualTo("thrownAway", false)
+                .whereEqualTo("status", FoodStatus.ACTIVE)
                 .get()
                 .addOnSuccessListener { documents ->
                     val items =
@@ -79,8 +79,7 @@ class InventoryServiceImpl
 
             query
                 .whereEqualTo("storageLocation", storageLocation)
-                .whereEqualTo("consumed", false)
-                .whereEqualTo("thrownAway", false)
+                .whereEqualTo("status", FoodStatus.ACTIVE)
                 .get()
                 .addOnSuccessListener { documents ->
                     val items =
