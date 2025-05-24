@@ -2,7 +2,7 @@ package com.freshkeeper.service
 
 import android.Manifest
 import android.os.Build
-import android.widget.Toast
+import android.util.Log
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
@@ -15,12 +15,7 @@ class PermissionManager(
             ActivityResultContracts.RequestPermission(),
         ) { granted ->
             if (!granted) {
-                Toast
-                    .makeText(
-                        activity,
-                        "Camera permission denied",
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                Log.d("PermissionManager", "Camera permission denied")
             }
         }
 
@@ -29,12 +24,7 @@ class PermissionManager(
             ActivityResultContracts.RequestPermission(),
         ) { granted ->
             if (!granted) {
-                Toast
-                    .makeText(
-                        activity,
-                        "Notification permission denied",
-                        Toast.LENGTH_SHORT,
-                    ).show()
+                Log.d("PermissionManager", "Notification permission denied")
             }
         }
 

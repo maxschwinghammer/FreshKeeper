@@ -12,9 +12,10 @@ import com.freshkeeper.model.Activity
 import com.freshkeeper.model.DownloadableUserData
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
+import com.freshkeeper.model.ImageType
 import com.freshkeeper.model.Membership
 import com.freshkeeper.model.NotificationSettings
-import com.freshkeeper.model.ProfilePicture
+import com.freshkeeper.model.Picture
 import com.freshkeeper.model.User
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Firebase
@@ -242,12 +243,6 @@ class AccountServiceImpl
                     }
 
                     firestore
-                        .collection("profilePictures")
-                        .document(userId)
-                        .delete()
-                        .await()
-
-                    firestore
                         .collection("notificationSettings")
                         .document(userId)
                         .delete()
@@ -357,13 +352,12 @@ class AccountServiceImpl
             val userId = auth.currentUser?.uid ?: throw Exception("User is not logged in")
 
             try {
-                val profilePictureRef =
-                    firestore
-                        .collection("profilePictures")
-                        .document(userId)
+                val profilePicture = Picture(image = base64Image, type = ImageType.BASE64)
 
-                profilePictureRef
-                    .set(ProfilePicture(base64Image, "base64"))
+                firestore
+                    .collection("users")
+                    .document(userId)
+                    .update("profilePicture", profilePicture)
                     .await()
             } catch (e: Exception) {
                 Log.e("AccountServiceImpl", "Error updating profile picture", e)
@@ -371,15 +365,21 @@ class AccountServiceImpl
             }
         }
 
-        override suspend fun getProfilePicture(userId: String): ProfilePicture? =
+        override suspend fun getProfilePicture(userId: String): Picture? =
             try {
-                val pictureRef =
+                val userDoc =
                     firestore
-                        .collection("profilePictures")
+                        .collection("users")
                         .document(userId)
-                val pictureSnapshot = pictureRef.get().await()
-
-                pictureSnapshot.toObject(ProfilePicture::class.java)
+                        .get()
+                        .await()
+                userDoc.get("profilePicture")?.let { map ->
+                    val profileMap = map as? Map<*, *>
+                    Picture(
+                        image = profileMap?.get("image") as? String,
+                        type = profileMap?.get("type") as? ImageType,
+                    )
+                }
             } catch (e: Exception) {
                 Log.e(
                     "AccountService",
@@ -400,12 +400,6 @@ class AccountServiceImpl
                     if (userDoc != null) {
                         val user = userDoc.toObject(User::class.java)
                         if (user != null) {
-                            val profilePictureTask =
-                                firestore
-                                    .collection("profilePictures")
-                                    .document(userId)
-                                    .get()
-
                             val activitiesTask =
                                 firestore
                                     .collection("activities")
@@ -434,16 +428,11 @@ class AccountServiceImpl
 
                             Tasks
                                 .whenAllComplete(
-                                    profilePictureTask,
                                     activitiesTask,
                                     foodItemsTask,
                                     householdTask,
                                     notificationSettingsTask,
                                 ).addOnCompleteListener {
-                                    val profilePicture =
-                                        profilePictureTask.result.toObject(
-                                            ProfilePicture::class.java,
-                                        )
                                     val activities =
                                         activitiesTask.result?.toObjects(
                                             Activity::class.java,
@@ -464,7 +453,6 @@ class AccountServiceImpl
                                     val downloadableData =
                                         DownloadableUserData(
                                             user,
-                                            profilePicture,
                                             activities,
                                             foodItems,
                                             household,

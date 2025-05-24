@@ -2,6 +2,7 @@ package com.freshkeeper.service.inventory
 
 import androidx.lifecycle.MutableLiveData
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.StorageLocation
 
 interface InventoryService {
     suspend fun getAllFoodItems(
@@ -10,7 +11,7 @@ interface InventoryService {
     )
 
     suspend fun getStorageLocationItems(
-        storageLocation: String,
+        storageLocation: StorageLocation,
         foodItemList: MutableLiveData<List<FoodItem>>,
         onResult: (List<FoodItem>) -> Unit,
         onFailure: (Exception) -> Unit,

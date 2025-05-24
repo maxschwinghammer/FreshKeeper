@@ -1,7 +1,12 @@
 package com.freshkeeper.service
 
 import com.freshkeeper.R
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.EventType
+import com.freshkeeper.model.HouseholdType
+import com.freshkeeper.model.Language
+import com.freshkeeper.model.NotificationSwitch
+import com.freshkeeper.model.StorageLocation
 
 val storageLocations =
     listOf(
@@ -40,56 +45,64 @@ val categories =
 
 val storageLocationMap =
     mapOf(
-        "fridge" to R.string.fridge,
-        "cupboard" to R.string.cupboard,
-        "freezer" to R.string.freezer,
-        "counter_top" to R.string.counter_top,
-        "cellar" to R.string.cellar,
-        "bread_box" to R.string.bread_box,
-        "spice_rack" to R.string.spice_rack,
-        "pantry" to R.string.pantry,
-        "fruit_basket" to R.string.fruit_basket,
-        "other" to R.string.other,
+        StorageLocation.FRIDGE to R.string.fridge,
+        StorageLocation.CUPBOARD to R.string.cupboard,
+        StorageLocation.FREEZER to R.string.freezer,
+        StorageLocation.COUNTER_TOP to R.string.counter_top,
+        StorageLocation.CELLAR to R.string.cellar,
+        StorageLocation.BREAD_BOX to R.string.bread_box,
+        StorageLocation.SPICE_RACK to R.string.spice_rack,
+        StorageLocation.PANTRY to R.string.pantry,
+        StorageLocation.FRUIT_BASKET to R.string.fruit_basket,
+        StorageLocation.OTHER to R.string.other,
     )
 
 val categoryMap =
     mapOf(
-        "dairy_goods" to R.string.dairy_goods,
-        "vegetables" to R.string.vegetables,
-        "fruits" to R.string.fruits,
-        "meat" to R.string.meat,
-        "fish" to R.string.fish,
-        "frozen_goods" to R.string.frozen_goods,
-        "spices" to R.string.spices,
-        "bread" to R.string.bread,
-        "confectionery" to R.string.confectionery,
-        "drinks" to R.string.drinks,
-        "pasta" to R.string.pasta,
-        "canned_goods" to R.string.canned_goods,
-        "candy" to R.string.candy,
-        "groats" to R.string.groats,
-        "sauces" to R.string.sauces,
-        "pet_food" to R.string.pet_food,
-        "child_food" to R.string.child_food,
-        "other" to R.string.other,
+        Category.DAIRY_GOODS to R.string.dairy_goods,
+        Category.VEGETABLES to R.string.vegetables,
+        Category.FRUITS to R.string.fruits,
+        Category.MEAT to R.string.meat,
+        Category.FISH to R.string.fish,
+        Category.FROZEN_GOODS to R.string.frozen_goods,
+        Category.SPICES to R.string.spices,
+        Category.BREAD to R.string.bread,
+        Category.CONFECTIONERY to R.string.confectionery,
+        Category.DRINKS to R.string.drinks,
+        Category.PASTA to R.string.pasta,
+        Category.CANNED_GOODS to R.string.canned_goods,
+        Category.CANDY to R.string.candy,
+        Category.GROATS to R.string.groats,
+        Category.SAUCES to R.string.sauces,
+        Category.PET_FOOD to R.string.pet_food,
+        Category.CHILD_FOOD to R.string.child_food,
+        Category.OTHER to R.string.other,
     )
 
 val categoryTips =
     mapOf(
-        "spices" to R.string.spice_tip,
-        "pasta" to R.string.pasta_tip,
-        "canned_goods" to R.string.canned_goods_tip,
-        "groats" to R.string.groats_tip,
-        "sauces" to R.string.sauces_tip,
-        "drinks" to R.string.drinks_tip,
-        "dairy_goods" to R.string.fresh_food_warning,
-        "meat" to R.string.fresh_food_warning,
-        "fish" to R.string.fresh_food_warning,
-        "vegetables" to R.string.fresh_food_warning,
-        "fruits" to R.string.fresh_food_warning,
-        "bread" to R.string.fresh_food_warning,
-        "candy" to R.string.sweets_tip,
-        "confectionery" to R.string.sweets_tip,
+        Category.SPICES to R.string.spice_tip,
+        Category.PASTA to R.string.pasta_tip,
+        Category.CANNED_GOODS to R.string.canned_goods_tip,
+        Category.GROATS to R.string.groats_tip,
+        Category.SAUCES to R.string.sauces_tip,
+        Category.DRINKS to R.string.drinks_tip,
+        Category.DAIRY_GOODS to R.string.fresh_food_warning,
+        Category.MEAT to R.string.fresh_food_warning,
+        Category.FISH to R.string.fresh_food_warning,
+        Category.VEGETABLES to R.string.fresh_food_warning,
+        Category.FRUITS to R.string.fresh_food_warning,
+        Category.BREAD to R.string.fresh_food_warning,
+        Category.CANDY to R.string.sweets_tip,
+        Category.CONFECTIONERY to R.string.sweets_tip,
+    )
+
+val householdTypeMap =
+    mapOf(
+        R.string.family to HouseholdType.FAMILY,
+        R.string.shared_apartment to HouseholdType.SHARED_APARTMENT,
+        R.string.single to HouseholdType.SINGLE,
+        R.string.pair to HouseholdType.PAIR,
     )
 
 val storageLocationReverseMap =
@@ -128,13 +141,7 @@ val categoryReverseMap =
         R.string.other to "other",
     )
 
-val reverseHouseholdTypeMap =
-    mapOf(
-        "Family" to R.string.family,
-        "Shared apartment" to R.string.shared_apartment,
-        "Single household" to R.string.single_household,
-        "Pair" to R.string.pair,
-    )
+val householdTypeReverseMap = householdTypeMap.entries.associate { it.value to it.key }
 
 val drawableMap =
     mapOf(
@@ -172,30 +179,22 @@ val activityTypeMap =
         EventType.DEFAULT to R.string.activity_default,
     )
 
-val householdTypeMap =
-    mapOf(
-        R.string.family to "Family",
-        R.string.shared_apartment to "Shared apartment",
-        R.string.single_household to "Single household",
-        R.string.pair to "Pair",
-    )
-
 val notificationSwitchMap =
     listOf(
-        R.string.daily_reminders to "daily_reminders",
-        R.string.food_added to "food_added",
-        R.string.household_changes to "household_changes",
-        R.string.food_expiring to "food_expiring",
-        R.string.tips to "tips",
-        R.string.statistics to "statistics",
+        R.string.daily_reminders to NotificationSwitch.DAILY_REMINDERS,
+        R.string.food_added to NotificationSwitch.FOOD_ADDED,
+        R.string.household_changes to NotificationSwitch.HOUSEHOLD_CHANGES,
+        R.string.food_expiring to NotificationSwitch.FOOD_EXPIRING,
+        R.string.tips to NotificationSwitch.TIPS,
+        R.string.statistics to NotificationSwitch.STATISTICS,
     )
 
 val languages =
-    listOf(
-        "de" to R.drawable.flag_germany,
-        "en" to R.drawable.flag_usa,
-        "es" to R.drawable.flag_spain,
-        "fr" to R.drawable.flag_france,
-        "it" to R.drawable.flag_italy,
-        "pt" to R.drawable.flag_portugal,
+    mapOf(
+        Language.DE to R.drawable.flag_germany,
+        Language.EN to R.drawable.flag_usa,
+        Language.ES to R.drawable.flag_spain,
+        Language.FR to R.drawable.flag_france,
+        Language.IT to R.drawable.flag_italy,
+        Language.PT to R.drawable.flag_portugal,
     )

@@ -22,7 +22,8 @@ import coil.compose.rememberAsyncImagePainter
 import com.canhub.cropper.CropImageOptions
 import com.canhub.cropper.CropImageView
 import com.freshkeeper.R
-import com.freshkeeper.model.ProfilePicture
+import com.freshkeeper.model.ImageType
+import com.freshkeeper.model.Picture
 import com.freshkeeper.service.PictureConverter
 import com.freshkeeper.service.cropImage.CropImageContract
 import com.freshkeeper.service.cropImage.CropImageContractOptions
@@ -32,7 +33,7 @@ import kotlinx.coroutines.flow.StateFlow
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun ProfilePictureCard(
-    profilePicture: StateFlow<ProfilePicture?>,
+    profilePicture: StateFlow<Picture?>,
     onProfilePictureUpdated: (String) -> Unit,
 ) {
     val pictureConverter = PictureConverter()
@@ -41,7 +42,7 @@ fun ProfilePictureCard(
     val profilePic = profilePicture.collectAsState()
     val imagePainter =
         when {
-            profilePic.value?.type == "url" && profilePic.value?.image != null ->
+            profilePic.value?.type == ImageType.URL && profilePic.value?.image != null ->
                 rememberAsyncImagePainter(profilePic.value!!.image)
             profilePic.value?.image != null -> {
                 val bmp = profilePic.value!!.image?.let { pictureConverter.convertBase64ToBitmap(it) }

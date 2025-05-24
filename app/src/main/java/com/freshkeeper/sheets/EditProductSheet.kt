@@ -1,6 +1,5 @@
 package com.freshkeeper.sheets
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -31,7 +30,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -51,9 +49,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.R
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.FoodItem
-import com.freshkeeper.model.FoodItemPicture
 import com.freshkeeper.model.FoodStatus
+import com.freshkeeper.model.ImageType
+import com.freshkeeper.model.StorageLocation
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
@@ -80,18 +80,13 @@ fun EditProductSheet(
     sheetState: SheetState,
     productInfoSheetState: SheetState,
     foodItem: FoodItem,
-    onGetFoodItemPicture: (
-        imageId: String,
-        onSuccess: (FoodItemPicture) -> Unit,
-        onFailure: (Exception) -> Unit,
-    ) -> Unit,
     onUpdateProduct: (
         foodItem: FoodItem,
         productName: String,
         quantity: Int,
         unit: String,
-        storageLocation: String,
-        category: String,
+        storageLocation: StorageLocation,
+        category: Category,
         expiryTimestamp: Long,
         isConsumedChecked: Boolean,
         isThrownAwayChecked: Boolean,
@@ -105,24 +100,13 @@ fun EditProductSheet(
     val category = remember { mutableStateOf(foodItem.category) }
     var isConsumedChecked by remember { mutableStateOf(foodItem.status == FoodStatus.CONSUMED) }
     var isThrownAwayChecked by remember { mutableStateOf(foodItem.status == FoodStatus.THROWN_AWAY) }
+    var expiryTimestamp by remember { mutableLongStateOf(foodItem.expiryTimestamp) }
+    val picture = remember { mutableStateOf(foodItem.picture) }
 
     val selectedStorageLocation = storageLocationMap[storageLocation.value] ?: R.string.fridge
     val selectedCategory = categoryMap[category.value] ?: R.string.dairy_goods
 
-    var expiryTimestamp by remember { mutableLongStateOf(foodItem.expiryTimestamp) }
-    var foodItemPicture by remember { mutableStateOf<FoodItemPicture?>(null) }
-
     val coroutineScope = rememberCoroutineScope()
-
-    LaunchedEffect(foodItem.imageId) {
-        foodItem.imageId?.let { imageId ->
-            onGetFoodItemPicture(
-                imageId,
-                { picture -> foodItemPicture = picture },
-                { e -> Log.e("EditProductSheet", "Error fetching food item picture", e) },
-            )
-        }
-    }
 
     ModalBottomSheet(
         onDismissRequest = {
@@ -281,10 +265,11 @@ fun EditProductSheet(
                     )
                 }
 
-                if (foodItemPicture != null) {
-                    if (foodItemPicture!!.type == "base64") {
+                val currentPicture = picture.value
+                when (currentPicture?.type) {
+                    ImageType.BASE64 -> {
                         val decodedImage =
-                            foodItemPicture!!.image?.let { image ->
+                            currentPicture.image?.let { image ->
                                 pictureConverter.convertBase64ToBitmap(image)
                             }
                         if (decodedImage != null) {
@@ -312,156 +297,164 @@ fun EditProductSheet(
                                 )
                             }
                         }
-                    } else if (foodItemPicture!!.type == "url") {
-                        Box(
-                            modifier =
-                                Modifier
-                                    .padding(top = 8.dp, start = 16.dp)
-                                    .defaultMinSize(minWidth = 150.dp, minHeight = 129.dp)
-                                    .weight(1f)
-                                    .heightIn(max = 129.dp),
-                        ) {
-                            Image(
-                                painter = rememberAsyncImagePainter(foodItemPicture!!.image),
-                                contentDescription = "Product Image",
-                                contentScale = ContentScale.Fit,
+                    }
+                    ImageType.URL -> {
+                        if (!currentPicture.image.isNullOrEmpty()) {
+                            Box(
                                 modifier =
                                     Modifier
-                                        .fillMaxSize()
-                                        .clip(RoundedCornerShape(10.dp))
-                                        .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
-                            )
+                                        .padding(top = 8.dp, start = 16.dp)
+                                        .defaultMinSize(minWidth = 150.dp, minHeight = 129.dp)
+                                        .weight(1f)
+                                        .heightIn(max = 129.dp),
+                            ) {
+                                Image(
+                                    painter = rememberAsyncImagePainter(currentPicture.image),
+                                    contentDescription = "Product Image",
+                                    contentScale = ContentScale.Fit,
+                                    modifier =
+                                        Modifier
+                                            .fillMaxSize()
+                                            .clip(RoundedCornerShape(10.dp))
+                                            .border(1.dp, ComponentStrokeColor, RoundedCornerShape(10.dp)),
+                                )
+                            }
                         }
                     }
+
+                    null -> {}
                 }
-            }
 
-            Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-            Row(modifier = Modifier.fillMaxWidth()) {
-                OutlinedTextField(
-                    value = quantity,
-                    onValueChange = { if (it.matches(Regex("\\d{0,4}"))) quantity = it },
-                    label = { Text(stringResource(R.string.quantity)) },
-                    modifier = Modifier.weight(1f),
-                    colors =
-                        OutlinedTextFieldDefaults.colors(
-                            unfocusedBorderColor = ComponentStrokeColor,
-                            focusedBorderColor = AccentTurquoiseColor,
-                            unfocusedLabelColor = TextColor,
-                            focusedLabelColor = AccentTurquoiseColor,
-                        ),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    maxLines = 1,
-                )
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    OutlinedTextField(
+                        value = quantity,
+                        onValueChange = { if (it.matches(Regex("\\d{0,4}"))) quantity = it },
+                        label = { Text(stringResource(R.string.quantity)) },
+                        modifier = Modifier.weight(1f),
+                        colors =
+                            OutlinedTextFieldDefaults.colors(
+                                unfocusedBorderColor = ComponentStrokeColor,
+                                focusedBorderColor = AccentTurquoiseColor,
+                                unfocusedLabelColor = TextColor,
+                                focusedLabelColor = AccentTurquoiseColor,
+                            ),
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        maxLines = 1,
+                    )
 
-                Box(modifier = Modifier.weight(1f).padding(start = 6.dp)) {
-                    UnitSelector(unit = unit)
-                }
-            }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            DropdownMenu(
-                selectedStorageLocation,
-                onSelect = { selectedStorageLocation ->
-                    storageLocation.value = storageLocationReverseMap[selectedStorageLocation]
-                        ?: "fridge"
-                },
-                "storageLocations",
-                stringResource(R.string.storage_location),
-            )
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            DropdownMenu(
-                selectedCategory,
-                onSelect = { selectedCategory ->
-                    category.value = categoryReverseMap[selectedCategory] ?: "dairy_goods"
-                },
-                "categories",
-                stringResource(R.string.category),
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = isConsumedChecked,
-                    onCheckedChange = {
-                        isConsumedChecked = it
-                        if (it) isThrownAwayChecked = false
-                    },
-                    enabled = !isThrownAwayChecked,
-                    modifier = Modifier.size(20.dp),
-                    colors =
-                        CheckboxDefaults.colors(
-                            checkmarkColor = ComponentBackgroundColor,
-                            checkedColor = AccentGreenColor,
-                        ),
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    stringResource(R.string.mark_as_consumed),
-                    color = TextColor,
-                    fontSize = 16.sp,
-                    lineHeight = 16.sp,
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Checkbox(
-                    checked = isThrownAwayChecked,
-                    onCheckedChange = {
-                        isThrownAwayChecked = it
-                        if (it) isConsumedChecked = false
-                    },
-                    enabled = !isConsumedChecked,
-                    modifier = Modifier.size(20.dp),
-                    colors =
-                        CheckboxDefaults.colors(
-                            checkmarkColor = ComponentBackgroundColor,
-                            checkedColor = RedColor,
-                        ),
-                )
-                Spacer(modifier = Modifier.width(10.dp))
-                Text(
-                    stringResource(R.string.mark_as_thrown_away),
-                    color = TextColor,
-                    fontSize = 16.sp,
-                    lineHeight = 16.sp,
-                )
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = {
-                    coroutineScope.launch {
-                        onUpdateProduct(
-                            foodItem,
-                            productName,
-                            quantity.toInt(),
-                            unit.value,
-                            storageLocation.value,
-                            category.value,
-                            expiryTimestamp,
-                            isConsumedChecked,
-                            isThrownAwayChecked,
-                        )
+                    Box(modifier = Modifier.weight(1f).padding(start = 6.dp)) {
+                        UnitSelector(unit = unit)
                     }
-                },
-                modifier = Modifier.fillMaxWidth().height(48.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
-            ) {
-                Text(
-                    stringResource(R.string.save_changes),
-                    color = ComponentBackgroundColor,
-                    maxLines = 1,
-                    softWrap = false,
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                DropdownMenu(
+                    selectedStorageLocation,
+                    onSelect = { selectedStorageLocation ->
+                        storageLocation.value =
+                            (
+                                storageLocationReverseMap[selectedStorageLocation]
+                                    ?: StorageLocation.FRIDGE
+                            ) as StorageLocation
+                    },
+                    "storageLocations",
+                    stringResource(R.string.storage_location),
                 )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                DropdownMenu(
+                    selectedCategory,
+                    onSelect = { selectedCategory ->
+                        category.value = (categoryReverseMap[selectedCategory] ?: Category.DAIRY_GOODS) as Category
+                    },
+                    "categories",
+                    stringResource(R.string.category),
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = isConsumedChecked,
+                        onCheckedChange = {
+                            isConsumedChecked = it
+                            if (it) isThrownAwayChecked = false
+                        },
+                        enabled = !isThrownAwayChecked,
+                        modifier = Modifier.size(20.dp),
+                        colors =
+                            CheckboxDefaults.colors(
+                                checkmarkColor = ComponentBackgroundColor,
+                                checkedColor = AccentGreenColor,
+                            ),
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        stringResource(R.string.mark_as_consumed),
+                        color = TextColor,
+                        fontSize = 16.sp,
+                        lineHeight = 16.sp,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Checkbox(
+                        checked = isThrownAwayChecked,
+                        onCheckedChange = {
+                            isThrownAwayChecked = it
+                            if (it) isConsumedChecked = false
+                        },
+                        enabled = !isConsumedChecked,
+                        modifier = Modifier.size(20.dp),
+                        colors =
+                            CheckboxDefaults.colors(
+                                checkmarkColor = ComponentBackgroundColor,
+                                checkedColor = RedColor,
+                            ),
+                    )
+                    Spacer(modifier = Modifier.width(10.dp))
+                    Text(
+                        stringResource(R.string.mark_as_thrown_away),
+                        color = TextColor,
+                        fontSize = 16.sp,
+                        lineHeight = 16.sp,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Button(
+                    onClick = {
+                        coroutineScope.launch {
+                            onUpdateProduct(
+                                foodItem,
+                                productName,
+                                quantity.toInt(),
+                                unit.value,
+                                storageLocation.value,
+                                category.value,
+                                expiryTimestamp,
+                                isConsumedChecked,
+                                isThrownAwayChecked,
+                            )
+                        }
+                    },
+                    modifier = Modifier.fillMaxWidth().height(48.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = WhiteColor),
+                ) {
+                    Text(
+                        stringResource(R.string.save_changes),
+                        color = ComponentBackgroundColor,
+                        maxLines = 1,
+                        softWrap = false,
+                    )
+                }
             }
         }
     }

@@ -12,7 +12,6 @@ import com.freshkeeper.R
 import com.freshkeeper.UNEXPECTED_CREDENTIAL
 import com.freshkeeper.model.Membership
 import com.freshkeeper.model.NotificationSettings
-import com.freshkeeper.model.ProfilePicture
 import com.freshkeeper.model.User
 import com.freshkeeper.service.account.AccountService
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
@@ -101,7 +100,6 @@ class GoogleAccountServiceImpl
         ) {
             val usersRef = firestore.collection("users").document(userId)
             val membershipRef = firestore.collection("memberships").document(userId)
-            val profilePicRef = firestore.collection("profilePictures").document(userId)
             val notificationRef = firestore.collection("notificationSettings").document(userId)
 
             usersRef.get().addOnSuccessListener { userSnapshot ->
@@ -136,19 +134,6 @@ class GoogleAccountServiceImpl
                                     statistics = false,
                                 )
                             notificationRef.set(notificationSettings)
-                        }
-                    }
-
-                    if (!profilePictureUrl.isNullOrEmpty()) {
-                        profilePicRef.get().addOnSuccessListener { profilePicSnapshot ->
-                            if (!profilePicSnapshot.exists()) {
-                                val profilePicture =
-                                    ProfilePicture(
-                                        image = profilePictureUrl,
-                                        type = "url",
-                                    )
-                                profilePicRef.set(profilePicture)
-                            }
                         }
                     }
                 }

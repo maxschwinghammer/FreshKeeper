@@ -29,10 +29,11 @@ import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
+import com.freshkeeper.model.HouseholdType
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.profileSettings.cards.AccountCenterCard
 import com.freshkeeper.screens.profileSettings.cards.card
-import com.freshkeeper.service.reverseHouseholdTypeMap
+import com.freshkeeper.service.householdTypeReverseMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -43,8 +44,8 @@ import com.freshkeeper.ui.theme.WhiteColor
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun SelectHouseholdTypeCard(
-    selectedHouseholdType: String,
-    onHouseholdTypeSelected: (String, String?) -> Unit,
+    selectedHouseholdType: HouseholdType,
+    onHouseholdTypeSelected: (HouseholdType, String?) -> Unit,
     onDeleteProducts: () -> Unit,
     onAddProducts: () -> Unit,
     household: Household,
@@ -61,21 +62,20 @@ fun SelectHouseholdTypeCard(
 
     val isUserOwner by remember { mutableStateOf(household.ownerId == user.id) }
     val context = LocalContext.current
-
-    val householdTypeMap =
-        mapOf(
-            stringResource(R.string.family) to "Family",
-            stringResource(R.string.shared_apartment) to "Shared apartment",
-            stringResource(R.string.single_household) to "Single household",
-            stringResource(R.string.pair) to "Pair",
-        )
-
     val typeChangeError = stringResource(R.string.type_change_error)
+
+    val householdTypes =
+        listOf(
+            HouseholdType.FAMILY,
+            HouseholdType.SHARED_APARTMENT,
+            HouseholdType.SINGLE,
+            HouseholdType.PAIR,
+        )
 
     AccountCenterCard(
         title =
             stringResource(R.string.household_type) + ": " +
-                reverseHouseholdTypeMap[household.type]?.let { stringResource(it) },
+                householdTypeReverseMap[household.type]?.let { stringResource(it) },
         icon = if (isUserOwner) Icons.Filled.Edit else null,
         modifier =
             Modifier
@@ -100,12 +100,9 @@ fun SelectHouseholdTypeCard(
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    listOf(
-                        stringResource(R.string.family),
-                        stringResource(R.string.shared_apartment),
-                        stringResource(R.string.single_household),
-                        stringResource(R.string.pair),
-                    ).forEach { type ->
+                    householdTypes.forEach { type ->
+                        val label =
+                            householdTypeReverseMap[type]?.let { stringResource(it) } ?: type.name
                         val borderColor =
                             if (selectedType == type) {
                                 AccentTurquoiseColor
@@ -126,7 +123,7 @@ fun SelectHouseholdTypeCard(
                                     .padding(vertical = 2.dp)
                                     .align(Alignment.CenterHorizontally),
                         ) {
-                            Text(text = type)
+                            Text(text = label)
                         }
                     }
                 }
@@ -148,16 +145,15 @@ fun SelectHouseholdTypeCard(
             confirmButton = {
                 Button(
                     onClick = {
-                        val englishType = householdTypeMap[selectedType] ?: selectedType
                         when {
-                            englishType == "Pair" && household.users.size > 2 -> {
+                            selectedType == HouseholdType.PAIR && household.users.size > 2 -> {
                                 showWarningDialog = true
                             }
-                            englishType == "Single household" && household.users.size > 1 -> {
+                            selectedType == HouseholdType.SINGLE && household.users.size > 1 -> {
                                 showSingleHouseholdWarningDialog = true
                             }
                             else -> {
-                                onHouseholdTypeSelected(englishType, null)
+                                onHouseholdTypeSelected(selectedType, null)
                             }
                         }
                         showHouseholdTypeDialog = false
@@ -281,7 +277,7 @@ fun SelectHouseholdTypeCard(
             confirmButton = {
                 Button(
                     onClick = {
-                        onHouseholdTypeSelected("Single household", null)
+                        onHouseholdTypeSelected(HouseholdType.SINGLE, null)
                         showSingleHouseholdWarningDialog = false
                     },
                     colors =

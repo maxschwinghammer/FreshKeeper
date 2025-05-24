@@ -4,9 +4,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.freshkeeper.model.Activity
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.EventType
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
+import com.freshkeeper.model.HouseholdType
 import com.freshkeeper.model.Member
 import com.freshkeeper.model.Nutriments
 import com.freshkeeper.screens.AppViewModel
@@ -44,8 +46,8 @@ class HouseholdViewModel
         private val _usedItemsPercentage = MutableLiveData<Int>()
         val usedItemsPercentage: LiveData<Int> = _usedItemsPercentage
 
-        private val _mostWastedCategory = MutableLiveData<String>()
-        val mostWastedCategory: LiveData<String> = _mostWastedCategory
+        private val _mostWastedCategory = MutableLiveData<Category>()
+        val mostWastedCategory: LiveData<Category> = _mostWastedCategory
 
         private val _discardedDates = MutableLiveData<List<Long>>()
         val discardedDates: LiveData<List<Long>> = _discardedDates
@@ -145,7 +147,7 @@ class HouseholdViewModel
 
         fun createHousehold(
             name: String,
-            type: String,
+            type: HouseholdType,
         ) {
             launchCatching {
                 householdService.createHousehold(

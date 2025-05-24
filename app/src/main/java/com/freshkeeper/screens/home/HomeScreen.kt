@@ -375,9 +375,6 @@ fun HomeScreen(navController: NavHostController) {
                         editProductSheetState,
                         productInfoSheetState,
                         item,
-                        onGetFoodItemPicture = { imageId, onSuccess, onFailure ->
-                            viewModel.getFoodItemPicture(imageId, onSuccess, onFailure)
-                        },
                         onUpdateProduct = {
                             foodItem,
                             productName,

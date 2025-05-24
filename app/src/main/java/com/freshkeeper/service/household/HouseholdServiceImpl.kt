@@ -5,12 +5,15 @@ import android.util.Log
 import android.widget.Toast
 import com.freshkeeper.R
 import com.freshkeeper.model.Activity
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.EventType
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodStatus
 import com.freshkeeper.model.Household
+import com.freshkeeper.model.HouseholdType
+import com.freshkeeper.model.ImageType
 import com.freshkeeper.model.Member
-import com.freshkeeper.model.ProfilePicture
+import com.freshkeeper.model.Picture
 import com.freshkeeper.model.Statistics
 import com.freshkeeper.model.User
 import com.freshkeeper.service.account.AccountService
@@ -281,7 +284,6 @@ class HouseholdServiceImpl
                     .eachCount()
                     .maxByOrNull { it.value }
                     ?.key
-                    .orEmpty()
             val discardedDates =
                 allItems
                     .filter { it.status == FoodStatus.THROWN_AWAY && it.discardTimestamp != null }
@@ -293,7 +295,7 @@ class HouseholdServiceImpl
                 daysWithoutWaste = daysWithoutWaste,
                 mostWastedItems = mostWastedItems,
                 usedItemsPercentage = usedItemsPercentage,
-                mostWastedCategory = mostWastedCategory,
+                mostWastedCategory = mostWastedCategory ?: Category.OTHER,
                 discardedDates = discardedDates,
             )
         }
@@ -316,16 +318,20 @@ class HouseholdServiceImpl
                 ?.addOnFailureListener(onFailure)
         }
 
-        override suspend fun getProfilePicture(userId: String): ProfilePicture? {
-            val docSnapshot =
+        override suspend fun getProfilePicture(userId: String): Picture? {
+            val userDoc =
                 firestore
-                    .collection("profilePictures")
+                    .collection("users")
                     .document(userId)
                     .get()
                     .await()
 
-            return if (docSnapshot.exists()) {
-                docSnapshot.toObject(ProfilePicture::class.java)
+            val map = userDoc.get("profilePicture") as? Map<*, *>
+            return if (map != null) {
+                Picture(
+                    image = map["image"] as? String,
+                    type = map["type"] as? ImageType,
+                )
             } else {
                 null
             }
@@ -363,7 +369,7 @@ class HouseholdServiceImpl
 
         override suspend fun createHousehold(
             name: String,
-            type: String,
+            type: HouseholdType,
             onSuccess: (Household) -> Unit,
         ) {
             try {
@@ -493,19 +499,8 @@ class HouseholdServiceImpl
                     batch.update(document.reference, "householdId", null)
                 }
 
-                val imageIds = mutableListOf<String>()
-
                 foodItemsQuerySnapshot.documents.forEach { document ->
-                    document.getString("imageId")?.let { imageIds.add(it) }
                     batch.delete(document.reference)
-                }
-
-                imageIds.forEach { imageId ->
-                    batch.delete(
-                        firestore
-                            .collection("foodItemPictures")
-                            .document(imageId),
-                    )
                 }
 
                 activitiesQuerySnapshot.documents.forEach { document ->
@@ -701,7 +696,7 @@ class HouseholdServiceImpl
 
         override suspend fun updateHouseholdType(
             ownerId: String,
-            newType: String,
+            newType: HouseholdType,
             selectedUser: String?,
             users: List<String>,
         ): List<String> =
@@ -711,7 +706,7 @@ class HouseholdServiceImpl
                 val householdId = getHouseholdId()
 
                 when (newType) {
-                    "Single household" -> {
+                    HouseholdType.SINGLE -> {
                         val usersToRemove = users.filter { it != ownerId && it != selectedUser }
                         val householdIdNonNull =
                             householdId
@@ -748,7 +743,7 @@ class HouseholdServiceImpl
                         updatedUsers = listOfNotNull(users.find { it == ownerId })
                     }
 
-                    "Pair" ->
+                    HouseholdType.PAIR ->
                         if (selectedUser != null) {
                             val usersToRemove = users.filter { it != ownerId && it != selectedUser }
                             val householdIdNonNull =
@@ -777,6 +772,9 @@ class HouseholdServiceImpl
                                     users.find { it == selectedUser },
                                 )
                         }
+
+                    HouseholdType.FAMILY -> {}
+                    HouseholdType.SHARED_APARTMENT -> {}
                 }
 
                 householdId?.let {

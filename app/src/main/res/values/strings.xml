@@ -307,7 +307,7 @@
     <string name="revoke_notification_permissions">Revoke permissions</string>
     <string name="family">Family</string>
     <string name="shared_apartment">Shared apartment</string>
-    <string name="single_household">Single household</string>
+    <string name="single">Single household</string>
     <string name="pair">Pair</string>
     <string name="skip">Skip</string>
     <string name="continue_text">Continue</string>

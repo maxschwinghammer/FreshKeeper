@@ -5,7 +5,8 @@ import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.freshkeeper.R
-import com.freshkeeper.model.ProfilePicture
+import com.freshkeeper.model.ImageType
+import com.freshkeeper.model.Picture
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.service.account.AccountService
@@ -26,8 +27,8 @@ class ProfileSettingsViewModel
         private val _user = MutableStateFlow(User())
         val user: StateFlow<User> = _user.asStateFlow()
 
-        private val _profilePicture = MutableStateFlow<ProfilePicture?>(null)
-        val profilePicture: StateFlow<ProfilePicture?> = _profilePicture.asStateFlow()
+        private val _profilePicture = MutableStateFlow<Picture?>(null)
+        val profilePicture: StateFlow<Picture?> = _profilePicture.asStateFlow()
 
         private val _isBiometricEnabled = MutableStateFlow(false)
         val isBiometricEnabled: StateFlow<Boolean> = _isBiometricEnabled.asStateFlow()
@@ -75,7 +76,7 @@ class ProfileSettingsViewModel
 
         fun updateProfilePicture(profilePicture: String) {
             launchCatching {
-                _profilePicture.value = ProfilePicture(profilePicture, "base64")
+                _profilePicture.value = Picture(profilePicture, ImageType.BASE64)
                 _user.value = accountService.getUserObject()
                 accountService.updateProfilePicture(profilePicture)
             }

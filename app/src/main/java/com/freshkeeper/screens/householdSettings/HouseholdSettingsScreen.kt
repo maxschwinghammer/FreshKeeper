@@ -30,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
 import com.freshkeeper.model.Household
+import com.freshkeeper.model.HouseholdType
 import com.freshkeeper.model.User
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.householdSettings.cards.CreateHouseholdCard
@@ -151,8 +152,11 @@ fun HouseholdSettingsScreen(
                                 )
                                 HouseholdIdCard(household.id)
                                 if (household.ownerId == user.id) {
-                                    if (household.type != "Single household" &&
-                                        (household.type != "Pair" || household.users.size < 2)
+                                    if (household.type != HouseholdType.SINGLE &&
+                                        (
+                                            household.type != HouseholdType.PAIR ||
+                                                household.users.size < 2
+                                        )
                                     ) {
                                         InviteCard(inviteSheetState, household)
                                     }

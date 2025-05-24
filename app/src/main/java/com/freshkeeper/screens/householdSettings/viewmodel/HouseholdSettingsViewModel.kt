@@ -1,6 +1,7 @@
 package com.freshkeeper.screens.householdSettings.viewmodel
 
 import com.freshkeeper.model.Household
+import com.freshkeeper.model.HouseholdType
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.service.account.AccountService
@@ -53,7 +54,7 @@ class HouseholdSettingsViewModel
 
         fun createHousehold(
             name: String,
-            type: String,
+            type: HouseholdType,
         ) {
             launchCatching {
                 householdService.createHousehold(
@@ -116,7 +117,7 @@ class HouseholdSettingsViewModel
         }
 
         fun updateHouseholdType(
-            newType: String,
+            newType: HouseholdType,
             selectedUser: String?,
         ) {
             val ownerId = _household.value.ownerId

@@ -1,6 +1,6 @@
 package com.freshkeeper.screens.profile.viewmodel
 
-import com.freshkeeper.model.ProfilePicture
+import com.freshkeeper.model.Picture
 import com.freshkeeper.model.User
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.service.account.AccountService
@@ -24,8 +24,8 @@ class ProfileViewModel
         private val _memberSinceDays = MutableStateFlow<Long>(0)
         val memberSinceDays: StateFlow<Long> = _memberSinceDays.asStateFlow()
 
-        private val _profilePicture = MutableStateFlow<ProfilePicture?>(null)
-        val profilePicture: StateFlow<ProfilePicture?> = _profilePicture.asStateFlow()
+        private val _profilePicture = MutableStateFlow<Picture?>(null)
+        val profilePicture: StateFlow<Picture?> = _profilePicture.asStateFlow()
 
         fun getUserProfile(userId: String) {
             launchCatching {

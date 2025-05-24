@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.model.NotificationSettings
+import com.freshkeeper.model.NotificationSwitch
 import com.freshkeeper.screens.notificationSettings.cards.NotificationSwitchCard
 import com.freshkeeper.screens.notificationSettings.viewmodel.NotificationSettingsViewModel
 import com.freshkeeper.service.notificationSwitchMap
@@ -29,13 +30,12 @@ fun NotificationSwitchList(
         notificationSwitchMap.forEach { (title, key) ->
             val switchChecked =
                 when (key) {
-                    "daily_reminders" -> notificationSettings.dailyReminders
-                    "food_added" -> notificationSettings.foodAdded
-                    "household_changes" -> notificationSettings.householdChanges
-                    "food_expiring" -> notificationSettings.foodExpiring
-                    "tips" -> notificationSettings.tips
-                    "statistics" -> notificationSettings.statistics
-                    else -> false
+                    NotificationSwitch.DAILY_REMINDERS -> notificationSettings.dailyReminders
+                    NotificationSwitch.FOOD_ADDED -> notificationSettings.foodAdded
+                    NotificationSwitch.HOUSEHOLD_CHANGES -> notificationSettings.householdChanges
+                    NotificationSwitch.FOOD_EXPIRING -> notificationSettings.foodExpiring
+                    NotificationSwitch.TIPS -> notificationSettings.tips
+                    NotificationSwitch.STATISTICS -> notificationSettings.statistics
                 }
 
             NotificationSwitchCard(
@@ -43,12 +43,12 @@ fun NotificationSwitchList(
                 isChecked = switchChecked,
                 onCheckedChange = { newState ->
                     when (key) {
-                        "daily_reminders" -> viewModel.updateDailyReminders(newState)
-                        "food_added" -> viewModel.updateFoodAdded(newState)
-                        "household_changes" -> viewModel.updateHouseholdChanges(newState)
-                        "food_expiring" -> viewModel.updateFoodExpiring(newState)
-                        "tips" -> viewModel.updateTips(newState)
-                        "statistics" -> viewModel.updateStatistics(newState)
+                        NotificationSwitch.DAILY_REMINDERS -> viewModel.updateDailyReminders(newState)
+                        NotificationSwitch.FOOD_ADDED -> viewModel.updateFoodAdded(newState)
+                        NotificationSwitch.HOUSEHOLD_CHANGES -> viewModel.updateHouseholdChanges(newState)
+                        NotificationSwitch.FOOD_EXPIRING -> viewModel.updateFoodExpiring(newState)
+                        NotificationSwitch.TIPS -> viewModel.updateTips(newState)
+                        NotificationSwitch.STATISTICS -> viewModel.updateStatistics(newState)
                     }
                 },
             )

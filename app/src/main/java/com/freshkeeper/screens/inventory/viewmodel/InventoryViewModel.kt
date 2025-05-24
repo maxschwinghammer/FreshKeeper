@@ -5,10 +5,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.freshkeeper.R
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.FoodItem
-import com.freshkeeper.model.FoodItemPicture
 import com.freshkeeper.model.FoodStatus
 import com.freshkeeper.model.ProductData
+import com.freshkeeper.model.StorageLocation
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.service.inventory.InventoryService
 import com.freshkeeper.service.product.ProductService
@@ -63,16 +64,16 @@ class InventoryViewModel
         val otherItems: LiveData<List<FoodItem>> = _otherItems
 
         init {
-            getStorageLocationItems("fridge", _fridgeItems)
-            getStorageLocationItems("cupboard", _cupboardItems)
-            getStorageLocationItems("freezer", _freezerItems)
-            getStorageLocationItems("counter_top", _counterTopItems)
-            getStorageLocationItems("cellar", _cellarItems)
-            getStorageLocationItems("bread_box", _breadBoxItems)
-            getStorageLocationItems("spice_rack", _spiceRackItems)
-            getStorageLocationItems("pantry", _pantryItems)
-            getStorageLocationItems("fruit_basket", _fruitBasketItems)
-            getStorageLocationItems("other", _otherItems)
+            getStorageLocationItems(StorageLocation.FRIDGE, _fridgeItems)
+            getStorageLocationItems(StorageLocation.CUPBOARD, _cupboardItems)
+            getStorageLocationItems(StorageLocation.FREEZER, _freezerItems)
+            getStorageLocationItems(StorageLocation.COUNTER_TOP, _counterTopItems)
+            getStorageLocationItems(StorageLocation.CELLAR, _cellarItems)
+            getStorageLocationItems(StorageLocation.BREAD_BOX, _breadBoxItems)
+            getStorageLocationItems(StorageLocation.SPICE_RACK, _spiceRackItems)
+            getStorageLocationItems(StorageLocation.PANTRY, _pantryItems)
+            getStorageLocationItems(StorageLocation.FRUIT_BASKET, _fruitBasketItems)
+            getStorageLocationItems(StorageLocation.OTHER, _otherItems)
         }
 
         fun getAllFoodItems(context: Context) {
@@ -105,7 +106,7 @@ class InventoryViewModel
         }
 
         private fun getStorageLocationItems(
-            storageLocation: String,
+            storageLocation: StorageLocation,
             foodItemList: MutableLiveData<List<FoodItem>>,
         ) {
             launchCatching {
@@ -114,16 +115,16 @@ class InventoryViewModel
                     foodItemList,
                     onResult = { items ->
                         when (storageLocation) {
-                            "fridge" -> _fridgeItems.value = items
-                            "cupboard" -> _cupboardItems.value = items
-                            "freezer" -> _freezerItems.value = items
-                            "counter_top" -> _counterTopItems.value = items
-                            "cellar" -> _cellarItems.value = items
-                            "bread_box" -> _breadBoxItems.value = items
-                            "spice_rack" -> _spiceRackItems.value = items
-                            "pantry" -> _pantryItems.value = items
-                            "fruit_basket" -> _fruitBasketItems.value = items
-                            "other" -> _otherItems.value = items
+                            StorageLocation.FRIDGE -> _fridgeItems.value = items
+                            StorageLocation.CUPBOARD -> _cupboardItems.value = items
+                            StorageLocation.FREEZER -> _freezerItems.value = items
+                            StorageLocation.COUNTER_TOP -> _counterTopItems.value = items
+                            StorageLocation.CELLAR -> _cellarItems.value = items
+                            StorageLocation.BREAD_BOX -> _breadBoxItems.value = items
+                            StorageLocation.SPICE_RACK -> _spiceRackItems.value = items
+                            StorageLocation.PANTRY -> _pantryItems.value = items
+                            StorageLocation.FRUIT_BASKET -> _fruitBasketItems.value = items
+                            StorageLocation.OTHER -> _otherItems.value = items
                         }
                     },
                     onFailure = {
@@ -153,8 +154,8 @@ class InventoryViewModel
             expiryTimestamp: Long,
             quantity: Int,
             unit: String,
-            storageLocation: String,
-            category: String,
+            storageLocation: StorageLocation,
+            category: Category,
             image: String?,
             imageUrl: String,
             coroutineScope: CoroutineScope,
@@ -177,36 +178,26 @@ class InventoryViewModel
                     onSuccess = { newItem ->
                         _foodItems.value = (_foodItems.value ?: emptyList()) + newItem
                         when (newItem.storageLocation) {
-                            "fridge" ->
-                                _fridgeItems.value =
-                                    (_fridgeItems.value ?: emptyList()) + newItem
-                            "cupboard" ->
-                                _cupboardItems.value =
-                                    (_cupboardItems.value ?: emptyList()) + newItem
-                            "freezer" ->
-                                _freezerItems.value =
-                                    (_freezerItems.value ?: emptyList()) + newItem
-                            "counter_top" ->
-                                _counterTopItems.value =
-                                    (_counterTopItems.value ?: emptyList()) + newItem
-                            "cellar" ->
-                                _cellarItems.value =
-                                    (_cellarItems.value ?: emptyList()) + newItem
-                            "bread_box" ->
-                                _breadBoxItems.value =
-                                    (_breadBoxItems.value ?: emptyList()) + newItem
-                            "spice_rack" ->
-                                _spiceRackItems.value =
-                                    (_spiceRackItems.value ?: emptyList()) + newItem
-                            "pantry" ->
-                                _pantryItems.value =
-                                    (_pantryItems.value ?: emptyList()) + newItem
-                            "fruit_basket" ->
-                                _fruitBasketItems.value =
-                                    (_fruitBasketItems.value ?: emptyList()) + newItem
-                            "other" ->
-                                _otherItems.value =
-                                    (_otherItems.value ?: emptyList()) + newItem
+                            StorageLocation.FRIDGE ->
+                                _fridgeItems.value = (_fridgeItems.value ?: emptyList()) + newItem
+                            StorageLocation.CUPBOARD ->
+                                _cupboardItems.value = (_cupboardItems.value ?: emptyList()) + newItem
+                            StorageLocation.FREEZER ->
+                                _freezerItems.value = (_freezerItems.value ?: emptyList()) + newItem
+                            StorageLocation.COUNTER_TOP ->
+                                _counterTopItems.value = (_counterTopItems.value ?: emptyList()) + newItem
+                            StorageLocation.CELLAR ->
+                                _cellarItems.value = (_cellarItems.value ?: emptyList()) + newItem
+                            StorageLocation.BREAD_BOX ->
+                                _breadBoxItems.value = (_breadBoxItems.value ?: emptyList()) + newItem
+                            StorageLocation.SPICE_RACK ->
+                                _spiceRackItems.value = (_spiceRackItems.value ?: emptyList()) + newItem
+                            StorageLocation.PANTRY ->
+                                _pantryItems.value = (_pantryItems.value ?: emptyList()) + newItem
+                            StorageLocation.FRUIT_BASKET ->
+                                _fruitBasketItems.value = (_fruitBasketItems.value ?: emptyList()) + newItem
+                            StorageLocation.OTHER ->
+                                _otherItems.value = (_otherItems.value ?: emptyList()) + newItem
                         }
                         onSuccess()
                     },
@@ -222,8 +213,8 @@ class InventoryViewModel
             productName: String,
             quantity: Int,
             unit: String,
-            storageLocation: String,
-            category: String,
+            storageLocation: StorageLocation,
+            category: Category,
             expiryTimestamp: Long,
             isConsumedChecked: Boolean,
             isThrownAwayChecked: Boolean,
@@ -283,19 +274,18 @@ class InventoryViewModel
             }
         }
 
-        private fun getListByLocation(loc: String): MutableLiveData<List<FoodItem>>? =
+        private fun getListByLocation(loc: StorageLocation): MutableLiveData<List<FoodItem>>? =
             when (loc) {
-                "fridge" -> _fridgeItems
-                "cupboard" -> _cupboardItems
-                "freezer" -> _freezerItems
-                "counter_top" -> _counterTopItems
-                "cellar" -> _cellarItems
-                "bread_box" -> _breadBoxItems
-                "spice_rack" -> _spiceRackItems
-                "pantry" -> _pantryItems
-                "fruit_basket" -> _fruitBasketItems
-                "other" -> _otherItems
-                else -> null
+                StorageLocation.FRIDGE -> _fridgeItems
+                StorageLocation.CUPBOARD -> _cupboardItems
+                StorageLocation.FREEZER -> _freezerItems
+                StorageLocation.COUNTER_TOP -> _counterTopItems
+                StorageLocation.CELLAR -> _cellarItems
+                StorageLocation.BREAD_BOX -> _breadBoxItems
+                StorageLocation.SPICE_RACK -> _spiceRackItems
+                StorageLocation.PANTRY -> _pantryItems
+                StorageLocation.FRUIT_BASKET -> _fruitBasketItems
+                StorageLocation.OTHER -> _otherItems
             }
 
         private fun removeFromStorageLists(deleted: FoodItem) {
@@ -335,16 +325,6 @@ class InventoryViewModel
                     liveDataList.value?.map { currentItem ->
                         if (currentItem.id == updatedItem.id) updatedItem else currentItem
                     }
-            }
-        }
-
-        fun getFoodItemPicture(
-            imageId: String,
-            onSuccess: (FoodItemPicture) -> Unit,
-            onFailure: (Exception) -> Unit,
-        ) {
-            launchCatching {
-                productService.getFoodItemPicture(imageId, onSuccess, onFailure)
             }
         }
     }

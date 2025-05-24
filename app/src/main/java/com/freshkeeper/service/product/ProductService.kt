@@ -1,9 +1,11 @@
 package com.freshkeeper.service.product
 
 import android.content.Context
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.EventType
 import com.freshkeeper.model.FoodItem
-import com.freshkeeper.model.FoodItemPicture
+import com.freshkeeper.model.Picture
+import com.freshkeeper.model.StorageLocation
 import kotlinx.coroutines.CoroutineScope
 
 interface ProductService {
@@ -13,8 +15,8 @@ interface ProductService {
         expiryTimestamp: Long,
         quantity: Int,
         unit: String,
-        storageLocation: String,
-        category: String,
+        storageLocation: StorageLocation,
+        category: Category,
         image: String?,
         imageUrl: String?,
         coroutineScope: CoroutineScope,
@@ -25,13 +27,13 @@ interface ProductService {
 
     suspend fun appendToCsv(
         productName: String,
-        category: String,
+        category: Category,
         context: Context,
     )
 
     fun getFoodItemPicture(
-        imageId: String,
-        onSuccess: (FoodItemPicture) -> Unit,
+        itemId: String,
+        onSuccess: (Picture) -> Unit,
         onFailure: (Exception) -> Unit,
     )
 
@@ -40,8 +42,8 @@ interface ProductService {
         productName: String,
         quantity: Int,
         unit: String,
-        storageLocation: String,
-        category: String,
+        storageLocation: StorageLocation,
+        category: Category,
         expiryTimestamp: Long,
         isConsumedChecked: Boolean,
         isThrownAwayChecked: Boolean,

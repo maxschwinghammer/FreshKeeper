@@ -27,7 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import com.freshkeeper.model.ProfilePicture
+import com.freshkeeper.model.ImageType
+import com.freshkeeper.model.Picture
 import com.freshkeeper.screens.profile.viewmodel.ProfileViewModel
 import com.freshkeeper.service.PictureConverter
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
@@ -38,7 +39,7 @@ import com.freshkeeper.ui.theme.TextColor
 @Composable
 fun ProfileCard(
     name: String?,
-    profilePicture: ProfilePicture?,
+    profilePicture: Picture?,
 ) {
     val profileViewModel: ProfileViewModel = hiltViewModel()
     val pictureConverter = PictureConverter()
@@ -72,7 +73,7 @@ fun ProfileCard(
                 ) {
                     profilePicture?.let {
                         when (it.type) {
-                            "base64" -> {
+                            ImageType.BASE64 -> {
                                 val decodedImage =
                                     it.image?.let { it1 ->
                                         pictureConverter.convertBase64ToBitmap(it1)
@@ -85,13 +86,15 @@ fun ProfileCard(
                                     )
                                 }
                             }
-                            "url" -> {
+                            ImageType.URL -> {
                                 Image(
                                     painter = rememberAsyncImagePainter(it.image),
                                     contentDescription = "Profile Picture",
                                     modifier = Modifier.fillMaxSize(),
                                 )
                             }
+
+                            null -> {}
                         }
                     }
                 }

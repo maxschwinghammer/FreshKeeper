@@ -21,7 +21,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.freshkeeper.R
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.StorageLocation
 import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -32,8 +34,8 @@ import com.freshkeeper.ui.theme.ComponentStrokeColor
 fun CurrentInventoriesSection(
     editProductSheetState: SheetState,
     onItemClick: (FoodItem) -> Unit,
-    selectedStorageLocations: List<String>,
-    selectedCategories: List<String>,
+    selectedStorageLocations: List<StorageLocation>,
+    selectedCategories: List<Category>,
     searchQuery: String,
     onItemsUpdated: (List<FoodItem>) -> Unit,
 ) {

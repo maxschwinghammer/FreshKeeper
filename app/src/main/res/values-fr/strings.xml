@@ -302,7 +302,7 @@
     <string name="revoke_notification_permissions">Révoquer les autorisations</string>
     <string name="family">Famille</string>
     <string name="shared_apartment">Appartement partagé</string>
-    <string name="single_household">Ménage individuel</string>
+    <string name="single">Ménage individuel</string>
     <string name="pair">Couple</string>
     <string name="skip">Passer</string>
     <string name="continue_text">Continuer</string>

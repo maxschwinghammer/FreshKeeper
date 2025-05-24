@@ -25,7 +25,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.freshkeeper.R
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.StorageLocation
 import com.freshkeeper.service.categoryMap
 import com.freshkeeper.service.storageLocationMap
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
@@ -44,11 +46,11 @@ import kotlinx.coroutines.launch
 fun FilterSheet(
     sheetState: SheetState,
     foodItems: List<FoodItem>,
-    selectedCategories: List<String>,
-    selectedStorageLocations: List<String>,
-    onUpdateCategories: (List<String>) -> Unit,
-    onUpdateStorageLocations: (List<String>) -> Unit,
-    onApplyFilter: (List<String>, List<String>) -> Unit,
+    selectedCategories: List<Category>,
+    selectedStorageLocations: List<StorageLocation>,
+    onUpdateCategories: (List<Category>) -> Unit,
+    onUpdateStorageLocations: (List<StorageLocation>) -> Unit,
+    onApplyFilter: (List<Category>, List<StorageLocation>) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
 

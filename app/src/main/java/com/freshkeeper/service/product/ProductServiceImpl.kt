@@ -3,11 +3,15 @@ package com.freshkeeper.service.product
 import android.content.Context
 import android.util.Log
 import com.freshkeeper.model.Activity
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.EventType
 import com.freshkeeper.model.FoodItem
-import com.freshkeeper.model.FoodItemPicture
 import com.freshkeeper.model.FoodStatus
 import com.freshkeeper.model.Household
+import com.freshkeeper.model.HouseholdType
+import com.freshkeeper.model.ImageType
+import com.freshkeeper.model.Picture
+import com.freshkeeper.model.StorageLocation
 import com.freshkeeper.model.User
 import com.freshkeeper.service.account.AccountService
 import com.freshkeeper.service.household.HouseholdService
@@ -49,8 +53,8 @@ class ProductServiceImpl
             expiryTimestamp: Long,
             quantity: Int,
             unit: String,
-            storageLocation: String,
-            category: String,
+            storageLocation: StorageLocation,
+            category: Category,
             image: String?,
             imageUrl: String?,
             coroutineScope: CoroutineScope,
@@ -58,156 +62,72 @@ class ProductServiceImpl
             onSuccess: (FoodItem) -> Unit,
             onFailure: (Exception) -> Unit,
         ) {
-            val currentDate = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDate()
-            val expiryDate = Instant.ofEpochMilli(expiryTimestamp).atZone(ZoneId.systemDefault()).toLocalDate()
+            val currentDate =
+                Instant
+                    .ofEpochMilli(System.currentTimeMillis())
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
+            val expiryDate =
+                Instant
+                    .ofEpochMilli(expiryTimestamp)
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDate()
             val daysDifference = ChronoUnit.DAYS.between(currentDate, expiryDate).toInt()
 
-            if (!image.isNullOrEmpty()) {
-                val foodItemPicture = FoodItemPicture(image = image, type = "base64")
-                firestore
-                    .collection("foodItemPictures")
-                    .add(foodItemPicture)
-                    .addOnSuccessListener { pictureRef ->
+            val picture: Picture? =
+                when {
+                    !image.isNullOrEmpty() -> Picture(image = image, type = ImageType.BASE64)
+                    !imageUrl.isNullOrEmpty() -> Picture(image = imageUrl, type = ImageType.URL)
+                    else -> null
+                }
 
-                        val pictureId = pictureRef.id
-                        val foodItem =
-                            FoodItem(
-                                barcode = barcode,
-                                userId = user.id,
-                                householdId = householdId,
-                                name = productName,
-                                expiryTimestamp = expiryTimestamp,
-                                quantity = quantity,
-                                unit = unit,
-                                storageLocation = storageLocation,
-                                category = category,
-                                status = FoodStatus.ACTIVE,
-                                imageId = pictureId,
-                            )
-                        firestore
-                            .collection("foodItems")
-                            .add(foodItem)
-                            .addOnSuccessListener { documentReference ->
-                                firestore
-                                    .collection("foodItems")
-                                    .document(documentReference.id)
-                                    .update("id", documentReference.id)
-                                    .addOnSuccessListener {
-                                        coroutineScope.launch {
-                                            if (user.householdId != null) {
-                                                logActivity(
-                                                    foodItem.copy(id = documentReference.id),
-                                                    productName,
-                                                    EventType.PRODUCT_ADDED,
-                                                )
-                                            }
-                                            appendToCsv(productName, foodItem.category, context)
-                                            onSuccess(
-                                                foodItem.copy(
-                                                    id = documentReference.id,
-                                                    daysDifference = daysDifference,
-                                                ),
-                                            )
-                                        }
-                                    }.addOnFailureListener { e -> onFailure(e) }
-                            }.addOnFailureListener { e -> onFailure(e) }
-                    }.addOnFailureListener { e -> onFailure(e) }
-            } else if (!imageUrl.isNullOrEmpty()) {
-                val foodItemPicture = FoodItemPicture(image = imageUrl, type = "url")
-                firestore
-                    .collection("foodItemPictures")
-                    .add(foodItemPicture)
-                    .addOnSuccessListener { pictureRef ->
-                        val pictureId = pictureRef.id
-                        val foodItem =
-                            FoodItem(
-                                barcode = barcode,
-                                userId = user.id,
-                                householdId = householdId,
-                                name = productName,
-                                expiryTimestamp = expiryTimestamp,
-                                quantity = quantity,
-                                unit = unit,
-                                storageLocation = storageLocation,
-                                category = category,
-                                status = FoodStatus.ACTIVE,
-                                imageId = pictureId,
-                            )
-                        firestore
-                            .collection("foodItems")
-                            .add(foodItem)
-                            .addOnSuccessListener { documentReference ->
-                                firestore
-                                    .collection("foodItems")
-                                    .document(documentReference.id)
-                                    .update("id", documentReference.id)
-                                    .addOnSuccessListener {
-                                        coroutineScope.launch {
-                                            if (user.householdId != null) {
-                                                logActivity(
-                                                    foodItem.copy(id = documentReference.id),
-                                                    productName,
-                                                    EventType.PRODUCT_ADDED,
-                                                )
-                                            }
-                                            appendToCsv(productName, foodItem.category, context)
-                                            onSuccess(
-                                                foodItem.copy(
-                                                    id = documentReference.id,
-                                                    daysDifference = daysDifference,
-                                                ),
-                                            )
-                                        }
-                                    }.addOnFailureListener { e -> onFailure(e) }
-                            }.addOnFailureListener { e -> onFailure(e) }
-                    }.addOnFailureListener { e -> onFailure(e) }
-            } else {
-                val foodItem =
-                    FoodItem(
-                        barcode = barcode,
-                        userId = user.id,
-                        householdId = householdId,
-                        name = productName,
-                        expiryTimestamp = expiryTimestamp,
-                        quantity = quantity,
-                        unit = unit,
-                        storageLocation = storageLocation,
-                        category = category,
-                        status = FoodStatus.ACTIVE,
-                    )
-                firestore
-                    .collection("foodItems")
-                    .add(foodItem)
-                    .addOnSuccessListener { documentReference ->
-                        firestore
-                            .collection("foodItems")
-                            .document(documentReference.id)
-                            .update("id", documentReference.id)
-                            .addOnSuccessListener {
-                                coroutineScope.launch {
-                                    if (user.householdId != null) {
-                                        logActivity(
-                                            foodItem.copy(id = documentReference.id),
-                                            productName,
-                                            EventType.PRODUCT_ADDED,
-                                        )
-                                    }
-                                    appendToCsv(productName, foodItem.category, context)
-                                    onSuccess(
-                                        foodItem.copy(
-                                            id = documentReference.id,
-                                            daysDifference = daysDifference,
-                                        ),
+            val foodItem =
+                FoodItem(
+                    barcode = barcode,
+                    userId = user.id,
+                    householdId = householdId,
+                    name = productName,
+                    expiryTimestamp = expiryTimestamp,
+                    quantity = quantity,
+                    unit = unit,
+                    storageLocation = storageLocation,
+                    category = category,
+                    status = FoodStatus.ACTIVE,
+                    picture = picture,
+                )
+
+            firestore
+                .collection("foodItems")
+                .add(foodItem)
+                .addOnSuccessListener { documentReference ->
+                    firestore
+                        .collection("foodItems")
+                        .document(documentReference.id)
+                        .update("id", documentReference.id)
+                        .addOnSuccessListener {
+                            coroutineScope.launch {
+                                if (user.householdId != null) {
+                                    logActivity(
+                                        foodItem.copy(id = documentReference.id),
+                                        productName,
+                                        EventType.PRODUCT_ADDED,
                                     )
                                 }
-                            }.addOnFailureListener { e -> onFailure(e) }
-                    }.addOnFailureListener { e -> onFailure(e) }
-            }
+                                appendToCsv(productName, foodItem.category, context)
+                                onSuccess(
+                                    foodItem.copy(
+                                        id = documentReference.id,
+                                        daysDifference = daysDifference,
+                                    ),
+                                )
+                            }
+                        }.addOnFailureListener { e -> onFailure(e) }
+                }.addOnFailureListener { e -> onFailure(e) }
         }
 
         override suspend fun appendToCsv(
             productName: String,
-            category: String,
+            category: Category,
             context: Context,
         ) {
             withContext(Dispatchers.IO) {
@@ -218,24 +138,24 @@ class ProductServiceImpl
         }
 
         override fun getFoodItemPicture(
-            imageId: String,
-            onSuccess: (FoodItemPicture) -> Unit,
+            itemId: String,
+            onSuccess: (Picture) -> Unit,
             onFailure: (Exception) -> Unit,
         ) {
             firestore
-                .collection("foodItemPictures")
-                .document(imageId)
+                .collection("foodItems")
+                .document(itemId)
                 .get()
                 .addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.exists()) {
-                        val foodItemPicture = documentSnapshot.toObject(FoodItemPicture::class.java)
+                        val foodItemPicture = documentSnapshot.toObject(FoodItem::class.java)?.picture
                         if (foodItemPicture != null) {
                             onSuccess(foodItemPicture)
                         } else {
-                            onFailure(Exception("FoodItemPicture not found"))
+                            onFailure(Exception("No picture found in this FoodItem"))
                         }
                     } else {
-                        onFailure(Exception("No document found with the given imageId"))
+                        onFailure(Exception("No FoodItem found"))
                     }
                 }.addOnFailureListener { e ->
                     onFailure(e)
@@ -247,8 +167,8 @@ class ProductServiceImpl
             productName: String,
             quantity: Int,
             unit: String,
-            storageLocation: String,
-            category: String,
+            storageLocation: StorageLocation,
+            category: Category,
             expiryTimestamp: Long,
             isConsumedChecked: Boolean,
             isThrownAwayChecked: Boolean,
@@ -329,7 +249,7 @@ class ProductServiceImpl
                                                     Household::class.java,
                                                 )
                                             if (household != null &&
-                                                household.type != "Single household"
+                                                household.type != HouseholdType.SINGLE
                                             ) {
                                                 coroutineScope.launch {
                                                     val changedFields = mutableListOf<EventType>()

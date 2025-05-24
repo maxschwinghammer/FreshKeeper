@@ -57,7 +57,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import com.freshkeeper.R
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.ProductData
+import com.freshkeeper.model.StorageLocation
 import com.freshkeeper.screens.home.DropdownMenu
 import com.freshkeeper.screens.home.ExpiryDatePicker
 import com.freshkeeper.screens.home.UnitSelector
@@ -94,8 +96,8 @@ fun ManualInputSheet(
         expiryTimestamp: Long,
         quantity: Int,
         unit: String,
-        storageLocation: String,
-        category: String,
+        storageLocation: StorageLocation,
+        category: Category,
         image: String?,
         imageUrl: String,
     ) -> Unit,
@@ -124,12 +126,12 @@ fun ManualInputSheet(
                     }.toMap()
             }
         }
-    val defaultCategory = "dairy_goods"
+    val defaultCategory = Category.DAIRY_GOODS
 
     var showAddImageButton by remember { mutableStateOf(true) }
     var showImageComposable by remember { mutableStateOf(false) }
-    val category = remember { mutableStateOf("dairy_goods") }
-    val storageLocation = remember { mutableStateOf("fridge") }
+    val category = remember { mutableStateOf(Category.DAIRY_GOODS) }
+    val storageLocation = remember { mutableStateOf(StorageLocation.FRIDGE) }
     val coroutineScope = rememberCoroutineScope()
 
     val selectedStorageLocation = storageLocationMap[storageLocation.value] ?: R.string.fridge
@@ -146,10 +148,13 @@ fun ManualInputSheet(
     fun mapCategory(name: String) {
         val key = name.trim().lowercase()
         if (key.isNotEmpty()) {
-            category.value = nameToCategoryMap.entries
-                .find { key.contains(it.key) }
-                ?.value
-                ?: defaultCategory
+            category.value =
+                (
+                    nameToCategoryMap.entries
+                        .find { key.contains(it.key) }
+                        ?.value
+                        ?: defaultCategory
+                ) as Category
         } else {
             category.value = defaultCategory
         }
@@ -406,8 +411,11 @@ fun ManualInputSheet(
             DropdownMenu(
                 selectedStorageLocation,
                 onSelect = { selectedStorageLocation ->
-                    storageLocation.value = storageLocationReverseMap[selectedStorageLocation]
-                        ?: "fridge"
+                    storageLocation.value =
+                        (
+                            storageLocationReverseMap[selectedStorageLocation]
+                                ?: StorageLocation.FRIDGE
+                        ) as StorageLocation
                 },
                 "storageLocations",
                 stringResource(R.string.storage_location),
@@ -418,7 +426,7 @@ fun ManualInputSheet(
             DropdownMenu(
                 selectedCategory,
                 onSelect = { selectedCategory ->
-                    category.value = categoryReverseMap[selectedCategory] ?: defaultCategory
+                    category.value = (categoryReverseMap[selectedCategory] ?: defaultCategory) as Category
                 },
                 "categories",
                 stringResource(R.string.category),

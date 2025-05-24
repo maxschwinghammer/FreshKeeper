@@ -12,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
 import com.freshkeeper.model.Household
+import com.freshkeeper.model.HouseholdType
 import com.freshkeeper.screens.profileSettings.cards.AccountCenterCard
 import com.freshkeeper.screens.profileSettings.cards.card
 import com.freshkeeper.ui.theme.ComponentStrokeColor
@@ -26,7 +27,7 @@ fun InviteCard(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val title =
-        if (household.type == "Pair") {
+        if (household.type == HouseholdType.PAIR) {
             stringResource(R.string.invite_partner)
         } else {
             stringResource(R.string.invite_people)

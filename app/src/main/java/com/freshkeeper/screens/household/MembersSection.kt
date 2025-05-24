@@ -56,6 +56,8 @@ import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.request.CachePolicy
 import com.freshkeeper.R
+import com.freshkeeper.model.HouseholdType
+import com.freshkeeper.model.ImageType
 import com.freshkeeper.model.Member
 import com.freshkeeper.screens.household.viewmodel.HouseholdViewModel
 import com.freshkeeper.screens.inventory.viewmodel.InventoryViewModel
@@ -68,6 +70,7 @@ import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
 import com.freshkeeper.ui.theme.WhiteColor
 import kotlinx.coroutines.launch
+import kotlin.collections.component2
 
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
@@ -75,7 +78,7 @@ import kotlinx.coroutines.launch
 fun MembersSection(
     navController: NavController,
     inviteSheetState: SheetState,
-    onCreateHouseholdClick: (String, String) -> Unit,
+    onCreateHouseholdClick: (String, HouseholdType) -> Unit,
     onJoinHouseholdClick: (String) -> Unit,
     onAddProducts: () -> Unit,
     onDeleteProducts: () -> Unit,
@@ -98,7 +101,7 @@ fun MembersSection(
     var showCreateHouseholdDialog by remember { mutableStateOf(false) }
     var showHouseholdTypeDialog by remember { mutableStateOf(false) }
     var showAddProductsDialog by remember { mutableStateOf(false) }
-    var householdType by remember { mutableStateOf("") }
+    var householdType by remember { mutableStateOf(HouseholdType.SINGLE) }
 
     val imageLoader =
         ImageLoader
@@ -218,7 +221,7 @@ fun MembersSection(
                                 val profilePicture = member.profilePicture
                                 profilePicture?.let {
                                     when (it.type) {
-                                        "base64" -> {
+                                        ImageType.BASE64 -> {
                                             val decodedImage =
                                                 it.image?.let { it1 ->
                                                     pictureConverter.convertBase64ToBitmap(
@@ -239,7 +242,7 @@ fun MembersSection(
                                             }
                                         }
 
-                                        "url" -> {
+                                        ImageType.URL -> {
                                             Image(
                                                 painter =
                                                     rememberAsyncImagePainter(
@@ -271,8 +274,8 @@ fun MembersSection(
 
                 if (isInHousehold) {
                     if (household != null &&
-                        household!!.type != "Single household" &&
-                        (household!!.type != "Pair" || household!!.users.size < 2)
+                        household!!.type != HouseholdType.SINGLE &&
+                        (household!!.type != HouseholdType.PAIR || household!!.users.size < 2)
                     ) {
                         Box(
                             modifier =
@@ -520,15 +523,15 @@ fun MembersSection(
                         verticalArrangement = Arrangement.Center,
                         modifier = Modifier.fillMaxWidth(),
                     ) {
-                        householdTypeMap.forEach { (localName, englishType) ->
+                        householdTypeMap.forEach { (localName, type) ->
                             val borderColor =
-                                if (householdType == englishType) {
+                                if (householdType == type) {
                                     AccentTurquoiseColor
                                 } else {
                                     Color.Transparent
                                 }
                             Button(
-                                onClick = { householdType = englishType },
+                                onClick = { householdType = type },
                                 colors =
                                     ButtonDefaults.buttonColors(
                                         containerColor = GreyColor,

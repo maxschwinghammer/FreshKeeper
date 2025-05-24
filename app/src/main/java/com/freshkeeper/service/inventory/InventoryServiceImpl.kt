@@ -3,6 +3,7 @@ package com.freshkeeper.service.inventory
 import androidx.lifecycle.MutableLiveData
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodStatus
+import com.freshkeeper.model.StorageLocation
 import com.freshkeeper.service.household.HouseholdService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -58,7 +59,7 @@ class InventoryServiceImpl
         }
 
         override suspend fun getStorageLocationItems(
-            storageLocation: String,
+            storageLocation: StorageLocation,
             foodItemList: MutableLiveData<List<FoodItem>>,
             onResult: (List<FoodItem>) -> Unit,
             onFailure: (Exception) -> Unit,

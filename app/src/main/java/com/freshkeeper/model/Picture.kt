@@ -1,8 +1,8 @@
 package com.freshkeeper.model
 
-data class FoodItemPicture(
+data class Picture(
     val image: String? = null,
-    val type: String? = null,
+    val type: ImageType? = null,
 ) {
     constructor() : this(null, null)
 }

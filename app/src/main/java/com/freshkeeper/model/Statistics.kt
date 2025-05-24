@@ -6,7 +6,7 @@ data class Statistics(
     val daysWithoutWaste: Int,
     val mostWastedItems: List<Pair<FoodItem, Int>>,
     val usedItemsPercentage: Int,
-    val mostWastedCategory: String,
+    val mostWastedCategory: Category,
     val discardedDates: List<Long>,
     val averageNutriments: Nutriments? = null,
     val averageNutriScore: String? = null,

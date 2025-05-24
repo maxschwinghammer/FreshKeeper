@@ -61,7 +61,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.StorageLocation
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
 import com.freshkeeper.screens.UpperTransition
@@ -110,8 +112,8 @@ fun InventoryScreen(navController: NavHostController) {
     val filterSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val productInfoSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    var selectedCategories by remember { mutableStateOf(emptyList<String>()) }
-    var selectedStorageLocations by remember { mutableStateOf(emptyList<String>()) }
+    var selectedCategories by remember { mutableStateOf(emptyList<Category>()) }
+    var selectedStorageLocations by remember { mutableStateOf(emptyList<StorageLocation>()) }
 
     val items by viewModel.foodItems.observeAsState(emptyList())
 
@@ -133,7 +135,7 @@ fun InventoryScreen(navController: NavHostController) {
     var searchQuery by remember { mutableStateOf("") }
     val labelMap = categoryMap + storageLocationMap
 
-    fun getLabel(key: String): Int? = labelMap[key]
+    fun getLabel(key: Any): Int? = labelMap[key]
 
     val context = LocalContext.current
     LaunchedEffect(Unit) {
@@ -278,11 +280,12 @@ fun InventoryScreen(navController: NavHostController) {
                                                 RoundedCornerShape(20.dp),
                                             ).clickable {
                                                 if (selectedCategories.contains(filter)) {
-                                                    selectedCategories =
-                                                        selectedCategories - filter
+                                                    selectedCategories = selectedCategories -
+                                                        (filter as Category)
                                                 } else {
                                                     selectedStorageLocations =
-                                                        selectedStorageLocations - filter
+                                                        selectedStorageLocations -
+                                                        (filter as StorageLocation)
                                                 }
                                             }.padding(horizontal = 12.dp, vertical = 6.dp),
                                     contentAlignment = Alignment.Center,
@@ -463,9 +466,6 @@ fun InventoryScreen(navController: NavHostController) {
                         editProductSheetState,
                         productInfoSheetState,
                         item,
-                        onGetFoodItemPicture = { imageId, onSuccess, onFailure ->
-                            viewModel.getFoodItemPicture(imageId, onSuccess, onFailure)
-                        },
                         onUpdateProduct = {
                             foodItem,
                             productName,
@@ -512,14 +512,8 @@ fun InventoryScreen(navController: NavHostController) {
                     onApplyFilter = { categories, locations ->
                         foodItems =
                             foodItems.filter {
-                                (
-                                    categories.isEmpty() ||
-                                        categories.contains(it.category)
-                                ) &&
-                                    (
-                                        locations.isEmpty() ||
-                                            locations.contains(it.storageLocation)
-                                    )
+                                (categories.isEmpty() || categories.contains(it.category)) &&
+                                    (locations.isEmpty() || locations.contains(it.storageLocation))
                             }
                         selectedCategories = categories
                         selectedStorageLocations = locations

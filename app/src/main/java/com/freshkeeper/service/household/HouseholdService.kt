@@ -4,8 +4,9 @@ import com.freshkeeper.model.Activity
 import com.freshkeeper.model.EventType
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.Household
+import com.freshkeeper.model.HouseholdType
 import com.freshkeeper.model.Member
-import com.freshkeeper.model.ProfilePicture
+import com.freshkeeper.model.Picture
 import com.freshkeeper.model.Statistics
 import com.freshkeeper.model.User
 import kotlinx.coroutines.CoroutineScope
@@ -49,13 +50,13 @@ interface HouseholdService {
         onFailure: (Exception) -> Unit,
     )
 
-    suspend fun getProfilePicture(userId: String): ProfilePicture?
+    suspend fun getProfilePicture(userId: String): Picture?
 
     suspend fun getFoodItems(): List<FoodItem>
 
     suspend fun createHousehold(
         name: String,
-        type: String,
+        type: HouseholdType,
         onSuccess: (Household) -> Unit,
     )
 
@@ -85,7 +86,7 @@ interface HouseholdService {
 
     suspend fun updateHouseholdType(
         ownerId: String,
-        newType: String,
+        newType: HouseholdType,
         selectedUser: String?,
         users: List<String>,
     ): List<String>

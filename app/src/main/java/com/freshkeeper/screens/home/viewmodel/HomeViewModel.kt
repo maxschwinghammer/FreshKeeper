@@ -5,10 +5,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.FoodItem
-import com.freshkeeper.model.FoodItemPicture
 import com.freshkeeper.model.FoodStatus
 import com.freshkeeper.model.ProductData
+import com.freshkeeper.model.StorageLocation
 import com.freshkeeper.screens.AppViewModel
 import com.freshkeeper.service.account.AccountService
 import com.freshkeeper.service.household.HouseholdService
@@ -104,8 +105,8 @@ class HomeViewModel
             expiryTimestamp: Long,
             quantity: Int,
             unit: String,
-            storageLocation: String,
-            category: String,
+            storageLocation: StorageLocation,
+            category: Category,
             image: String?,
             imageUrl: String,
             coroutineScope: CoroutineScope,
@@ -146,8 +147,8 @@ class HomeViewModel
             productName: String,
             quantity: Int,
             unit: String,
-            storageLocation: String,
-            category: String,
+            storageLocation: StorageLocation,
+            category: Category,
             expiryTimestamp: Long,
             isConsumedChecked: Boolean,
             isThrownAwayChecked: Boolean,
@@ -206,15 +207,5 @@ class HomeViewModel
             _allFoodItems.value = _allFoodItems.value?.filterNot { it.id == deleted.id }
             _expiringSoonItems.value = _expiringSoonItems.value?.filterNot { it.id == deleted.id }
             _expiredItems.value = _expiredItems.value?.filterNot { it.id == deleted.id }
-        }
-
-        fun getFoodItemPicture(
-            imageId: String,
-            onSuccess: (FoodItemPicture) -> Unit,
-            onFailure: (Exception) -> Unit,
-        ) {
-            launchCatching {
-                productService.getFoodItemPicture(imageId, onSuccess, onFailure)
-            }
         }
     }

@@ -29,34 +29,34 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
+import com.freshkeeper.model.Language
 import com.freshkeeper.service.languages
 import com.freshkeeper.ui.theme.AccentTurquoiseColor
 import com.freshkeeper.ui.theme.ComponentBackgroundColor
 import com.freshkeeper.ui.theme.ComponentStrokeColor
 import com.freshkeeper.ui.theme.GreyColor
 import com.freshkeeper.ui.theme.TextColor
-import java.util.Locale
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun ChangeLanguageCard(
-    currentLanguage: String,
-    onLanguageSelected: (String) -> Unit,
+    currentLanguage: Language,
+    onLanguageSelected: (Language) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedLanguage by remember { mutableStateOf(currentLanguage) }
 
     val languageDisplayName =
         mapOf(
-            "de" to stringResource(R.string.german),
-            "en" to stringResource(R.string.english),
-            "es" to stringResource(R.string.spanish),
-            "fr" to stringResource(R.string.french),
-            "it" to stringResource(R.string.italian),
-            "pt" to stringResource(R.string.portuguese),
+            Language.DE to stringResource(R.string.german),
+            Language.EN to stringResource(R.string.english),
+            Language.ES to stringResource(R.string.spanish),
+            Language.FR to stringResource(R.string.french),
+            Language.IT to stringResource(R.string.italian),
+            Language.PT to stringResource(R.string.portuguese),
         )
-    val selectedFlagRes = languages.find { it.first == selectedLanguage }?.second
-    val selectedLanguageDisplay = languageDisplayName[currentLanguage] ?: currentLanguage
+    val selectedFlagRes = languages[selectedLanguage]
+    val selectedLanguageDisplay = languageDisplayName[selectedLanguage] ?: selectedLanguage.name
 
     Column {
         OutlinedTextField(
@@ -118,9 +118,7 @@ fun ChangeLanguageCard(
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text =
-                                languageDisplayName[languageCode]
-                                    ?: languageCode.uppercase(Locale.ROOT),
+                            text = languageDisplayName[languageCode] ?: languageCode.name,
                             color = TextColor,
                         )
                     },

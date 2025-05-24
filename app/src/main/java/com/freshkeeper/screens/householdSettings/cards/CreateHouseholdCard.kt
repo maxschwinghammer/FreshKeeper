@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
 import com.freshkeeper.model.FoodItem
+import com.freshkeeper.model.HouseholdType
 import com.freshkeeper.screens.profileSettings.cards.AccountCenterCard
 import com.freshkeeper.screens.profileSettings.cards.card
 import com.freshkeeper.service.householdTypeMap
@@ -39,7 +40,7 @@ import com.freshkeeper.ui.theme.WhiteColor
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun CreateHouseholdCard(
-    onCreateHouseholdClick: (String, String) -> Unit,
+    onCreateHouseholdClick: (String, HouseholdType) -> Unit,
     onAddProducts: () -> Unit,
     onDeleteProducts: () -> Unit,
     items: List<FoodItem>,
@@ -49,7 +50,7 @@ fun CreateHouseholdCard(
     var showAddProductsDialog by remember { mutableStateOf(false) }
 
     var householdName by remember { mutableStateOf("") }
-    var householdType by remember { mutableStateOf("") }
+    var householdType by remember { mutableStateOf(HouseholdType.SINGLE) }
 
     AccountCenterCard(
         title = stringResource(R.string.create_household),
@@ -131,15 +132,15 @@ fun CreateHouseholdCard(
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth(),
                 ) {
-                    householdTypeMap.forEach { (localName, englishType) ->
+                    householdTypeMap.forEach { (localName, type) ->
                         val borderColor =
-                            if (householdType == englishType) {
+                            if (householdType == type) {
                                 AccentTurquoiseColor
                             } else {
                                 Color.Transparent
                             }
                         Button(
-                            onClick = { householdType = englishType },
+                            onClick = { householdType = type },
                             colors =
                                 ButtonDefaults.buttonColors(
                                     containerColor = GreyColor,
