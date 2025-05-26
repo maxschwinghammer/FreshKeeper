@@ -14,8 +14,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.freshkeeper.R
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.FoodItem
 import com.freshkeeper.model.FoodStatus
+import com.freshkeeper.model.StorageLocation
 import com.freshkeeper.screens.home.FoodList
 import java.util.Calendar
 
@@ -39,8 +41,8 @@ fun Story1() {
                 daysDifference = 1,
                 quantity = 1,
                 unit = "",
-                storageLocation = "",
-                category = "",
+                storageLocation = StorageLocation.BREAD_BOX,
+                category = Category.BREAD,
                 status = FoodStatus.ACTIVE,
             ),
             FoodItem(
@@ -52,8 +54,8 @@ fun Story1() {
                 daysDifference = 1,
                 quantity = 150,
                 unit = "",
-                storageLocation = "",
-                category = "",
+                storageLocation = StorageLocation.FRIDGE,
+                category = Category.VEGETABLES,
                 status = FoodStatus.ACTIVE,
             ),
             FoodItem(
@@ -65,8 +67,8 @@ fun Story1() {
                 daysDifference = 2,
                 quantity = 500,
                 unit = "",
-                storageLocation = "",
-                category = "",
+                storageLocation = StorageLocation.FRIDGE,
+                category = Category.DAIRY_GOODS,
                 status = FoodStatus.ACTIVE,
             ),
             FoodItem(
@@ -78,8 +80,8 @@ fun Story1() {
                 daysDifference = 7,
                 quantity = 1,
                 unit = "",
-                storageLocation = "",
-                category = "",
+                storageLocation = StorageLocation.FRIDGE,
+                category = Category.MEAT,
                 status = FoodStatus.ACTIVE,
             ),
             FoodItem(
@@ -91,8 +93,8 @@ fun Story1() {
                 daysDifference = 9,
                 quantity = 10,
                 unit = "",
-                storageLocation = "",
-                category = "",
+                storageLocation = StorageLocation.FRIDGE,
+                category = Category.DAIRY_GOODS,
                 status = FoodStatus.ACTIVE,
             ),
         )
@@ -108,8 +110,8 @@ fun Story1() {
                 daysDifference = -1,
                 quantity = 150,
                 unit = "",
-                storageLocation = "",
-                category = "",
+                storageLocation = StorageLocation.FRIDGE,
+                category = Category.DAIRY_GOODS,
                 status = FoodStatus.THROWN_AWAY,
             ),
             FoodItem(
@@ -121,8 +123,8 @@ fun Story1() {
                 daysDifference = -1,
                 quantity = 1,
                 unit = "",
-                storageLocation = "",
-                category = "",
+                storageLocation = StorageLocation.FRIDGE,
+                category = Category.VEGETABLES,
                 status = FoodStatus.CONSUMED,
             ),
             FoodItem(
@@ -134,8 +136,8 @@ fun Story1() {
                 daysDifference = -2,
                 quantity = 1,
                 unit = "",
-                storageLocation = "",
-                category = "",
+                storageLocation = StorageLocation.FRIDGE,
+                category = Category.DAIRY_GOODS,
                 status = FoodStatus.THROWN_AWAY,
             ),
             FoodItem(
@@ -147,8 +149,8 @@ fun Story1() {
                 daysDifference = -12,
                 quantity = 500,
                 unit = "",
-                storageLocation = "",
-                category = "",
+                storageLocation = StorageLocation.FRIDGE,
+                category = Category.DAIRY_GOODS,
                 status = FoodStatus.THROWN_AWAY,
             ),
             FoodItem(
@@ -160,8 +162,8 @@ fun Story1() {
                 daysDifference = -25,
                 quantity = 10,
                 unit = "",
-                storageLocation = "",
-                category = "",
+                storageLocation = StorageLocation.FRIDGE,
+                category = Category.DAIRY_GOODS,
                 status = FoodStatus.THROWN_AWAY,
             ),
         )
@@ -190,16 +192,13 @@ fun Story1() {
                                     when {
                                         item.daysDifference == 1 ->
                                             stringResource(R.string.tomorrow)
-
                                         item.daysDifference > 1 ->
                                             stringResource(
                                                 R.string.in_days,
                                                 item.daysDifference,
                                             )
-
                                         item.daysDifference == 0 ->
                                             stringResource(R.string.today)
-
                                         else -> ""
                                     }
                                 Triple(item.id, item.name, displayText)
@@ -222,13 +221,11 @@ fun Story1() {
                                             stringResource(
                                                 R.string.yesterday,
                                             )
-
                                         item.daysDifference < 0 ->
                                             stringResource(
                                                 R.string.days_ago,
                                                 -item.daysDifference,
                                             )
-
                                         else -> ""
                                     }
                                 Triple(item.id, item.name, displayText)

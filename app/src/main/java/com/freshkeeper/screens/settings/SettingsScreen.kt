@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
+import com.freshkeeper.model.Language
 import com.freshkeeper.model.Membership
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
@@ -70,7 +71,19 @@ fun SettingsScreen(
     val settingsViewModel: SettingsViewModel = hiltViewModel()
     val notificationsViewModel: NotificationsViewModel = hiltViewModel()
 
-    var selectedLanguage by remember { mutableStateOf(Locale.getDefault().language) }
+    fun languageCodeToEnum(code: String): Language =
+        when (code.lowercase()) {
+            "de" -> Language.DE
+            "en" -> Language.EN
+            "es" -> Language.ES
+            "fr" -> Language.FR
+            "it" -> Language.IT
+            "pt" -> Language.PT
+            else -> Language.EN
+        }
+    var selectedLanguage by remember {
+        mutableStateOf(languageCodeToEnum(Locale.getDefault().language))
+    }
 
     val membership by settingsViewModel.membership.collectAsState(initial = Membership())
     val managePremiumSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
@@ -147,9 +160,9 @@ fun SettingsScreen(
                     item {
                         ChangeLanguageCard(
                             currentLanguage = selectedLanguage,
-                            onLanguageSelected = { languageCode ->
-                                selectedLanguage = languageCode
-                                onLocaleChange(languageCode)
+                            onLanguageSelected = { languageEnum ->
+                                selectedLanguage = languageEnum
+                                onLocaleChange(languageEnum.name.lowercase())
                             },
                         )
                     }

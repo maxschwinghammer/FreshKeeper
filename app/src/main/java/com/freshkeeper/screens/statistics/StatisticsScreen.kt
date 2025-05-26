@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.freshkeeper.R
+import com.freshkeeper.model.Category
 import com.freshkeeper.model.Statistics
 import com.freshkeeper.navigation.BottomNavigationBar
 import com.freshkeeper.screens.LowerTransition
@@ -63,7 +64,7 @@ fun StatisticsScreen(navController: NavHostController) {
             householdViewModel.daysWithoutWaste.observeAsState(0).value,
             householdViewModel.mostWastedItems.observeAsState(emptyList()).value,
             householdViewModel.usedItemsPercentage.observeAsState(0).value,
-            householdViewModel.mostWastedCategory.observeAsState("N/A").value,
+            householdViewModel.mostWastedCategory.observeAsState(Category.DAIRY_GOODS).value,
             householdViewModel.discardedDates.observeAsState(emptyList()).value,
         )
 
